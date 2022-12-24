@@ -1,0 +1,23 @@
+{
+    "terminals":  [
+        {
+            "splitTerminals": [
+              {
+                "name": "engine",
+                "commands": ["./comp.sh"],
+                "shouldRunCommands": false
+
+              }
+            ]
+        },
+        {
+          "splitTerminals": [
+            {
+              "name": "client",
+              "commands": ["./comp.sh", "./game228"],
+              "shouldRunCommands": false
+            }
+          ]
+        }
+    ]
+}
