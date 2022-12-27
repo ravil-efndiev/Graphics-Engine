@@ -5,13 +5,14 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/RVL/src",
+                "${workspaceFolder}/RVL/src/RVL",
                 "${workspaceFolder}/RVL/dependencies/include"
             ],
             "defines": [],
             "macFrameworkPath": [
                 "/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/System/Library/Frameworks"
             ],
-            "compilerPath": "/usr/bin/clang",
+            "compilerPath": "/usr/bin/g++",
             "cStandard": "c17",
             "intelliSenseMode": "macos-clang-x64"
         }

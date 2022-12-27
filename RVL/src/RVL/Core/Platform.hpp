@@ -1,6 +1,8 @@
 #ifndef RVL_PLATFORM_HPP
 #define RVL_PLATFORM_HPP
 
+#include <Rvlpch.hpp>
+
 /**
  * 
  * 
@@ -8,6 +10,13 @@
  * 
  * 
 */
+
+#define RVL_ENTRY_FUNCTION __attribute__((weak))
+
+// statuses
+#define RVL_SUCCESS         0
+#define RVL_INTERNAL_ERROR  1
+#define RVL_RUNTIME_ERROR   2
 
 /**
  * \brief For use by user functions and specified semantic variables
@@ -44,6 +53,10 @@ typedef double rvl_double;
 #define RVL_LOG(text) std::cout << text << std::endl
 #define RVL_LOG_ERROR(err) std::cerr << "DEBUG_ERROR => " << err << std::endl
 
+/**
+ * used only for error checking in debug mode for errors that can be caused by engine itself
+ * \note for errors that caused by user or any other errors that can be caused in release mode use rvl::Error struct
+*/
 #define RVL_ASSERT(cond, text) if(!cond) { \
                                RVL_LOG_ERROR(text); \
                                RVL_DEBUG_BREAK; } 
@@ -54,7 +67,7 @@ typedef double rvl_double;
 #define RVL_LOG(text)
 #define RVL_LOG_ERROR(err)
 
-#define RVL_ASSERT(cond, text) ;
+#define RVL_ASSERT(cond, text) if (!cond) throw rvl::Error("INTERNAL ENGINE ERROR");
 
 #endif
 
@@ -66,6 +79,33 @@ typedef rvlui16  rvlStatus_t;
 typedef rvli32   rvlKeycode_t;
 typedef rvlui64  rvlSizei_t;
 #pragma endregion
+
+namespace rvl
+{
+    /**
+     * structure to process errors that can be caused by user
+     * example: usage of incorrect value in api function
+     * it has text variable and Print function to print error
+     * 
+     * also it provides static function to print error text given
+    */
+    struct Error
+    {   
+        std::string _text;
+        rvlStatus_t _status;
+        Error(const std::string& text, rvlStatus_t status) : _text(text), _status(status) {}
+
+        void Print()
+        {
+            std::cerr << "RUNTIME_ERROR => " << _text << std::endl;
+        }
+
+        static void PrintErrorS(const std::string& text)
+        {
+            std::cerr << "RUNTIME_ERROR => " << text << std::endl;
+        }
+    };
+}
 
 /**
  * Keyboard and mouse codes

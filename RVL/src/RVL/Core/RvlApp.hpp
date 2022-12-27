@@ -2,6 +2,7 @@
 #define RVL_RVLAPP_HPP
 
 #include <Rvlpch.hpp>
+#include "Platform.hpp"
 
 namespace rvl
 {
@@ -13,7 +14,7 @@ namespace rvl
         RvlApp(int windowWidth, int windowHeight, const std::string& windowName);
         virtual ~RvlApp();
 
-        void Run();
+        rvlStatus_t Run();
 
     protected:
         virtual void Start() = 0;
@@ -28,7 +29,7 @@ namespace rvl
 
     static RvlApp* CurrentApp;
 
-    extern void OnInit();
+    extern void OnInit() RVL_ENTRY_FUNCTION;
 }
 
 #endif

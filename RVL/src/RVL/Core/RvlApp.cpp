@@ -1,5 +1,4 @@
 #include "RvlApp.hpp"
-#include "Platform.hpp"
 #include "EventListener.hpp"
 #include "Window.hpp"
 
@@ -16,17 +15,27 @@ namespace rvl
         delete _window;
     }
 
-    void RvlApp::Run()
+    rvlStatus_t RvlApp::Run()
     {
-        Start();
-        while (!_window->Closes())
+        try
         {
-            _window->Clear();
+            EventListener::Init();
+            Start();
+            while (!_window->Closes())
+            {
+                _window->Clear();
 
-            Update();
+                Update();
 
-            _window->SwapBuffers();
-            _window->PollEvents();
+                _window->SwapBuffers();
+                EventListener::PollEvents();
+            }
+            return RVL_SUCCESS;
+        }
+        catch (Error error)
+        {
+            error.Print();
+            return error._status;
         }
     }
 
@@ -41,5 +50,3 @@ namespace rvl
     }
 
 }
-
-

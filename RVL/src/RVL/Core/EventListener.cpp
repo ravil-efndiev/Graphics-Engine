@@ -1,5 +1,4 @@
 #include "EventListener.hpp"
-
 #include "Rvlglpch.hpp"
 
 namespace rvl
@@ -7,10 +6,12 @@ namespace rvl
     std::array<bool, 1032> EventListener::_keysPressed;
     std::array<int, 1032>  EventListener::_changeFrames;
 
+    int EventListener::_currentFrame;
 
     void EventListener::Init()
     {
         _keysPressed.fill(false);
+        _changeFrames.fill(0);
     }
 
     void EventListener::Listen(const Event *event)
@@ -32,6 +33,11 @@ namespace rvl
     bool EventListener::GetKey(rvlKeycode_t keycode)
     {
         return _keysPressed[keycode];
+    }
+
+    bool EventListener::GetKeyWithFrame(rvlKeycode_t keycode)
+    {
+        return _keysPressed[keycode] && (_changeFrames[keycode] == _currentFrame);
     }
 
     void EventListener::ListenWindowEvents(const Event *event)
@@ -61,6 +67,7 @@ namespace rvl
                 RVL_ASSERT(castedEvent, "passed event instance does not have proper type")
                 
                 _keysPressed[castedEvent->GetKeyCode()] = true;
+                _changeFrames[castedEvent->GetKeyCode()] = _currentFrame;
 
                 break;
             }
@@ -69,6 +76,7 @@ namespace rvl
                 RVL_ASSERT(castedEvent, "passed event instance does not have proper type")
 
                 _keysPressed[castedEvent->GetKeyCode()] = false;
+                _changeFrames[castedEvent->GetKeyCode()] = _currentFrame;
 
                 break;
             }
@@ -78,4 +86,11 @@ namespace rvl
             }
         }   
     }
+
+    void EventListener::PollEvents()
+    {
+        _currentFrame++;
+        glfwPollEvents();
+    }
+
 }
