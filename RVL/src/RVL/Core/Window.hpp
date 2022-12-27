@@ -1,9 +1,9 @@
 #ifndef RVL_WINDOW_HPP
 #define RVL_WINDOW_HPP
 
-#include "Rvlpch.hpp"
+#include "Events/Events.hpp"
 
-class GLFWwindow;
+struct GLFWwindow;
 
 namespace rvl
 {
@@ -19,7 +19,16 @@ namespace rvl
         void SwapBuffers();
         void PollEvents();
 
+        void SetEventsCallback(void (*eventCallback)(Event*));
+
     private:
+        struct EventCallbackStruct 
+        {
+            void (*EventCallback)(Event*);
+        };
+
+        EventCallbackStruct _eventCallback;
+
         int _width, _height;
         std::string _name;
 
@@ -27,6 +36,7 @@ namespace rvl
         
         void InitGlfw();
         void CreateWindow();
+        void SetCallbacks();
 
     };
 }

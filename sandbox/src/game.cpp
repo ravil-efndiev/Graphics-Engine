@@ -20,12 +20,13 @@ private:
     
     void Update() override
     {
-        std::cout << "update" << std::endl;        
+        if (rvl::Input::IsKeyPressed(RVL_KEY_A))
+            std::cout << "update" << std::endl;        
     }
 
 };
 
-rvl::RvlApp* rvl::CreateApp()
+void rvl::OnInit()
 {
-    return new Game();
+    rvl::CurrentApp = new Game();
 }

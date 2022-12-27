@@ -8,6 +8,7 @@
 #include <string>
 #include <fstream>
 #include <ios>
+#include <functional>
 
 typedef uint32_t GLbitfield;
 typedef uint8_t  GLboolean;

@@ -1,5 +1,9 @@
 #!/bin/zsh
 
-g++ -std=c++17 -L"./" "RVL.dylib" "src/game.cpp" -I"../RVL/src/" -o "game228"
+cd ../RVL
+./comp.sh
+
+cd ../sandbox
+g++ -std=c++17 "src/game.cpp" -I"../RVL/src/" -I"../RVL/src/RVL/" -L"./" "RVL.dylib" -o "game228"
 
 ./game228

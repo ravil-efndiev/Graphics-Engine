@@ -5,10 +5,11 @@
 
 int main(int argc, char** argv)
 {
-    rvl::RvlApp* app = rvl::CreateApp();
-    app->Run();
-    delete app;
+    rvl::OnInit();
 
+    rvl::CurrentApp->Run();
+
+    delete rvl::CurrentApp;
     return 0;
 }
 

@@ -1,10 +1,12 @@
 #ifndef RVL_RVLAPP_HPP
 #define RVL_RVLAPP_HPP
 
-#include "Window.hpp"
+#include <Rvlpch.hpp>
 
 namespace rvl
 {
+    class Window;
+
     class RvlApp
     {
     public:
@@ -24,7 +26,9 @@ namespace rvl
 
     };
 
-    extern RvlApp* CreateApp();
+    static RvlApp* CurrentApp;
+
+    extern void OnInit();
 }
 
 #endif

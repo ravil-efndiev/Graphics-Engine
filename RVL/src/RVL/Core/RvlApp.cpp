@@ -1,4 +1,7 @@
 #include "RvlApp.hpp"
+#include "Platform.hpp"
+#include "EventListener.hpp"
+#include "Window.hpp"
 
 namespace rvl
 {
@@ -30,6 +33,11 @@ namespace rvl
     void RvlApp::CreateWindow(int windowWidth, int windowHeight, const std::string& windowName)
     {
         _window = new Window(windowWidth, windowHeight, windowName);
+
+        _window->SetEventsCallback([](Event* event)
+        {
+            EventListener::Listen(event);
+        });
     }
 
 }
