@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.1)
 
 project(RVL)
 
-add_library(RVL SHARED
+add_library(RVL STATIC
     src/RVL/Core/RvlApp.cpp
     src/RVL/Core/Window.cpp
     src/RVL/Core/EventListener.cpp
