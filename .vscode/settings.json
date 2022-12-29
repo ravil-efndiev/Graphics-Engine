@@ -69,6 +69,22 @@
         "fstream": "cpp",
         "iomanip": "cpp",
         "map": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "clocale": "cpp",
+        "codecvt": "cpp",
+        "compare": "cpp",
+        "condition_variable": "cpp",
+        "list": "cpp",
+        "numeric": "cpp",
+        "queue": "cpp",
+        "random": "cpp",
+        "thread": "cpp",
+        "any": "cpp",
+        "*.tcc": "cpp",
+        "concepts": "cpp",
+        "numbers": "cpp",
+        "semaphore": "cpp",
+        "stop_token": "cpp",
+        "cinttypes": "cpp"
     }
 }

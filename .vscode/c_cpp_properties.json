@@ -6,7 +6,7 @@
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/RVL/src",
                 "${workspaceFolder}/RVL/src/RVL",
-                "${workspaceFolder}/RVL/dependencies/include"
+                "${workspaceFolder}/RVL/vendor/include"
             ],
             "defines": [],
             "macFrameworkPath": [

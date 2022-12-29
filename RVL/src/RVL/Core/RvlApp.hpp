@@ -29,7 +29,20 @@ namespace rvl
 
     static RvlApp* CurrentApp;
 
+    /*
+     * Entry function that must be defined in any RVL Application
+     * Mainly it should set rvl::CurrentApp to new instance of RvlApp inherited class 
+     * (app you are currently using)
+     * it can contain any functionallity but in any case it must initialize CurrentApp
+    */
     extern void OnInit() RVL_ENTRY_FUNCTION;
+
+    /*
+     * Entry function that can be defined in RVL Application
+     * To apply defenition in your app define RVL_END_IMPL macro before including header file
+     * If RVL_END_IMPL is defined the function will be called when the program ends
+    */
+    extern void OnEnd() RVL_ENTRY_FUNCTION;
 }
 
 #endif

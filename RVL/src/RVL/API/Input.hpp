@@ -17,7 +17,7 @@ namespace rvl
          * \note If you need to check key press once use "IsKeyPressedDown" function
          * \ingroup input
         */
-        static bool IsKeyPressed(rvlKeycode_t keycode);
+        static bool IsKeyPressed(rvlKeycode_e keycode);
 
         /**
          * \brief Checks if key is pressed once
@@ -26,7 +26,7 @@ namespace rvl
          *
          * \ingroup input
         */
-        static bool IsKeyPressedOnce(rvlKeycode_t keycode);
+        static bool IsKeyPressedOnce(rvlKeycode_e keycode);
 
 
     private:

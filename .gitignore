@@ -1,3 +1,7 @@
-dependencies
+# external libraries
+lib/
 
-glad.c
+# CMake shit
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake

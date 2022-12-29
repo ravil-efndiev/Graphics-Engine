@@ -6,11 +6,6 @@
 
 int main(int argc, char** argv)
 {
-    if (!rvl::OnInit)
-    {
-        rvl::Error::PrintErrorS("OnInit fuction is not defined");
-        return RVL_RUNTIME_ERROR;
-    }
 
     rvl::OnInit();
 
@@ -22,6 +17,13 @@ int main(int argc, char** argv)
     rvlStatus_t exitStatus = rvl::CurrentApp->Run();
 
     delete rvl::CurrentApp;
+
+#ifdef RVL_END_IMPL
+
+    rvl::OnEnd();
+
+#endif
+
     return exitStatus;
 }
 

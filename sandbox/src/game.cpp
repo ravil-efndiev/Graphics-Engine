@@ -20,8 +20,11 @@ private:
     
     void Update() override
     {
-        if (rvl::Input::IsKeyPressedOnce(RVL_KEY_A))
-            std::cout << "update" << std::endl;        
+        if (rvl::Input::IsKeyPressedOnce(rvl::Keys::RVL_KEY_A))
+            std::cout << "pressed once" << std::endl;        
+
+        if (rvl::Input::IsKeyPressed(rvl::Keys::RVL_KEY_D))
+            std::cout << "pressed continiously" << std::endl;        
     }
 
 };

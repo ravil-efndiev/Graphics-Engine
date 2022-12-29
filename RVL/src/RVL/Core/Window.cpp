@@ -70,6 +70,8 @@ namespace rvl
                 callback->EventCallback(&event);
             }
         });
+
+        glEnable(GL_DEPTH_TEST);
     }
 
     bool Window::Closes()
