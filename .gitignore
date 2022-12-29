@@ -5,3 +5,6 @@ lib/
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
+
+# Makefile, fuck you
+Makefile
