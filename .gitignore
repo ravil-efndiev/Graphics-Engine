@@ -1,6 +1,3 @@
-# external libraries
-lib/
-
 # CMake shit
 CMakeFiles/
 CMakeCache.txt
