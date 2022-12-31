@@ -65,12 +65,12 @@ namespace rvl
 
     /// Index buffer
 
-    GLIndexBuffer::GLIndexBuffer(const std::vector<uint32_t>& indicies, int indiciesCount) :
-        _indiciesCount(indiciesCount)
+    GLIndexBuffer::GLIndexBuffer(const std::vector<uint32_t>& indicies)
     {
         glGenBuffers(1, &_bufferId);
         glBindBuffer(GL_ARRAY_BUFFER, _bufferId);
         glBufferData(GL_ARRAY_BUFFER, indicies.size() * sizeof(uint32_t), indicies.data(), GL_STATIC_DRAW);   
+        _indiciesCount = indicies.size();
     }
 
     GLIndexBuffer::~GLIndexBuffer()

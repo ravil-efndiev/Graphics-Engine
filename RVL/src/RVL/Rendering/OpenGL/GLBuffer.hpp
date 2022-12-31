@@ -37,7 +37,7 @@ namespace rvl
     class GLIndexBuffer
     {
     public:
-        GLIndexBuffer(const std::vector<uint32_t>& indicies, int indiciesCount);
+        GLIndexBuffer(const std::vector<uint32_t>& indicies);
         ~GLIndexBuffer();
 
         void Bind();

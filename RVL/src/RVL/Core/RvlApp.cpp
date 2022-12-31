@@ -26,47 +26,74 @@ namespace rvl
         try
         {
             EventListener::Init();
+            Start();
 
-            GLVertexArray vao;
+            GLVertexArray squareVao;
 
-            std::shared_ptr<GLVertexBuffer> position (new GLVertexBuffer(
+            std::shared_ptr<GLVertexBuffer> squarePos (new GLVertexBuffer(
+                {
+                    {-0.8f, -0.8f, 0.0f},
+                    {0.8f, -0.8f, 0.0f},
+                    {0.8f, 0.8f, 0.0f},
+                    {-0.8f, 0.8f, 0.0f},
+                }
+            ));
+
+            std::shared_ptr<GLIndexBuffer> squareEbo (new GLIndexBuffer({0, 1, 2, 2, 3, 0}));
+
+            squareVao.AddVertexBuffer(squarePos);
+            squareVao.AddIndexBuffer(squareEbo);
+
+
+            GLVertexArray triangleVao;
+
+            std::shared_ptr<GLVertexBuffer> trianglePos (new GLVertexBuffer(
                 {
                     {-0.5f, -0.5f, 0.0f},
                     {0.5f, -0.5f, 0.0f},
-                    {0.5f, 0.5f, 0.0f},
+                    {0.0f, 0.5f, 0.0f},
                 }
             ));
 
-            std::shared_ptr<GLVertexBuffer> color (new GLVertexBuffer(
+            std::shared_ptr<GLVertexBuffer> triangleColor (new GLVertexBuffer(
                 {
-                    {1.0f, 0.0f, 1.0f},
-                    {0.0f, 1.0f, 1.0f},
-                    {0.0f, 0.0f, 1.0f},
+                    {1.0f, 0.3f, 0.3f},
+                    {1.0f, 0.0f, 0.7f},
+                    {1.0f, 0.0f, 0.0f},
                 }
             ));
 
-            vao.AddVertexBuffer(position);
-            vao.AddVertexBuffer(color);
+            std::shared_ptr<GLIndexBuffer> triangleEbo (new GLIndexBuffer({0, 1, 2}));
 
-            std::shared_ptr<GLIndexBuffer> ebo (new GLIndexBuffer({0, 1, 2}, 3));
-            vao.AddIndexBuffer(ebo);
+            triangleVao.AddVertexBuffer(trianglePos);
+            triangleVao.AddVertexBuffer(triangleColor);
 
-            GLShaderProgram prog ("../RVL/res/shaders/main.vert", "../RVL/res/shaders/main.frag");
+            triangleVao.AddIndexBuffer(triangleEbo);
 
-            prog.BindAttribute(0, "position");
-            prog.BindAttribute(1, "color");
 
-            prog.Link();
-            prog.Use();
+            GLShaderProgram squareProg ("../RVL/res/shaders/background.vert", "../RVL/res/shaders/background.frag");
 
-            Start();
+            squareProg.BindAttribute(0, "position");
+            squareProg.Link();
+
+            GLShaderProgram triangleProg ("../RVL/res/shaders/main.vert", "../RVL/res/shaders/main.frag");
+
+            triangleProg.BindAttribute(0, "position");
+            triangleProg.BindAttribute(1, "color");
+
+            triangleProg.Link();
+
             while (!_window->Closes())
             {
                 _window->Clear();
-                
-                vao.Draw();
-
+            
                 Update();
+
+                triangleProg.Use();
+                triangleVao.Draw();
+
+                squareProg.Use();
+                squareVao.Draw();
 
                 _window->SwapBuffers();
                 EventListener::PollEvents();
@@ -76,7 +103,7 @@ namespace rvl
         catch (Error error)
         {
             error.Print();
-            return error._status;
+            return error.Status;
         }
     }
 

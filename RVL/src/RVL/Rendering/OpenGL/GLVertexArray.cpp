@@ -22,13 +22,16 @@ namespace rvl
 
     void GLVertexArray::AddVertexBuffer(const std::shared_ptr<GLVertexBuffer>& vertexBuffer)
     {
+        Bind();
         vertexBuffer->Bind();
 
         glVertexAttribPointer(_vertexBuffers.size(),
                 vertexBuffer->GetVerticiesCount(),
                 GL_FLOAT, 
                 vertexBuffer->GetNormalized(),
-                0, nullptr);
+                vertexBuffer->GetVerticiesCount() * sizeof(float), nullptr);
+
+        glEnableVertexAttribArray(_vertexBuffers.size());
 
         _vertexBuffers.push_back(vertexBuffer);
     }
@@ -53,17 +56,9 @@ namespace rvl
 
     void GLVertexArray::Draw()
     {     
-        for (int i = 0; i < _vertexBuffers.size(); i++)
-        {
-            glEnableVertexAttribArray(i);
-        }
-     
+        Bind();
+
         _indexBuffer->Bind();
         glDrawElements(GL_TRIANGLES, _indexBuffer->GetIndiciesCount(), GL_UNSIGNED_INT, nullptr);
-        
-        for (int i = 0; i < _vertexBuffers.size(); i++)
-        {
-            glDisableVertexAttribArray(i);
-        }
     }
 }

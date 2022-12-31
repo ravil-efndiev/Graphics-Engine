@@ -87,13 +87,13 @@ namespace rvl
     */
     struct Error
     {   
-        std::string _text;
-        status_t _status;
-        Error(const std::string& text, status_t status) : _text(text), _status(status) {}
+        std::string Text;
+        status_t Status;
+        Error(const std::string& text, status_t status) : Text(text), Status(status) {}
 
         void Print()
         {
-            std::cerr << "RUNTIME_ERROR => " << _text << std::endl;
+            std::cerr << "RUNTIME_ERROR => " << Text << std::endl;
         }
 
         static void PrintErrorS(const std::string& text)
