@@ -13,15 +13,6 @@ namespace rvl
         CreateShaders();
     }
 
-    /*
-    GLShaderProgram::GLShaderProgram(const std::string &vertexShaderSource, const std::string &fragmentShaderSource)
-    {
-        _vertexShaderSource = vertexShaderSource;
-        _fragmentShaderSource = fragmentShaderSource;
-        CreateShaders();
-    }
-    */
-
     GLShaderProgram::~GLShaderProgram()
     {
         glDetachShader(_programId, _vertexShaderId);

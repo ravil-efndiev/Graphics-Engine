@@ -9,7 +9,6 @@ namespace rvl
     {
     public:
         GLShaderProgram(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
-        //GLShaderProgram(const std::string& vertexShaderSource, const std::string& fragmentShaderSource);
         ~GLShaderProgram();
 
         void BindAttribute(GLuint index, const std::string& name);
