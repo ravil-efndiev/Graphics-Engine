@@ -14,7 +14,7 @@ int main(int argc, char** argv)
         rvl::Error::PrintErrorS("CurrentApp is not defined");
         return RVL_RUNTIME_ERROR;
     }
-    rvlStatus_t exitStatus = rvl::CurrentApp->Run();
+    rvl::status_t exitStatus = rvl::CurrentApp->Run();
 
     delete rvl::CurrentApp;
 

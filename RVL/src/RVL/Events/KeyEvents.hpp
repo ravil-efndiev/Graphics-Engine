@@ -12,19 +12,19 @@ namespace rvl
         virtual EventType GetType() const override;
         EventCategory GetCategory() const override;
 
-        rvlKeycode_t GetKeyCode() const;
+        keycode_t GetKeyCode() const;
 
     protected:
-        KeyEvent(rvlKeycode_t keycode);
+        KeyEvent(keycode_t keycode);
 
-        rvlKeycode_t _keycode;
+        keycode_t _keycode;
     };
 
 
     class KeyPressEvent : public KeyEvent
     {
     public:
-        KeyPressEvent(rvlKeycode_t keycode);
+        KeyPressEvent(keycode_t keycode);
 
         RVL_EVENT_TYPE_METHODS(KEY_PRESSED)
 
@@ -34,7 +34,7 @@ namespace rvl
     class KeyReleaseEvent : public KeyEvent
     {
     public:
-        KeyReleaseEvent(rvlKeycode_t keycode);
+        KeyReleaseEvent(keycode_t keycode);
 
         RVL_EVENT_TYPE_METHODS(KEY_RELEASED)
 

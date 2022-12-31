@@ -8,6 +8,7 @@
 #include <string>
 #include <fstream>
 #include <ios>
+#include <memory>
 #include <functional>
 
 typedef uint32_t GLbitfield;

@@ -1,7 +1,7 @@
 #include "Window.hpp"
 
+#include "Rendering/OpenGL/GLContext.hpp"
 #include "Rvlglpch.hpp"
-#include "Platform.hpp"
 
 namespace rvl
 {
@@ -18,6 +18,7 @@ namespace rvl
 
     Window::~Window()
     {
+        delete _context;
         glfwTerminate();
     }
 
@@ -37,10 +38,7 @@ namespace rvl
         _window = glfwCreateWindow(_width, _height, _name.c_str(), nullptr, nullptr);
         RVL_ASSERT(_window, "failed to create GLFW window")
 
-        glfwMakeContextCurrent(_window);
-
-        auto gladInitSuccess = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-        RVL_ASSERT(gladInitSuccess, "failed to init glad")
+        _context = new GLContext(_window);
     }
 
     void Window::SetCallbacks()
@@ -86,7 +84,7 @@ namespace rvl
     }
     void Window::SwapBuffers()
     {
-        glfwSwapBuffers(_window);
+        _context->SwapBuffers();
     }
     void Window::PollEvents()
     {

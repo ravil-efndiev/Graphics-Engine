@@ -4,8 +4,8 @@
             "splitTerminals": [
               {
                 "name": "engine",
-                "commands": ["./comp.sh"],
-                "shouldRunCommands": false
+                "commands": ["cd RVL"],
+                "shouldRunCommands": true
 
               }
             ]
@@ -14,8 +14,8 @@
           "splitTerminals": [
             {
               "name": "client",
-              "commands": ["./comp.sh", "./game228"],
-              "shouldRunCommands": false
+              "commands": ["cd sandbox"],
+              "shouldRunCommands": true
             }
           ]
         }

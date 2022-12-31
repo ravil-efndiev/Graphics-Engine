@@ -19,38 +19,40 @@
 #define RVL_RUNTIME_ERROR   2
 
 /**
- * \brief For use by user functions and specified semantic variables
+ * For use by user functions and specified semantic variables
 */
 #pragma region primitive_types
+namespace rvl
+{
+    typedef signed long  int64;
+    typedef signed int   int32;
+    typedef signed short int16;
+    typedef signed char  int8;
 
-typedef signed long  rvli64;
-typedef signed int   rvli32;
-typedef signed short rvli16;
-typedef signed char  rvli8;
+    typedef unsigned long  uint64;
+    typedef unsigned int   uint32;
+    typedef unsigned short uint16;
+    typedef unsigned char  uint8;
 
-typedef unsigned long  rvlui64;
-typedef unsigned int   rvlui32;
-typedef unsigned short rvlui16;
-typedef unsigned char  rvlui8;
+    typedef uint8  unsignedByte;
+    typedef int8   byte;
 
-typedef rvlui8  rvlubyte;
-typedef rvli8   rvlbyte;
-
-typedef float  rvl_float;
-typedef double rvl_double;
+    typedef float  float32;
+    typedef double double64;
+}
 
 #pragma endregion
 
-/// (RVL_DEBUG or RVL_RELEASE)
-/// ===== Current engine mode =====
+///////////////////////////////////////////
+/////  current engine configuration  //////
+///////////////////////////////////////////
 #define RVL_DEBUG  
-///================================
 
 #ifdef RVL_DEBUG
 
 #define RVL_DEBUG_BREAK asm volatile ("int3")
 
-#define RVL_LOG(text) std::cout << text << std::endl
+#define RVL_LOG(text) std::cout << "LOG => " << text << std::endl
 #define RVL_LOG_ERROR(err) std::cerr << "DEBUG_ERROR => " << err << std::endl
 
 /**
@@ -71,17 +73,11 @@ typedef double rvl_double;
 
 #endif
 
-/**
- * \brief For use in specific cases by RVL API
-*/
-#pragma region specific_types
-typedef rvlui16  rvlStatus_t;
-typedef rvli64   rvlKeycode_t;
-typedef rvlui64  rvlSizei_t;
-#pragma endregion
 
 namespace rvl
 {
+    typedef uint16  status_t;
+
     /**
      * structure to process errors that can be caused by user
      * example: usage of incorrect value in api function
@@ -92,8 +88,8 @@ namespace rvl
     struct Error
     {   
         std::string _text;
-        rvlStatus_t _status;
-        Error(const std::string& text, rvlStatus_t status) : _text(text), _status(status) {}
+        status_t _status;
+        Error(const std::string& text, status_t status) : _text(text), _status(status) {}
 
         void Print()
         {
@@ -106,10 +102,18 @@ namespace rvl
         }
     };
 
+
+    // specific type for key and mouse codes
+    // should be used in lower level engine functions
+    // in api functions keycode_e must be used
+    typedef int64   keycode_t;
+    typedef uint64  sizei_t;
+    
+
     /**
      * Keyboard codes for user input
     */
-    enum class Keys : rvlKeycode_t
+    enum class Keys : keycode_t
     {
         RVL_KEY_SPACE             = 32,
         RVL_KEY_APOSTROPHE        = 39,  /* ' */
@@ -163,10 +167,12 @@ namespace rvl
         RVL_KEY_WORLD_2           = 162, /* non-US #2 */
     };
 
-    // rvlKeycode_t is actual number type that should be passed in engine functions
-    // rvlKeycode_e is enum type to be passed in api functions and used by users
-    //              is inherited from rvlKeycode_t
-    typedef Keys rvlKeycode_e;
+    // keycode_e is enum type to be passed in api functions and used by users
+    // notice: if you want to get only raw key code use keycode_t
+    // also its easy to cast keycode_e to keycode_t because Keys enum has type keycode_t
+    // api should ALWAYS take this type (keycode_e)
+    // while lower level engine functions should take keycode_t
+    typedef Keys keycode_e;
 
 }
 

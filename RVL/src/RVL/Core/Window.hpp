@@ -7,6 +7,8 @@ struct GLFWwindow;
 
 namespace rvl
 {
+    class GLContext;
+
     class Window
     {
     public:
@@ -33,6 +35,8 @@ namespace rvl
         std::string _name;
 
         GLFWwindow* _window;
+
+        GLContext* _context;
         
         void InitGlfw();
         void CreateWindow();

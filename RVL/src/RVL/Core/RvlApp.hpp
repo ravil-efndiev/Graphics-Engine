@@ -14,7 +14,7 @@ namespace rvl
         RvlApp(int windowWidth, int windowHeight, const std::string& windowName);
         virtual ~RvlApp();
 
-        rvlStatus_t Run();
+        status_t Run();
 
     protected:
         virtual void Start() = 0;

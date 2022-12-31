@@ -14,8 +14,8 @@ namespace rvl
 
         static void Listen(const Event *event);
 
-        static bool GetKey(rvlKeycode_t keycode);
-        static bool GetKeyWithFrame(rvlKeycode_t keycode);
+        static bool GetKey(keycode_t keycode);
+        static bool GetKeyWithFrame(keycode_t keycode);
 
         static void PollEvents();
 

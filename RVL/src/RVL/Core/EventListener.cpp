@@ -30,12 +30,12 @@ namespace rvl
         }
     }
 
-    bool EventListener::GetKey(rvlKeycode_t keycode)
+    bool EventListener::GetKey(keycode_t keycode)
     {
         return _keysPressed[keycode];
     }
 
-    bool EventListener::GetKeyWithFrame(rvlKeycode_t keycode)
+    bool EventListener::GetKeyWithFrame(keycode_t keycode)
     {
         return _keysPressed[keycode] && (_changeFrames[keycode] == _currentFrame);
     }

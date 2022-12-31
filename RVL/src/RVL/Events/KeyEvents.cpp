@@ -2,7 +2,7 @@
 
 namespace rvl
 {
-    KeyEvent::KeyEvent(rvlKeycode_t keycode)
+    KeyEvent::KeyEvent(keycode_t keycode)
     {
         _keycode = keycode;
     }
@@ -17,18 +17,18 @@ namespace rvl
         return EventCategory::KEY_EVENTS;
     }
 
-    rvlKeycode_t KeyEvent::GetKeyCode() const
+    keycode_t KeyEvent::GetKeyCode() const
     {
         return _keycode;
     }
     
     
-    KeyPressEvent::KeyPressEvent(rvlKeycode_t keycode) : KeyEvent(keycode)
+    KeyPressEvent::KeyPressEvent(keycode_t keycode) : KeyEvent(keycode)
     {
     }
 
 
-    KeyReleaseEvent::KeyReleaseEvent(rvlKeycode_t keycode) : KeyEvent(keycode)
+    KeyReleaseEvent::KeyReleaseEvent(keycode_t keycode) : KeyEvent(keycode)
     {
     }
 
