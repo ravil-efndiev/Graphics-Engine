@@ -1,6 +1,5 @@
 #include "GLShaderProgram.hpp"
 
-#include <Rvlglpch.hpp>
 #include "Core/Utils/Files.hpp"
 
 namespace rvl
@@ -76,8 +75,19 @@ namespace rvl
         glBindAttribLocation(_programId, index, name.c_str());
     }
 
-    void GLShaderProgram::Use()
+    void GLShaderProgram::SetUniform(const std::string &name, const glm::mat4 &uniform)
+    {
+        GLint position = glGetUniformLocation(_programId, name.c_str());
+        glUniformMatrix4fv(position, 1, GL_FALSE, glm::value_ptr(uniform));
+    }
+
+    void GLShaderProgram::Bind()
     {
         glUseProgram(_programId);
+    }
+
+    void GLShaderProgram::Unbind()
+    {   
+        glUseProgram(0);
     }
 }

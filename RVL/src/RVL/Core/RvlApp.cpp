@@ -6,6 +6,9 @@
 #include "Rendering/OpenGL/GLVertexArray.hpp"
 #include "Rendering/OpenGL/GLBuffer.hpp"
 
+#include "Rendering/Renderer/Renderer.hpp"
+#include "Rendering/Renderer/OrthographicCamera.hpp"
+
 #include <Rvlglpch.hpp>
 
 namespace rvl
@@ -16,10 +19,7 @@ namespace rvl
         CreateWindow(windowWidth, windowHeight, windowName);
     }
 
-    RvlApp::~RvlApp()
-    {
-        delete _window;
-    }
+    RvlApp::~RvlApp() { }
 
     status_t RvlApp::Run()
     {
@@ -83,17 +83,18 @@ namespace rvl
 
             triangleProg.Link();
 
+            OrthographicCamera cam (-1.0f, 1.0f, 1.0f, -1.0f);
+
             while (!_window->Closes())
             {
-                _window->Clear();
-            
+                Renderer::Clear();
+
                 Update();
 
-                triangleProg.Use();
-                triangleVao.Draw();
+                Renderer::CreateScene(cam);
 
-                squareProg.Use();
-                squareVao.Draw();
+                Renderer::SubmitGeometry(triangleVao, triangleProg);
+                Renderer::SubmitGeometry(squareVao, squareProg);
 
                 _window->SwapBuffers();
                 EventListener::PollEvents();
@@ -109,7 +110,7 @@ namespace rvl
 
     void RvlApp::CreateWindow(int windowWidth, int windowHeight, const std::string& windowName)
     {
-        _window = new Window(windowWidth, windowHeight, windowName);
+        _window = std::make_unique<Window>(windowWidth, windowHeight, windowName);
 
         _window->SetEventsCallback([](Event* event)
         {
@@ -118,5 +119,3 @@ namespace rvl
     }
 
 }
-
-

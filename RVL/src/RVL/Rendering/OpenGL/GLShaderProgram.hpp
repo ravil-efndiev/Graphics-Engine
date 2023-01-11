@@ -2,6 +2,7 @@
 #define RVL_GLSHADERPROGRAM_HPP
 
 #include <Rvlpch.hpp>
+#include <Rvlglpch.hpp>
 
 namespace rvl
 {
@@ -12,9 +13,12 @@ namespace rvl
         ~GLShaderProgram();
 
         void BindAttribute(GLuint index, const std::string& name);
+        void SetUniform(const std::string &name, const glm::mat4 &uniform);
 
         void Link();
-        void Use();
+
+        void Bind();
+        void Unbind();
 
     private:
         std::string _vertexShaderSource;

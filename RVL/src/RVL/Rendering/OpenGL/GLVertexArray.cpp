@@ -61,4 +61,14 @@ namespace rvl
         _indexBuffer->Bind();
         glDrawElements(GL_TRIANGLES, _indexBuffer->GetIndiciesCount(), GL_UNSIGNED_INT, nullptr);
     }
+
+    std::shared_ptr<GLIndexBuffer> GLVertexArray::GetIndexBuffer()
+    {
+        return _indexBuffer;
+    }
+
+    void GLVertexArray::BindIndexBuffer()
+    {
+        _indexBuffer->Bind();
+    }
 }

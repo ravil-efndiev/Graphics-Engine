@@ -21,7 +21,7 @@ namespace rvl
         virtual void Update() = 0;
 
     private:
-        Window* _window;
+        std::unique_ptr<Window> _window;
 
         void CreateWindow(int windowWidth, int windowHeight, const std::string& windowName);
 

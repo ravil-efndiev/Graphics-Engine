@@ -17,7 +17,6 @@ namespace rvl
 
         bool Closes();
 
-        void Clear(GLclampf red = 0.f, GLclampf green = 0.f, GLclampf blue = 0.f, GLclampf alpha = 1.f);
         void SwapBuffers();
         void PollEvents();
 
@@ -36,7 +35,7 @@ namespace rvl
 
         GLFWwindow* _window;
 
-        GLContext* _context;
+        std::unique_ptr<GLContext> _context;
         
         void InitGlfw();
         void CreateWindow();

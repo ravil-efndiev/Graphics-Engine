@@ -13,6 +13,8 @@ add_library(RVL STATIC
     src/RVL/Rendering/OpenGL/GLBuffer.cpp
     src/RVL/Rendering/OpenGL/GLVertexArray.cpp
     src/RVL/Rendering/OpenGL/GLShaderProgram.cpp
+    src/RVL/Rendering/Renderer/Renderer.cpp
+    src/RVL/Rendering/Renderer/OrthographicCamera.cpp
     vendor/lib/glad/glad.c
 )
 

@@ -19,6 +19,10 @@ namespace rvl
 
         void Draw();
 
+        std::shared_ptr<GLIndexBuffer> GetIndexBuffer();
+
+        void BindIndexBuffer();
+
     private:
         GLuint _vertexArrayId;
 

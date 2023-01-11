@@ -18,7 +18,6 @@ namespace rvl
 
     Window::~Window()
     {
-        delete _context;
         glfwTerminate();
     }
 
@@ -38,7 +37,7 @@ namespace rvl
         _window = glfwCreateWindow(_width, _height, _name.c_str(), nullptr, nullptr);
         RVL_ASSERT(_window, "failed to create GLFW window")
 
-        _context = new GLContext(_window);
+        _context = std::make_unique<GLContext>(_window);
     }
 
     void Window::SetCallbacks()
@@ -77,11 +76,6 @@ namespace rvl
         return glfwWindowShouldClose(_window);
     }
 
-    void Window::Clear(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha)
-    {
-        glClearColor(red, green, blue, alpha);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    }
     void Window::SwapBuffers()
     {
         _context->SwapBuffers();
