@@ -11,6 +11,7 @@ namespace rvl
 
         glfwMakeContextCurrent(_pwindow);
         InitGlad();
+        glEnable(GL_DEPTH_TEST);
     }
 
     GLContext::~GLContext()

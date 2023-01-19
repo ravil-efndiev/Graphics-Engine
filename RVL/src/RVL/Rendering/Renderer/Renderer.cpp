@@ -26,6 +26,7 @@ namespace rvl
         vertexArray.Bind();
         vertexArray.BindIndexBuffer();
         glDrawElements(GL_TRIANGLES, vertexArray.GetIndexBuffer()->GetIndiciesCount(), GL_UNSIGNED_INT, nullptr);
+        vertexArray.Unbind();
     }
 
     void Renderer::CreateScene(const OrthographicCamera& camera)
