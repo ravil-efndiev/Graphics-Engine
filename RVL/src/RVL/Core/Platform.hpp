@@ -93,7 +93,11 @@ namespace rvl
 
         void Print()
         {
-            std::cerr << "RUNTIME_ERROR => " << Text << std::endl;
+            if (Status == RVL_RUNTIME_ERROR)
+                std::cerr << "RUNTIME_ERROR => " << Text << std::endl;
+            else if (Status == RVL_INTERNAL_ERROR)
+                std::cerr << "INTERNAL_ERROR => " << Text << std::endl;
+
         }
 
         static void PrintErrorS(const std::string& text)

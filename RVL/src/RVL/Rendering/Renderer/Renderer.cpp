@@ -2,6 +2,7 @@
 #include "Rendering/OpenGL/GLVertexArray.hpp"
 #include "Rendering/OpenGL/GLShaderProgram.hpp"
 #include "OrthographicCamera.hpp"
+#include "PerspectiveCamera.hpp"
 
 namespace rvl
 {
@@ -29,9 +30,17 @@ namespace rvl
         vertexArray.Unbind();
     }
 
-    void Renderer::CreateScene(const OrthographicCamera& camera)
+    void Renderer::CreateScene(const PerspectiveCamera& camera, float winWidth, float winHeight)
     {
-        _projview = camera.GetProjectionMatrix() * camera.GetViewMatrix();
+        _projview = camera.GetProjectionMatrix(winWidth, winHeight) * camera.GetViewMatrix();
     }
-    
+
+    void Renderer::GetVeiwport(int rViewport[2])
+    {
+        int viewport[4];
+        glGetIntegerv(GL_VIEWPORT, viewport);
+
+        rViewport[0] = viewport[2];
+        rViewport[1] = viewport[3];
+    }
 }

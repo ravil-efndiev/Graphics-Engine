@@ -87,4 +87,14 @@ namespace rvl
     {
         _eventCallback.EventCallback = eventCallback;
     }
+
+    int Window::GetWidth() const
+    {
+        return _width;
+    }
+
+    int Window::GetHeight() const
+    {
+        return _height;
+    }
 }

@@ -22,6 +22,9 @@ namespace rvl
 
         void SetEventsCallback(void (*eventCallback)(Event*));
 
+        int GetWidth() const;
+        int GetHeight() const;
+
     private:
         struct EventCallbackStruct 
         {

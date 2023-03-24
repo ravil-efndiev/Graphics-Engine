@@ -1,0 +1,93 @@
+#include "Rectangle.hpp"
+
+#include "Rendering/OpenGL/GLShaderProgram.hpp"
+#include "Rendering/OpenGL/GLVertexArray.hpp"
+#include "Rendering/OpenGL/GLBuffer.hpp"
+
+#include "Rendering/Renderer/Renderer.hpp"
+
+#include <Rvlglpch.hpp>
+
+namespace rvl
+{
+    Rectangle::Rectangle(const Vector2f &position, const Vector2f &size) : _color(1, 1, 1)
+    {
+        _position.SetX(position.X());
+        _position.SetY(position.Y());
+
+        _width = size.X();
+        _height = size.Y();
+
+        GenerateMesh();
+    }
+
+    Rectangle::Rectangle(const Vector2f &position, const Vector2f &size, const Vector3f &color)
+            : Rectangle(position, size)
+    {
+        _color = color;
+    }   
+
+    Rectangle::Rectangle(float x, float y, float width, float height) : _width(width), _height(height), _color(1, 1, 1) 
+    {
+        _position.SetX(x);
+        _position.SetY(y);
+
+        GenerateMesh();
+    }
+
+    Rectangle::Rectangle(float x, float y, float width, float height, const Vector3f &color)
+        : _width(width), _height(height), _color(color)
+    {
+        _position.SetX(x);
+        _position.SetY(y);
+
+        GenerateMesh();
+    }
+
+    Rectangle::~Rectangle() {}
+
+    void Rectangle::Draw()
+    {
+        Renderer::SubmitGeometry(*_vao, *_shaderProgram);
+    }
+
+    Vector3f Rectangle::GetColor() const
+    {
+        return _color;
+    }
+
+    void Rectangle::SetColor(const Vector3f &color)
+    {
+        _color = color;
+    }
+
+    void Rectangle::GenerateMesh()
+    {
+        _vao = std::make_shared<GLVertexArray>();
+        _positionVbo = std::make_shared<GLVertexBuffer>(std::vector<glm::vec3>(
+            {
+                {-(_width/2)  + _position.X(), -(_height/2) + _position.Y(), 0.0f},
+                {_width/2 + _position.X(), -(_height/2) + _position.Y(), 0.0f},
+                {_width/2 + _position.X(), _height/2 + _position.Y(), 0.0f},
+                {-(_width/2)  + _position.X(), _height/2 + _position.Y(), 0.0f},
+            }
+        ));
+
+        glm::vec3 glmColor = glm::vec3(_color.X(), _color.Y(), _color.Z());
+
+        _colorVbo = std::make_shared<GLVertexBuffer>(std::vector<glm::vec3>(
+            {glmColor, glmColor, glmColor, glmColor}
+        ));
+
+        _indicies = std::make_shared<GLIndexBuffer>(std::vector<uint32_t>({0, 1, 2, 2, 3, 0}));
+
+        _vao->AddVertexBuffer(_positionVbo);
+        _vao->AddVertexBuffer(_colorVbo);
+        _vao->AddIndexBuffer(_indicies);
+
+        _shaderProgram = std::make_unique<GLShaderProgram>("../RVL/res/shaders/main.vert", "../RVL/res/shaders/main.frag");
+        _shaderProgram->BindAttribute(0, "position");
+        _shaderProgram->BindAttribute(1, "color");
+        _shaderProgram->Link();
+    }
+}

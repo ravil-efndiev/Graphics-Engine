@@ -3,24 +3,38 @@
 
 #include <Rvlglpch.hpp>
 
+#define MOVE_FORWARD 0
+#define MOVE_BACKWARD 1
+#define MOVE_RIGHT 2
+#define MOVE_LEFT 3
+
 namespace rvl
 {
     class PerspectiveCamera
     {
     public:
+        typedef unsigned short direction_t;
+        
+        glm::vec3 Position;
+
         PerspectiveCamera(const glm::vec3& position, float FOV);
         ~PerspectiveCamera();
 
-        glm::mat4 GetProjection(int width, int height);
-        glm::mat4 GetView();
+        void Rotate(float x, float y, float z);
+        void ResetRotation();
+
+        glm::mat4 GetProjectionMatrix(float width, float height) const;
+        glm::mat4 GetViewMatrix() const;
+
+        void Move(direction_t direction, float speed, const float& deltaTime);
 
     private:
-        glm::vec3 _position;
         float _FOV;
 
-        glm::mat4 _projectionMatrix;
-        glm::mat4 _viewMatrix;
+        glm::vec3 _forward, _up, _right;
+        glm::mat4 _rotation;
 
+        void ResetVectors();
     };
 }
 

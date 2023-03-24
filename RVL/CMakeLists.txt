@@ -4,6 +4,7 @@ project(RVL)
 
 add_library(RVL STATIC
     src/RVL/Core/RvlApp.cpp
+    src/RVL/Core/RvlScene.cpp
     src/RVL/Core/Window.cpp
     src/RVL/Core/EventListener.cpp
     src/RVL/API/Input.cpp
@@ -15,6 +16,10 @@ add_library(RVL STATIC
     src/RVL/Rendering/OpenGL/GLShaderProgram.cpp
     src/RVL/Rendering/Renderer/Renderer.cpp
     src/RVL/Rendering/Renderer/OrthographicCamera.cpp
+    src/RVL/Rendering/Renderer/PerspectiveCamera.cpp
+    src/RVL/API/Math/Vector.cpp
+    src/RVL/API/Primitives/Rectangle.cpp
+    src/RVL/API/Primitives/Entity.cpp
     vendor/lib/glad/glad.c
 )
 

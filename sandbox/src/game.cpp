@@ -1,32 +1,50 @@
 #include <RVL.hpp>
 
+class MainScene : public rvl::RvlScene
+{
+public:
+    MainScene() {}
+    ~MainScene() {}
+
+    void Start() override
+    {
+        _rect = std::make_shared<rvl::Rectangle>(0.f, 0.f, 3.f, 2.f, rvl::Vector3f(1.f, 0.f, 0.f));
+        AddEntity(_rect);
+    }
+
+    void Update() override {    }
+
+    void Render() override
+    {
+        _rect->Draw();
+    }
+
+private:
+    std::shared_ptr<rvl::Rectangle> _rect;
+};
+
 class Game : public rvl::RvlApp
 {
 public:
-    Game(/* args */) : RvlApp(800, 600, "rvl game")
-    {
-
-    }
-    ~Game()
-    {
-
-    }
+    Game() : RvlApp(1000, 800, "rvl game") {}
+    ~Game() {}
 
 private:
     void Start() override
     {
-        std::cout << "start" << std::endl;
+        _currentScene = std::make_unique<MainScene>();
+        _currentScene->Start();
     }
     
     void Update() override
     {
-        if (rvl::Input::IsKeyPressedOnce(rvl::Keys::RVL_KEY_A))
-            std::cout << "pressed once" << std::endl;        
-
-        if (rvl::Input::IsKeyPressed(rvl::Keys::RVL_KEY_D))
-            std::cout << "pressed continiously" << std::endl;        
+        _currentScene->Update();
     }
 
+    void Render() override
+    {
+        _currentScene->Render();
+    }
 };
 
 void rvl::OnInit()

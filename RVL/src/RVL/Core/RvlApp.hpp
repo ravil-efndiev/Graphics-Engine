@@ -3,6 +3,7 @@
 
 #include <Rvlpch.hpp>
 #include "Platform.hpp"
+#include "RvlScene.hpp"
 
 namespace rvl
 {
@@ -17,8 +18,11 @@ namespace rvl
         status_t Run();
 
     protected:
+        std::unique_ptr<RvlScene> _currentScene;
+
         virtual void Start() = 0;
         virtual void Update() = 0;
+        virtual void Render() = 0;
 
     private:
         std::unique_ptr<Window> _window;
