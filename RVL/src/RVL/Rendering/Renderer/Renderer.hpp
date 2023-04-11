@@ -9,6 +9,7 @@ namespace rvl
     class GLVertexArray;
     class GLShaderProgram;
     class PerspectiveCamera;
+    class OrthographicCamera;
 
     class Renderer
     {
@@ -17,7 +18,8 @@ namespace rvl
 
         static void Clear(GLclampf red = 0.f, GLclampf green = 0.f, GLclampf blue = 0.f, GLclampf alpha = 1.f);
 
-        static void CreateScene(const PerspectiveCamera& camera, float winWidth, float winHeight);
+        static void CreateScene2D(OrthographicCamera& camera, float viewportWidth, float viewportHeight);
+        static void CreateScene3D(PerspectiveCamera& camera, float viewportWidth, float viewportHeight);
 
         static void GetVeiwport(int rViewport[2]);
 

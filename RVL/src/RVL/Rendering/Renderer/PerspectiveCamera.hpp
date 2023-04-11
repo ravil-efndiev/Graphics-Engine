@@ -23,7 +23,7 @@ namespace rvl
         void Rotate(float x, float y, float z);
         void ResetRotation();
 
-        glm::mat4 GetProjectionMatrix(float width, float height) const;
+        glm::mat4 GetProjectionMatrix(float viewportWidth, float viewportHeight) const;
         glm::mat4 GetViewMatrix() const;
 
         void Move(direction_t direction, float speed, const float& deltaTime);

@@ -6,6 +6,8 @@
 #include <list>
 #include <map>
 #include <array>
+#include <algorithm>
+#include <numeric>
 #include <string>
 #include <fstream>
 #include <ios>

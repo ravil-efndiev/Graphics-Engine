@@ -1,12 +1,13 @@
 #ifndef RVL_RVLSCENE_HPP
 #define RVL_RVLSCENE_HPP
 
-#include <API/Primitives/Rectangle.hpp>
+#include <API/Objects/Rectangle.hpp>
 #include <Rvlpch.hpp>
 
 namespace rvl
 {
     class PerspectiveCamera;
+    class OrthographicCamera;
 
     class RvlScene
     {
@@ -20,14 +21,12 @@ namespace rvl
         virtual void Update();
         virtual void Render();
         
-        virtual void SetCamera(const std::shared_ptr<PerspectiveCamera>& cam);
+        virtual void SetCamera(const std::shared_ptr<OrthographicCamera>& cam);
 
 
     protected:
-        std::vector<std::shared_ptr<Entity>> _entities;
-        std::shared_ptr<PerspectiveCamera> _camera;
-
-        virtual void AddEntity(const std::shared_ptr<Entity>& entity);
+        std::shared_ptr<PerspectiveCamera> _camera3d;
+        std::shared_ptr<OrthographicCamera> _camera2d;
 
     private:
         void MakeScene(); // can be accessed by RvlApp parent but not RvlApp children

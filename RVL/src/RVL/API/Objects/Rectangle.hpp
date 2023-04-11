@@ -1,7 +1,7 @@
 #ifndef RVL_RECTANGLE_HPP
 #define RVL_RECTANGLE_HPP
 
-#include <API/Primitives/Entity.hpp>
+#include <API/Objects/Entity.hpp>
 #include <Rvlpch.hpp>
 
 namespace rvl

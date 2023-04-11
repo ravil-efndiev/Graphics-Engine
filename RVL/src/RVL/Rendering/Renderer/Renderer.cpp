@@ -30,9 +30,14 @@ namespace rvl
         vertexArray.Unbind();
     }
 
-    void Renderer::CreateScene(const PerspectiveCamera& camera, float winWidth, float winHeight)
+    void Renderer::CreateScene2D(OrthographicCamera& camera, float viewportWidth, float viewportHeight)
     {
-        _projview = camera.GetProjectionMatrix(winWidth, winHeight) * camera.GetViewMatrix();
+        _projview = camera.GetProjectionMatrix(viewportWidth, viewportHeight) * camera.GetViewMatrix();
+    }
+
+    void Renderer::CreateScene3D(PerspectiveCamera& camera, float viewportWidth, float viewportHeight)
+    {
+        _projview = camera.GetProjectionMatrix(viewportWidth, viewportHeight) * camera.GetViewMatrix();
     }
 
     void Renderer::GetVeiwport(int rViewport[2])

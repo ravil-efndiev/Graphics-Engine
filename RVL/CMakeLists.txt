@@ -18,8 +18,8 @@ add_library(RVL STATIC
     src/RVL/Rendering/Renderer/OrthographicCamera.cpp
     src/RVL/Rendering/Renderer/PerspectiveCamera.cpp
     src/RVL/API/Math/Vector.cpp
-    src/RVL/API/Primitives/Rectangle.cpp
-    src/RVL/API/Primitives/Entity.cpp
+    src/RVL/API/Objects/Rectangle.cpp
+    src/RVL/API/Objects/Entity.cpp
     vendor/lib/glad/glad.c
 )
 

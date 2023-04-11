@@ -1,11 +1,12 @@
 #include "RvlScene.hpp"
 #include "Rendering/Renderer/Renderer.hpp"
+#include "Rendering/Renderer/PerspectiveCamera.hpp"
+#include "Rendering/Renderer/OrthographicCamera.hpp"
 
 namespace rvl
 {
     RvlScene::RvlScene()
     {
-        _entities = {};
     }
 
     RvlScene::~RvlScene() {}
@@ -23,14 +24,9 @@ namespace rvl
     }
 
 
-    void RvlScene::SetCamera(const std::shared_ptr<PerspectiveCamera>& cam)
+    void RvlScene::SetCamera(const std::shared_ptr<OrthographicCamera>& cam)
     {
-        _camera = cam;
-    }
-
-    void RvlScene::AddEntity(const std::shared_ptr<Entity>& entity)
-    {
-        _entities.push_back(entity);
+        _camera2d = cam;
     }
 
     void RvlScene::MakeScene()
@@ -38,6 +34,7 @@ namespace rvl
         int viewport[2];
         Renderer::GetVeiwport(viewport);
 
-        Renderer::CreateScene(*_camera, viewport[0], viewport[1]);
+        Renderer::CreateScene2D(*_camera2d, viewport[0], viewport[1]);
+        //Renderer::CreateScene3D(*_camera, viewport[0], viewport[1]);
     }
 }

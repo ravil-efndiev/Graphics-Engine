@@ -8,8 +8,7 @@ public:
 
     void Start() override
     {
-        _rect = std::make_shared<rvl::Rectangle>(0.f, 0.f, 3.f, 2.f, rvl::Vector3f(1.f, 0.f, 0.f));
-        AddEntity(_rect);
+        _rect = std::make_shared<rvl::Rectangle>(0.f, 0.f, 2.f, 4.f, rvl::Vector3f(1.f, 1.f, 0.f));
     }
 
     void Update() override {    }

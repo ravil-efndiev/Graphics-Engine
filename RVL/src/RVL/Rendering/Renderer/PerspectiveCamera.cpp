@@ -39,9 +39,9 @@ namespace rvl
         _rotation = glm::mat4(1.f);
     }
 
-    glm::mat4 PerspectiveCamera::GetProjectionMatrix(float width, float height) const
+    glm::mat4 PerspectiveCamera::GetProjectionMatrix(float viewportWidth, float viewportHeight) const
     {
-        float aspect = width / height;
+        float aspect = viewportWidth / viewportHeight;
         return glm::perspective(70.f, aspect, 0.1f, 100.f);
     }
 

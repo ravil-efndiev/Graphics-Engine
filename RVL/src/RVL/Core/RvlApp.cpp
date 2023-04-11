@@ -8,6 +8,7 @@
 
 #include "Rendering/Renderer/Renderer.hpp"
 #include "Rendering/Renderer/PerspectiveCamera.hpp"
+#include "Rendering/Renderer/OrthographicCamera.hpp"
 
 #include <Rvlglpch.hpp>
 
@@ -27,8 +28,8 @@ namespace rvl
         {
             EventListener::Init();
             Start();
-            
-            _currentScene->SetCamera(std::make_shared<PerspectiveCamera>(glm::vec3(0, 0, 5), glm::radians(45.f)));
+
+            _currentScene->SetCamera(std::make_shared<OrthographicCamera>(glm::vec3(0, 0, 5)));
 
             while (!_window->Closes())
             {
