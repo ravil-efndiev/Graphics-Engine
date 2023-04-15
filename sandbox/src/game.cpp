@@ -1,6 +1,8 @@
 #include <RVL.hpp>
 
-class MainScene : public rvl::RvlScene
+using namespace rvl;
+
+class MainScene : public RvlScene
 {
 public:
     MainScene() {}
@@ -8,21 +10,26 @@ public:
 
     void Start() override
     {
-        _rect = std::make_shared<rvl::Rectangle>(0.f, 0.f, 2.f, 4.f, rvl::Vector3f(1.f, 1.f, 0.f));
+        _camera = std::make_unique<Camera>();
+        _rect = std::make_unique<Rectangle>(0.f, 0.f, 2.f, 4.f, Vector3f(1.f, 1.f, 0.f));
+        _sprite = std::make_unique<Sprite>();
+        _sprite->LoadTexture("container.jpg");
     }
 
     void Update() override {    }
 
     void Render() override
     {
+        _sprite->Draw();
         _rect->Draw();
     }
 
 private:
-    std::shared_ptr<rvl::Rectangle> _rect;
+    std::unique_ptr<Rectangle> _rect;
+    std::unique_ptr<Sprite> _sprite;
 };
 
-class Game : public rvl::RvlApp
+class Game : public RvlApp
 {
 public:
     Game() : RvlApp(1000, 800, "rvl game") {}
@@ -48,5 +55,5 @@ private:
 
 void rvl::OnInit()
 {
-    rvl::CurrentApp = new Game();
+    CurrentApp = new Game();
 }

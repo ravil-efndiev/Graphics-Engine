@@ -2,6 +2,8 @@
 #define RVL_RVLSCENE_HPP
 
 #include <API/Objects/Rectangle.hpp>
+#include <API/Objects/Sprite.hpp>
+#include <API/Objects/UserOrthographicCamera.hpp>
 #include <Rvlpch.hpp>
 
 namespace rvl
@@ -20,13 +22,11 @@ namespace rvl
         virtual void Start();
         virtual void Update();
         virtual void Render();
-        
-        virtual void SetCamera(const std::shared_ptr<OrthographicCamera>& cam);
-
 
     protected:
-        std::shared_ptr<PerspectiveCamera> _camera3d;
-        std::shared_ptr<OrthographicCamera> _camera2d;
+        typedef UserOrthographicCamera Camera;
+
+        std::unique_ptr<UserOrthographicCamera> _camera;
 
     private:
         void MakeScene(); // can be accessed by RvlApp parent but not RvlApp children

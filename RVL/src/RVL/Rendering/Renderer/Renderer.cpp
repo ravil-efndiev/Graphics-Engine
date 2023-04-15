@@ -8,10 +8,16 @@ namespace rvl
 {
     glm::mat4 Renderer::_projview (1.0f);
 
-    void Renderer::SubmitGeometry(GLVertexArray& vertexArray, GLShaderProgram& shader)
+    void Renderer::SubmitGeometry(GLVertexArray &vertexArray, GLShaderProgram &shader, const std::map<std::string, int>& uniforms)
     {
         shader.Bind();
         shader.SetUniform("projview", _projview);
+
+        for (auto& uniform : uniforms)
+        {
+            shader.SetUniform(uniform.first, uniform.second);
+        }
+
         DrawIndicies(vertexArray);
         shader.Unbind();
     }

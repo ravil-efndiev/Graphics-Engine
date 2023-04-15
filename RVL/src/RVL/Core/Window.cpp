@@ -45,7 +45,7 @@ namespace rvl
         glfwSetWindowUserPointer(_window, &_eventCallback);
 
         glfwSetWindowSizeCallback(_window, [](GLFWwindow *window, int width, int height) {
-            EventCallbackStruct *callback = static_cast<EventCallbackStruct*>(glfwGetWindowUserPointer(window));
+            EventCallbackStruct* callback = static_cast<EventCallbackStruct*>(glfwGetWindowUserPointer(window));
 
             WindowResizeEvent event (width, height);
 
@@ -54,7 +54,7 @@ namespace rvl
 
         glfwSetKeyCallback(_window, [](GLFWwindow* window, int key, int scancode, int action, int mode) 
         {
-            EventCallbackStruct *callback = static_cast<EventCallbackStruct*>(glfwGetWindowUserPointer(window));
+            EventCallbackStruct* callback = static_cast<EventCallbackStruct*>(glfwGetWindowUserPointer(window));
 
             if (action == GLFW_PRESS)
             {

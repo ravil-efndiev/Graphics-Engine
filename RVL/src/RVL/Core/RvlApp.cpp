@@ -29,8 +29,6 @@ namespace rvl
             EventListener::Init();
             Start();
 
-            _currentScene->SetCamera(std::make_shared<OrthographicCamera>(glm::vec3(0, 0, 5)));
-
             while (!_window->Closes())
             {
                 Renderer::Clear();

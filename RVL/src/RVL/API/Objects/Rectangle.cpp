@@ -10,40 +10,32 @@
 
 namespace rvl
 {
-    Rectangle::Rectangle(const Vector2f &position, const Vector2f &size) : _color(1, 1, 1)
+    Rectangle::Rectangle()
     {
-        _position.SetX(position.X());
-        _position.SetY(position.Y());
+        _position = {0.f, 0.f};
+        _color = {1.f, 1.f, 1.f};
+        _width = 1.f;
+        _height = 1.f;
+    }
 
+    Rectangle::Rectangle(const Vector2f &position, const Vector2f &size, const Vector3f &color) : _color(color)
+    {
+        _position = position;
+        
         _width = size.X();
         _height = size.Y();
 
         GenerateMesh();
     }
 
-    Rectangle::Rectangle(const Vector2f &position, const Vector2f &size, const Vector3f &color)
-            : Rectangle(position, size)
-    {
-        _color = color;
-    }   
-
-    Rectangle::Rectangle(float x, float y, float width, float height) : _width(width), _height(height), _color(1, 1, 1) 
+    Rectangle::Rectangle(float x, float y, float width, float height, const Vector3f &color) : _width(width), _height(height), _color(color) 
     {
         _position.SetX(x);
         _position.SetY(y);
 
         GenerateMesh();
     }
-
-    Rectangle::Rectangle(float x, float y, float width, float height, const Vector3f &color)
-        : _width(width), _height(height), _color(color)
-    {
-        _position.SetX(x);
-        _position.SetY(y);
-
-        GenerateMesh();
-    }
-
+    
     Rectangle::~Rectangle() {}
 
     void Rectangle::Draw()

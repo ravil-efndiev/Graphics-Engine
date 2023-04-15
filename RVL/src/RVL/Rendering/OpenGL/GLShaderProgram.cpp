@@ -81,6 +81,12 @@ namespace rvl
         glUniformMatrix4fv(position, 1, GL_FALSE, glm::value_ptr(uniform));
     }
 
+    void GLShaderProgram::SetUniform(const std::string &name, int uniform)
+    {
+        GLint position = glGetUniformLocation(_programId, name.c_str());
+        glUniform1i(position, uniform);
+    }
+
     void GLShaderProgram::Bind()
     {
         glUseProgram(_programId);

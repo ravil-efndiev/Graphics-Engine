@@ -14,7 +14,7 @@ namespace rvl
     class Renderer
     {
     public:
-        static void SubmitGeometry(GLVertexArray& vertexArray, GLShaderProgram& shader);
+        static void SubmitGeometry(GLVertexArray& vertexArray, GLShaderProgram& shader, const std::map<std::string, int>& uniforms = {});
 
         static void Clear(GLclampf red = 0.f, GLclampf green = 0.f, GLclampf blue = 0.f, GLclampf alpha = 1.f);
 

@@ -12,6 +12,7 @@ add_library(RVL STATIC
     src/RVL/Events/WindowEvents.cpp
     src/RVL/Rendering/OpenGL/GLContext.cpp
     src/RVL/Rendering/OpenGL/GLBuffer.cpp
+    src/RVL/Rendering/OpenGL/GLTexture.cpp
     src/RVL/Rendering/OpenGL/GLVertexArray.cpp
     src/RVL/Rendering/OpenGL/GLShaderProgram.cpp
     src/RVL/Rendering/Renderer/Renderer.cpp
@@ -19,8 +20,11 @@ add_library(RVL STATIC
     src/RVL/Rendering/Renderer/PerspectiveCamera.cpp
     src/RVL/API/Math/Vector.cpp
     src/RVL/API/Objects/Rectangle.cpp
+    src/RVL/API/Objects/Sprite.cpp
     src/RVL/API/Objects/Entity.cpp
+    src/RVL/API/Objects/UserOrthographicCamera.cpp
     vendor/lib/glad/glad.c
+    vendor/lib/stb_image.cpp
 )
 
 set_property(TARGET RVL PROPERTY CXX_STANDARD 20)

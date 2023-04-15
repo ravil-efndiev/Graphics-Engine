@@ -1,4 +1,6 @@
 #include "RvlScene.hpp"
+
+#include <Platform.hpp>
 #include "Rendering/Renderer/Renderer.hpp"
 #include "Rendering/Renderer/PerspectiveCamera.hpp"
 #include "Rendering/Renderer/OrthographicCamera.hpp"
@@ -23,18 +25,13 @@ namespace rvl
     {
     }
 
-
-    void RvlScene::SetCamera(const std::shared_ptr<OrthographicCamera>& cam)
-    {
-        _camera2d = cam;
-    }
-
     void RvlScene::MakeScene()
     {
+        if (!_camera) throw Error("camera was not initialized during scene creation", RVL_RUNTIME_ERROR);
+
         int viewport[2];
         Renderer::GetVeiwport(viewport);
 
-        Renderer::CreateScene2D(*_camera2d, viewport[0], viewport[1]);
-        //Renderer::CreateScene3D(*_camera, viewport[0], viewport[1]);
+        Renderer::CreateScene2D(*_camera->_camera, viewport[0], viewport[1]);
     }
 }

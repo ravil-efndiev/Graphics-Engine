@@ -16,10 +16,9 @@ namespace rvl
     friend class RvlScene;
 
     public:
-        Rectangle(const Vector2f& position, const Vector2f& size);
-        Rectangle(const Vector2f& position, const Vector2f& size, const Vector3f& color);
-        Rectangle(float x, float y, float width, float height);
-        Rectangle(float x, float y, float width, float height, const Vector3f& color);
+        Rectangle();
+        Rectangle(const Vector2f& position, const Vector2f& size, const Vector3f& color = {1.f, 1.f, 1.f});
+        Rectangle(float x, float y, float width, float height, const Vector3f& color = {1.f, 1.f, 1.f});
 
         ~Rectangle();
 
