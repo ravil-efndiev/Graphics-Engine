@@ -40,7 +40,7 @@ namespace rvl
 
     void GLVertexBuffer::Unbind()
     {
-        glBindBuffer(GL_ARRAY_BUFFER, _bufferId);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
     int GLVertexBuffer::GetVerticiesCount() const
@@ -51,6 +51,11 @@ namespace rvl
     bool GLVertexBuffer::GetNormalized() const
     {
         return _normalized;
+    }
+
+    GLuint GLVertexBuffer::GetId() const
+    {
+        return _bufferId;
     }
 
     template <class T>

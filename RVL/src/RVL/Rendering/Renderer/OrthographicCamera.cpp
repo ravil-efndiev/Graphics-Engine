@@ -1,4 +1,5 @@
 #include "OrthographicCamera.hpp"
+#include <Rvlpch.hpp>
 
 namespace rvl
 {
@@ -32,9 +33,7 @@ namespace rvl
 
     glm::mat4 OrthographicCamera::GetProjectionMatrix(float viewportWidth, float viewportHeight)
     {
-        float aspect = viewportWidth / viewportHeight;
-        float aspectZoom = aspect * (aspect * _zoom);
-        _projectionMatrix = glm::ortho(-viewportWidth / aspectZoom, viewportWidth / aspectZoom, -viewportHeight / aspectZoom, viewportHeight / aspectZoom, -1.0f, 1.0f);
+        _projectionMatrix = glm::ortho(-viewportWidth / _zoom, viewportWidth / _zoom, -viewportHeight / _zoom, viewportHeight / _zoom, -1.0f, 1.0f);
         return _projectionMatrix;
     }
 

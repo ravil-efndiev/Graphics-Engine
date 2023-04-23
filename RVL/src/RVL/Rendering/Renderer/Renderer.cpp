@@ -8,16 +8,10 @@ namespace rvl
 {
     glm::mat4 Renderer::_projview (1.0f);
 
-    void Renderer::SubmitGeometry(GLVertexArray &vertexArray, GLShaderProgram &shader, const std::map<std::string, int>& uniforms)
+    void Renderer::SubmitGeometry(GLVertexArray &vertexArray, GLShaderProgram &shader)
     {
         shader.Bind();
         shader.SetUniform("projview", _projview);
-
-        for (auto& uniform : uniforms)
-        {
-            shader.SetUniform(uniform.first, uniform.second);
-        }
-
         DrawIndicies(vertexArray);
         shader.Unbind();
     }
@@ -30,10 +24,7 @@ namespace rvl
 
     inline void Renderer::DrawIndicies(GLVertexArray& vertexArray)
     {
-        vertexArray.Bind();
-        vertexArray.BindIndexBuffer();
-        glDrawElements(GL_TRIANGLES, vertexArray.GetIndexBuffer()->GetIndiciesCount(), GL_UNSIGNED_INT, nullptr);
-        vertexArray.Unbind();
+        vertexArray.Draw();
     }
 
     void Renderer::CreateScene2D(OrthographicCamera& camera, float viewportWidth, float viewportHeight)

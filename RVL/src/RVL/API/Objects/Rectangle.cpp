@@ -10,9 +10,8 @@
 
 namespace rvl
 {
-    Rectangle::Rectangle()
+    Rectangle::Rectangle() : Entity(0.f, 0.f)
     {
-        _position = {0.f, 0.f};
         _color = {1.f, 1.f, 1.f};
         _width = 1.f;
         _height = 1.f;
@@ -20,8 +19,6 @@ namespace rvl
 
     Rectangle::Rectangle(const Vector2f &position, const Vector2f &size, const Vector3f &color) : _color(color)
     {
-        _position = position;
-        
         _width = size.X();
         _height = size.Y();
 
@@ -30,8 +27,7 @@ namespace rvl
 
     Rectangle::Rectangle(float x, float y, float width, float height, const Vector3f &color) : _width(width), _height(height), _color(color) 
     {
-        _position.SetX(x);
-        _position.SetY(y);
+        _position = Vector2f(x, y);
 
         GenerateMesh();
     }
@@ -78,8 +74,23 @@ namespace rvl
         _vao->AddIndexBuffer(_indicies);
 
         _shaderProgram = std::make_unique<GLShaderProgram>("../RVL/res/shaders/main.vert", "../RVL/res/shaders/main.frag");
-        _shaderProgram->BindAttribute(0, "position");
-        _shaderProgram->BindAttribute(1, "color");
+        _shaderProgram->BindAttribute(RVL_POSITION_LOCATION, "position");
+        _shaderProgram->BindAttribute(RVL_COLOR_LOCATION, "color");
         _shaderProgram->Link();
+    }
+
+    void Rectangle::ResetPosition()
+    {
+        GLVertexBuffer newPos
+        (
+            {
+                {-(_width/2)  + _position.X(), -(_height/2) + _position.Y(), 0.0f},
+                {_width/2 + _position.X(), -(_height/2) + _position.Y(), 0.0f},
+                {_width/2 + _position.X(), _height/2 + _position.Y(), 0.0f},
+                {-(_width/2)  + _position.X(), _height/2 + _position.Y(), 0.0f},
+            }
+        );
+
+        _vao->ResetVertexBuffer(RVL_POSITION_LOCATION, newPos);
     }
 }

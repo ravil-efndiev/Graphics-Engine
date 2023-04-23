@@ -9,8 +9,12 @@ namespace rvl
     class GLShaderProgram
     {
     public:
+        GLShaderProgram();
         GLShaderProgram(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
         ~GLShaderProgram();
+
+        void Load(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
+        void LoadSource(const std::string& vertexShaderSoruce, const std::string& fragmentShaderSource);
 
         void BindAttribute(GLuint index, const std::string& name);
         void SetUniform(const std::string &name, const glm::mat4 &uniform);

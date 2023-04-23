@@ -3,6 +3,10 @@
 
 #include "GLBuffer.hpp"
 
+#define RVL_POSITION_LOCATION 0
+#define RVL_COLOR_LOCATION 1
+#define RVL_TEXTURE_LOCATION 2
+
 namespace rvl
 {
     class GLVertexArray
@@ -22,6 +26,9 @@ namespace rvl
         std::shared_ptr<GLIndexBuffer> GetIndexBuffer();
 
         void BindIndexBuffer();
+        void UnbindIndexBuffer();
+
+        void ResetVertexBuffer(int index, GLVertexBuffer& vertexBuffer);
 
     private:
         GLuint _vertexArrayId;
@@ -30,6 +37,8 @@ namespace rvl
 
         std::vector<std::shared_ptr<GLVertexBuffer>> _vertexBuffers;
         std::shared_ptr<GLIndexBuffer> _indexBuffer;
+
+        void SetAttribPtr(int index, const GLVertexBuffer& vertexBuffer);
     };
 }
 

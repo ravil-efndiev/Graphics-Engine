@@ -23,6 +23,8 @@ namespace rvl
         int GetVerticiesCount() const;
         bool GetNormalized() const;
 
+        GLuint GetId() const;
+
     private:
         template<class T>
         void CreateBuffer(const std::vector<T>& verticies, int verticiesCount);

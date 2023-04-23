@@ -18,7 +18,6 @@ add_library(RVL STATIC
     src/RVL/Rendering/Renderer/Renderer.cpp
     src/RVL/Rendering/Renderer/OrthographicCamera.cpp
     src/RVL/Rendering/Renderer/PerspectiveCamera.cpp
-    src/RVL/API/Math/Vector.cpp
     src/RVL/API/Objects/Rectangle.cpp
     src/RVL/API/Objects/Sprite.cpp
     src/RVL/API/Objects/Entity.cpp

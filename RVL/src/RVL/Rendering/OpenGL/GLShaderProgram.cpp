@@ -4,12 +4,11 @@
 
 namespace rvl
 {
+    GLShaderProgram::GLShaderProgram() {}
+
     GLShaderProgram::GLShaderProgram(const std::string &vertexShaderPath, const std::string &fragmentShaderPath)
     {
-        _vertexShaderSource = utils::GetTextFromFile(vertexShaderPath);
-        _fragmentShaderSource = utils::GetTextFromFile(fragmentShaderPath);
-
-        CreateShaders();
+        Load(vertexShaderPath, fragmentShaderPath);
     }
 
     GLShaderProgram::~GLShaderProgram()
@@ -18,6 +17,34 @@ namespace rvl
         glDetachShader(_programId, _fragmentShaderId);
 
         glDeleteProgram(_programId);
+    }
+
+    void GLShaderProgram::Load(const std::string &vertexShaderPath, const std::string &fragmentShaderPath)
+    {
+        if (_vertexShaderId != 0 && _fragmentShaderId != 0)
+        {
+            glDeleteShader(_vertexShaderId);
+            glDeleteShader(_fragmentShaderId);
+        }
+
+        _vertexShaderSource = utils::GetTextFromFile(vertexShaderPath);
+        _fragmentShaderSource = utils::GetTextFromFile(fragmentShaderPath);
+
+        CreateShaders();
+    }
+
+    void GLShaderProgram::LoadSource(const std::string &vertexShaderSoruce, const std::string &fragmentShaderSource)
+    {
+        if (_vertexShaderId != 0 && _fragmentShaderId != 0)
+        {
+            glDeleteShader(_vertexShaderId);
+            glDeleteShader(_fragmentShaderId);
+        }
+
+        _vertexShaderSource = vertexShaderSoruce;
+        _fragmentShaderSource = fragmentShaderSource;
+
+        CreateShaders();
     }
 
     void GLShaderProgram::CreateShaders()

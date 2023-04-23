@@ -2,7 +2,7 @@
 #define RVL_SPRITE_HPP
 
 #include <Rvlpch.hpp>
-#include <API/Math/math.hpp>
+#include "Entity.hpp"
 
 namespace rvl
 {
@@ -12,10 +12,8 @@ namespace rvl
     class GLShaderProgram;
     class GLTexture;
 
-    class Sprite
+    class Sprite : public Entity
     {
-    friend class RvlScene;
-    
     public:
         Sprite();
         Sprite(const Vector2f& position);
@@ -24,13 +22,14 @@ namespace rvl
 
         void LoadTexture(const std::string& filename);
 
-        void Draw();
+        void Draw() override;
 
     private:
-        Vector2f _position;
-    
+        static int _unit;
+
         std::unique_ptr<GLTexture> _texture;
-        std::shared_ptr<GLVertexArray> _vao;
+        
+        std::unique_ptr<GLVertexArray> _vao;
         std::shared_ptr<GLVertexBuffer> _positionVbo;
         std::shared_ptr<GLVertexBuffer> _colorVbo;
         std::shared_ptr<GLVertexBuffer> _textureCoordsVbo;
@@ -39,6 +38,8 @@ namespace rvl
         std::unique_ptr<GLShaderProgram> _shaderProgram;
 
         void GenerateMesh();
+
+        void ResetPosition() override;
     };
 }
 

@@ -1,6 +1,8 @@
 #ifndef RVL_VECTOR_HPP
 #define RVL_VECTOR_HPP
 
+#include <API/Property.hpp>
+
 namespace rvl
 {
     template<class T, int Cmp>
@@ -17,22 +19,55 @@ namespace rvl
     template<class T>
     class Vector<T, 2>
     {
+    private:
+        T _x, _y;
+
+        std::function<void()> _onChangeCallback = nullptr;
+
     public:
+        Property<T> X =
+        {
+            &_x,
+            [this]() -> const T&
+            {
+                return _x;
+            },
+            [this](const T& value) -> void
+            {
+                _x = value;
+                if (_onChangeCallback != nullptr)
+                    _onChangeCallback();
+            }
+        };
+
+        Property<T> Y =
+        {
+            &_y,
+            [this]() -> const T&
+            {
+                return _y;
+            },
+            [this](const T& value) -> void
+            {
+                _y = value;
+                if (_onChangeCallback != nullptr)
+                    _onChangeCallback();
+            }
+        };
+
         Vector() : _x(0), _y(0) {}
         Vector(T x, T y) : _x(x), _y(y) {}
         ~Vector() {}
 
-        T X() const { return _x; }
-        T Y() const { return _y; }
+        void SetOnChangeCallback(const std::function<void()>& callback)
+        {
+            _onChangeCallback = callback;
+        }
 
         float Magnitude() const
         {
             return sqrt((_x * _x) + (_y * _y));
         }
-
-        void SetX(T x) { _x = x; }
-        void SetY(T y) { _y = y; }
-
 
         void operator=(const Vector& vec)
         {
@@ -53,9 +88,6 @@ namespace rvl
         {
             return Vector<T, 2>(0, 0);
         }
-
-    private:
-        T _x, _y;
     };
 
     template<class T>

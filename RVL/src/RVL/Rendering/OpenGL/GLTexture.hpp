@@ -14,7 +14,7 @@ namespace rvl
 
         void LoadTexture(const std::string& path);
 
-        void Bind();
+        void Bind(int unit);
         void Unbind();
 
         int GetWidth() const;

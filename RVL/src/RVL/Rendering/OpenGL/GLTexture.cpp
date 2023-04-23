@@ -26,6 +26,8 @@ namespace rvl
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+        stbi_set_flip_vertically_on_load(true);
+
         _textureData = stbi_load(path.c_str(), &_width, &_height, &_channels, 0);
         if (!_textureData)
         {
@@ -38,9 +40,9 @@ namespace rvl
         stbi_image_free(_textureData);
     }
 
-    void GLTexture::Bind()
+    void GLTexture::Bind(int unit)
     {
-        glActiveTexture(GL_TEXTURE0);
+        glActiveTexture(GL_TEXTURE0 + unit);
         glBindTexture(GL_TEXTURE_2D, _textureId);
     }
 

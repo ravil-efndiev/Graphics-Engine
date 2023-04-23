@@ -13,8 +13,6 @@ namespace rvl
 
     class Rectangle : public Entity
     {
-    friend class RvlScene;
-
     public:
         Rectangle();
         Rectangle(const Vector2f& position, const Vector2f& size, const Vector3f& color = {1.f, 1.f, 1.f});
@@ -38,7 +36,8 @@ namespace rvl
 
         std::unique_ptr<GLShaderProgram> _shaderProgram;
 
-        void GenerateMesh();  
+        void GenerateMesh();
+        void ResetPosition() override;  
     };
 }
 
