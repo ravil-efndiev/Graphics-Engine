@@ -25,7 +25,7 @@
 */
     
 
-#include "RVL/Core/Platform.hpp"
+#include "RVL/Core/Core.hpp"
 #include "RVL/Core/EntryPoint.hpp"
 #include "RVL/API/Input.hpp"
 

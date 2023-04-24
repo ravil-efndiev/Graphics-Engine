@@ -2,7 +2,7 @@
 #define RVL_GLBUFFER_HPP
 
 #include <Rvlglpch.hpp>
-#include <Rvlpch.hpp>
+#include <Core/Core.hpp>
 
 namespace rvl
 {

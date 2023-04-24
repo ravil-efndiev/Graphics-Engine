@@ -2,7 +2,7 @@
 #include <Rvlglpch.hpp>
 
 #include <stb_image.h>
-#include <Core/Platform.hpp>
+#include <Core/Core.hpp>
 
 #include "Rendering/OpenGL/GLShaderProgram.hpp"
 #include "Rendering/OpenGL/GLVertexArray.hpp"

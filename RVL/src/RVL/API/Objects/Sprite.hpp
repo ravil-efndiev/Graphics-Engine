@@ -1,7 +1,7 @@
 #ifndef RVL_SPRITE_HPP
 #define RVL_SPRITE_HPP
 
-#include <Core/Platform.hpp>
+#include <Core/Core.hpp>
 #include "Entity.hpp"
 
 namespace rvl

@@ -2,7 +2,7 @@
 #define RVL_RECTANGLE_HPP
 
 #include <API/Objects/Entity.hpp>
-#include <Core/Platform.hpp>
+#include <Core/Core.hpp>
 
 namespace rvl
 {

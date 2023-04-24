@@ -1,7 +1,7 @@
 #ifndef RVL_INPUT_HPP
 #define RVL_INPUT_HPP
 
-#include <Core/Platform.hpp>
+#include <Core/Core.hpp>
 
 namespace rvl
 {    

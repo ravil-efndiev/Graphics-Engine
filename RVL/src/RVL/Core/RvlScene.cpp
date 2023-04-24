@@ -1,6 +1,6 @@
 #include "RvlScene.hpp"
 
-#include <Platform.hpp>
+#include <Core.hpp>
 #include "Rendering/Renderer/Renderer.hpp"
 #include "Rendering/Renderer/PerspectiveCamera.hpp"
 #include "Rendering/Renderer/OrthographicCamera.hpp"

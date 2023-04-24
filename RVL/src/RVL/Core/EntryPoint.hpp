@@ -2,7 +2,7 @@
 #define RVL_ENTRYPOINT_HPP
 
 #include "RvlApp.hpp"
-#include "Platform.hpp"
+#include "Core.hpp"
 
 int main(int argc, char** argv)
 {

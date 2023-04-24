@@ -2,7 +2,7 @@
 #define RVL_USERORTHOGRAPHICCAMERA_HPP
 
 #include "Entity.hpp"
-#include <Core/Platform.hpp>
+#include <Core/Core.hpp>
 
 namespace rvl
 {

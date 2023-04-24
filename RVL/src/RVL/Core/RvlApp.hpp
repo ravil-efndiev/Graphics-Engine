@@ -2,7 +2,7 @@
 #define RVL_RVLAPP_HPP
 
 #include <Rvlpch.hpp>
-#include "Platform.hpp"
+#include "Core.hpp"
 #include "RvlScene.hpp"
 
 namespace rvl

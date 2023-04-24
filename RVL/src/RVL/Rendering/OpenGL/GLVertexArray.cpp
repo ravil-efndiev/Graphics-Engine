@@ -1,6 +1,6 @@
 #include "GLVertexArray.hpp"
 
-#include <Platform.hpp>
+#include <Core/Core.hpp>
 #include <Rvlglpch.hpp>
 
 namespace rvl

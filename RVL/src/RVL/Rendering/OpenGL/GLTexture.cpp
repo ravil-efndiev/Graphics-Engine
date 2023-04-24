@@ -3,7 +3,7 @@
 #include <Rvlglpch.hpp>
 #include <stb_image.h>
 
-#include <Platform.hpp>
+#include <Core/Core.hpp>
 
 namespace rvl
 {

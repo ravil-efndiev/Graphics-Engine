@@ -5,6 +5,7 @@ project(RVL)
 add_library(RVL STATIC
     src/RVL/Core/RvlApp.cpp
     src/RVL/Core/RvlScene.cpp
+    src/RVL/Core/Error.cpp
     src/RVL/Core/Window.cpp
     src/RVL/Core/EventListener.cpp
     src/RVL/API/Input.cpp

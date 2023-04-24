@@ -1,7 +1,7 @@
 #include "Rvlglpch.hpp"
 
 #include "GLContext.hpp"
-#include <Core/Platform.hpp>
+#include <Core/Core.hpp>
 
 namespace rvl
 {

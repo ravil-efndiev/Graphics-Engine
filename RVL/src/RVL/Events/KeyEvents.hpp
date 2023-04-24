@@ -2,7 +2,7 @@
 #define RVL_KEYEVENTS_HPP
 
 #include "Event.hpp"
-#include <Core/Platform.hpp>
+#include <Core/Core.hpp>
 
 namespace rvl
 {

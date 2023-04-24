@@ -1,7 +1,7 @@
 #ifndef RVL_FILES_HPP
 #define RVL_FILES_HPP
 
-#include "Core/Platform.hpp"
+#include "Core/Core.hpp"
 
 namespace rvl
 {
