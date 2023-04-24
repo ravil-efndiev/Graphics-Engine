@@ -8,7 +8,6 @@ add_library(RVL STATIC
     src/RVL/Core/Error.cpp
     src/RVL/Core/Window.cpp
     src/RVL/Core/EventListener.cpp
-    src/RVL/API/Input.cpp
     src/RVL/Events/KeyEvents.cpp
     src/RVL/Events/WindowEvents.cpp
     src/RVL/Rendering/OpenGL/GLContext.cpp
@@ -19,6 +18,8 @@ add_library(RVL STATIC
     src/RVL/Rendering/Renderer/Renderer.cpp
     src/RVL/Rendering/Renderer/OrthographicCamera.cpp
     src/RVL/Rendering/Renderer/PerspectiveCamera.cpp
+    src/RVL/API/Input.cpp
+    src/RVL/API/Time.cpp
     src/RVL/API/Objects/Rectangle.cpp
     src/RVL/API/Objects/Sprite.cpp
     src/RVL/API/Objects/Entity.cpp

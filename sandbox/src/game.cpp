@@ -26,16 +26,16 @@ public:
     void Update() override 
     {
         if (Input::IsKeyPressed(Keys::RVL_KEY_W))
-            _rect->Position->Y += 0.1f;
+            _rect->Position->Y += 7.f * Time::DeltaTime();
 
         if (Input::IsKeyPressed(Keys::RVL_KEY_S))
-            _rect->Position->Y -= 0.1f;
+            _rect->Position->Y -= 7.f * Time::DeltaTime();
 
         if (Input::IsKeyPressed(Keys::RVL_KEY_D))
-            _rect->Position->X += 0.1f;
+            _rect->Position->X += 7.f * Time::DeltaTime();
 
         if (Input::IsKeyPressed(Keys::RVL_KEY_A))
-            _rect->Position->X -= 0.1f;
+            _rect->Position->X -= 7.f * Time::DeltaTime();
 
         _camera->Position = _rect->Position();
     }

@@ -10,6 +10,8 @@
 #include "Rendering/Renderer/PerspectiveCamera.hpp"
 #include "Rendering/Renderer/OrthographicCamera.hpp"
 
+#include "API/Time.hpp"
+
 #include <Rvlglpch.hpp>
 
 namespace rvl
@@ -32,6 +34,7 @@ namespace rvl
             while (!_window->Closes())
             {
                 Renderer::Clear();
+                Time::Update();
 
                 Update();
                 _currentScene->MakeScene();
