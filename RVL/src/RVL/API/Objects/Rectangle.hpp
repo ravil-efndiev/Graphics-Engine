@@ -2,7 +2,7 @@
 #define RVL_RECTANGLE_HPP
 
 #include <API/Objects/Entity.hpp>
-#include <Rvlpch.hpp>
+#include <Core/Platform.hpp>
 
 namespace rvl
 {
@@ -14,6 +14,9 @@ namespace rvl
     class Rectangle : public Entity
     {
     public:
+        template <class ... Args>
+        static Ref<Rectangle> Create(Args&& ...args);
+
         Rectangle();
         Rectangle(const Vector2f& position, const Vector2f& size, const Vector3f& color = {1.f, 1.f, 1.f});
         Rectangle(float x, float y, float width, float height, const Vector3f& color = {1.f, 1.f, 1.f});
@@ -39,6 +42,13 @@ namespace rvl
         void GenerateMesh();
         void ResetPosition() override;  
     };
+
+
+    template <class... Args>
+    inline Ref<Rectangle> Rectangle::Create(Args&& ...args)
+    {
+        return std::make_shared<Rectangle>(args...);
+    }
 }
 
 #endif

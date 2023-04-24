@@ -10,15 +10,15 @@ public:
 
     void Start() override
     {
-        _camera = std::make_unique<Camera>();
-        _rect = std::make_unique<Rectangle>(0.f, 0.f, 2.f, 3.5f, Vector3f(1.f, 1.f, 0.f));
-        _sprite = std::make_unique<Sprite>(3.f, 0.f);
+        _camera = Camera::Create();
+        _rect = Rectangle::Create(0.f, 0.f, 2.f, 3.5f, Vector3f(1.f, 1.f, 0.f));
+        _sprite = Sprite::Create(3.f, 0.f);
         _sprite->LoadTexture("container.jpg");
 
-        _sprite1 = std::make_unique<Sprite>(-3.f, 0.f);
-        _sprite1->LoadTexture("floor1.png");
+        _sprite1 = Sprite::Create(-3.f, 0.f);
+        _sprite1->LoadTexture("a.jpg");
 
-        _sprite2 = std::make_unique<Sprite>(0.f, -3.f);
+        _sprite2 = Sprite::Create(0.f, -3.f);
         _sprite2->LoadTexture("container.jpg");
 
     }
@@ -49,10 +49,10 @@ public:
     }
 
 private:
-    std::unique_ptr<Rectangle> _rect;
-    std::unique_ptr<Sprite> _sprite;
-    std::unique_ptr<Sprite> _sprite1;
-    std::unique_ptr<Sprite> _sprite2;
+    Ref<Rectangle> _rect;
+    Ref<Sprite> _sprite;
+    Ref<Sprite> _sprite1;
+    Ref<Sprite> _sprite2;
 };
 
 class Game : public RvlApp
@@ -64,7 +64,7 @@ public:
 private:
     void Start() override
     {
-        _currentScene = std::make_unique<MainScene>();
+        _currentScene = CreateRef<MainScene>();
         _currentScene->Start();
     }
     

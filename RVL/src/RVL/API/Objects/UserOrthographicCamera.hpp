@@ -2,7 +2,7 @@
 #define RVL_USERORTHOGRAPHICCAMERA_HPP
 
 #include "Entity.hpp"
-#include <Rvlpch.hpp>
+#include <Core/Platform.hpp>
 
 namespace rvl
 {
@@ -11,6 +11,17 @@ namespace rvl
     class UserOrthographicCamera
     {
     friend class RvlScene;
+    public:
+        static Ref<UserOrthographicCamera> Create(const Vector2f& position = {0.f, 0.f}, int zoom = 50);
+
+        Property<Vector2f> Position;
+
+        UserOrthographicCamera(const Vector2f& position = {0.f, 0.f}, int zoom = 50);
+        ~UserOrthographicCamera();
+
+        int Zoom() const;
+        void SetZoom(int zoom);
+
     private:
         // must not be changed from a friend class
         int _zoom;
@@ -21,15 +32,6 @@ namespace rvl
         std::function<void()> _onPositionChange;
 
         std::shared_ptr<OrthographicCamera> _camera;
-
-    public:
-        Property<Vector2f> Position;
-
-        UserOrthographicCamera(const Vector2f& position = {0.f, 0.f}, int zoom = 50);
-        ~UserOrthographicCamera();
-
-        int Zoom() const;
-        void SetZoom(int zoom);
     };
 }
 

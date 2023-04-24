@@ -10,6 +10,8 @@ namespace rvl
         _viewMatrix = glm::mat4(1.0f);
         _projectionMatrix = glm::mat4(1.0f);
         _zoom = zoom;
+        _rotationZ = 0;
+        ResetMatrix();
     }
 
     OrthographicCamera::~OrthographicCamera() {}

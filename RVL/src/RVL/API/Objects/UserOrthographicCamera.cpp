@@ -4,6 +4,11 @@
 
 namespace rvl
 {
+    Ref<UserOrthographicCamera> UserOrthographicCamera::Create(const Vector2f &position, int zoom)
+    {
+        return std::make_shared<UserOrthographicCamera>(position, zoom);
+    }
+
     UserOrthographicCamera::UserOrthographicCamera(const Vector2f &position, int zoom)
     {
         _position = position;

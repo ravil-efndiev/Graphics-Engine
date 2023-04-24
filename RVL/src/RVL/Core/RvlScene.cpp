@@ -6,7 +6,7 @@
 #include "Rendering/Renderer/OrthographicCamera.hpp"
 
 namespace rvl
-{
+{ 
     RvlScene::RvlScene()
     {
     }

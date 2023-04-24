@@ -2,6 +2,7 @@
 #include <Rvlglpch.hpp>
 
 #include <stb_image.h>
+#include <Core/Platform.hpp>
 
 #include "Rendering/OpenGL/GLShaderProgram.hpp"
 #include "Rendering/OpenGL/GLVertexArray.hpp"
@@ -39,14 +40,17 @@ namespace rvl
 
     void Sprite::GenerateMesh()
     {
+        float ratio = (float)_texture->GetWidth() / (float)_texture->GetHeight();
+        RVL_LOG(ratio);
+
         _vao = std::make_unique<GLVertexArray>();
 
         _positionVbo = std::make_shared<GLVertexBuffer>(std::vector<glm::vec3>(
             {
-                {-1  + _position.X(), -1 + _position.Y(), 0.0f},
-                {1 + _position.X(), -1  + _position.Y(), 0.0f},
-                {1 + _position.X(), 1  + _position.Y(), 0.0f},
-                {-1  + _position.X(), 1 + _position.Y(), 0.0f},
+                {-ratio + _position.X(), -1 + _position.Y(), 0.0f},
+                {ratio + _position.X(), -1  + _position.Y(), 0.0f},
+                {ratio + _position.X(), 1  + _position.Y(), 0.0f},
+                {-ratio  + _position.X(), 1 + _position.Y(), 0.0f},
             }
         ));
 

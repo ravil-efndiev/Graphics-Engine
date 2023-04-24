@@ -26,7 +26,7 @@ namespace rvl
     protected:
         typedef UserOrthographicCamera Camera;
 
-        std::unique_ptr<UserOrthographicCamera> _camera;
+        Ref<UserOrthographicCamera> _camera;
 
     private:
         void MakeScene(); // can be accessed by RvlApp parent but not RvlApp children

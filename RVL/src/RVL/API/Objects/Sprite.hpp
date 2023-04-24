@@ -1,7 +1,7 @@
 #ifndef RVL_SPRITE_HPP
 #define RVL_SPRITE_HPP
 
-#include <Rvlpch.hpp>
+#include <Core/Platform.hpp>
 #include "Entity.hpp"
 
 namespace rvl
@@ -15,6 +15,9 @@ namespace rvl
     class Sprite : public Entity
     {
     public:
+        template <class ... Args>
+        static Ref<Sprite> Create(Args&& ...args);
+
         Sprite();
         Sprite(const Vector2f& position);
         Sprite(float x, float y);
@@ -41,6 +44,12 @@ namespace rvl
 
         void ResetPosition() override;
     };
+
+    template <class... Args>
+    inline Ref<Sprite> Sprite::Create(Args &&...args)
+    {
+        return std::make_shared<Sprite>(args...);
+    }
 }
 
 #endif

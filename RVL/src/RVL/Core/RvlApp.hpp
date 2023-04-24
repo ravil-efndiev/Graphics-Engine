@@ -18,14 +18,14 @@ namespace rvl
         status_t Run();
 
     protected:
-        std::unique_ptr<RvlScene> _currentScene;
+        Ref<RvlScene> _currentScene;
 
         virtual void Start() = 0;
         virtual void Update() = 0;
         virtual void Render() = 0;
 
     private:
-        std::unique_ptr<Window> _window;
+        Scope<Window> _window;
 
         void CreateWindow(int windowWidth, int windowHeight, const std::string& windowName);
 
