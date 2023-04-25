@@ -26,7 +26,8 @@
     
 
 #include "RVL/Core/Core.hpp"
-#include "RVL/Core/EntryPoint.hpp"
+#include "RVL/Core/RvlApp.hpp"
+#include "RVL/Core/RvlScene.hpp"
 #include "RVL/API/Input.hpp"
 #include "RVL/API/Time.hpp"
 

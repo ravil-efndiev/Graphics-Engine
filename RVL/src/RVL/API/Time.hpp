@@ -3,19 +3,31 @@
 
 namespace rvl
 {
+    struct TimeStep
+    {
+        public:
+            TimeStep(float time = 0.f) : _time(time) {}
+
+            operator float () const { return _time; }
+            float AsMiliseconds() const { return _time * 1000.f; }
+
+        private:
+            float _time;
+    };
+
     class Time
     {
     public:
         static void Update();
 
-        static float Now();
-        static float DeltaTime();
-        static float LastTime();
+        static TimeStep Current();
+        static TimeStep DeltaTime();
+        static TimeStep LastTime();
 
     private:
-        static float _lastTime;
-        static float _deltaTime;
-        static float _time;
+        static TimeStep _lastTime;
+        static TimeStep _deltaTime;
+        static TimeStep _time;
     };
 }
 

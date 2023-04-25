@@ -7,16 +7,14 @@
 int main(int argc, char** argv)
 {
 
-    rvl::OnInit();
+    rvl::Scope<rvl::RvlApp> currentApp = rvl::OnInit();
 
-    if (!rvl::CurrentApp)
+    if (!currentApp)
     {
         rvl::Error::PrintErrorS("CurrentApp is not defined");
         return RVL_RUNTIME_ERROR;
     }
-    rvl::status_t exitStatus = rvl::CurrentApp->Run();
-
-    delete rvl::CurrentApp;
+    rvl::status_t exitStatus = currentApp->Run();
 
 #ifdef RVL_END_IMPL
 
