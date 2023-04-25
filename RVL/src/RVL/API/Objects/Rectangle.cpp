@@ -10,6 +10,21 @@
 
 namespace rvl
 {
+    Ref<Rectangle> Rectangle::Create()
+    {
+        return std::make_shared<Rectangle>();
+    }
+
+    Ref<Rectangle> Rectangle::Create(const Vector2f &position, const Vector2f &size, const Vector3f &color)
+    {
+        return std::make_shared<Rectangle>(position, size, color);
+    }
+
+    Ref<Rectangle> Rectangle::Create(float x, float y, float width, float height, const Vector3f &color)
+    {
+        return std::make_shared<Rectangle>(x, y, width, height, color);
+    }
+
     Rectangle::Rectangle() : Entity(0.f, 0.f)
     {
         _color = {1.f, 1.f, 1.f};

@@ -15,12 +15,13 @@ namespace rvl
     class Sprite : public Entity
     {
     public:
-        template <class ... Args>
-        static Ref<Sprite> Create(Args&& ...args);
+        static Ref<Sprite> Create();
+        static Ref<Sprite> Create(const Vector2f& position, float scale = 1.f);
+        static Ref<Sprite> Create(float x, float y, float scale = 1.f);
 
         Sprite();
-        Sprite(const Vector2f& position);
-        Sprite(float x, float y);
+        Sprite(const Vector2f& position, float scale = 1.f);
+        Sprite(float x, float y, float scale = 1.f);
         ~Sprite();
 
         void LoadTexture(const std::string& filename);
@@ -40,16 +41,13 @@ namespace rvl
 
         std::unique_ptr<GLShaderProgram> _shaderProgram;
 
+        float _scale;
+
         void GenerateMesh();
 
         void ResetPosition() override;
     };
 
-    template <class... Args>
-    inline Ref<Sprite> Sprite::Create(Args &&...args)
-    {
-        return std::make_shared<Sprite>(args...);
-    }
 }
 
 #endif

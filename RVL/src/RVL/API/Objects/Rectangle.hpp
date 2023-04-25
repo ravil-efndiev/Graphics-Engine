@@ -14,8 +14,9 @@ namespace rvl
     class Rectangle : public Entity
     {
     public:
-        template <class ... Args>
-        static Ref<Rectangle> Create(Args&& ...args);
+        static Ref<Rectangle> Create();
+        static Ref<Rectangle> Create(const Vector2f& position, const Vector2f& size, const Vector3f& color = {1.f, 1.f, 1.f});
+        static Ref<Rectangle> Create(float x, float y, float width, float height, const Vector3f& color = {1.f, 1.f, 1.f});
 
         Rectangle();
         Rectangle(const Vector2f& position, const Vector2f& size, const Vector3f& color = {1.f, 1.f, 1.f});
@@ -44,11 +45,6 @@ namespace rvl
     };
 
 
-    template <class... Args>
-    inline Ref<Rectangle> Rectangle::Create(Args&& ...args)
-    {
-        return std::make_shared<Rectangle>(args...);
-    }
 }
 
 #endif

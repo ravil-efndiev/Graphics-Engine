@@ -19,7 +19,7 @@ public:
         _sprite1->LoadTexture("a.jpg");
 
         _sprite2 = Sprite::Create(0.f, -3.f);
-        _sprite2->LoadTexture("container.jpg");
+        _sprite2->LoadTexture("floor1.png");
 
     }
 

@@ -8,6 +8,12 @@ namespace rvl
 {
     glm::mat4 Renderer::_projview (1.0f);
 
+    void Renderer::Init()
+    {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
+
     void Renderer::SubmitGeometry(GLVertexArray &vertexArray, GLShaderProgram &shader)
     {
         shader.Bind();

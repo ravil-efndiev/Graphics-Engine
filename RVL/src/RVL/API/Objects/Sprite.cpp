@@ -15,11 +15,26 @@ namespace rvl
 {
     int Sprite::_unit = 0;
 
-    Sprite::Sprite() : Entity(0.f, 0.f) {}
+    Ref<Sprite> Sprite::Create()
+    {
+        return std::make_shared<Sprite>();
+    }
 
-    Sprite::Sprite(const Vector2f& position) : Entity(position) {}
+    Ref<Sprite> Sprite::Create(const Vector2f &position, float scale)
+    {
+        return std::make_shared<Sprite>(position, scale);
+    }
 
-    Sprite::Sprite(float x, float y) : Entity(x, y) {}   
+    Ref<Sprite> Sprite::Create(float x, float y, float scale)
+    {
+        return std::make_shared<Sprite>(x, y, scale);
+    }
+
+    Sprite::Sprite() : Entity(0.f, 0.f), _scale(0.f) {}
+
+    Sprite::Sprite(const Vector2f& position, float scale) : Entity(position), _scale(scale) {}
+
+    Sprite::Sprite(float x, float y, float scale) : Entity(x, y), _scale(scale) {}   
 
     Sprite::~Sprite() {}
 
@@ -47,10 +62,10 @@ namespace rvl
 
         _positionVbo = std::make_shared<GLVertexBuffer>(std::vector<glm::vec3>(
             {
-                {-ratio + _position.X(), -1 + _position.Y(), 0.0f},
-                {ratio + _position.X(), -1  + _position.Y(), 0.0f},
-                {ratio + _position.X(), 1  + _position.Y(), 0.0f},
-                {-ratio  + _position.X(), 1 + _position.Y(), 0.0f},
+                {-ratio * _scale + _position.X(), -_scale + _position.Y(), 0.0f},
+                {ratio * _scale + _position.X(), -_scale  + _position.Y(), 0.0f},
+                {ratio * _scale + _position.X(), _scale  + _position.Y(), 0.0f},
+                {-ratio * _scale + _position.X(), _scale + _position.Y(), 0.0f},
             }
         ));
 
@@ -87,13 +102,16 @@ namespace rvl
 
     void Sprite::ResetPosition()
     {
+        float ratio = (float)_texture->GetWidth() / (float)_texture->GetHeight();
+        RVL_LOG("changed sprite position" << ratio);
+
         GLVertexBuffer newPos
         (
             {
-                {-1  + _position.X(), -1 + _position.Y(), 0.0f},
-                {1 + _position.X(), -1  + _position.Y(), 0.0f},
-                {1 + _position.X(), 1  + _position.Y(), 0.0f},
-                {-1  + _position.X(), 1 + _position.Y(), 0.0f},
+                {-ratio * _scale + _position.X(), -_scale + _position.Y(), 0.0f},
+                {ratio * _scale + _position.X(), -_scale  + _position.Y(), 0.0f},
+                {ratio * _scale + _position.X(), _scale  + _position.Y(), 0.0f},
+                {-ratio * _scale + _position.X(), _scale + _position.Y(), 0.0f},
             }
         );
 
