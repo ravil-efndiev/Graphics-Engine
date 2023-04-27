@@ -24,8 +24,12 @@ namespace rvl
         virtual void Update() = 0;
         virtual void Render() = 0;
 
+        void SetClearColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha);
+
     private:
         Scope<Window> _window;
+
+        std::array<GLclampf, 4> _clearColor;
 
         void CreateWindow(int windowWidth, int windowHeight, const std::string& windowName);
 

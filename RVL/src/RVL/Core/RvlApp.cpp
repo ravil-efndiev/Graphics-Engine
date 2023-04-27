@@ -33,7 +33,7 @@ namespace rvl
 
             while (!_window->Closes())
             {
-                Renderer::Clear();
+                Renderer::Clear(_clearColor[0], _clearColor[1], _clearColor[2], _clearColor[3]);
                 Time::Update();
 
                 Update();
@@ -52,7 +52,12 @@ namespace rvl
         }
     }
 
-    void RvlApp::CreateWindow(int windowWidth, int windowHeight, const std::string& windowName)
+    void RvlApp::SetClearColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha)
+    {
+        _clearColor = {red, green, blue, alpha};
+    }
+
+    void RvlApp::CreateWindow(int windowWidth, int windowHeight, const std::string &windowName)
     {
         _window = std::make_unique<Window>(windowWidth, windowHeight, windowName);
 
