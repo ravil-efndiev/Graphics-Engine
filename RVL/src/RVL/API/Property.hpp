@@ -1,7 +1,7 @@
 #ifndef RVL_PROPERTY_HPP
 #define RVL_PROPERTY_HPP
 
-#include <Rvlpch.hpp>
+#include <Core/Core.hpp>
 
 namespace rvl
 {
@@ -10,6 +10,7 @@ namespace rvl
     {
     public:
         Property();
+        Property(T* valuePtr);
         Property(
             T* valuePtr,
             const std::function<T()>& get,
@@ -40,8 +41,16 @@ namespace rvl
 {
     template <class T>
     Property<T>::Property()
-    {
+    {   
         _valuePtr = nullptr;
+        _get = nullptr;
+        _set = nullptr;
+    }
+
+    template <class T>
+    Property<T>::Property(T* valuePtr)
+    {
+        _valuePtr = valuePtr;
         _get = [this]() -> const T&
         {
             return *_valuePtr;

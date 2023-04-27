@@ -26,8 +26,11 @@ namespace rvl
 
         void Draw() override;
 
-        Vector3f GetColor() const;
+        Property<float> Width;
+        Property<float> Height;
+
         void SetColor(const Vector3f& color);
+        Vector3f Color();
 
     private:
         float _width, _height;
@@ -42,6 +45,9 @@ namespace rvl
 
         void GenerateMesh();
         void ResetPosition() override;  
+        void ResetColor();  
+
+        void InitProps();
     };
 
 

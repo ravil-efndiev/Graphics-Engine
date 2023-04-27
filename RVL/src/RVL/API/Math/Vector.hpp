@@ -90,7 +90,7 @@ namespace rvl
         }
     };
 
-    template<class T>
+     template<class T>
     class Vector<T, 3>
     {
     public:
@@ -98,8 +98,8 @@ namespace rvl
         Vector(T x, T y, T z) : _x(x), _y(y), _z(z) {}
         Vector(const Vector<T, 2>& vec2, T z)
         {
-            _x = vec2.x;
-            _y = vec2.y;
+            _x = vec2._x;
+            _y = vec2._y;
             _z = z;
         }
         ~Vector() {}

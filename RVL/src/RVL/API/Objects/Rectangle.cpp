@@ -30,6 +30,8 @@ namespace rvl
         _color = {1.f, 1.f, 1.f};
         _width = 1.f;
         _height = 1.f;
+
+        InitProps();
     }
 
     Rectangle::Rectangle(const Vector2f &position, const Vector2f &size, const Vector3f &color) : _color(color)
@@ -37,6 +39,7 @@ namespace rvl
         _width = size.X();
         _height = size.Y();
 
+        InitProps();
         GenerateMesh();
     }
 
@@ -44,6 +47,7 @@ namespace rvl
     {
         _position = Vector2f(x, y);
 
+        InitProps();
         GenerateMesh();
     }
     
@@ -54,33 +58,62 @@ namespace rvl
         Renderer::SubmitGeometry(*_vao, *_shaderProgram);
     }
 
-    Vector3f Rectangle::GetColor() const
+    void Rectangle::SetColor(const Vector3f& color)
+    {
+        _color = color;
+        ResetColor();
+    }
+
+    Vector3f Rectangle::Color()
     {
         return _color;
     }
 
-    void Rectangle::SetColor(const Vector3f &color)
+    void Rectangle::InitProps()
     {
-        _color = color;
+        Width = Property<float>(
+            &_width,
+            [this]() -> float { return _width; },
+            [this](float value) 
+            { 
+                _width = value; 
+                ResetPosition();
+            }
+        );
+
+        Height = Property<float>(
+            &_height,
+            [this]() -> float { return _height; },
+            [this](float value) 
+            { 
+                _height = value; 
+                ResetPosition();
+            }
+        );
     }
 
     void Rectangle::GenerateMesh()
     {
         _vao = std::make_shared<GLVertexArray>();
-        _positionVbo = std::make_shared<GLVertexBuffer>(std::vector<glm::vec3>(
+        _positionVbo = std::make_shared<GLVertexBuffer>(std::vector<glm::vec3>
             {
                 {-(_width/2)  + _position.X(), -(_height/2) + _position.Y(), 0.0f},
                 {_width/2 + _position.X(), -(_height/2) + _position.Y(), 0.0f},
                 {_width/2 + _position.X(), _height/2 + _position.Y(), 0.0f},
                 {-(_width/2)  + _position.X(), _height/2 + _position.Y(), 0.0f},
             }
-        ));
+        );
 
-        glm::vec3 glmColor = glm::vec3(_color.X(), _color.Y(), _color.Z());
+        RVL_LOG(_color.X());
 
-        _colorVbo = std::make_shared<GLVertexBuffer>(std::vector<glm::vec3>(
-            {glmColor, glmColor, glmColor, glmColor}
-        ));
+        _colorVbo = std::make_shared<GLVertexBuffer>(std::vector<glm::vec3>
+            {
+                {_color.X(), _color.Y(), _color.Z()},
+                {_color.X(), _color.Y(), _color.Z()},
+                {_color.X(), _color.Y(), _color.Z()},
+                {_color.X(), _color.Y(), _color.Z()},
+            }
+        );
 
         _indicies = std::make_shared<GLIndexBuffer>(std::vector<uint32_t>({0, 1, 2, 2, 3, 0}));
 
@@ -107,5 +140,21 @@ namespace rvl
         );
 
         _vao->ResetVertexBuffer(RVL_POSITION_LOCATION, newPos);
+    }
+
+    void Rectangle::ResetColor()
+    {
+        GLVertexBuffer newColor
+        (
+            std::vector<glm::vec3>
+            {
+                {_color.X(), _color.Y(), _color.Z()},
+                {_color.X(), _color.Y(), _color.Z()},
+                {_color.X(), _color.Y(), _color.Z()},
+                {_color.X(), _color.Y(), _color.Z()},
+            }
+        );
+
+        _vao->ResetVertexBuffer(RVL_COLOR_LOCATION, newColor);
     }
 }
