@@ -1,6 +1,6 @@
 # RVL-Engine
 
-### current version: 1.0-a (alpha)
+### current version: 1.0-a (alpha) (mac build)
 
 RVL Engine is a game developement framkework for C++ and OpenGL
 
