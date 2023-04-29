@@ -12,7 +12,7 @@ namespace name
 
     void Game::Start()
     {
-        SetClearColor(1.f, 0.f, 0.f, 1.f);
+        SetClearColor(0.3f, 0.5f, 0.5f, 1.f);
         _currentScene = CreateRef<MainScene>();
         _currentScene->Start();
     }

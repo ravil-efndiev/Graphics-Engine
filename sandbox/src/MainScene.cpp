@@ -39,7 +39,9 @@ namespace name
         _camera->Position = _rect->Position();
 
         if (Input::IsKeyPressedOnce(Keys::RVL_KEY_SPACE))
-            _rect->SetColor({0.5f, 1.f, 1.f});
+            _sprite1->Position = {Input::GetCursorPosition().x, Input::GetCursorPosition().y};
+
+        RVL_LOG(Input::GetCursorPosition().x << " " << Input::GetCursorPosition().y);
     }
 
     void MainScene::Render()

@@ -11,8 +11,10 @@ namespace rvl
     class PerspectiveCamera;
     class OrthographicCamera;
 
+
     class Renderer
     {
+    friend class Input;
     public:
         static void Init();
 
@@ -23,12 +25,15 @@ namespace rvl
         static void CreateScene2D(OrthographicCamera& camera, float viewportWidth, float viewportHeight);
         static void CreateScene3D(PerspectiveCamera& camera, float viewportWidth, float viewportHeight);
 
-        static void GetVeiwport(int rViewport[2]);
+        static void GetViewport(int rViewport[2]);
+
+        static glm::vec2 ConvertToWorldCoords(double x, double y);
 
     private:
         static inline void DrawIndicies(GLVertexArray& vertexArray);
 
         static glm::mat4 _projview;
+        static glm::mat4 _projection;
 
     };
 }

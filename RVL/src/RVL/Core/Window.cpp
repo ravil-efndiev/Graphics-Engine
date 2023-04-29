@@ -67,6 +67,14 @@ namespace rvl
                 callback->EventCallback(&event);
             }
         });
+
+        glfwSetCursorPosCallback(_window, [](GLFWwindow* window, double x, double y) 
+        {
+            EventCallbackStruct* callback = static_cast<EventCallbackStruct*>(glfwGetWindowUserPointer(window));
+
+            CursorPosEvent event (x, y);
+            callback->EventCallback(&event);
+        });
     }
 
     bool Window::Closes()

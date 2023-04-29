@@ -6,5 +6,6 @@
 
 #include "KeyEvents.hpp"
 #include "WindowEvents.hpp"
+#include "CursorEvents.hpp"
 
 #endif

@@ -21,8 +21,6 @@ namespace rvl
         void Bind();
         void Unbind();
 
-        void Draw();
-
         std::shared_ptr<GLIndexBuffer> GetIndexBuffer();
 
         void BindIndexBuffer();

@@ -1,6 +1,8 @@
 #include "Input.hpp"
 #include <Core/EventListener.hpp>
 
+#include <Rendering/Renderer/Renderer.hpp>
+
 namespace rvl
 {
     bool Input::IsKeyPressed(keycode_e keycode)
@@ -19,5 +21,10 @@ namespace rvl
         if (realKeycode >= MOUSE_BUTTONS_OFFSET)
             throw Error("passed mouse button code in KeyPressed function", RVL_RUNTIME_ERROR);
         return EventListener::GetKeyWithFrame(realKeycode);
+    }
+
+    glm::vec2 Input::GetCursorPosition()
+    {
+        return Renderer::ConvertToWorldCoords(EventListener::GetCursorPosX(), EventListener::GetCursorPosY());
     }
 }

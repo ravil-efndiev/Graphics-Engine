@@ -2,6 +2,7 @@
 #define RVL_INPUT_HPP
 
 #include <Core/Core.hpp>
+#include <glm/glm.hpp>
 
 namespace rvl
 {    
@@ -28,6 +29,14 @@ namespace rvl
         */
         static bool IsKeyPressedOnce(keycode_e keycode);
 
+        /**
+         * @brief Get current cursor position
+         * 
+         * @returns pair containing x and y of cursor position
+         *
+         * @ingroup input
+        */
+        static glm::vec2 GetCursorPosition();
 
     private:
 

@@ -10,6 +10,7 @@ add_library(RVL STATIC
     src/RVL/Core/EventListener.cpp
     src/RVL/Events/KeyEvents.cpp
     src/RVL/Events/WindowEvents.cpp
+    src/RVL/Events/CursorEvents.cpp
     src/RVL/Rendering/OpenGL/GLContext.cpp
     src/RVL/Rendering/OpenGL/GLBuffer.cpp
     src/RVL/Rendering/OpenGL/GLTexture.cpp

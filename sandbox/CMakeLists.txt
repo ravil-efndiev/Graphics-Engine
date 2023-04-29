@@ -12,6 +12,7 @@ target_include_directories(sandbox PRIVATE .)
 target_include_directories(sandbox PRIVATE ../RVL/src/RVL)
 target_include_directories(sandbox PRIVATE ../RVL/src)
 target_include_directories(sandbox PRIVATE ../RVL/)
+target_include_directories(sandbox PRIVATE vendor/)
 
 include(GNUInstallDirs)
 set(CMAKE_CXX_FLAGS "-framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -framework CoreFoundation -Wno-deprecated")

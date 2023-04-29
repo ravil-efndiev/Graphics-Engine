@@ -30,7 +30,7 @@ namespace rvl
         if (!_camera) throw Error("camera was not initialized during scene creation", RVL_RUNTIME_ERROR);
 
         int viewport[2];
-        Renderer::GetVeiwport(viewport);
+        Renderer::GetViewport(viewport);
 
         Renderer::CreateScene2D(*_camera->_camera, viewport[0], viewport[1]);
     }

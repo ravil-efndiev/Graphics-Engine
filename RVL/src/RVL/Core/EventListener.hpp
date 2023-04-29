@@ -12,21 +12,27 @@ namespace rvl
     public:
         static void Init();
 
-        static void Listen(const Event *event);
+        static void Listen(const Event* event);
 
         static bool GetKey(keycode_t keycode);
         static bool GetKeyWithFrame(keycode_t keycode);
+
+        static double GetCursorPosX();
+        static double GetCursorPosY();
 
         static void PollEvents();
 
     private:
         static std::array<bool, 1032> _keysPressed;
         static std::array<int, 1032> _changeFrames;
+        static double _cursorPosX;
+        static double _cursorPosY;
 
         static int _currentFrame;
 
-        static void ListenWindowEvents(const Event *event);
-        static void ListenKeyEvents(const Event *event);
+        static void ListenWindowEvents(const Event* event);
+        static void ListenKeyEvents(const Event* event);
+        static void ListenCursorEvents(const Event* event);
 
     };
 }

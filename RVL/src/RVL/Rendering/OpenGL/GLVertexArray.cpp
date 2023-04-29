@@ -54,17 +54,6 @@ namespace rvl
         glBindVertexArray(0);
     }
 
-    void GLVertexArray::Draw()
-    {     
-        Bind();
-
-        _indexBuffer->Bind();
-        glDrawElements(GL_TRIANGLES, _indexBuffer->GetIndiciesCount(), GL_UNSIGNED_INT, nullptr);
-        _indexBuffer->Unbind();
-
-        Unbind();
-    }
-
     std::shared_ptr<GLIndexBuffer> GLVertexArray::GetIndexBuffer()
     {
         return _indexBuffer;
