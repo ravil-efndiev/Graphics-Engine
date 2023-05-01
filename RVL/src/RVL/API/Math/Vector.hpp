@@ -117,12 +117,6 @@ namespace rvl
         void SetY(T y) { _y = y; }
         void SetZ(T z) { _z = z; }
 
-        void operator=(const Vector& vec)
-        {
-            _x = vec._x;
-            _y = vec._y;
-            _z = vec._z;
-        }
         void operator+=(const Vector& vec)
         {
             _x += vec._x; 

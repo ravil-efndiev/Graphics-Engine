@@ -11,6 +11,7 @@
 #include "Rendering/Renderer/OrthographicCamera.hpp"
 
 #include "API/Time.hpp"
+#include "API/Random.hpp"
 
 #include <Rvlglpch.hpp>
 
@@ -29,6 +30,8 @@ namespace rvl
         try
         {
             EventListener::Init();
+            Random::Init();
+            
             Start();
 
             while (!_window->Closes())

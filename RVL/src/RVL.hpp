@@ -30,5 +30,6 @@
 #include "RVL/Core/RvlScene.hpp"
 #include "RVL/API/Input.hpp"
 #include "RVL/API/Time.hpp"
+#include "RVL/API/Random.hpp"
 
 #endif

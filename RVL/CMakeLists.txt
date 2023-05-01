@@ -21,6 +21,7 @@ add_library(RVL STATIC
     src/RVL/Rendering/Renderer/PerspectiveCamera.cpp
     src/RVL/API/Input.cpp
     src/RVL/API/Time.cpp
+    src/RVL/API/Random.cpp
     src/RVL/API/Objects/Rectangle.cpp
     src/RVL/API/Objects/Sprite.cpp
     src/RVL/API/Objects/Entity.cpp

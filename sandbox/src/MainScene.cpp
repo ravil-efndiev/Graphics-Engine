@@ -39,9 +39,7 @@ namespace name
         _camera->Position = _rect->Position();
 
         if (Input::IsKeyPressedOnce(Keys::RVL_KEY_SPACE))
-            _sprite1->Position = {Input::GetCursorPosition().x, Input::GetCursorPosition().y};
-
-        RVL_LOG(Input::GetCursorPosition().x << " " << Input::GetCursorPosition().y);
+            _sprite3->Position = {Input::GetCursorPosition().x, Input::GetCursorPosition().y};
     }
 
     void MainScene::Render()

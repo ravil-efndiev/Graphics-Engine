@@ -43,9 +43,10 @@ namespace rvl
         GenerateMesh();
     }
 
-    Rectangle::Rectangle(float x, float y, float width, float height, const Vector3f &color) : _width(width), _height(height), _color(color) 
+    Rectangle::Rectangle(float x, float y, float width, float height, const Vector3f &color) : _width(width), _height(height) 
     {
         _position = Vector2f(x, y);
+        _color = color;
 
         InitProps();
         GenerateMesh();
@@ -103,8 +104,6 @@ namespace rvl
                 {-(_width/2)  + _position.X(), _height/2 + _position.Y(), 0.0f},
             }
         );
-
-        RVL_LOG(_color.X());
 
         _colorVbo = std::make_shared<GLVertexBuffer>(std::vector<glm::vec3>
             {

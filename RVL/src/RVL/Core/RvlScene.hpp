@@ -11,6 +11,8 @@ namespace rvl
     class PerspectiveCamera;
     class OrthographicCamera;
 
+    typedef UserOrthographicCamera Camera;
+
     class RvlScene
     {
     friend class RvlApp;
@@ -24,8 +26,6 @@ namespace rvl
         virtual void Render();
 
     protected:
-        typedef UserOrthographicCamera Camera;
-
         Ref<UserOrthographicCamera> _camera;
 
     private:

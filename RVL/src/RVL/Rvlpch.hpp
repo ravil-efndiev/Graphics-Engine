@@ -12,6 +12,7 @@
 #include <fstream>
 #include <ios>
 #include <memory>
+#include <random>
 #include <functional>
 
 typedef uint32_t GLbitfield;

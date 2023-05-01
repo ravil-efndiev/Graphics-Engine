@@ -32,3 +32,4 @@ rvl::Scope<rvl::RvlApp> rvl::OnInit()
 {
     return rvl::CreateScope<name::Game>();
 }
+
