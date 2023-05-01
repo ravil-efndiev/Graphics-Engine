@@ -26,6 +26,12 @@ namespace rvl
         Property<T>& operator*= (const T& value);
         Property<T>& operator/= (const T& value);
 
+        bool operator> (const T& value);
+        bool operator< (const T& value);
+        bool operator==(const T& value);
+        bool operator>=(const T& value);
+        bool operator<=(const T& value);
+
         T* operator-> ();
 
     private:
@@ -116,6 +122,36 @@ namespace rvl
     T* Property<T>::operator->()
     {
         return _valuePtr;
+    }
+
+    template <class T>
+    inline bool Property<T>::operator>(const T &value)
+    {
+        return *_valuePtr > value;
+    }
+
+    template <class T>
+    inline bool Property<T>::operator<(const T &value)
+    {
+        return *_valuePtr < value;
+    }
+
+    template <class T>
+    inline bool Property<T>::operator==(const T &value)
+    {
+        return *_valuePtr == value;
+    }
+
+    template <class T>
+    inline bool Property<T>::operator>=(const T &value)
+    {
+        return *_valuePtr >= value;
+    }
+
+    template <class T>
+    inline bool Property<T>::operator<=(const T &value)
+    {
+        return *_valuePtr <= value;
     }
 }
 
