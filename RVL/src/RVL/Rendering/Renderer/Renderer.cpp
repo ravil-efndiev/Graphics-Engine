@@ -1,6 +1,7 @@
 #include "Renderer.hpp"
 #include "Rendering/OpenGL/GLVertexArray.hpp"
 #include "Rendering/OpenGL/GLShaderProgram.hpp"
+#include "Rendering/OpenGL/GLTexture.hpp"
 #include "OrthographicCamera.hpp"
 #include "PerspectiveCamera.hpp"
 
@@ -8,13 +9,74 @@ namespace rvl
 {
     glm::mat4 Renderer::_projview (1.0f);
 
+    Ref<GLShaderProgram> Renderer::_flatColorShader;
+    Ref<GLShaderProgram> Renderer::_textureShader;
+    Ref<GLVertexArray> Renderer::_rectVao;
+
+    glm::vec3 Renderer::_clearColor;
+
     void Renderer::Init()
     {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        _rectVao = CreateRef<GLVertexArray>();
+
+        Ref<GLVertexBuffer> rectVbo = CreateRef<GLVertexBuffer>(std::vector<glm::vec3>
+            {
+                {-0.5f, -0.5f, 0.0f},
+                {0.5f, -0.5f, 0.0f},
+                {0.5f, 0.5f, 0.0f},
+                {-0.5f, 0.5f, 0.0f},
+            }
+        );
+
+        Ref<GLVertexBuffer> rectTextureCoords = CreateRef<GLVertexBuffer>(std::vector<glm::vec2>
+            {
+                {0.0f, 0.0f},
+                {1.0f, 0.0f},
+                {1.0f, 1.0f},
+                {0.0f, 1.0f}
+            }
+        );
+
+        Ref<GLIndexBuffer> rectIndicies = CreateRef<GLIndexBuffer>(
+            std::vector<uint32_t> {0, 1, 2, 2, 3, 0}
+        );
+
+        _rectVao->AddVertexBuffer(rectVbo);
+        _rectVao->AddVertexBuffer(rectTextureCoords);
+        _rectVao->AddIndexBuffer(rectIndicies);
+
+        _flatColorShader = CreateRef<GLShaderProgram>("../RVL/res/shaders/main.vert", "../RVL/res/shaders/main.frag");
+        _flatColorShader->BindAttribute(RVL_POSITION_LOCATION, "position");
+        _flatColorShader->Link();
+
+        _textureShader = CreateRef<GLShaderProgram>("../RVL/res/shaders/textured.vert", "../RVL/res/shaders/textured.frag");
+        _textureShader->BindAttribute(0, "position");
+        _textureShader->BindAttribute(1, "coords");
+        _textureShader->Link();
     }
 
-    void Renderer::SubmitGeometry(GLVertexArray &vertexArray, GLShaderProgram &shader)
+    void Renderer::CreateScene(OrthographicCamera& camera, float viewportWidth, float viewportHeight)
+    {
+        _projview = camera.GetProjectionMatrix(viewportWidth, viewportHeight) * camera.GetViewMatrix();
+
+        _flatColorShader->Bind();
+        _flatColorShader->SetUniform("u_Projview", _projview);
+
+        _textureShader->Bind();
+        _textureShader->SetUniform("u_Projview", _projview);
+    }
+
+    void Renderer::ShutdownScene()
+    {
+        _flatColorShader->Unbind();
+        _textureShader->Unbind();
+        _projview = glm::mat4(1.f);
+    }
+
+    void Renderer::SubmitGeometry(GLVertexArray& vertexArray, GLShaderProgram& shader)
     {
         shader.Bind();
         shader.SetUniform("projview", _projview);
@@ -22,10 +84,34 @@ namespace rvl
         shader.Unbind();
     }
 
-    void Renderer::Clear(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha)
+    void Renderer::DrawRect(const Transform& transform, const glm::vec3& color)
     {
-        glClearColor(red, green, blue, alpha);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        _flatColorShader->Bind();
+        _flatColorShader->SetUniform("u_Color", glm::vec4(color, 1.f));
+
+        auto rTransform = const_cast<Transform&>(transform);
+
+        _flatColorShader->SetUniform("u_Transform", rTransform.GetMatrix());
+
+        DrawIndicies(*_rectVao);
+        _flatColorShader->Unbind();
+    }
+
+    void Renderer::DrawRect(const Transform& transform, const GLTexture& texture)
+    {
+        _textureShader->Bind();
+
+        auto rTransform = const_cast<Transform&>(transform);
+
+        _textureShader->SetUniform("u_Transform", rTransform.GetMatrix());
+
+        _textureShader->SetUniform("u_Texture", texture.GetUnit());
+
+        texture.Bind();
+        DrawIndicies(*_rectVao);
+        texture.Unbind();
+
+        _textureShader->Unbind();
     }
 
     inline void Renderer::DrawIndicies(GLVertexArray& vertexArray)
@@ -37,14 +123,15 @@ namespace rvl
         vertexArray.Unbind();
     }
 
-    void Renderer::CreateScene2D(OrthographicCamera& camera, float viewportWidth, float viewportHeight)
+    void Renderer::SetClearColor(const glm::vec3& clearColor)
     {
-        _projview = camera.GetProjectionMatrix(viewportWidth, viewportHeight) * camera.GetViewMatrix();
+        _clearColor = clearColor;
     }
 
-    void Renderer::CreateScene3D(PerspectiveCamera& camera, float viewportWidth, float viewportHeight)
+    void Renderer::Clear()
     {
-        _projview = camera.GetProjectionMatrix(viewportWidth, viewportHeight) * camera.GetViewMatrix();
+        glClearColor(_clearColor.r, _clearColor.g, _clearColor.b, 1.f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
     void Renderer::GetViewport(int rViewport[2])

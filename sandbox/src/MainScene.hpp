@@ -3,6 +3,8 @@
 
 #include <RVL.hpp>
 
+#include <Rendering/OpenGL/GLTexture.hpp>
+
 namespace name
 {
     class MainScene : public rvl::RvlScene
@@ -16,10 +18,11 @@ namespace name
         void Render() override;
 
     private:
-        rvl::Ref<rvl::Sprite> _sprite1;
-        rvl::Ref<rvl::Sprite> _sprite2;
-        rvl::Ref<rvl::Sprite> _sprite3;
+        rvl::Ref<rvl::GLTexture> _texture;
+        rvl::Ref<rvl::GLTexture> _texture2;
         rvl::Ref<rvl::Rectangle> _rect;
+
+        rvl::Ref<rvl::Sprite> _sprite;
     };
 }
 

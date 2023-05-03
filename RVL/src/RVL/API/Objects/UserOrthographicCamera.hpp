@@ -1,37 +1,38 @@
 #ifndef RVL_USERORTHOGRAPHICCAMERA_HPP
 #define RVL_USERORTHOGRAPHICCAMERA_HPP
 
-#include "Entity.hpp"
 #include <Core/Core.hpp>
+#include <Rendering/Renderer/OrthographicCamera.hpp>
 
 namespace rvl
 {
-    class OrthographicCamera;
-
     class UserOrthographicCamera
     {
-    friend class RvlScene;
     public:
-        static Ref<UserOrthographicCamera> Create(const Vector2f& position = {0.f, 0.f}, int zoom = 50);
+        static Ref<UserOrthographicCamera> Create(const glm::vec2& position = {0.f, 0.f}, float zoom = 1.f);
 
-        Property<Vector2f> Position;
-
-        UserOrthographicCamera(const Vector2f& position = {0.f, 0.f}, int zoom = 50);
+        UserOrthographicCamera(const glm::vec2& position = {0.f, 0.f}, float zoom = 1.f);
         ~UserOrthographicCamera();
 
-        int Zoom() const;
-        void SetZoom(int zoom);
+        float GetZoom() const;
+        void SetZoom(float zoom);
+
+        void SetPosition(const glm::vec2& position);
+        glm::vec2 GetPosition() const;
+
+        void SetRotationZ(float rotation);
+        float GetRotationZ() const;
+
+        // Debug method: increases or decreases camera zoom whene + or - buttons are pressed
+        void UpdateZoomChange();
+
+        // Debug method: moves camera on arrow keys
+        void UpdateMovement(float speed);
+
+        Ref<OrthographicCamera> GetCamera();
 
     private:
-        // must not be changed from a friend class
-        int _zoom;
-
-        // must not be changed from a friend class
-        Vector2f _position;
-
-        std::function<void()> _onPositionChange;
-
-        std::shared_ptr<OrthographicCamera> _camera;
+        Ref<OrthographicCamera> _camera;
     };
 }
 

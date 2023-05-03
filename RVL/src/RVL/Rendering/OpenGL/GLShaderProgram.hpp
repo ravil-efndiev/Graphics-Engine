@@ -17,7 +17,9 @@ namespace rvl
         void LoadSource(const std::string& vertexShaderSoruce, const std::string& fragmentShaderSource);
 
         void BindAttribute(GLuint index, const std::string& name);
-        void SetUniform(const std::string &name, const glm::mat4 &uniform);
+        
+        void SetUniform(const std::string &name, const glm::mat4& uniform);
+        void SetUniform(const std::string &name, const glm::vec4& uniform);
         void SetUniform(const std::string &name, int uniform);
 
         void Link();

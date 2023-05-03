@@ -1,5 +1,8 @@
 #include "MainScene.hpp"
 
+#include <Rendering/Renderer/Renderer.hpp>
+#include <Rendering/Renderer/OrthographicCamera.hpp>
+
 namespace name
 {
     using namespace rvl;
@@ -9,44 +12,48 @@ namespace name
 
     void MainScene::Start()
     {
-        _camera = Camera::Create();
-        _rect = Rectangle::Create(0.f, 0.f, 2.f, 3.f, {0.f, 1.f, 1.f});
+        _camera = Camera::Create({0.f, 0.f}, 15.f);
 
-        _sprite1 = Sprite::Create(-3.f, 0.f);
-        _sprite1->LoadTexture("a.jpg");
+        _rect = Rectangle::Create({0.f, 0.f, 0.f}, {3.f, 3.f}, {0.8f, 0.4f, 0.4f});
 
-        _sprite2 = Sprite::Create(3.f, 0.f);
-        _sprite2->LoadTexture("container.jpg");
+        _texture = CreateRef<GLTexture>("container.jpg");
+        _texture2 = CreateRef<GLTexture>("floor1.png");
 
-        _sprite3 = Sprite::Create(0.f, -3.f);
-        _sprite3->LoadTexture("floor1.png");
+        _sprite = Sprite::Create({-5.f, -5.f, 0.f}, 2.f);
+        _sprite->LoadTexture("a.jpg");
     }
 
-    void MainScene::Update()
+    void MainScene::Update() 
     {
-        if (Input::IsKeyPressed(Keys::RVL_KEY_A))
-            _rect->Position->X -= 7.f * Time::DeltaTime();
-            
-        if (Input::IsKeyPressed(Keys::RVL_KEY_D))
-            _rect->Position->X += 7.f * Time::DeltaTime();
+        _camera->UpdateZoomChange();
+        _camera->UpdateMovement(20.f);
 
-        if (Input::IsKeyPressed(Keys::RVL_KEY_S))
-            _rect->Position->Y -= 7.f * Time::DeltaTime();
+        if (Input::IsKeyPressed(Keys::RVL_KEY_D))
+            _rect->transform->Position.x += 5.f * Time::DeltaTime();
+
+        if (Input::IsKeyPressed(Keys::RVL_KEY_A))
+            _rect->transform->Position.x -= 5.f * Time::DeltaTime();
 
         if (Input::IsKeyPressed(Keys::RVL_KEY_W))
-            _rect->Position->Y += 7.f * Time::DeltaTime();
+            _rect->transform->Position.y += 5.f * Time::DeltaTime();
 
-        _camera->Position = _rect->Position();
-
-        if (Input::IsKeyPressedOnce(Keys::RVL_KEY_SPACE))
-            _sprite3->Position = {Input::GetCursorPosition().x, Input::GetCursorPosition().y};
+        if (Input::IsKeyPressed(Keys::RVL_KEY_S))
+            _rect->transform->Position.y -= 5.f * Time::DeltaTime();
     }
 
     void MainScene::Render()
     {
+        Renderer::DrawRect({{1.5f, -1.f, 0.f}, 0.f, {5.f, 3.f}}, {1.f, 0.3f, 1.f});
+        Renderer::DrawRect({{-3.f, 5.f, 0.f}, 0.f, {2.f, 4.f}}, {0.5f, 0.5f, 1.f});
+
+        Renderer::DrawRect({{4.f, 4.f, 0.f}, 45.f, {2.f, 2.f}}, *_texture);
+        Renderer::DrawRect({{-4.f, -4.f, 0.f}, 0.f, {2.f, 2.f}}, *_texture2);
+
+        // Renderer::DrawRect(_rect->transform(), _rect->GetColor());
+        // Renderer::DrawRect(_sprite->transform(), *_sprite->GetTexture());
+
         _rect->Draw();
-        _sprite1->Draw();
-        _sprite2->Draw();
-        _sprite3->Draw();
+        _sprite->Draw();
+
     }
-}
+} 

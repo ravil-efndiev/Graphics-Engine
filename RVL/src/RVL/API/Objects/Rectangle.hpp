@@ -1,8 +1,9 @@
 #ifndef RVL_RECTANGLE_HPP
 #define RVL_RECTANGLE_HPP
 
-#include <API/Objects/Entity.hpp>
 #include <Core/Core.hpp>
+#include <API/Property.hpp>
+#include <Rendering/Renderer/Transform.hpp>
 
 namespace rvl
 {
@@ -11,46 +12,30 @@ namespace rvl
     class GLVertexArray;
     class GLShaderProgram;
 
-    class Rectangle : public Entity
+    class Rectangle
     {
     public:
         static Ref<Rectangle> Create();
-        static Ref<Rectangle> Create(const Vector2f& position, const Vector2f& size, const Vector3f& color = {1.f, 1.f, 1.f});
-        static Ref<Rectangle> Create(float x, float y, float width, float height, const Vector3f& color = {1.f, 1.f, 1.f});
+        static Ref<Rectangle> Create(const Transform& transform, const glm::vec3& color);
+        static Ref<Rectangle> Create(const glm::vec3& position, const glm::vec2& size, const glm::vec3& color = {1.f, 1.f, 1.f});
 
         Rectangle();
-        Rectangle(const Vector2f& position, const Vector2f& size, const Vector3f& color = {1.f, 1.f, 1.f});
-        Rectangle(float x, float y, float width, float height, const Vector3f& color = {1.f, 1.f, 1.f});
-
+        Rectangle(const Transform& transform, const glm::vec3& color);
+        Rectangle(const glm::vec3& position, const glm::vec2& size, const glm::vec3& color = {1.f, 1.f, 1.f});
         ~Rectangle();
 
-        void Draw() override;
+        void Draw();
 
-        Property<float> Width;
-        Property<float> Height;
+        Property<Transform> transform = {&_transform};
 
-        void SetColor(const Vector3f& color);
-        Vector3f Color();
+        glm::vec3 GetColor() const;
+        void SetColor(const glm::vec3& color);
 
     private:
-        float _width, _height;
-        Vector3f _color;
-        
-        std::shared_ptr<GLVertexArray> _vao;
-        std::shared_ptr<GLVertexBuffer> _positionVbo;
-        std::shared_ptr<GLVertexBuffer> _colorVbo;
-        std::shared_ptr<GLIndexBuffer> _indicies;
+        Transform _transform;
 
-        std::unique_ptr<GLShaderProgram> _shaderProgram;
-
-        void GenerateMesh();
-        void ResetPosition() override;  
-        void ResetColor();  
-
-        void InitProps();
+        glm::vec3 _color;
     };
-
-
 }
 
 #endif

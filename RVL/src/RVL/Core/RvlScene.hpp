@@ -29,7 +29,8 @@ namespace rvl
         Ref<UserOrthographicCamera> _camera;
 
     private:
-        void MakeScene(); // can be accessed by RvlApp parent but not RvlApp children
+        void Begin(); // can be accessed by RvlApp parent but not RvlApp children
+        void End();  // can be accessed by RvlApp parent but not RvlApp children
     };
 }
 

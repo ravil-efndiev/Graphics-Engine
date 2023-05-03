@@ -1,14 +1,15 @@
 #version 330 core
 
 in vec3 position;
-in vec3 color;
 
-out vec3 out_color;
+uniform vec4 u_Color;
+uniform mat4 u_Transform;
+uniform mat4 u_Projview;
 
-uniform mat4 projview;
+out vec4 o_Color;
 
 void main()
 {
-    out_color = color;
-    gl_Position = projview * vec4(position, 1.0);
+    o_Color = u_Color;
+    gl_Position = u_Projview * u_Transform * vec4(position, 1.0);
 }

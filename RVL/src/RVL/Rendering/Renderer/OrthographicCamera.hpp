@@ -9,10 +9,11 @@ namespace rvl
     class OrthographicCamera
     {
     public:
-        OrthographicCamera(const glm::vec3& position, int zoom = 100);
+        OrthographicCamera(const glm::vec3& position, float zoom = 1.f);
         ~OrthographicCamera();
 
         void SetPosition(const glm::vec3& position);
+        glm::vec3 GetPosition() const;
 
         void SetRotationZ(float rotationZ);
         float GetRotationZ() const;
@@ -20,8 +21,8 @@ namespace rvl
         glm::mat4 GetProjectionMatrix(float viewportWidth, float viewportHeight);
         glm::mat4 GetViewMatrix();
 
-        int GetZoom() const;
-        void SetZoom(int zoom);
+        float GetZoom() const;
+        void SetZoom(float zoom);
 
     private:
         void ResetMatrix();
@@ -32,7 +33,7 @@ namespace rvl
         glm::vec3 _position;
         float _rotationZ;
 
-        int _zoom;
+        float _zoom;
     };
 }
 

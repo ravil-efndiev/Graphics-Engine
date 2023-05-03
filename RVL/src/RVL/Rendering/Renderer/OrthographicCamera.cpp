@@ -4,7 +4,7 @@
 namespace rvl
 {
 
-    OrthographicCamera::OrthographicCamera(const glm::vec3& position, int zoom)
+    OrthographicCamera::OrthographicCamera(const glm::vec3& position, float zoom)
     {
         _position = position;
         _viewMatrix = glm::mat4(1.0f);
@@ -22,6 +22,11 @@ namespace rvl
         ResetMatrix();
     }
 
+    glm::vec3 OrthographicCamera::GetPosition() const
+    {
+        return _position;
+    }
+
     void OrthographicCamera::SetRotationZ(float rotationZ)
     {
         _rotationZ = rotationZ;
@@ -35,7 +40,8 @@ namespace rvl
 
     glm::mat4 OrthographicCamera::GetProjectionMatrix(float viewportWidth, float viewportHeight)
     {
-        _projectionMatrix = glm::ortho(-viewportWidth / _zoom, viewportWidth / _zoom, -viewportHeight / _zoom, viewportHeight / _zoom, -1.0f, 1.0f);
+        float aspectRatio = viewportWidth / viewportHeight;
+        _projectionMatrix = glm::ortho(-aspectRatio * _zoom, aspectRatio * _zoom, -_zoom, _zoom, -1.0f, 1.0f);
         return _projectionMatrix;
     }
 
@@ -44,14 +50,17 @@ namespace rvl
         return _viewMatrix;
     }
 
-    int OrthographicCamera::GetZoom() const
+    float OrthographicCamera::GetZoom() const
     {
         return _zoom;
     }
 
-    void OrthographicCamera::SetZoom(int zoom)
+    void OrthographicCamera::SetZoom(float zoom)
     {
-        _zoom = zoom;
+        if (zoom < 0)
+            _zoom = 0;
+        else
+            _zoom = zoom;
     }
 
     void OrthographicCamera::ResetMatrix()

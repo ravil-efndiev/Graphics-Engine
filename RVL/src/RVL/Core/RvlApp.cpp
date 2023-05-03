@@ -30,18 +30,24 @@ namespace rvl
         try
         {
             EventListener::Init();
+            Renderer::Init();
             Random::Init();
             
             Start();
 
             while (!_window->Closes())
             {
-                Renderer::Clear(_clearColor[0], _clearColor[1], _clearColor[2], _clearColor[3]);
+                Renderer::Clear();
                 Time::Update();
 
                 Update();
-                _currentScene->MakeScene();
-                Render();
+
+                if (_currentScene)
+                {
+                    _currentScene->Begin();
+                    _currentScene->Render();
+                    _currentScene->End();
+                }
 
                 _window->SwapBuffers();
                 EventListener::PollEvents();
@@ -55,9 +61,9 @@ namespace rvl
         }
     }
 
-    void RvlApp::SetClearColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha)
+    void RvlApp::SetClearColor(const glm::vec3& color)
     {
-        _clearColor = {red, green, blue, alpha};
+        Renderer::SetClearColor(color);
     }
 
     void RvlApp::CreateWindow(int windowWidth, int windowHeight, const std::string &windowName)

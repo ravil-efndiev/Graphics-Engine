@@ -2,53 +2,83 @@
 
 #include <Rendering/Renderer/OrthographicCamera.hpp>
 
+#include <API/Input.hpp>
+#include <API/Time.hpp>
+
 namespace rvl
 {
-    Ref<UserOrthographicCamera> UserOrthographicCamera::Create(const Vector2f &position, int zoom)
+    Ref<UserOrthographicCamera> UserOrthographicCamera::Create(const glm::vec2 &position, float zoom)
     {
         return std::make_shared<UserOrthographicCamera>(position, zoom);
     }
 
-    UserOrthographicCamera::UserOrthographicCamera(const Vector2f &position, int zoom)
+    UserOrthographicCamera::UserOrthographicCamera(const glm::vec2& position, float zoom)
     {
-        _position = position;
-        _zoom = zoom;
-
-        Position = 
-        {
-            &_position,
-            [this]() -> const Vector2f&
-            {
-                return _position;
-            },
-            [this](const Vector2f& value)
-            {
-                _position = value;
-                _camera->SetPosition({_position.X(), _position.Y(), 0.f});
-            }
-        };
-
-        _camera = std::make_shared<OrthographicCamera>(glm::vec3(_position.X(), _position.Y(), 0), zoom);
-
-        _position.SetOnChangeCallback(
-            [this]()
-            {
-                _camera->SetPosition({_position.X(), _position.Y(), 0.f});
-            }
-        );
-
+        _camera = CreateRef<OrthographicCamera>(glm::vec3(position, 0.f), zoom);
     }
 
     UserOrthographicCamera::~UserOrthographicCamera() {}
 
-    int UserOrthographicCamera::Zoom() const
+    float UserOrthographicCamera::GetZoom() const
     {
-        return _zoom;
+        return _camera->GetZoom();
     }
 
-    void UserOrthographicCamera::SetZoom(int zoom)
+    void UserOrthographicCamera::SetZoom(float zoom)
     {
-        _zoom = zoom;
-        _camera->SetZoom(_zoom);
+        _camera->SetZoom(zoom);
+    }
+
+    void UserOrthographicCamera::SetPosition(const glm::vec2& position)
+    {
+        _camera->SetPosition(glm::vec3(position.x, position.y, 0.f));
+    }
+    
+    glm::vec2 UserOrthographicCamera::GetPosition() const
+    {
+        return glm::vec2(_camera->GetPosition().x, _camera->GetPosition().y);
+    }
+
+    void UserOrthographicCamera::SetRotationZ(float rotation)
+    {
+        _camera->SetRotationZ(rotation);
+    }
+
+    float UserOrthographicCamera::GetRotationZ() const
+    {
+        return _camera->GetRotationZ();
+    }
+
+    void UserOrthographicCamera::UpdateZoomChange()
+    {
+        if (Input::IsKeyPressed(Keys::RVL_KEY_EQUAL))
+        {
+            _camera->SetZoom(_camera->GetZoom() - 0.25f);
+        }
+        if (Input::IsKeyPressed(Keys::RVL_KEY_MINUS))
+        {
+            _camera->SetZoom(_camera->GetZoom() + 0.25f);
+        }
+    }
+
+    void UserOrthographicCamera::UpdateMovement(float speed)
+    {
+        if (Input::IsKeyPressed(Keys::RVL_KEY_LEFT))
+            _camera->SetPosition({_camera->GetPosition().x - speed * Time::DeltaTime(), _camera->GetPosition().y, 0.f});
+
+        if (Input::IsKeyPressed(Keys::RVL_KEY_RIGHT))
+            _camera->SetPosition({_camera->GetPosition().x + speed * Time::DeltaTime(), _camera->GetPosition().y, 0.f});
+
+        if (Input::IsKeyPressed(Keys::RVL_KEY_UP))
+            _camera->SetPosition({_camera->GetPosition().x, _camera->GetPosition().y + speed * Time::DeltaTime(), 0.f});
+
+        if (Input::IsKeyPressed(Keys::RVL_KEY_DOWN))
+            _camera->SetPosition({_camera->GetPosition().x, _camera->GetPosition().y - speed * Time::DeltaTime(), 0.f});
+    }
+
+
+    Ref<OrthographicCamera> UserOrthographicCamera::GetCamera()
+    {
+        return _camera;
     }
 }

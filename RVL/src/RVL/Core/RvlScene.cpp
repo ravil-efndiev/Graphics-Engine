@@ -25,13 +25,18 @@ namespace rvl
     {
     }
 
-    void RvlScene::MakeScene()
+    void RvlScene::Begin()
     {
         if (!_camera) throw Error("camera was not initialized during scene creation", RVL_RUNTIME_ERROR);
 
         int viewport[2];
         Renderer::GetViewport(viewport);
 
-        Renderer::CreateScene2D(*_camera->_camera, viewport[0], viewport[1]);
+        Renderer::CreateScene(*_camera->GetCamera(), viewport[0], viewport[1]);
+    }
+
+    void RvlScene::End()
+    {
+        Renderer::ShutdownScene();
     }
 }

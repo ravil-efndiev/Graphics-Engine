@@ -2,50 +2,37 @@
 #define RVL_SPRITE_HPP
 
 #include <Core/Core.hpp>
-#include "Entity.hpp"
+#include <API/Property.hpp>
+#include <Rendering/Renderer/Transform.hpp>
 
 namespace rvl
 {
-    class GLVertexBuffer;
-    class GLIndexBuffer;
-    class GLVertexArray;
-    class GLShaderProgram;
     class GLTexture;
 
-    class Sprite : public Entity
+    class Sprite
     {
     public:
         static Ref<Sprite> Create();
-        static Ref<Sprite> Create(const Vector2f& position, float scale = 1.f);
-        static Ref<Sprite> Create(float x, float y, float scale = 1.f);
+        static Ref<Sprite> Create(const glm::vec3& position, float scale);
 
         Sprite();
-        Sprite(const Vector2f& position, float scale = 1.f);
-        Sprite(float x, float y, float scale = 1.f);
+        Sprite(const glm::vec3& position, float scale);
         ~Sprite();
 
-        void LoadTexture(const std::string& filename);
+        void LoadTexture(const std::string& path);
+        void ResetScale();
 
-        void Draw() override;
+        void Draw();
+
+        Ref<GLTexture> GetTexture() const;
+
+        Property<Transform> transform = {&_transform};
 
     private:
-        static int _unit;
-
-        std::unique_ptr<GLTexture> _texture;
-        
-        std::unique_ptr<GLVertexArray> _vao;
-        std::shared_ptr<GLVertexBuffer> _positionVbo;
-        std::shared_ptr<GLVertexBuffer> _colorVbo;
-        std::shared_ptr<GLVertexBuffer> _textureCoordsVbo;
-        std::shared_ptr<GLIndexBuffer> _indicies;
-
-        std::unique_ptr<GLShaderProgram> _shaderProgram;
-
+        Transform _transform;
         float _scale;
 
-        void GenerateMesh();
-
-        void ResetPosition() override;
+        Ref<GLTexture> _texture;
     };
 
 }
