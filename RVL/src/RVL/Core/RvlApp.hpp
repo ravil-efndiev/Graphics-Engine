@@ -26,7 +26,7 @@ namespace rvl
         void SetClearColor(const glm::vec3& color);
 
     private:
-        Scope<Window> _window;
+        Ptr<Window> _window;
 
         void CreateWindow(int windowWidth, int windowHeight, const std::string& windowName);
     };
@@ -37,7 +37,7 @@ namespace rvl
      * (app you are currently using)
      * it can contain any functionallity but in any case it must initialize CurrentApp
     */
-    extern Scope<RvlApp> OnInit() RVL_ENTRY_FUNCTION;
+    extern Ptr<RvlApp> OnInit() RVL_ENTRY_FUNCTION;
 
     /*
      * Entry function that can be defined in RVL Application

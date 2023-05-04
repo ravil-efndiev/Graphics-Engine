@@ -58,7 +58,7 @@ namespace rvl
         _textureShader->Link();
     }
 
-    void Renderer::CreateScene(OrthographicCamera& camera, float viewportWidth, float viewportHeight)
+    void Renderer::CreateContext(OrthographicCamera& camera, float viewportWidth, float viewportHeight)
     {
         _projview = camera.GetProjectionMatrix(viewportWidth, viewportHeight) * camera.GetViewMatrix();
 
@@ -69,11 +69,10 @@ namespace rvl
         _textureShader->SetUniform("u_Projview", _projview);
     }
 
-    void Renderer::ShutdownScene()
+    void Renderer::ShutdownContext()
     {
         _flatColorShader->Unbind();
         _textureShader->Unbind();
-        _projview = glm::mat4(1.f);
     }
 
     void Renderer::SubmitGeometry(GLVertexArray& vertexArray, GLShaderProgram& shader)

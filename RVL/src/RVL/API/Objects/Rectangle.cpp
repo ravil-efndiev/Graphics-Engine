@@ -25,22 +25,19 @@ namespace rvl
         return std::make_shared<Rectangle>(position, size, color);
     }
 
-    Rectangle::Rectangle() 
+    Rectangle::Rectangle() : Entity()
     {
         _color = {1.f, 1.f, 1.f};
-        _transform = Transform({0.f, 0.f, 0.f}, 0.f, {0.f, 0.f});
     }
 
-    Rectangle::Rectangle(const Transform& transform, const glm::vec3& color)
+    Rectangle::Rectangle(const Transform& transform, const glm::vec3& color) : Entity(transform)
     {
         _color = color;
-        _transform = transform;
     }
 
-    Rectangle::Rectangle(const glm::vec3& position, const glm::vec2& size, const glm::vec3& color)
+    Rectangle::Rectangle(const glm::vec3& position, const glm::vec2& size, const glm::vec3& color) : Entity(Transform(position, 0.f, size))
     {
         _color = color;
-        _transform = Transform(position, 0.f, size);
     }
 
     Rectangle::~Rectangle() {}

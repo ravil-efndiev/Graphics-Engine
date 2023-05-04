@@ -7,7 +7,7 @@
 int main(int argc, char** argv)
 {
 
-    rvl::Scope<rvl::RvlApp> currentApp = rvl::OnInit();
+    rvl::Ptr<rvl::RvlApp> currentApp = rvl::OnInit();
 
     if (!currentApp)
     {

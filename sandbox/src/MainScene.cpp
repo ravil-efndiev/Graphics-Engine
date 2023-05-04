@@ -39,6 +39,9 @@ namespace name
 
         if (Input::IsKeyPressed(Keys::RVL_KEY_S))
             _rect->transform->Position.y -= 5.f * Time::DeltaTime();
+
+        if (Input::IsKeyPressed(Keys::RVL_KEY_SPACE))
+            _sprite->transform->Rotation += 10.f;
     }
 
     void MainScene::Render()
@@ -49,11 +52,11 @@ namespace name
         Renderer::DrawRect({{4.f, 4.f, 0.f}, 45.f, {2.f, 2.f}}, *_texture);
         Renderer::DrawRect({{-4.f, -4.f, 0.f}, 0.f, {2.f, 2.f}}, *_texture2);
 
-        // Renderer::DrawRect(_rect->transform(), _rect->GetColor());
-        // Renderer::DrawRect(_sprite->transform(), *_sprite->GetTexture());
+        // Renderer::DrawRect(_rect->transform, _rect->GetColor());
+        // Renderer::DrawRect(_sprite->transform, *_sprite->GetTexture());
 
         _rect->Draw();
         _sprite->Draw();
 
     }
-} 
+}

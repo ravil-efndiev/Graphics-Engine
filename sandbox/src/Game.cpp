@@ -23,21 +23,13 @@ namespace name
     void Game::Update()
     {
         _currentScene->Update();
-        /*
-        OrthographicCamera cam ({0.f, 0.f, 0.f}, 10.f);
 
-        int viewport[2];
-        Renderer::GetViewport(viewport);
-        Renderer::CreateScene(cam, viewport[0], viewport[1]);
-
-        Renderer::DrawRect({{0.f, 0.f, 0.f}, 0.f, {2.f, 2.f}}, {1.f, 1.f, 1.f});
-
-        Renderer::ShutdownScene();
-        */
+        ImGui::Begin("wnd");
+        ImGui::End();
     }
 }
 
-rvl::Scope<rvl::RvlApp> rvl::OnInit()
+rvl::Ptr<rvl::RvlApp> rvl::OnInit()
 {
-    return rvl::CreateScope<name::Game>();
+    return rvl::CreatePtr<name::Game>();
 }

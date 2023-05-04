@@ -23,14 +23,10 @@ namespace rvl
         return CreateRef<Sprite>(position, scale);
     }
 
-    Sprite::Sprite()
-    {
-        _transform = Transform({0.f, 0.f, 0.f}, 0.f, {0.f, 0.f});
-    }
+    Sprite::Sprite() : Entity() {}
 
-    Sprite::Sprite(const glm::vec3& position, float scale)
+    Sprite::Sprite(const glm::vec3& position, float scale) : Entity(Transform(position, 0.f, {0.f, 0.f}))
     {
-        _transform = Transform(position, 0.f, {0.f, 0.f});
         _scale = scale;
     }
 

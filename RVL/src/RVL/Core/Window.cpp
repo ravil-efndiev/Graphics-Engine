@@ -105,4 +105,9 @@ namespace rvl
     {
         return _height;
     }
+
+    GLFWwindow* Window::GetWindowPtr()
+    {
+        return _window;
+    }
 }

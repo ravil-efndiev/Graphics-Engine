@@ -7,7 +7,8 @@ add_library(RVL STATIC
     src/RVL/Core/RvlScene.cpp
     src/RVL/Core/Error.cpp
     src/RVL/Core/Window.cpp
-    src/RVL/Core/EventListener.cpp
+    src/RVL/Core/ImGuiController.cpp
+    src/RVL/Events/EventListener.cpp
     src/RVL/Events/KeyEvents.cpp
     src/RVL/Events/WindowEvents.cpp
     src/RVL/Events/CursorEvents.cpp
@@ -23,10 +24,21 @@ add_library(RVL STATIC
     src/RVL/API/Input.cpp
     src/RVL/API/Time.cpp
     src/RVL/API/Random.cpp
+    src/RVL/API/Components/Component.cpp
+    src/RVL/API/Objects/Entity.cpp
     src/RVL/API/Objects/Rectangle.cpp
     src/RVL/API/Objects/Sprite.cpp
     src/RVL/API/Objects/UserOrthographicCamera.cpp
+
+    # dependencies
     vendor/lib/glad/glad.c
+    vendor/imgui/imgui.cpp
+    vendor/imgui/backends/imgui_impl_opengl3.cpp
+    vendor/imgui/backends/imgui_impl_glfw.cpp
+    vendor/imgui/imgui_demo.cpp
+    vendor/imgui/imgui_draw.cpp
+    vendor/imgui/imgui_widgets.cpp
+    vendor/imgui/imgui_tables.cpp
     vendor/lib/stb_image.cpp
 )
 
@@ -36,6 +48,8 @@ target_include_directories(RVL PUBLIC .)
 target_include_directories(RVL PUBLIC src)
 target_include_directories(RVL PUBLIC src/RVL)
 target_include_directories(RVL PUBLIC src/RVL/Core)
+target_include_directories(RVL PUBLIC vendor/)
+target_include_directories(RVL PUBLIC vendor/imgui)
 target_include_directories(RVL PRIVATE vendor/include)
 
 include(GNUInstallDirs)

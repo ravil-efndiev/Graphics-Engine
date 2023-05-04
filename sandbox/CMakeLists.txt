@@ -10,6 +10,7 @@ target_link_libraries(sandbox "/Users/Belokan/RVL\ Engine/sandbox/vendor/libRVL.
 
 target_include_directories(sandbox PRIVATE .)
 target_include_directories(sandbox PRIVATE ../RVL/src/RVL)
+target_include_directories(sandbox PRIVATE ../RVL/vendor/)
 target_include_directories(sandbox PRIVATE ../RVL/src)
 target_include_directories(sandbox PRIVATE ../RVL/)
 target_include_directories(sandbox PRIVATE vendor/)

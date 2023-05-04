@@ -32,13 +32,11 @@ namespace rvl
         /**
          * @brief Get current cursor position
          * 
-         * @returns pair containing x and y of cursor position
+         * @returns vec2 containing world cursor position
          *
          * @ingroup input
         */
         static glm::vec2 GetCursorPosition();
-
-    private:
 
     };
 }

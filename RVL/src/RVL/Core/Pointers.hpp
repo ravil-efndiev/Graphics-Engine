@@ -9,7 +9,7 @@ namespace rvl
     using Ref = std::shared_ptr<T>;
 
     template<class T>
-    using Scope = std::unique_ptr<T>;
+    using Ptr = std::unique_ptr<T>;
 
     template <class T, class ... Args>
     Ref<T> CreateRef(Args&& ...args)
@@ -18,7 +18,7 @@ namespace rvl
     }
 
     template <class T, class ... Args>
-    Scope<T> CreateScope(Args&& ...args)
+    Ptr<T> CreatePtr(Args&& ...args)
     {
         return std::make_unique<T>(args...);
     }

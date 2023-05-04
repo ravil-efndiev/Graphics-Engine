@@ -2,8 +2,7 @@
 #define RVL_RECTANGLE_HPP
 
 #include <Core/Core.hpp>
-#include <API/Property.hpp>
-#include <Rendering/Renderer/Transform.hpp>
+#include "Entity.hpp"
 
 namespace rvl
 {
@@ -12,7 +11,7 @@ namespace rvl
     class GLVertexArray;
     class GLShaderProgram;
 
-    class Rectangle
+    class Rectangle : public Entity
     {
     public:
         static Ref<Rectangle> Create();
@@ -24,16 +23,12 @@ namespace rvl
         Rectangle(const glm::vec3& position, const glm::vec2& size, const glm::vec3& color = {1.f, 1.f, 1.f});
         ~Rectangle();
 
-        void Draw();
-
-        Property<Transform> transform = {&_transform};
+        void Draw() override;
 
         glm::vec3 GetColor() const;
         void SetColor(const glm::vec3& color);
 
     private:
-        Transform _transform;
-
         glm::vec3 _color;
     };
 }

@@ -1,5 +1,5 @@
 #include "Input.hpp"
-#include <Core/EventListener.hpp>
+#include <Events/EventListener.hpp>
 
 #include <Rendering/Renderer/Renderer.hpp>
 

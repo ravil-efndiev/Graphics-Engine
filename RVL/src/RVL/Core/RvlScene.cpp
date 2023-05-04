@@ -32,11 +32,11 @@ namespace rvl
         int viewport[2];
         Renderer::GetViewport(viewport);
 
-        Renderer::CreateScene(*_camera->GetCamera(), viewport[0], viewport[1]);
+        Renderer::CreateContext(*_camera->GetCamera(), viewport[0], viewport[1]);
     }
 
     void RvlScene::End()
     {
-        Renderer::ShutdownScene();
+        Renderer::ShutdownContext();
     }
 }

@@ -24,8 +24,8 @@ namespace rvl
         static void SetClearColor(const glm::vec3& clearColor);
         static void Clear();
 
-        static void CreateScene(OrthographicCamera& camera, float viewportWidth, float viewportHeight);
-        static void ShutdownScene();
+        static void CreateContext(OrthographicCamera& camera, float viewportWidth, float viewportHeight);
+        static void ShutdownContext();
 
         static void GetViewport(int rViewport[2]);
         static glm::vec2 ConvertToWorldCoords(double x, double y);

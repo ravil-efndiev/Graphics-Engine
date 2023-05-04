@@ -25,6 +25,8 @@ namespace rvl
         int GetWidth() const;
         int GetHeight() const;
 
+        GLFWwindow* GetWindowPtr();
+
     private:
         struct EventCallbackStruct 
         {

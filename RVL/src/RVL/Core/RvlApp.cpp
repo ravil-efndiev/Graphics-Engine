@@ -1,19 +1,14 @@
 #include "RvlApp.hpp"
-#include "EventListener.hpp"
+
 #include "Window.hpp"
+#include "ImGuiController.hpp"
 
-#include "Rendering/OpenGL/GLShaderProgram.hpp"
-#include "Rendering/OpenGL/GLVertexArray.hpp"
-#include "Rendering/OpenGL/GLBuffer.hpp"
+#include <Events/EventListener.hpp>
 
-#include "Rendering/Renderer/Renderer.hpp"
-#include "Rendering/Renderer/PerspectiveCamera.hpp"
-#include "Rendering/Renderer/OrthographicCamera.hpp"
+#include <Rendering/Renderer/Renderer.hpp>
 
-#include "API/Time.hpp"
-#include "API/Random.hpp"
-
-#include <Rvlglpch.hpp>
+#include <API/Time.hpp>
+#include <API/Random.hpp>
 
 namespace rvl
 {
@@ -35,10 +30,13 @@ namespace rvl
             
             Start();
 
+            ImGuiController::Init(_window->GetWindowPtr());
+
             while (!_window->Closes())
             {
                 Renderer::Clear();
                 Time::Update();
+                ImGuiController::Update();
 
                 Update();
 
@@ -49,9 +47,14 @@ namespace rvl
                     _currentScene->End();
                 }
 
+                ImGuiController::Render();
+
                 _window->SwapBuffers();
                 EventListener::PollEvents();
             }
+
+            ImGuiController::Shutdown();
+
             return RVL_SUCCESS;
         }
         catch (Error error)

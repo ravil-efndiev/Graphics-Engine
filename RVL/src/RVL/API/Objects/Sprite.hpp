@@ -2,14 +2,13 @@
 #define RVL_SPRITE_HPP
 
 #include <Core/Core.hpp>
-#include <API/Property.hpp>
-#include <Rendering/Renderer/Transform.hpp>
+#include "Entity.hpp"
 
 namespace rvl
 {
     class GLTexture;
 
-    class Sprite
+    class Sprite : public Entity
     {
     public:
         static Ref<Sprite> Create();
@@ -22,14 +21,11 @@ namespace rvl
         void LoadTexture(const std::string& path);
         void ResetScale();
 
-        void Draw();
+        void Draw() override;
 
         Ref<GLTexture> GetTexture() const;
 
-        Property<Transform> transform = {&_transform};
-
     private:
-        Transform _transform;
         float _scale;
 
         Ref<GLTexture> _texture;
