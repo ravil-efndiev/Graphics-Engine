@@ -57,4 +57,8 @@ namespace rvl
         _color = color;
     }
 
+    float* Rectangle::GetColorPtr()
+    {
+        return glm::value_ptr(_color);
+    }
 }

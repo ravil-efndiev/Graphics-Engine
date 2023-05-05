@@ -26,7 +26,10 @@ namespace rvl
         void Draw() override;
 
         glm::vec3 GetColor() const;
+        float* GetColorPtr();
+        
         void SetColor(const glm::vec3& color);
+        
 
     private:
         glm::vec3 _color;

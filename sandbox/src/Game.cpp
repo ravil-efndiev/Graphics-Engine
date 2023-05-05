@@ -3,9 +3,6 @@
 // !!INCLUDE ONLY ONCE INSIDE CPP FILE THAT IMPLEMENTS OnInit!!
 #include <RVL/Core/EntryPoint.hpp>
 
-#include <Rendering/Renderer/Renderer.hpp>
-#include <Rendering/Renderer/OrthographicCamera.hpp>
-
 namespace name
 {
     using namespace rvl;
@@ -23,9 +20,6 @@ namespace name
     void Game::Update()
     {
         _currentScene->Update();
-
-        ImGui::Begin("wnd");
-        ImGui::End();
     }
 }
 

@@ -23,6 +23,8 @@ namespace name
         rvl::Ref<rvl::Rectangle> _rect;
 
         rvl::Ref<rvl::Sprite> _sprite;
+
+        float _camSpeed = 15.f;
     };
 }
 

@@ -9,9 +9,14 @@ namespace rvl
         Component();
         virtual ~Component();
 
-        virtual void Attach() = 0;    
+        // User side-only called methods
+        virtual void Start() = 0;
         virtual void Update() = 0;
 
+        // User / engine side call
+        // by defalt is called whenever  component gets attached to an entity
+        virtual void OnAttach() = 0;    
+        
     private:
 
     };

@@ -1,7 +1,7 @@
 #include "MainScene.hpp"
 
 #include <Rendering/Renderer/Renderer.hpp>
-#include <Rendering/Renderer/OrthographicCamera.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace name
 {
@@ -26,7 +26,7 @@ namespace name
     void MainScene::Update() 
     {
         _camera->UpdateZoomChange();
-        _camera->UpdateMovement(20.f);
+        _camera->UpdateMovement(_camSpeed);
 
         if (Input::IsKeyPressed(Keys::RVL_KEY_D))
             _rect->transform->Position.x += 5.f * Time::DeltaTime();
@@ -42,6 +42,11 @@ namespace name
 
         if (Input::IsKeyPressed(Keys::RVL_KEY_SPACE))
             _sprite->transform->Rotation += 10.f;
+            
+        ImGui::Begin("Properties");
+        ImGui::ColorPicker3("Rectangle color", _rect->GetColorPtr());
+        ImGui::DragFloat("Camera speed", &_camSpeed, 0.5f, 0.f, 100.f);
+        ImGui::End();
     }
 
     void MainScene::Render()

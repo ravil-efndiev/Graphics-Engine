@@ -63,10 +63,10 @@ namespace rvl
         _projview = camera.GetProjectionMatrix(viewportWidth, viewportHeight) * camera.GetViewMatrix();
 
         _flatColorShader->Bind();
-        _flatColorShader->SetUniform("u_Projview", _projview);
+        _flatColorShader->SetUniformMat4("u_Projview", _projview);
 
         _textureShader->Bind();
-        _textureShader->SetUniform("u_Projview", _projview);
+        _textureShader->SetUniformMat4("u_Projview", _projview);
     }
 
     void Renderer::ShutdownContext()
@@ -78,7 +78,7 @@ namespace rvl
     void Renderer::SubmitGeometry(GLVertexArray& vertexArray, GLShaderProgram& shader)
     {
         shader.Bind();
-        shader.SetUniform("projview", _projview);
+        shader.SetUniformMat4("projview", _projview);
         DrawIndicies(vertexArray);
         shader.Unbind();
     }
@@ -86,11 +86,11 @@ namespace rvl
     void Renderer::DrawRect(const Transform& transform, const glm::vec3& color)
     {
         _flatColorShader->Bind();
-        _flatColorShader->SetUniform("u_Color", glm::vec4(color, 1.f));
+        _flatColorShader->SetUniformVec4("u_Color", glm::vec4(color, 1.f));
 
         auto rTransform = const_cast<Transform&>(transform);
 
-        _flatColorShader->SetUniform("u_Transform", rTransform.GetMatrix());
+        _flatColorShader->SetUniformMat4("u_Transform", rTransform.GetMatrix());
 
         DrawIndicies(*_rectVao);
         _flatColorShader->Unbind();
@@ -102,9 +102,9 @@ namespace rvl
 
         auto rTransform = const_cast<Transform&>(transform);
 
-        _textureShader->SetUniform("u_Transform", rTransform.GetMatrix());
+        _textureShader->SetUniformMat4("u_Transform", rTransform.GetMatrix());
 
-        _textureShader->SetUniform("u_Texture", texture.GetUnit());
+        _textureShader->SetUniformInt("u_Texture", texture.GetUnit());
 
         texture.Bind();
         DrawIndicies(*_rectVao);
