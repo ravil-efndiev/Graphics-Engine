@@ -15,7 +15,7 @@ namespace rvl
     void Entity::AddComponent(const Ref<Component>& component)
     {
         _components.push_back(component);
-        component->Attach();
+        component->OnAttach();
     }
 
 

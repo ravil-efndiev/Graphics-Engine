@@ -51,6 +51,7 @@ target_include_directories(RVL PUBLIC src/RVL/Core)
 target_include_directories(RVL PUBLIC vendor/)
 target_include_directories(RVL PUBLIC vendor/imgui)
 target_include_directories(RVL PRIVATE vendor/include)
+target_include_directories(RVL PRIVATE vendor/include/glm)
 
 include(GNUInstallDirs)
 
