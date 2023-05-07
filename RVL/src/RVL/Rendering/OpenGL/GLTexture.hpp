@@ -9,11 +9,13 @@ namespace rvl
     {
     public:
         GLTexture();
+        GLTexture(uint32_t width, uint32_t height);
         GLTexture(const std::string& path);
         GLTexture(const GLTexture& tex) = delete;
         ~GLTexture();
 
         void LoadTexture(const std::string& path);
+        void SetData(uint8_t* data, size_t size);
 
         void Bind() const;
         void Unbind() const;
@@ -21,15 +23,10 @@ namespace rvl
         int GetWidth() const;
         int GetHeight() const;
 
-        int GetUnit() const;
-
     private:
         GLuint _textureId;
         int _width, _height, _channels;        
         unsigned char* _textureData;
-
-        static int s_Unit;
-        int m_Unit;
 
     };
 }

@@ -24,6 +24,7 @@ add_library(RVL STATIC
     src/RVL/API/Input.cpp
     src/RVL/API/Time.cpp
     src/RVL/API/Random.cpp
+    src/RVL/API/Math/Math.cpp
     src/RVL/API/Components/Component.cpp
     src/RVL/API/Objects/Entity.cpp
     src/RVL/API/Objects/Rectangle.cpp

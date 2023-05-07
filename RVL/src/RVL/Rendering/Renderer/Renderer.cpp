@@ -104,7 +104,7 @@ namespace rvl
 
         _textureShader->SetUniformMat4("u_Transform", rTransform.GetMatrix());
 
-        _textureShader->SetUniformInt("u_Texture", texture.GetUnit());
+        _textureShader->SetUniformInt("u_Texture", 0);
 
         texture.Bind();
         DrawIndicies(*_rectVao);
@@ -113,11 +113,12 @@ namespace rvl
         _textureShader->Unbind();
     }
 
-    inline void Renderer::DrawIndicies(GLVertexArray& vertexArray)
+    inline void Renderer::DrawIndicies(GLVertexArray& vertexArray, int indexCount)
     {
+        int count = indexCount ? indexCount : vertexArray.GetIndexBuffer()->GetIndiciesCount();
         vertexArray.Bind();
         vertexArray.BindIndexBuffer();
-        glDrawElements(GL_TRIANGLES, vertexArray.GetIndexBuffer()->GetIndiciesCount(), GL_UNSIGNED_INT, nullptr);
+        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
         vertexArray.UnbindIndexBuffer();
         vertexArray.Unbind();
     }

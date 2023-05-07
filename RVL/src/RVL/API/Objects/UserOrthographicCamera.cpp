@@ -2,6 +2,7 @@
 
 #include <Rendering/Renderer/OrthographicCamera.hpp>
 
+#include <API/Math/Math.hpp>
 #include <API/Input.hpp>
 #include <API/Time.hpp>
 
@@ -49,34 +50,21 @@ namespace rvl
         return _camera->GetRotationZ();
     }
 
-    void UserOrthographicCamera::UpdateZoomChange()
+    void UserOrthographicCamera::Follow(const Ref<Entity>& entity, Axis axis, bool smooth, float smoothSpeed, float deadZone, const glm::vec3& offset)
     {
-        if (Input::IsKeyPressed(Keys::RVL_KEY_EQUAL))
-        {
-            _camera->SetZoom(_camera->GetZoom() - 0.25f);
-        }
-        if (Input::IsKeyPressed(Keys::RVL_KEY_MINUS))
-        {
-            _camera->SetZoom(_camera->GetZoom() + 0.25f);
-        }
+        float x = _camera->GetPosition().x, y = _camera->GetPosition().y;
+
+        if (static_cast<bool>(axis & Axis::Horizontal))
+            x = smooth ? Math::Lerp(_camera->GetPosition().x, entity->transform->Position.x, smoothSpeed * Time::DeltaTime(), deadZone) : entity->transform->Position.x;
+        
+        if (static_cast<bool>(axis & Axis::Vertical))
+            y = smooth ? Math::Lerp(_camera->GetPosition().y, entity->transform->Position.y, smoothSpeed * Time::DeltaTime(), deadZone) : entity->transform->Position.y;
+
+        glm::vec3 pos = glm::vec3(x, y, 0.f) + offset;
+
+        _camera->SetPosition(pos);
     }
-
-    void UserOrthographicCamera::UpdateMovement(float speed)
-    {
-        if (Input::IsKeyPressed(Keys::RVL_KEY_LEFT))
-            _camera->SetPosition({_camera->GetPosition().x - speed * Time::DeltaTime(), _camera->GetPosition().y, 0.f});
-
-        if (Input::IsKeyPressed(Keys::RVL_KEY_RIGHT))
-            _camera->SetPosition({_camera->GetPosition().x + speed * Time::DeltaTime(), _camera->GetPosition().y, 0.f});
-
-        if (Input::IsKeyPressed(Keys::RVL_KEY_UP))
-            _camera->SetPosition({_camera->GetPosition().x, _camera->GetPosition().y + speed * Time::DeltaTime(), 0.f});
-
-        if (Input::IsKeyPressed(Keys::RVL_KEY_DOWN))
-            _camera->SetPosition({_camera->GetPosition().x, _camera->GetPosition().y - speed * Time::DeltaTime(), 0.f});
-    }
-
-
+ 
     Ref<OrthographicCamera> UserOrthographicCamera::GetCamera()
     {
         return _camera;

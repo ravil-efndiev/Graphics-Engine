@@ -4,6 +4,11 @@ namespace rvl
 {
     /// Vertex buffer
 
+    GLVertexBuffer::GLVertexBuffer(size_t size, bool normalized) : _normalized(normalized)
+    {
+        CreateBuffer(size);
+    }
+
     GLVertexBuffer::GLVertexBuffer(const std::vector<float>& verticies, bool normalized)
         : _normalized(normalized)
     {
@@ -33,6 +38,24 @@ namespace rvl
         glDeleteBuffers(1, &_bufferId);
     }
 
+    void GLVertexBuffer::CreateBuffer(size_t size)
+    {
+        _verticiesCount = 0;
+        glGenBuffers(1, &_bufferId);
+        glBindBuffer(GL_ARRAY_BUFFER, _bufferId);
+        glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW );
+    }
+
+    template <class T>
+    inline void GLVertexBuffer::CreateBuffer(const std::vector<T> &verticies, int verticiesCount)
+    {
+        _verticiesCount = verticiesCount;
+
+        glGenBuffers(1, &_bufferId);
+        glBindBuffer(GL_ARRAY_BUFFER, _bufferId);
+        glBufferData(GL_ARRAY_BUFFER, verticies.size() * sizeof(T), verticies.data(), GL_STATIC_DRAW);
+    }
+
     void GLVertexBuffer::Bind()
     {
         glBindBuffer(GL_ARRAY_BUFFER, _bufferId);
@@ -41,6 +64,12 @@ namespace rvl
     void GLVertexBuffer::Unbind()
     {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+
+    void GLVertexBuffer::SetData(void* data, size_t size)
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, _bufferId);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
     }
 
     int GLVertexBuffer::GetVerticiesCount() const
@@ -56,16 +85,6 @@ namespace rvl
     GLuint GLVertexBuffer::GetId() const
     {
         return _bufferId;
-    }
-
-    template <class T>
-    inline void GLVertexBuffer::CreateBuffer(const std::vector<T> &verticies, int verticiesCount)
-    {
-        _verticiesCount = verticiesCount;
-
-        glGenBuffers(1, &_bufferId);
-        glBindBuffer(GL_ARRAY_BUFFER, _bufferId);
-        glBufferData(GL_ARRAY_BUFFER, verticies.size() * sizeof(T), verticies.data(), GL_STATIC_DRAW);
     }
 
     /// Index buffer

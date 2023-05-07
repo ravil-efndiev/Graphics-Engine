@@ -18,13 +18,15 @@ namespace name
         void Render() override;
 
     private:
-        rvl::Ref<rvl::GLTexture> _texture;
-        rvl::Ref<rvl::GLTexture> _texture2;
         rvl::Ref<rvl::Rectangle> _rect;
-
         rvl::Ref<rvl::Sprite> _sprite;
+        rvl::Ref<rvl::Sprite> _sprite1;
 
-        float _camSpeed = 15.f;
+        std::array<std::array<rvl::Ref<rvl::Rectangle>, 100>, 100> _bg;
+
+        float _smoothSpeed = 10.f;
+
+        void RenderImGui();
     };
 }
 

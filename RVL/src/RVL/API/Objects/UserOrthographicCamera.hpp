@@ -1,6 +1,7 @@
 #ifndef RVL_USERORTHOGRAPHICCAMERA_HPP
 #define RVL_USERORTHOGRAPHICCAMERA_HPP
 
+#include "Entity.hpp"
 #include <Core/Core.hpp>
 #include <Rendering/Renderer/OrthographicCamera.hpp>
 
@@ -23,11 +24,7 @@ namespace rvl
         void SetRotationZ(float rotation);
         float GetRotationZ() const;
 
-        // Debug method: increases or decreases camera zoom whene + or - buttons are pressed
-        void UpdateZoomChange();
-
-        // Debug method: moves camera on arrow keys
-        void UpdateMovement(float speed);
+        void Follow(const Ref<Entity>& entity, Axis axis = Axis::Horizontal | Axis::Vertical, bool smooth = true, float smoothSpeed = 10.f, float deadZone = 0.05f, const glm::vec3& offset = {0.f, 0.f, 0.f});
 
         Ref<OrthographicCamera> GetCamera();
 

@@ -12,22 +12,28 @@ namespace name
 
     void MainScene::Start()
     {
-        _camera = Camera::Create({0.f, 0.f}, 15.f);
+        _camera = Camera::Create({0.f, 0.f}, 5.f);
 
         _rect = Rectangle::Create({0.f, 0.f, 0.f}, {3.f, 3.f}, {0.8f, 0.4f, 0.4f});
 
-        _texture = CreateRef<GLTexture>("container.jpg");
-        _texture2 = CreateRef<GLTexture>("floor1.png");
-
-        _sprite = Sprite::Create({-5.f, -5.f, 0.f}, 2.f);
+        _sprite = Sprite::Create({0.f, 0.f, 0.f}, 2.f);
         _sprite->LoadTexture("a.jpg");
+
+        _sprite1 = Sprite::Create({3.f, 3.f, 0.f}, 2.f);
+        _sprite1->LoadTexture("floor1.png");
+
+
+        for (int i = 0; i < 100; i++)
+        {
+            for (int j = 0; j < 100; j++)
+            {
+                _bg[i][j] = Rectangle::Create({{i + 2.f, j + 2.f, 0.f}, 0.f, {1.5f, 1.5f}}, {0.3f, 0.3f, 0.3f});
+            }
+        }
     }
 
     void MainScene::Update() 
     {
-        _camera->UpdateZoomChange();
-        _camera->UpdateMovement(_camSpeed);
-
         if (Input::IsKeyPressed(Keys::RVL_KEY_D))
             _rect->transform->Position.x += 5.f * Time::DeltaTime();
 
@@ -40,28 +46,26 @@ namespace name
         if (Input::IsKeyPressed(Keys::RVL_KEY_S))
             _rect->transform->Position.y -= 5.f * Time::DeltaTime();
 
-        if (Input::IsKeyPressed(Keys::RVL_KEY_SPACE))
-            _sprite->transform->Rotation += 10.f;
-            
-        ImGui::Begin("Properties");
-        ImGui::ColorPicker3("Rectangle color", _rect->GetColorPtr());
-        ImGui::DragFloat("Camera speed", &_camSpeed, 0.5f, 0.f, 100.f);
-        ImGui::End();
+        _camera->Follow(_rect, Axis::Horizontal | Axis::Vertical, true, _smoothSpeed);
     }
 
     void MainScene::Render()
     {
-        Renderer::DrawRect({{1.5f, -1.f, 0.f}, 0.f, {5.f, 3.f}}, {1.f, 0.3f, 1.f});
-        Renderer::DrawRect({{-3.f, 5.f, 0.f}, 0.f, {2.f, 4.f}}, {0.5f, 0.5f, 1.f});
-
-        Renderer::DrawRect({{4.f, 4.f, 0.f}, 45.f, {2.f, 2.f}}, *_texture);
-        Renderer::DrawRect({{-4.f, -4.f, 0.f}, 0.f, {2.f, 2.f}}, *_texture2);
-
-        // Renderer::DrawRect(_rect->transform, _rect->GetColor());
-        // Renderer::DrawRect(_sprite->transform, *_sprite->GetTexture());
+        RenderImGui();
 
         _rect->Draw();
-        _sprite->Draw();
 
+        _sprite->Draw();
+        _sprite1->Draw();
+    }
+
+    void MainScene::RenderImGui()
+    {
+        ImGui::Begin("Properties");
+        ImGui::ColorPicker3("Rectangle color", _rect->GetColorPtr());
+        ImGui::SliderFloat("camera smooth speed", &_smoothSpeed, 0.f, 20.f);
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        ImGui::Text("Application immidieate %.3f ms/frame (%.1f FPS)", 1000.f / (1.f / Time::DeltaTime()), 1.f / Time::DeltaTime());
+        ImGui::End();
     }
 }
