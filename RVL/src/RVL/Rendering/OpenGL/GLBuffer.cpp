@@ -4,8 +4,9 @@ namespace rvl
 {
     /// Vertex buffer
 
-    GLVertexBuffer::GLVertexBuffer(size_t size, bool normalized) : _normalized(normalized)
+    GLVertexBuffer::GLVertexBuffer(size_t size, int components, bool normalized) : _normalized(normalized)
     {
+        _verticiesCount = components;
         CreateBuffer(size);
     }
 
@@ -40,7 +41,6 @@ namespace rvl
 
     void GLVertexBuffer::CreateBuffer(size_t size)
     {
-        _verticiesCount = 0;
         glGenBuffers(1, &_bufferId);
         glBindBuffer(GL_ARRAY_BUFFER, _bufferId);
         glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW );

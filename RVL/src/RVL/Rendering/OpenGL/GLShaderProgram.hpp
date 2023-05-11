@@ -21,6 +21,7 @@ namespace rvl
         void SetUniformMat4(const std::string &name, const glm::mat4& uniform);
         void SetUniformVec4(const std::string &name, const glm::vec4& uniform);
         void SetUniformInt(const std::string &name, int uniform);
+        void SetUniformIntArr(const std::string &name, int* arr, size_t count);
 
         void Link();
 

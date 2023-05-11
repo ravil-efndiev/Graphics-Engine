@@ -15,16 +15,20 @@ namespace rvl
         ~GLTexture();
 
         void LoadTexture(const std::string& path);
-        void SetData(uint8_t* data, size_t size);
+        void SetData(uint8_t* data, int channels);
 
-        void Bind() const;
+        void Bind(int unit) const;
         void Unbind() const;
 
         int GetWidth() const;
         int GetHeight() const;
 
+        bool operator== (const GLTexture& tex) const;
+
     private:
         GLuint _textureId;
+        GLuint _samplerId;
+        GLenum _dataFormat;
         int _width, _height, _channels;        
         unsigned char* _textureData;
 

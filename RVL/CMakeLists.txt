@@ -43,6 +43,8 @@ add_library(RVL STATIC
     vendor/lib/stb_image.cpp
 )
 
+set(CMAKE_BUILD_TYPE Release)
+
 set_property(TARGET RVL PROPERTY CXX_STANDARD 20)
 
 target_include_directories(RVL PUBLIC .)
@@ -58,4 +60,6 @@ include(GNUInstallDirs)
 
 target_link_libraries(RVL /Users/Belokan/RVL\ Engine/RVL/vendor/lib/libglfw3.a)
 
-set(CMAKE_CXX_FLAGS "-framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -framework CoreFoundation -Wno-deprecated -Wno-unused-command-line-argument")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -framework CoreFoundation -Wno-deprecated -Wno-unused-command-line-argument")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")

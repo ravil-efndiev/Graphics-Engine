@@ -53,6 +53,7 @@ namespace rvl
                 EventListener::PollEvents();
             }
 
+            Renderer::Shutdown();
             ImGuiController::Shutdown();
 
             return RVL_SUCCESS;

@@ -29,7 +29,6 @@ namespace rvl
         float* GetColorPtr();
         
         void SetColor(const glm::vec3& color);
-        
 
     private:
         glm::vec3 _color;

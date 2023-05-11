@@ -22,8 +22,6 @@ namespace name
         rvl::Ref<rvl::Sprite> _sprite;
         rvl::Ref<rvl::Sprite> _sprite1;
 
-        std::array<std::array<rvl::Ref<rvl::Rectangle>, 100>, 100> _bg;
-
         float _smoothSpeed = 10.f;
 
         void RenderImGui();

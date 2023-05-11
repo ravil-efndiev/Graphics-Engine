@@ -48,7 +48,7 @@ namespace rvl
 
     void Sprite::Draw()
     {
-        Renderer::DrawRect(_transform, *_texture);
+        Renderer::DrawRect(_transform, _texture);
     }
 
     Ref<GLTexture> Sprite::GetTexture() const

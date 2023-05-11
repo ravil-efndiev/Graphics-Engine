@@ -17,37 +17,65 @@ namespace rvl
     {
     public:
         static void Init();
+        static void Shutdown();
 
         static void SubmitGeometry(GLVertexArray& vertexArray, GLShaderProgram& shader);
-        static void DrawRect(const Transform& transform, const glm::vec3& color);
-        static void DrawRect(const Transform& transform, const GLTexture& texture);
+        static void DrawRect(const Transform& transform, const glm::vec4& color);
+        static void DrawRect(const Transform& transform, const Ref<GLTexture>& texture);
 
         static void SetClearColor(const glm::vec3& clearColor);
         static void Clear();
 
-        static void CreateContext(OrthographicCamera& camera, float viewportWidth, float viewportHeight);
-        static void ShutdownContext();
+        static void BeginContext(OrthographicCamera& camera, float viewportWidth, float viewportHeight);
+        static void EndContext();
 
         static void GetViewport(int rViewport[2]);
         static glm::vec2 ConvertToWorldCoords(double x, double y);
 
+        struct Statistics
+        {
+            int DrawCalls;
+            int RectCount;
+            int VerticiesCount;
+            int IndiciesCount;
+        };
+
+        static Statistics GetStats();
+        static void ResetStats();
+
     private:
-        static inline void DrawIndicies(GLVertexArray& vertexArray, int indexCount = 0);
+        static void DrawIndicies(const Ref<GLVertexArray>& vertexArray, int indexCount = 0);
+        static void DrawIndicies(GLVertexArray& vertexArray, int indexCount = 0);
 
-        static constexpr uint32_t _rectsPerCall = 5000;
-        static constexpr uint32_t _verticiesPerCall = _rectsPerCall * 4;
-        static constexpr uint32_t _indiciesPerCall = _rectsPerCall * 6;
+        static void BeginBatch();
+        static void FlushAndReset();
 
-        static uint32_t _rectIndexCount;
-
+    private:
         static glm::mat4 _projview;
-
-        static Ref<GLShaderProgram> _flatColorShader;
-        static Ref<GLShaderProgram> _textureShader;
-        static Ref<GLVertexArray> _rectVao;
-        static Ref<GLVertexBuffer> _rectVbo;
-
         static glm::vec3 _clearColor;
+
+        static constexpr size_t _rectsPerCall = 10000;
+        static constexpr size_t _verticiesPerCall = _rectsPerCall * 4;
+        static constexpr size_t _indiciesPerCall = _rectsPerCall * 6;
+
+        static Ref<GLVertexArray> _rectVao;
+        static Ref<GLVertexBuffer> _rectPositionVbo;
+        static Ref<GLVertexBuffer> _rectColorVbo;
+        static Ref<GLVertexBuffer> _rectTexctureCoordsVbo;
+        static Ref<GLVertexBuffer> _rectTextureIndexVbo;
+        static Ref<GLShaderProgram> _textureShader;
+
+        static uint32_t _rectIndiciesCount;
+
+        static std::vector<glm::vec3> _rectPositionVBOData;
+        static std::vector<glm::vec4> _rectColorVBOData;
+        static std::vector<glm::vec2> _rectTexCoordsVBOData;
+        static std::vector<float> _rectTexIndexVBOData;
+
+        static std::array<Ref<GLTexture>, 16> _textureSlots;
+        static int _textureSlotIndex;
+
+        static const glm::vec4 _rectVertexPositions[4];
     };
 }
 

@@ -120,6 +120,12 @@ namespace rvl
         glUniform1i(position, uniform);
     }
 
+    void GLShaderProgram::SetUniformIntArr(const std::string& name, int* arr, size_t count)
+    {
+        GLint position = glGetUniformLocation(_programId, name.c_str());
+        glUniform1iv(position, count, arr);
+    }
+
     void GLShaderProgram::Bind()
     {
         glUseProgram(_programId);

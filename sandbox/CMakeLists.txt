@@ -8,6 +8,8 @@ set_property(TARGET sandbox PROPERTY CXX_STANDARD 20)
 
 target_link_libraries(sandbox "/Users/Belokan/RVL\ Engine/sandbox/vendor/libRVL.a" "/Users/Belokan/RVL Engine/RVL/vendor/lib/libglfw3.a")
 
+set(CMAKE_BUILD_TYPE Release)
+
 target_include_directories(sandbox PRIVATE .)
 target_include_directories(sandbox PRIVATE ../RVL/src/RVL)
 target_include_directories(sandbox PRIVATE ../RVL/vendor/)
@@ -17,5 +19,6 @@ target_include_directories(sandbox PRIVATE ../RVL/src)
 target_include_directories(sandbox PRIVATE ../RVL/)
 
 include(GNUInstallDirs)
-set(CMAKE_CXX_FLAGS "-framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -framework CoreFoundation -Wno-deprecated")
-
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -framework CoreFoundation -Wno-deprecated")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
