@@ -1,6 +1,7 @@
 #include "MainScene.hpp"
 
 #include <Rendering/Renderer/Renderer.hpp>
+#include <API/Components/MovementComponent.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 namespace name
@@ -14,7 +15,7 @@ namespace name
     {
         _camera = Camera::Create({0.f, 0.f}, 15.f);
 
-        _rect = Rectangle::Create({0.f, 0.f, 0.f}, {3.f, 3.f}, {0.8f, 0.4f, 0.4f});
+        _player = CreateRef<Player>();
 
         _sprite = Sprite::Create({0.f, 0.f, 0.f}, 2.f);
         _sprite->LoadTexture("assets/textures/a.jpg");
@@ -25,22 +26,12 @@ namespace name
 
     void MainScene::Update()
     {
-        if (Input::IsKeyPressed(Keys::RVL_KEY_D))
-            _rect->transform->Position.x += 5.f * Time::DeltaTime();
+        _player->Update();
+    }
 
-        if (Input::IsKeyPressed(Keys::RVL_KEY_A))
-            _rect->transform->Position.x -= 5.f * Time::DeltaTime();
-
-        if (Input::IsKeyPressed(Keys::RVL_KEY_W))
-            _rect->transform->Position.y += 5.f * Time::DeltaTime();
-
-        if (Input::IsKeyPressed(Keys::RVL_KEY_S))
-            _rect->transform->Position.y -= 5.f * Time::DeltaTime();
-
-        if (Input::IsKeyPressed(Keys::RVL_KEY_SPACE))
-            _rect->transform->Rotation += 50.f * Time::DeltaTime();
-
-        _camera->Follow(_rect, Axis::Horizontal | Axis::Vertical, true, _smoothSpeed);
+    void MainScene::Tick()
+    {
+        _camera->Follow(_player, Axis::Horizontal | Axis::Vertical, true, _smoothSpeed, 0.05f, Time::FixedDeltaTime());
     }
 
     void MainScene::Render()
@@ -49,14 +40,14 @@ namespace name
 
         _sprite1->Draw();
         _sprite->Draw();
-        _rect->Draw();
+        _player->Draw();
 
-        for (float i = -40.f; i < 40.f; i += 0.5f)
+        for (int i = -80; i < 80; i++)
         {
-            for (float j = -40.f; j < 40.f; j += 0.5f)
+            for (int j = -80; j < 80; j++)
             {
-                glm::vec4 color = {(i + 40.f) / 80.f, 0.3f, (j + 40.f) / 80.f, 1.f};
-                Renderer::DrawRect({{j, i, 0.f}, 0.f, {0.45f, 0.45f}}, color);
+                glm::vec4 color = {(i + 80.f) / 160.f, 0.3f, (j + 80.f) / 160.f, 0.5f};
+                Renderer::DrawRect({{j, i, 0.f}, 0.f, {0.8f, 0.8f}}, color);
             }
         }
     }
@@ -66,7 +57,7 @@ namespace name
         auto stats = Renderer::GetStats();
 
         ImGui::Begin("Properties");
-        ImGui::ColorPicker3("Rectangle color", _rect->GetColorPtr());
+        ImGui::ColorPicker3("Rectangle color", _player->GetRect()->GetColorPtr());
         ImGui::SliderFloat("camera smooth speed", &_smoothSpeed, 0.f, 20.f);
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         ImGui::Text("Application immidieate %.3f ms/frame (%.1f FPS)", 1000.f / (1.f / Time::DeltaTime()), 1.f / Time::DeltaTime());

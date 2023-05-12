@@ -13,17 +13,13 @@ namespace rvl
 
     RvlScene::~RvlScene() {}
 
-    void RvlScene::Start()
-    {
-    }
+    void RvlScene::Start() {}
 
-    void RvlScene::Update()
-    {
-    }
+    void RvlScene::Update() {}
 
-    void RvlScene::Render()
-    {
-    }
+    void RvlScene::Render() {}
+
+    void RvlScene::Tick() {}
 
     void RvlScene::Begin()
     {

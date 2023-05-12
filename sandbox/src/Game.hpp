@@ -14,6 +14,7 @@ namespace name
     private:
         void Start() override;
         void Update() override;
+        void Tick() override;
 
     };
 }

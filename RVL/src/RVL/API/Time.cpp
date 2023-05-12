@@ -32,4 +32,9 @@ namespace rvl
     {
         return _lastTime;
     }
+    
+    TimeStep Time::FixedDeltaTime()
+    {
+        return 1.f / 60.f;
+    }
 }

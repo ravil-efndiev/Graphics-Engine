@@ -1,7 +1,7 @@
 #ifndef SB_MAINSCENE_HPP
 #define SB_MAINSCENE_HPP
 
-#include <RVL.hpp>
+#include "Player.hpp"
 
 #include <Rendering/OpenGL/GLTexture.hpp>
 
@@ -15,12 +15,14 @@ namespace name
 
         void Start() override;
         void Update() override;
+        void Tick() override;
         void Render() override;
 
     private:
-        rvl::Ref<rvl::Rectangle> _rect;
         rvl::Ref<rvl::Sprite> _sprite;
         rvl::Ref<rvl::Sprite> _sprite1;
+
+        rvl::Ref<Player> _player;
 
         float _smoothSpeed = 10.f;
 

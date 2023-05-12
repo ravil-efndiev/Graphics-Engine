@@ -32,6 +32,8 @@ namespace rvl
 
             ImGuiController::Init(_window->GetWindowPtr());
 
+            float timer = Time::LastTime();
+
             while (!_window->Closes())
             {
                 Renderer::Clear();
@@ -51,6 +53,12 @@ namespace rvl
 
                 _window->SwapBuffers();
                 EventListener::PollEvents();
+
+                if (Time::Current() - timer > 1.f / 60.f)
+                {
+                    timer += 1.f / 60.f;
+                    Tick();
+                }
             }
 
             Renderer::Shutdown();
@@ -63,6 +71,10 @@ namespace rvl
             error.Print();
             return error.Status;
         }
+    }
+
+    void RvlApp::Tick()
+    {
     }
 
     void RvlApp::SetClearColor(const glm::vec3& color)

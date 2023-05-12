@@ -21,6 +21,11 @@ namespace name
     {
         _currentScene->Update();
     }
+
+    void Game::Tick()
+    {
+        _currentScene->Tick();
+    }
 }
 
 rvl::Ptr<rvl::RvlApp> rvl::OnInit()

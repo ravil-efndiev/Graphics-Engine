@@ -23,6 +23,7 @@ namespace rvl
         static TimeStep Current();
         static TimeStep DeltaTime();
         static TimeStep LastTime();
+        static TimeStep FixedDeltaTime();
 
     private:
         static TimeStep _lastTime;

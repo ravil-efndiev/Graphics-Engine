@@ -48,7 +48,12 @@ namespace rvl
 
     void Sprite::Draw()
     {
-        Renderer::DrawRect(_transform, _texture);
+        Transform tf = {
+            _hasParent ? _realPosition : _transform.Position,
+            _hasParent ? _realRotationZ : _transform.Rotation,
+            _transform.Scale
+        };
+        Renderer::DrawRect(tf, _texture);
     }
 
     Ref<GLTexture> Sprite::GetTexture() const

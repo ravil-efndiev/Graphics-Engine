@@ -5,6 +5,7 @@ namespace rvl
 
     Entity::Entity(const Transform& tf)
     {
+        _realPosition = {0.f, 0.f, 0.f};
         _transform = tf;
     }
 
@@ -18,5 +19,22 @@ namespace rvl
         component->OnAttach();
     }
 
+    void Entity::AddChild(const Ref<Entity>& entity)
+    {
+        _children.push_back(entity);
+        entity->_hasParent = true;
+        _hasChildren = true;
+    }
+
+    void Entity::UpdateChildren()
+    {
+        for (auto& child : _children)
+        {   
+            child->_realPosition = (_hasParent ? _realPosition : _transform.Position) + child->transform->Position;
+            child->_realRotationZ = (_hasParent ? _realRotationZ : _transform.Rotation) + child->transform->Rotation;
+
+            if (child->_hasChildren) child->UpdateChildren();
+        }
+    }
 
 }

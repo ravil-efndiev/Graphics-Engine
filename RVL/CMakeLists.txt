@@ -26,6 +26,7 @@ add_library(RVL STATIC
     src/RVL/API/Random.cpp
     src/RVL/API/Math/Math.cpp
     src/RVL/API/Components/Component.cpp
+    src/RVL/API/Components/MovementComponent.cpp
     src/RVL/API/Objects/Entity.cpp
     src/RVL/API/Objects/Rectangle.cpp
     src/RVL/API/Objects/Sprite.cpp

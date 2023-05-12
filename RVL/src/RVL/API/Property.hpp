@@ -35,6 +35,7 @@ namespace rvl
         bool operator<=(const T& value);
 
         T* operator-> ();
+        T* GetValuePtr();
 
     private:
         std::function<T()> _get;
@@ -128,6 +129,12 @@ namespace rvl
 
     template <class T>
     T* Property<T>::operator->()
+    {
+        return _valuePtr;
+    }
+
+    template<class T>
+    inline T* Property<T>::GetValuePtr()
     {
         return _valuePtr;
     }

@@ -2,7 +2,7 @@
 #define RVL_INPUT_HPP
 
 #include <Core/Core.hpp>
-#include <glm/glm.hpp>
+#include <API/Math/Math.hpp>
 
 namespace rvl
 {    
@@ -28,6 +28,15 @@ namespace rvl
          * @ingroup input
         */
         static bool IsKeyPressedOnce(keycode_e keycode);
+
+        /**
+         * @brief get all axis-related key inputs, gets one-frame key press
+         * 
+         * @returns -1.f or 1.f depending on what input is got
+         * 
+         * @ingroup input
+        */
+        static float GetAxis(Axis axis);
 
         /**
          * @brief Get current cursor position

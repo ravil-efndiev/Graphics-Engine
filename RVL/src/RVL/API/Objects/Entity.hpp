@@ -5,43 +5,58 @@
 #include <API/Components/Component.hpp>
 #include <API/Property.hpp>
 
+#include <Core/Utils/Types.hpp>
+
 namespace rvl
 {
-    enum class Axis
-    {
-        None       = 0,
-        Vertical   = 1,
-        Horizontal = 2,
-    };
-
-    inline Axis operator|(Axis a, Axis b)
-    {
-        return static_cast<Axis>(static_cast<int>(a) | static_cast<int>(b));
-    }
-
-    inline Axis operator&(Axis a, Axis b)
-    {
-        return static_cast<Axis>(static_cast<int>(a) & static_cast<int>(b));
-    }
 
     class Entity
     {
     public:
         Entity();
         Entity(const Transform& tf);
-        ~Entity();
+        virtual ~Entity();
 
         Property<Transform> transform = {&_transform};
 
-        void AddComponent(const Ref<Component>& component);
+        template <class CmpT>
+        Ref<Component> GetComponent();
 
-        virtual void Draw() = 0;
+        void AddChild(const Ref<Entity>& entity);
 
     protected:
+        void AddComponent(const Ref<Component>& component);
+
+        void UpdateChildren();
+
         Transform _transform;
 
+        std::vector<Ref<Entity>> _children;
         std::vector<Ref<Component>> _components;
+
+        bool _hasParent = false;
+        bool _hasChildren = false;
+
+        glm::vec3 _realPosition;
+        float _realRotationZ;
     };
+
+    template<class CmpT>
+    Ref<Component> Entity::GetComponent()
+    {
+        if (_components.size() <= 0)
+            return nullptr;
+
+        for (auto& cmp : _components)
+        {
+            if (utils::InstanceOf<CmpT>(cmp.get()))
+            {
+                return cmp;
+            }
+        }
+
+        return nullptr;
+    }
 }
 
 #endif

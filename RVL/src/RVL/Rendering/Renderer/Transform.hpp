@@ -18,6 +18,7 @@ namespace rvl
         glm::vec2 Scale;
         float Rotation;
 
+        glm::vec3 Pivot;
     private:
     };
 }

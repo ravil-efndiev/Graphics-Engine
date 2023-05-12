@@ -3,6 +3,7 @@
 
 #include <Core/Core.hpp>
 #include "Entity.hpp"
+#include "Renderable.hpp"
 
 namespace rvl
 {
@@ -11,7 +12,7 @@ namespace rvl
     class GLVertexArray;
     class GLShaderProgram;
 
-    class Rectangle : public Entity
+    class Rectangle : public Entity, public IRenderable
     {
     public:
         static Ref<Rectangle> Create();

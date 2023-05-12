@@ -2,13 +2,14 @@
 #define RVL_SPRITE_HPP
 
 #include <Core/Core.hpp>
+#include "Renderable.hpp"
 #include "Entity.hpp"
 
 namespace rvl
 {
     class GLTexture;
 
-    class Sprite : public Entity
+    class Sprite : public Entity, public IRenderable
     {
     public:
         static Ref<Sprite> Create();

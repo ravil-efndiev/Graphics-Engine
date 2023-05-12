@@ -4,7 +4,6 @@
 
 #include <API/Math/Math.hpp>
 #include <API/Input.hpp>
-#include <API/Time.hpp>
 
 namespace rvl
 {
@@ -50,17 +49,17 @@ namespace rvl
         return _camera->GetRotationZ();
     }
 
-    void UserOrthographicCamera::Follow(const Ref<Entity>& entity, Axis axis, bool smooth, float smoothSpeed, float deadZone, const glm::vec3& offset)
+    void UserOrthographicCamera::Follow(const Ref<Entity>& entity, Axis axis, bool smooth, float smoothSpeed, float deadZone, TimeStep deltaTime)
     {
         float x = _camera->GetPosition().x, y = _camera->GetPosition().y;
 
         if (static_cast<bool>(axis & Axis::Horizontal))
-            x = smooth ? Math::Lerp(_camera->GetPosition().x, entity->transform->Position.x, smoothSpeed * Time::DeltaTime(), deadZone) : entity->transform->Position.x;
+            x = smooth ? Math::Lerp(_camera->GetPosition().x, entity->transform->Position.x, smoothSpeed * deltaTime, deadZone) : entity->transform->Position.x;
         
         if (static_cast<bool>(axis & Axis::Vertical))
-            y = smooth ? Math::Lerp(_camera->GetPosition().y, entity->transform->Position.y, smoothSpeed * Time::DeltaTime(), deadZone) : entity->transform->Position.y;
+            y = smooth ? Math::Lerp(_camera->GetPosition().y, entity->transform->Position.y, smoothSpeed * deltaTime, deadZone) : entity->transform->Position.y;
 
-        glm::vec3 pos = glm::vec3(x, y, 0.f) + offset;
+        glm::vec3 pos = glm::vec3(x, y, 0.f);
 
         _camera->SetPosition(pos);
     }

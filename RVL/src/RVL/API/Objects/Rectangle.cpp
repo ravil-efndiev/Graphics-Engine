@@ -44,7 +44,12 @@ namespace rvl
 
     void Rectangle::Draw()
     {
-        Renderer::DrawRect(_transform, glm::vec4(_color, 1.f));
+        Transform tf = {
+            _hasParent ? _realPosition : _transform.Position,
+            _hasParent ? _realRotationZ : _transform.Rotation,
+            _transform.Scale
+        };
+        Renderer::DrawRect(tf, glm::vec4(_color, 1.f));
     }
 
     glm::vec3 Rectangle::GetColor() const

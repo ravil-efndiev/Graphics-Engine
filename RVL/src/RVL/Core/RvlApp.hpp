@@ -22,6 +22,7 @@ namespace rvl
 
         virtual void Start() = 0;
         virtual void Update() = 0;
+        virtual void Tick();
 
         void SetClearColor(const glm::vec3& color);
 
