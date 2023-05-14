@@ -20,8 +20,12 @@ namespace name
         _sprite = Sprite::Create({0.f, 0.f, 0.f}, 2.f);
         _sprite->LoadTexture("assets/textures/a.jpg");
 
-        _sprite1 = Sprite::Create({3.f, 3.f, 0.f}, 2.f);
+        _sprite1 = Sprite::Create({3.f, 3.f, 0.01f}, 2.f);
         _sprite1->LoadTexture("assets/textures/floor1.png");
+
+        _subtextureEx = Sprite::Create({-3.f, -5.f, 0.01f}, 5.f);
+        _subtextureEx->LoadTexture("assets/textures/map.png");
+        _subtextureEx->SetSubTexture(0, 3, 128, 128);
     }
 
     void MainScene::Update()
@@ -38,9 +42,7 @@ namespace name
     {
         RenderImGui();
 
-        _sprite1->Draw();
         _sprite->Draw();
-        _player->Draw();
 
         for (int i = -80; i < 80; i++)
         {
@@ -50,6 +52,9 @@ namespace name
                 Renderer::DrawRect({{j, i, 0.f}, 0.f, {0.8f, 0.8f}}, color);
             }
         }
+        _sprite1->Draw();
+        _subtextureEx->Draw();
+        _player->Draw();
     }
 
     void MainScene::RenderImGui()

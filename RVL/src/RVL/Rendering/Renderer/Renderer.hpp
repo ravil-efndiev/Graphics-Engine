@@ -3,6 +3,7 @@
 
 #include <Core/Core.hpp>
 #include "Transform.hpp"
+#include "SubTexture.hpp"
 
 namespace rvl
 {
@@ -22,6 +23,7 @@ namespace rvl
         static void SubmitGeometry(GLVertexArray& vertexArray, GLShaderProgram& shader);
         static void DrawRect(const Transform& transform, const glm::vec4& color);
         static void DrawRect(const Transform& transform, const Ref<GLTexture>& texture);
+        static void DrawRect(const Transform& transform, const Ref<SubTexture>& subtexture);
 
         static void SetClearColor(const glm::vec3& clearColor);
         static void Clear();

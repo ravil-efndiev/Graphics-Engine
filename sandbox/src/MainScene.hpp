@@ -4,6 +4,7 @@
 #include "Player.hpp"
 
 #include <Rendering/OpenGL/GLTexture.hpp>
+#include <Rendering/Renderer/SubTexture.hpp>
 
 namespace name
 {
@@ -21,6 +22,8 @@ namespace name
     private:
         rvl::Ref<rvl::Sprite> _sprite;
         rvl::Ref<rvl::Sprite> _sprite1;
+
+        rvl::Ref<rvl::Sprite> _subtextureEx;
 
         rvl::Ref<Player> _player;
 

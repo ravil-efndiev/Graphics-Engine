@@ -9,6 +9,8 @@ namespace rvl
             TimeStep(float time = 0.f) : _time(time) {}
 
             operator float () const { return _time; }
+            TimeStep operator+=(TimeStep ts) { _time += ts; return *this; }
+
             float AsMiliseconds() const { return _time * 1000.f; }
 
         private:

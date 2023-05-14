@@ -37,6 +37,16 @@ namespace rvl
         _texture = CreateRef<GLTexture>(path);   
 
         ResetScale();
+
+        _subTexture = SubTexture::CreateFromCoords(_texture, 0.f, 0.f, _texture->GetWidth(), _texture->GetHeight());
+    }
+
+    void Sprite::SetSubTexture(float x, float y, float spriteWidth, float spriteHeight)
+    {
+        _subTexture = SubTexture::CreateFromCoords(_texture, x, y, spriteWidth, spriteHeight);
+
+        float ratio = spriteWidth / spriteHeight;
+        _transform.Scale = glm::vec2(ratio * _scale, _scale);
     }
 
     void Sprite::ResetScale()
@@ -46,6 +56,12 @@ namespace rvl
         _transform.Scale = glm::vec2(ratio * _scale, _scale);
     }
 
+    void Sprite::ResetSubTexture()
+    {
+        ResetScale();
+        _subTexture = SubTexture::CreateFromCoords(_texture, 0.f, 0.f, _texture->GetWidth(), _texture->GetHeight());
+    }  
+
     void Sprite::Draw()
     {
         Transform tf = {
@@ -53,7 +69,7 @@ namespace rvl
             _hasParent ? _realRotationZ : _transform.Rotation,
             _transform.Scale
         };
-        Renderer::DrawRect(tf, _texture);
+        Renderer::DrawRect(tf, _subTexture);
     }
 
     Ref<GLTexture> Sprite::GetTexture() const

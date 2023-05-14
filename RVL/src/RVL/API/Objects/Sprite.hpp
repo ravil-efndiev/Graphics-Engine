@@ -8,6 +8,7 @@
 namespace rvl
 {
     class GLTexture;
+    class SubTexture;
 
     class Sprite : public Entity, public IRenderable
     {
@@ -20,7 +21,9 @@ namespace rvl
         ~Sprite();
 
         void LoadTexture(const std::string& path);
+        void SetSubTexture(float x, float y, float spriteWidth, float spriteHeight);
         void ResetScale();
+        void ResetSubTexture();
 
         void Draw() override;
 
@@ -29,6 +32,7 @@ namespace rvl
     private:
         float _scale;
 
+        Ref<SubTexture> _subTexture;
         Ref<GLTexture> _texture;
     };
 

@@ -18,6 +18,7 @@ add_library(RVL STATIC
     src/RVL/Rendering/OpenGL/GLVertexArray.cpp
     src/RVL/Rendering/OpenGL/GLShaderProgram.cpp
     src/RVL/Rendering/Renderer/Renderer.cpp
+    src/RVL/Rendering/Renderer/SubTexture.cpp
     src/RVL/Rendering/Renderer/OrthographicCamera.cpp
     src/RVL/Rendering/Renderer/PerspectiveCamera.cpp
     src/RVL/Rendering/Renderer/Transform.cpp
@@ -27,6 +28,7 @@ add_library(RVL STATIC
     src/RVL/API/Math/Math.cpp
     src/RVL/API/Components/Component.cpp
     src/RVL/API/Components/MovementComponent.cpp
+    src/RVL/API/Components/AnimationComponent.cpp
     src/RVL/API/Objects/Entity.cpp
     src/RVL/API/Objects/Rectangle.cpp
     src/RVL/API/Objects/Sprite.cpp

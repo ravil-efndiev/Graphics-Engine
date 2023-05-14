@@ -23,9 +23,9 @@ namespace rvl
         Ref<Component> GetComponent();
 
         void AddChild(const Ref<Entity>& entity);
+        void AddComponent(const Ref<Component>& component);
 
     protected:
-        void AddComponent(const Ref<Component>& component);
 
         void UpdateChildren();
 

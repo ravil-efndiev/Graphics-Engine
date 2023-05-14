@@ -27,20 +27,20 @@ namespace rvl
     {
         if (axis == Axis::Horizontal)
         {
-            if (IsKeyPressed(Keys::RVL_KEY_D) || IsKeyPressed(Keys::RVL_KEY_RIGHT))
+            if (IsKeyPressed(Keys::Key_D) || IsKeyPressed(Keys::Key_Right))
                 return 1.f;
 
-            if (IsKeyPressed(Keys::RVL_KEY_A) || IsKeyPressed(Keys::RVL_KEY_LEFT))
+            if (IsKeyPressed(Keys::Key_A) || IsKeyPressed(Keys::Key_Left))
                 return -1.f;
             
             return 0.f;
         }
         else if (axis == Axis::Vertical)
         {
-            if (IsKeyPressed(Keys::RVL_KEY_W) || IsKeyPressed(Keys::RVL_KEY_UP))
+            if (IsKeyPressed(Keys::Key_W) || IsKeyPressed(Keys::Key_Up))
                 return 1.f;
 
-            if (IsKeyPressed(Keys::RVL_KEY_S) || IsKeyPressed(Keys::RVL_KEY_DOWN))
+            if (IsKeyPressed(Keys::Key_S) || IsKeyPressed(Keys::Key_Down))
                 return -1.f;
 
             return 0.f;

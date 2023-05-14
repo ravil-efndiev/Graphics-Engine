@@ -3,6 +3,7 @@
 
 #include <RVL.hpp>
 #include <API/Components/MovementComponent.hpp>
+#include <API/Components/AnimationComponent.hpp>
 
 namespace name
 {
@@ -21,7 +22,9 @@ namespace name
     private:
         Ref<Rectangle> _rect;
         Ref<Rectangle> _rect2;
+        Ref<Sprite> _sprite;
         Ref<MovementComponent> _movementComponent;
+        Ref<AnimationComponent> _spriteAnimationComponent;
     };
 }
 

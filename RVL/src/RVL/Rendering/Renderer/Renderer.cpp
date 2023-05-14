@@ -142,23 +142,17 @@ namespace rvl
         if (_rectIndiciesCount >= _indiciesPerCall)
             FlushAndReset();
 
+        const glm::vec2 coords[4] = { {0.f, 0.f}, {1.f, 0.f}, {1.f, 1.f}, {0.f, 1.f} };
+
+        glm::mat4 transformMat = transform.GetMatrix();
+        
         for (int i = 0; i < 4; i++)
         {
+            _rectPositionVBOData.push_back(transformMat * _rectVertexPositions[i]);
+            _rectTexCoordsVBOData.push_back(coords[i]);
             _rectColorVBOData.push_back(color);
             _rectTexIndexVBOData.push_back(0.f);
         }
-
-        glm::mat4 transformMat = transform.GetMatrix();
-
-        _rectPositionVBOData.push_back(transformMat * _rectVertexPositions[0]);
-        _rectPositionVBOData.push_back(transformMat * _rectVertexPositions[1]);
-        _rectPositionVBOData.push_back(transformMat * _rectVertexPositions[2]);
-        _rectPositionVBOData.push_back(transformMat * _rectVertexPositions[3]);
-
-        _rectTexCoordsVBOData.push_back({0.f, 0.f});
-        _rectTexCoordsVBOData.push_back({1.f, 0.f});
-        _rectTexCoordsVBOData.push_back({1.f, 1.f});
-        _rectTexCoordsVBOData.push_back({0.f, 1.f});
 
 		_rectIndiciesCount += 6;
 
@@ -171,6 +165,52 @@ namespace rvl
     {
         if (_rectIndiciesCount >= _indiciesPerCall)
             FlushAndReset();
+
+        float textureIndex = 0.f;
+
+        const glm::vec2 coords[4] = { {0.f, 0.f}, {1.f, 0.f}, {1.f, 1.f}, {0.f, 1.f} };
+
+
+        for (int i = 1; i < _textureSlotIndex; i++)
+        {
+            if (*_textureSlots[i] == *texture)
+            {
+                textureIndex = i;                
+                break;
+            }
+        }
+
+        if (!textureIndex)
+        {
+            textureIndex = _textureSlotIndex;
+            _textureSlots[_textureSlotIndex] = texture;
+            _textureSlotIndex++;
+        }
+
+        glm::mat4 transformMat = transform.GetMatrix();
+
+        for (int i = 0; i < 4; i++)
+        {
+            _rectPositionVBOData.push_back(transformMat * _rectVertexPositions[i]);
+            _rectTexCoordsVBOData.push_back(coords[i]);
+            _rectColorVBOData.push_back({1.f, 1.f, 1.f, 1.f});
+            _rectTexIndexVBOData.push_back(textureIndex);
+        }
+
+		_rectIndiciesCount += 6;        
+
+        Stats.RectCount++;
+        Stats.VerticiesCount += 4;
+        Stats.IndiciesCount += 6;
+    }
+
+    void Renderer::DrawRect(const Transform& transform, const Ref<SubTexture>& subtexture)
+    {
+        if (_rectIndiciesCount >= _indiciesPerCall)
+            FlushAndReset();
+
+        const Ref<GLTexture> texture = subtexture->GetTexture();
+        const glm::vec2* coords = subtexture->GetCoords();
 
         float textureIndex = 0.f;
 
@@ -190,23 +230,15 @@ namespace rvl
             _textureSlotIndex++;
         }
 
+        glm::mat4 transformMat = transform.GetMatrix();
+
         for (int i = 0; i < 4; i++)
         {
+            _rectPositionVBOData.push_back(transformMat * _rectVertexPositions[i]);
+            _rectTexCoordsVBOData.push_back(coords[i]);
             _rectColorVBOData.push_back({1.f, 1.f, 1.f, 1.f});
             _rectTexIndexVBOData.push_back(textureIndex);
         }
-
-        glm::mat4 transformMat = transform.GetMatrix();
-
-        _rectPositionVBOData.push_back(transformMat * _rectVertexPositions[0]);
-        _rectPositionVBOData.push_back(transformMat * _rectVertexPositions[1]);
-        _rectPositionVBOData.push_back(transformMat * _rectVertexPositions[2]);
-        _rectPositionVBOData.push_back(transformMat * _rectVertexPositions[3]);
-
-        _rectTexCoordsVBOData.push_back({0.f, 0.f});
-        _rectTexCoordsVBOData.push_back({1.f, 0.f});
-        _rectTexCoordsVBOData.push_back({1.f, 1.f});
-        _rectTexCoordsVBOData.push_back({0.f, 1.f});
 
 		_rectIndiciesCount += 6;        
 
