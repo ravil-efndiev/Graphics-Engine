@@ -14,12 +14,11 @@ namespace name
         _spriteAnimationComponent = AnimationComponent::Create(_sprite);
         _spriteAnimationComponent->AddAnimation("TEST", 50.f, 0.f, 3.f, 5.f, 3.f, 128.f, 128.f);
 
-        AddComponent(_movementComponent);
-
         AddChild(_rect);
         AddChild(_sprite);
         _rect->AddChild(_rect2);
         
+        AddComponent(_movementComponent);
         _sprite->AddComponent(_spriteAnimationComponent);
     }
 

@@ -6,6 +6,24 @@
 
 namespace rvl
 {
+    enum class MoveDirection4
+    {
+        None,
+        MoveUp,
+        MoveDown,
+        MoveRight,
+        MoveLeft,
+    };
+
+    enum class MoveDirection8
+    {
+        None,
+        MoveUp, MoveDown,
+        MoveRight, MoveLeft,
+        MoveRightUp, MoveRightDown,
+        MoveLeftUp, MoveLeftDown
+    };
+
     class MovementComponent : public Component
     {
     public:
@@ -35,6 +53,10 @@ namespace rvl
         void SetAcceleration(float acceleration);
         void SetDeceleration(float deceleration);
         void SetMaxVelocity(float maxVelocity);
+
+        // x axis movement is prioritized
+        MoveDirection4 GetMoveDirection4() const;
+        MoveDirection8 GetMoveDirection8() const;
 
     private:
         Transform* _targetTransform;

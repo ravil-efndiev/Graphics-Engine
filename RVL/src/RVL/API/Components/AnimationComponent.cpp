@@ -42,8 +42,14 @@ namespace rvl
         if (_animations[name] != nullptr)
         {
             _animations[name]->Play();
+            _currentAnimation = _animations[name].get();
         }
         else throw Error(std::string("no animation with name '").append(name).append("' found"), RVL_RUNTIME_ERROR);
+    }
+
+    bool AnimationComponent::IsAnimationDone()
+    {
+        return _currentAnimation->_done;
     }
 
     AnimationComponent::Animation::Animation(const Ref<Sprite>& sprite, TimeStep animTimer, float startX, float startY, float endX, float endY, float subSpriteWidth, float subSpriteHeight)

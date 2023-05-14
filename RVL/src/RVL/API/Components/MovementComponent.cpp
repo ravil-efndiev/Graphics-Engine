@@ -113,4 +113,42 @@ namespace rvl
     {
         _maxVelocity = maxVelocity;
     }
+    
+    MoveDirection4 MovementComponent::GetMoveDirection4() const
+    {
+        if (_velocity.x > 0.f)
+            return MoveDirection4::MoveRight;
+
+        else if (_velocity.x < 0.f)
+            return MoveDirection4::MoveLeft;
+        
+        else if (_velocity.y > 0.f)
+            return MoveDirection4::MoveUp;
+
+        else if (_velocity.y < 0.f) 
+            return MoveDirection4::MoveDown;
+
+        return MoveDirection4::None;
+    }
+    
+    MoveDirection8 MovementComponent::GetMoveDirection8() const
+    {
+        if (_velocity.x > 0.f && _velocity.y == 0.f) return MoveDirection8::MoveRight;
+
+        if (_velocity.x < 0.f && _velocity.y == 0.f) return MoveDirection8::MoveLeft;
+        
+        if (_velocity.y > 0.f && _velocity.x == 0.f) return MoveDirection8::MoveUp;
+
+        if (_velocity.y < 0.f && _velocity.x == 0.f) return MoveDirection8::MoveDown;
+
+        if (_velocity.y > 0.f && _velocity.x > 0.f) return MoveDirection8::MoveRightUp;
+
+        if (_velocity.y > 0.f && _velocity.x < 0.f) return MoveDirection8::MoveLeftUp;
+
+        if (_velocity.y < 0.f && _velocity.x > 0.f) return MoveDirection8::MoveRightDown;
+
+        if (_velocity.y < 0.f && _velocity.x < 0.f) return MoveDirection8::MoveLeftDown;
+
+        return MoveDirection8::None;
+    }
 }

@@ -22,6 +22,8 @@ namespace rvl
         void AddAnimation(const std::string& name, TimeStep animTimer, float startX, float startY, float endX, float endY, float subSpriteWidth, float subSpriteHeight);
         void Play(const std::string& name);
 
+        bool IsAnimationDone();
+
     private:
         class Animation
         {
@@ -30,18 +32,19 @@ namespace rvl
 
             void Play();
 
+            bool _done = false;
         private:
             Ref<Sprite> _sprite;
             TimeStep _timer, _animTimer;
             float _startX, _startY, _endX, _endY;
             float _subSpriteWidth, _subSpriteHeight;
             float _currentX;
-            bool _done = false;
 
         };
 
         Ref<Sprite> _sprite;
         std::map<std::string, Ptr<Animation>> _animations;
+        Animation* _currentAnimation;
     };
 }
 
