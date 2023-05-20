@@ -42,12 +42,12 @@ namespace rvl
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         
-        _rectVao = CreateRef<GLVertexArray>();
+        _rectVao = NewRef<GLVertexArray>();
 
-		_rectPositionVbo = CreateRef<GLVertexBuffer>(_verticiesPerCall * sizeof(glm::vec3), 3);
-		_rectColorVbo = CreateRef<GLVertexBuffer>(_verticiesPerCall * sizeof(glm::vec4), 4);
-        _rectTextureIndexVbo = CreateRef<GLVertexBuffer>(_verticiesPerCall * sizeof(float), 1);
-        _rectTexctureCoordsVbo = CreateRef<GLVertexBuffer>(_verticiesPerCall * sizeof(glm::vec2), 2);
+		_rectPositionVbo = NewRef<GLVertexBuffer>(_verticiesPerCall * sizeof(glm::vec3), 3);
+		_rectColorVbo = NewRef<GLVertexBuffer>(_verticiesPerCall * sizeof(glm::vec4), 4);
+        _rectTextureIndexVbo = NewRef<GLVertexBuffer>(_verticiesPerCall * sizeof(float), 1);
+        _rectTexctureCoordsVbo = NewRef<GLVertexBuffer>(_verticiesPerCall * sizeof(glm::vec2), 2);
 
 		_rectVao->AddVertexBuffer(_rectPositionVbo);
 		_rectVao->AddVertexBuffer(_rectColorVbo);
@@ -70,10 +70,10 @@ namespace rvl
 			offset += 4;
 		}
 
-		Ref<GLIndexBuffer> quadIB = CreateRef<GLIndexBuffer>(rectIndexData);
+		Ref<GLIndexBuffer> quadIB = NewRef<GLIndexBuffer>(rectIndexData);
 		_rectVao->AddIndexBuffer(quadIB);
 
-		_textureShader = CreateRef<GLShaderProgram>("assets/shaders/Texture.vert", "assets/shaders/Texture.frag");
+		_textureShader = NewRef<GLShaderProgram>("assets/shaders/Texture.vert", "assets/shaders/Texture.frag");
 		_textureShader->BindAttribute(0, "a_Position");
 		_textureShader->BindAttribute(1, "a_Color");
 		_textureShader->BindAttribute(2, "a_TexCoords");
@@ -85,7 +85,7 @@ namespace rvl
         int samples[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
         _textureShader->SetUniformIntArr("u_Textures", samples, 16);
 
-        Ref<GLTexture> whiteTexture = CreateRef<GLTexture>(1, 1);
+        Ref<GLTexture> whiteTexture = NewRef<GLTexture>(1, 1);
 
         uint8_t whiteTexData[3] = {0xff, 0xff, 0xff};
         whiteTexture->SetData(whiteTexData, 3);

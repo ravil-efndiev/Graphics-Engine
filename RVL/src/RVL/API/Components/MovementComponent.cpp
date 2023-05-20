@@ -4,7 +4,7 @@ namespace rvl
 {
     Ref<MovementComponent> MovementComponent::Create(Transform* targetTransform, float maxVelocity, float acceleration, float deceleration)
     {
-        return CreateRef<MovementComponent>(targetTransform, maxVelocity, acceleration, deceleration);
+        return NewRef<MovementComponent>(targetTransform, maxVelocity, acceleration, deceleration);
     }
 
 
@@ -62,6 +62,47 @@ namespace rvl
 
         _targetTransform->Position.x += _velocity.x * Time::DeltaTime();
         _targetTransform->Position.y += _velocity.y * Time::DeltaTime();
+
+        _lastState = _currentState;
+
+        if (_velocity.x > 0.f)
+            _currentState = MoveState4::MoveRight;
+
+        else if (_velocity.x < 0.f)
+            _currentState = MoveState4::MoveLeft;
+        
+        else if (_velocity.y > 0.f)
+            _currentState = MoveState4::MoveUp;
+
+        else if (_velocity.y < 0.f) 
+            _currentState = MoveState4::MoveDown;
+
+        else if (_velocity.x == 0.f && _velocity.y == 0.f)
+        {
+            switch (_lastState)
+            {
+                case MoveState4::StandRight:
+                case MoveState4::MoveRight:
+                    _currentState = MoveState4::StandRight;
+                    break;
+
+                case MoveState4::StandLeft:
+                case MoveState4::MoveLeft:
+                    _currentState = MoveState4::StandLeft;
+                    break;
+
+                case MoveState4::StandUp:
+                case MoveState4::MoveUp:
+                    _currentState = MoveState4::StandUp;
+                    break;
+
+                case MoveState4::StandDown:
+                case MoveState4::MoveDown:
+                    _currentState = MoveState4::StandDown;
+                    break;
+            }
+        }
+
     }
     
     void MovementComponent::OnAttach()
@@ -114,41 +155,8 @@ namespace rvl
         _maxVelocity = maxVelocity;
     }
     
-    MoveDirection4 MovementComponent::GetMoveDirection4() const
+    MoveState4 MovementComponent::GetMoveState4() const
     {
-        if (_velocity.x > 0.f)
-            return MoveDirection4::MoveRight;
-
-        else if (_velocity.x < 0.f)
-            return MoveDirection4::MoveLeft;
-        
-        else if (_velocity.y > 0.f)
-            return MoveDirection4::MoveUp;
-
-        else if (_velocity.y < 0.f) 
-            return MoveDirection4::MoveDown;
-
-        return MoveDirection4::None;
-    }
-    
-    MoveDirection8 MovementComponent::GetMoveDirection8() const
-    {
-        if (_velocity.x > 0.f && _velocity.y == 0.f) return MoveDirection8::MoveRight;
-
-        if (_velocity.x < 0.f && _velocity.y == 0.f) return MoveDirection8::MoveLeft;
-        
-        if (_velocity.y > 0.f && _velocity.x == 0.f) return MoveDirection8::MoveUp;
-
-        if (_velocity.y < 0.f && _velocity.x == 0.f) return MoveDirection8::MoveDown;
-
-        if (_velocity.y > 0.f && _velocity.x > 0.f) return MoveDirection8::MoveRightUp;
-
-        if (_velocity.y > 0.f && _velocity.x < 0.f) return MoveDirection8::MoveLeftUp;
-
-        if (_velocity.y < 0.f && _velocity.x > 0.f) return MoveDirection8::MoveRightDown;
-
-        if (_velocity.y < 0.f && _velocity.x < 0.f) return MoveDirection8::MoveLeftDown;
-
-        return MoveDirection8::None;
+        return _currentState;
     }
 }

@@ -15,12 +15,12 @@ namespace rvl
 {
     Ref<Sprite> Sprite::Create()
     {
-        return CreateRef<Sprite>();
+        return NewRef<Sprite>();
     }
 
     Ref<Sprite> Sprite::Create(const glm::vec3& position, float scale)
     {
-        return CreateRef<Sprite>(position, scale);
+        return NewRef<Sprite>(position, scale);
     }
 
     Sprite::Sprite() : Entity() {}
@@ -34,7 +34,7 @@ namespace rvl
 
     void Sprite::LoadTexture(const std::string& path)
     {
-        _texture = CreateRef<GLTexture>(path);   
+        _texture = NewRef<GLTexture>(path);   
 
         ResetScale();
 

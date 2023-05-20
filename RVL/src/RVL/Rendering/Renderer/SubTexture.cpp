@@ -4,7 +4,7 @@ namespace rvl
 {
     Ref<SubTexture> SubTexture::CreateFromCoords(const Ref<GLTexture>& baseTexture, float x, float y, float spriteWidth, float spriteHeight)
     {
-        Ref<SubTexture> texture = CreateRef<SubTexture> (
+        Ref<SubTexture> texture = NewRef<SubTexture> (
             baseTexture,
             glm::vec2((x * spriteWidth) / baseTexture->GetWidth(), (y * spriteHeight) / baseTexture->GetHeight()),
             glm::vec2(((x + 1) * spriteWidth) / baseTexture->GetWidth(), ((y + 1) * spriteHeight) / baseTexture->GetHeight())

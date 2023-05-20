@@ -6,22 +6,12 @@
 
 namespace rvl
 {
-    enum class MoveDirection4
+    enum class MoveState4
     {
-        None,
-        MoveUp,
-        MoveDown,
-        MoveRight,
-        MoveLeft,
-    };
-
-    enum class MoveDirection8
-    {
-        None,
-        MoveUp, MoveDown,
-        MoveRight, MoveLeft,
-        MoveRightUp, MoveRightDown,
-        MoveLeftUp, MoveLeftDown
+        StandUp, MoveUp,
+        StandDown, MoveDown,
+        StandRight, MoveRight,
+        StandLeft, MoveLeft,
     };
 
     class MovementComponent : public Component
@@ -55,11 +45,13 @@ namespace rvl
         void SetMaxVelocity(float maxVelocity);
 
         // x axis movement is prioritized
-        MoveDirection4 GetMoveDirection4() const;
-        MoveDirection8 GetMoveDirection8() const;
+        MoveState4 GetMoveState4() const;
 
     private:
         Transform* _targetTransform;
+
+        MoveState4 _lastState;
+        MoveState4 _currentState = MoveState4::StandDown;
 
         float _maxVelocity;
 

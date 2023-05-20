@@ -54,9 +54,9 @@ namespace rvl
                 _window->SwapBuffers();
                 EventListener::PollEvents();
 
-                if (Time::Current() - timer > 1.f / 60.f)
+                if (Time::Current() - timer > Time::FixedDeltaTime())
                 {
-                    timer += 1.f / 60.f;
+                    timer += Time::FixedDeltaTime();
                     Tick();
                 }
             }

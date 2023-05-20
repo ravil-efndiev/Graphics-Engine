@@ -14,7 +14,7 @@ namespace rvl
 
     UserOrthographicCamera::UserOrthographicCamera(const glm::vec2& position, float zoom)
     {
-        _camera = CreateRef<OrthographicCamera>(glm::vec3(position, 0.f), zoom);
+        _camera = NewRef<OrthographicCamera>(glm::vec3(position, 0.f), zoom);
     }
 
     UserOrthographicCamera::~UserOrthographicCamera() {}

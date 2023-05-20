@@ -12,13 +12,13 @@ namespace rvl
     using Ptr = std::unique_ptr<T>;
 
     template <class T, class ... Args>
-    Ref<T> CreateRef(Args&& ...args)
+    Ref<T> NewRef(Args&& ...args)
     {
         return std::make_shared<T>(args...);
     }
 
     template <class T, class ... Args>
-    Ptr<T> CreatePtr(Args&& ...args)
+    Ptr<T> NewPtr(Args&& ...args)
     {
         return std::make_unique<T>(args...);
     }

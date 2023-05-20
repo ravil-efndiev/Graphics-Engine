@@ -15,7 +15,7 @@ namespace name
     {
         _camera = Camera::Create({0.f, 0.f}, 15.f);
 
-        _player = CreateRef<Player>();
+        _player = NewRef<Player>();
 
         _sprite = Sprite::Create({0.f, 0.f, 0.f}, 2.f);
         _sprite->LoadTexture("assets/textures/a.jpg");

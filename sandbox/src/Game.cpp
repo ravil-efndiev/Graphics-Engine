@@ -13,7 +13,7 @@ namespace name
     void Game::Start()
     {
         SetClearColor({0.3f, 0.5f, 0.5f});
-        _currentScene = CreateRef<MainScene>();
+        _currentScene = NewRef<MainScene>();
         _currentScene->Start();
     }
 
@@ -30,5 +30,5 @@ namespace name
 
 rvl::Ptr<rvl::RvlApp> rvl::OnInit()
 {
-    return rvl::CreatePtr<name::Game>();
+    return rvl::NewPtr<name::Game>();
 }

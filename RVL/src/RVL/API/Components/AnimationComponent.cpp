@@ -4,7 +4,7 @@ namespace rvl
 {
     Ref<AnimationComponent> AnimationComponent::Create(const Ref<Sprite>& sprite)
     {
-        return CreateRef<AnimationComponent>(sprite);
+        return NewRef<AnimationComponent>(sprite);
     }
 
     AnimationComponent::AnimationComponent(const Ref<Sprite>& sprite)
@@ -33,7 +33,7 @@ namespace rvl
     {
         _animations.emplace(
             name, 
-            CreatePtr<Animation>(_sprite, animTimer, startX, startY, endX, endY, subSpriteWidth, subSpriteHeight)
+            NewPtr<Animation>(_sprite, animTimer, startX, startY, endX, endY, subSpriteWidth, subSpriteHeight)
         );
     }
 

@@ -48,4 +48,6 @@ namespace rvl
     extern void OnEnd() RVL_ENTRY_FUNCTION;
 }
 
+#define RVL_IMPL_INIT(App) rvl::Ptr<rvl::RvlApp> rvl::OnInit() { return rvl::NewPtr<App>(); }
+
 #endif
