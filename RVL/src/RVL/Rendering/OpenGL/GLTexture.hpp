@@ -32,6 +32,7 @@ namespace rvl
         int _width, _height, _channels;        
         unsigned char* _textureData;
 
+        std::string _path = "";
     };
 }
 

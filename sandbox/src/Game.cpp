@@ -3,7 +3,7 @@
 // !!INCLUDE ONLY ONCE INSIDE CPP FILE THAT IMPLEMENTS OnInit!!
 #include <RVL/Core/EntryPoint.hpp>
 
-namespace name
+namespace sb
 {
     using namespace rvl;
 
@@ -30,5 +30,5 @@ namespace name
 
 rvl::Ptr<rvl::RvlApp> rvl::OnInit()
 {
-    return rvl::NewPtr<name::Game>();
+    return rvl::NewPtr<sb::Game>();
 }

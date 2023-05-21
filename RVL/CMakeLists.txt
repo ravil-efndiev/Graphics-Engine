@@ -33,6 +33,8 @@ add_library(RVL STATIC
     src/RVL/API/Objects/Rectangle.cpp
     src/RVL/API/Objects/Sprite.cpp
     src/RVL/API/Objects/UserOrthographicCamera.cpp
+    src/RVL/API/Objects/TileSet.cpp
+    src/RVL/API/Objects/TileMap.cpp
 
     # dependencies
     vendor/lib/glad/glad.c

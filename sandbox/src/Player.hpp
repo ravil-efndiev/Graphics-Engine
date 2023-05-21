@@ -5,7 +5,7 @@
 #include <API/Components/MovementComponent.hpp>
 #include <API/Components/AnimationComponent.hpp>
 
-namespace name
+namespace sb
 {
     using namespace rvl;
     class Player : public Entity, public IRenderable

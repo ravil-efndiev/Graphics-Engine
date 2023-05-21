@@ -3,7 +3,7 @@
 
 #include "MainScene.hpp"
 
-namespace name
+namespace sb
 {
     class Game : public rvl::RvlApp
     {

@@ -31,6 +31,7 @@
 #include "RVL/API/Input.hpp"
 #include "RVL/API/Time.hpp"
 #include "RVL/API/Random.hpp"
+#include "RVL/API/Objects/TileMap.hpp"
 #include <imgui/imgui.h>
 
 #endif

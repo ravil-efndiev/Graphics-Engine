@@ -28,6 +28,27 @@ namespace rvl
 
             return source;
         }
+
+        static std::vector<std::string> SplitStr(const std::string& str, char sep)
+        {
+            std::vector<std::string> strings;
+
+            int startIndex = 0, endIndex = 0;
+            
+            for (int i = 0; i <= str.size(); i++) 
+            {
+                if (str[i] == sep || i == str.size()) 
+                {
+                    endIndex = i;
+                    std::string temp;
+                    temp.append(str, startIndex, endIndex - startIndex);
+                    strings.push_back(temp);
+                    startIndex = endIndex + 1;
+                }
+            }
+            
+            return strings;
+        }
     }
     
 } 

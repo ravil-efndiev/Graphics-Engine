@@ -4,10 +4,8 @@
 #include <API/Components/MovementComponent.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-namespace name
+namespace sb
 {
-    using namespace rvl;
-
     MainScene::MainScene() {}
     MainScene::~MainScene() {}
 
@@ -26,6 +24,10 @@ namespace name
         _subtextureEx = Sprite::Create({-3.f, -5.f, 0.01f}, 5.f);
         _subtextureEx->LoadTexture("assets/textures/map.png");
         _subtextureEx->SetSubTexture(0, 3, 128, 128);
+
+        Ref<TileSet> tileSet = NewRef<TileSet>(std::string("assets/maps/test.rtls"));
+
+        _map = NewPtr<TileMap>(tileSet, std::string("assets/maps/test.rtlm"), 5, 0.01f);
     }
 
     void MainScene::Update()
@@ -49,10 +51,11 @@ namespace name
             for (int j = -80; j < 80; j++)
             {
                 glm::vec4 color = {(i + 80.f) / 160.f, 0.3f, (j + 80.f) / 160.f, 0.5f};
-                Renderer::DrawRect({{j, i, 0.f}, 0.f, {0.8f, 0.8f}}, color);
+                Renderer::DrawRect({{j, i, -0.01f}, 0.f, {0.8f, 0.8f}}, color);
             }
         }
         _sprite1->Draw();
+        _map->Draw();
         _subtextureEx->Draw();
         _player->Draw();
     }

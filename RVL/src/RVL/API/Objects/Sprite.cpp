@@ -38,14 +38,27 @@ namespace rvl
 
         ResetScale();
 
-        _subTexture = SubTexture::CreateFromCoords(_texture, 0.f, 0.f, _texture->GetWidth(), _texture->GetHeight());
+        _subTexture = SubTexture::Create(_texture, 0.f, 0.f, _texture->GetWidth(), _texture->GetHeight());
+    }
+
+    void Sprite::LoadTexture(const Ref<GLTexture>& texture)
+    {
+        _texture = texture;
     }
 
     void Sprite::SetSubTexture(float x, float y, float spriteWidth, float spriteHeight)
     {
-        _subTexture = SubTexture::CreateFromCoords(_texture, x, y, spriteWidth, spriteHeight);
+        _subTexture = SubTexture::Create(_texture, x, y, spriteWidth, spriteHeight);
 
         float ratio = spriteWidth / spriteHeight;
+        _transform.Scale = glm::vec2(ratio * _scale, _scale);
+    }
+
+    void Sprite::SetSubTexture(const Ref<SubTexture>& subTexture)
+    {
+        _subTexture = SubTexture::Create(_texture, subTexture->GetX(), subTexture->GetY(), subTexture->GetWidth(), subTexture->GetHeight());
+
+        float ratio = subTexture->GetWidth() / subTexture->GetHeight();
         _transform.Scale = glm::vec2(ratio * _scale, _scale);
     }
 
@@ -59,7 +72,7 @@ namespace rvl
     void Sprite::ResetSubTexture()
     {
         ResetScale();
-        _subTexture = SubTexture::CreateFromCoords(_texture, 0.f, 0.f, _texture->GetWidth(), _texture->GetHeight());
+        _subTexture = SubTexture::Create(_texture, 0.f, 0.f, _texture->GetWidth(), _texture->GetHeight());
     }  
 
     void Sprite::Draw()

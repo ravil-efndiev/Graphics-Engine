@@ -6,7 +6,8 @@
 #include <Rendering/OpenGL/GLTexture.hpp>
 #include <Rendering/Renderer/SubTexture.hpp>
 
-namespace name
+using namespace rvl;
+namespace sb
 {
     class MainScene : public rvl::RvlScene
     {
@@ -20,12 +21,13 @@ namespace name
         void Render() override;
 
     private:
-        rvl::Ref<rvl::Sprite> _sprite;
-        rvl::Ref<rvl::Sprite> _sprite1;
+        Ref<Sprite> _sprite;
+        Ref<Sprite> _sprite1;
+        Ref<Sprite> _subtextureEx;
 
-        rvl::Ref<rvl::Sprite> _subtextureEx;
+        Ref<Player> _player;
 
-        rvl::Ref<Player> _player;
+        Ptr<TileMap> _map;
 
         float _smoothSpeed = 10.f;
 

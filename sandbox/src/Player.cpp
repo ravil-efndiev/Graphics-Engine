@@ -1,8 +1,8 @@
 #include "Player.hpp"
 
-namespace name
+namespace sb
 {
-    Player::Player()
+    Player::Player() : Entity()
     {
         _rect = Rectangle::Create({0.f, 0.f, 0.02f}, {3.f, 3.f}, {0.8f, 0.4f, 0.4f});
         _rect2 = Rectangle::Create({{5.f, 0.f, 0.02f}, 45.f, {2.f, 2.f}}, {0.4f, 0.7f, 0.7f});

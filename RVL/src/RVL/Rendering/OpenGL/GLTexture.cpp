@@ -35,6 +35,7 @@ namespace rvl
     GLTexture::GLTexture(const std::string &path)
     {       
         LoadTexture(path);
+        _path = path;
     }
 
     GLTexture::~GLTexture() 
@@ -108,6 +109,6 @@ namespace rvl
 
     bool GLTexture::operator==(const GLTexture& tex) const
     {
-        return _textureId == tex._textureId;
+        return _path == "" ? _textureId == tex._textureId : _path == tex._path;
     }
 }

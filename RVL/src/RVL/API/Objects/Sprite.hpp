@@ -21,7 +21,9 @@ namespace rvl
         ~Sprite();
 
         void LoadTexture(const std::string& path);
+        void LoadTexture(const Ref<GLTexture>& texture);
         void SetSubTexture(float x, float y, float spriteWidth, float spriteHeight);
+        void SetSubTexture(const Ref<SubTexture>& subTexture);
         void ResetScale();
         void ResetSubTexture();
 
