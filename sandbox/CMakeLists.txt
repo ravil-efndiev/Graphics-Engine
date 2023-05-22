@@ -6,7 +6,7 @@ add_executable(sandbox src/Game.cpp src/MainScene.cpp src/Player.cpp)
 
 set_property(TARGET sandbox PROPERTY CXX_STANDARD 20)
 
-target_link_libraries(sandbox "/Users/Belokan/RVL\ Engine/sandbox/vendor/libRVL.a" "/Users/Belokan/RVL Engine/RVL/vendor/lib/libglfw3.a")
+target_link_libraries(sandbox ${CMAKE_CURRENT_SOURCE_DIR}/vendor/libRVL.a  ${CMAKE_CURRENT_SOURCE_DIR}/../RVL/vendor/lib/libglfw3.a)
 
 set(CMAKE_BUILD_TYPE Release)
 

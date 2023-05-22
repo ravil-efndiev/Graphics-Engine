@@ -15,7 +15,8 @@ namespace rvl
         Window(int width, int height, const std::string& name);
         ~Window();
 
-        bool Closes();
+        bool Closes() const;
+        void SetClose(bool value);
 
         void SwapBuffers();
         void PollEvents();
@@ -40,7 +41,7 @@ namespace rvl
 
         GLFWwindow* _window;
 
-        std::unique_ptr<GLContext> _context;
+        Ptr<GLContext> _context;
         
         void InitGlfw();
         void CreateWindow();

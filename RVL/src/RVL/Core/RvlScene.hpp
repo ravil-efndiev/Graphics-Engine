@@ -10,6 +10,7 @@ namespace rvl
 {
     class PerspectiveCamera;
     class OrthographicCamera;
+    class GLFrameBuffer;
 
     typedef UserOrthographicCamera Camera;
 
@@ -21,17 +22,21 @@ namespace rvl
         RvlScene();
         virtual ~RvlScene();
 
-        virtual void Start();
-        virtual void Update();
-        virtual void Render();
+        virtual void Start() = 0;
+        virtual void Update() = 0;
+        virtual void Render() = 0;
         virtual void Tick();
 
     protected:
+        void AddFrameBuffer(const Ref<GLFrameBuffer>& fbo);
+
         Ref<UserOrthographicCamera> _camera;
+        Ref<GLFrameBuffer> _fbo;
 
     private:
         void Begin(); // can be accessed by RvlApp parent but not RvlApp children
         void End();  // can be accessed by RvlApp parent but not RvlApp children
+
     };
 }
 

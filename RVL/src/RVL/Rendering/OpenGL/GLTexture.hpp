@@ -23,6 +23,8 @@ namespace rvl
         int GetWidth() const;
         int GetHeight() const;
 
+        GLuint GetId() const;
+
         bool operator== (const GLTexture& tex) const;
 
     private:

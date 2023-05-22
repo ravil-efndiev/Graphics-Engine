@@ -107,6 +107,11 @@ namespace rvl
         return _height;
     }
 
+    GLuint GLTexture::GetId() const
+    {
+        return _textureId;
+    }
+
     bool GLTexture::operator==(const GLTexture& tex) const
     {
         return _path == "" ? _textureId == tex._textureId : _path == tex._path;

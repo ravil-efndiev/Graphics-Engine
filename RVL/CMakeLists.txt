@@ -17,6 +17,7 @@ add_library(RVL STATIC
     src/RVL/Rendering/OpenGL/GLTexture.cpp
     src/RVL/Rendering/OpenGL/GLVertexArray.cpp
     src/RVL/Rendering/OpenGL/GLShaderProgram.cpp
+    src/RVL/Rendering/OpenGL/GLFrameBuffer.cpp
     src/RVL/Rendering/Renderer/Renderer.cpp
     src/RVL/Rendering/Renderer/SubTexture.cpp
     src/RVL/Rendering/Renderer/OrthographicCamera.cpp

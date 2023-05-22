@@ -37,7 +37,7 @@ namespace rvl
         _window = glfwCreateWindow(_width, _height, _name.c_str(), nullptr, nullptr);
         RVL_ASSERT(_window, "failed to create GLFW window")
 
-        _context = std::make_unique<GLContext>(_window);
+        _context = NewPtr<GLContext>(_window);
     }
 
     void Window::SetCallbacks()
@@ -77,9 +77,14 @@ namespace rvl
         });
     }
 
-    bool Window::Closes()
+    bool Window::Closes() const
     {
         return glfwWindowShouldClose(_window);
+    }
+
+    void Window::SetClose(bool value)
+    {
+        glfwSetWindowShouldClose(_window, value);
     }
 
     void Window::SwapBuffers()

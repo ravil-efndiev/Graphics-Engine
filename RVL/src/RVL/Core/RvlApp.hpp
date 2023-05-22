@@ -23,8 +23,10 @@ namespace rvl
         virtual void Start() = 0;
         virtual void Update() = 0;
         virtual void Tick();
+        virtual void Render();
 
         void SetClearColor(const glm::vec3& color);
+        void Close();
 
     private:
         Ptr<Window> _window;

@@ -4,6 +4,7 @@
 #include "Rendering/Renderer/Renderer.hpp"
 #include "Rendering/Renderer/PerspectiveCamera.hpp"
 #include "Rendering/Renderer/OrthographicCamera.hpp"
+#include "Rendering/OpenGL/GLFrameBuffer.hpp"
 
 namespace rvl
 { 
@@ -13,17 +14,22 @@ namespace rvl
 
     RvlScene::~RvlScene() {}
 
-    void RvlScene::Start() {}
-
-    void RvlScene::Update() {}
-
-    void RvlScene::Render() {}
-
     void RvlScene::Tick() {}
+
+    void RvlScene::AddFrameBuffer(const Ref<GLFrameBuffer>& fbo)
+    {
+        _fbo = fbo;
+    }
 
     void RvlScene::Begin()
     {
         if (!_camera) throw Error("camera was not initialized during scene creation", RVL_RUNTIME_ERROR);
+
+        if (_fbo)
+        {
+            _fbo->Bind();
+            Renderer::Clear();
+        }
 
         int viewport[2];
         Renderer::GetViewport(viewport);
@@ -34,5 +40,8 @@ namespace rvl
     void RvlScene::End()
     {
         Renderer::EndContext();
+        
+        if (_fbo)
+            _fbo->Unbind();
     }
 }

@@ -45,7 +45,7 @@ namespace rvl
                 if (_currentScene)
                 {
                     _currentScene->Begin();
-                    _currentScene->Render();
+                    Render();
                     _currentScene->End();
                 }
 
@@ -73,8 +73,11 @@ namespace rvl
         }
     }
 
-    void RvlApp::Tick()
+    void RvlApp::Tick() {}
+
+    void RvlApp::Render()
     {
+        _currentScene->Render();
     }
 
     void RvlApp::SetClearColor(const glm::vec3& color)
@@ -82,9 +85,14 @@ namespace rvl
         Renderer::SetClearColor(color);
     }
 
+    void RvlApp::Close()
+    {
+        _window->SetClose(true);
+    }
+
     void RvlApp::CreateWindow(int windowWidth, int windowHeight, const std::string &windowName)
     {
-        _window = std::make_unique<Window>(windowWidth, windowHeight, windowName);
+        _window = NewPtr<Window>(windowWidth, windowHeight, windowName);
 
         _window->SetEventsCallback([](Event* event)
         {
