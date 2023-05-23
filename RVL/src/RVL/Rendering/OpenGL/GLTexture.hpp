@@ -24,6 +24,7 @@ namespace rvl
         int GetHeight() const;
 
         GLuint GetId() const;
+        std::string GetPath() const;
 
         bool operator== (const GLTexture& tex) const;
 

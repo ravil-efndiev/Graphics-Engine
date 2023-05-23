@@ -5,6 +5,12 @@
 
 namespace rvl
 {
+    TileSet::TileSet(const Ref<GLTexture>& mainTexture)
+    {
+        _mapTexture = mainTexture;
+        _tiles = {};
+    }
+
     TileSet::TileSet(const std::string& path)
     {
         std::string tlsText = utils::GetTextFromFile(path);
@@ -46,5 +52,37 @@ namespace rvl
     Ref<SubTexture> TileSet::operator[](const std::string& name)
     {
         return _tiles[name];
+    }
+
+    const std::unordered_map<std::string, Ref<SubTexture>>& TileSet::GetTiles() const
+    {
+        return _tiles;
+    }
+
+    void TileSet::AddTile(const std::string& name, float texX, float texY, float texWidth, float texHeight)
+    {
+        if (_tiles.find(name) != _tiles.end())
+            throw Error("tile names in tileSet must be unique", RVL_RUNTIME_ERROR);
+        _tiles.emplace(name, SubTexture::Create(_mapTexture, texX, texY, texWidth, texHeight));
+    }
+
+    void TileSet::SaveToFile(const char* path)
+    {
+        std::string text = _mapTexture->GetPath().append("\n");
+
+        for (auto& tile : _tiles)
+        {
+            text = text.append(tile.first)
+                .append(" ")
+                .append(std::to_string((int)tile.second->GetX()))
+                .append(" ")
+                .append(std::to_string((int)tile.second->GetY()))
+                .append(" ")
+                .append(std::to_string((int)tile.second->GetWidth()))
+                .append(" ")
+                .append(std::to_string((int)tile.second->GetHeight()));
+        }
+
+        utils::SaveTextToFile(path, text);
     }
 }

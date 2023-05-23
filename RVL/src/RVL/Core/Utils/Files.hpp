@@ -9,8 +9,7 @@ namespace rvl
     {
         static std::string GetTextFromFile(const std::string& path)
         {
-            std::ifstream file;
-            file.open(path);
+            std::ifstream file (path, std::ios::in);
             
             if (!file.is_open())
                 throw Error("failed to load file", RVL_INTERNAL_ERROR);
@@ -27,6 +26,18 @@ namespace rvl
             file.close();
 
             return source;
+        }
+
+        static void SaveTextToFile(const char* path, const std::string& text)
+        {
+            std::ofstream file (path, std::ios::out);
+
+            if (!file.is_open())
+                throw Error("problem occured while saving data to file", RVL_INTERNAL_ERROR);
+
+            file << text;
+
+            file.close();
         }
 
         static std::vector<std::string> SplitStr(const std::string& str, char sep)

@@ -6,6 +6,7 @@ add_library(RVL STATIC
     src/RVL/Core/RvlApp.cpp
     src/RVL/Core/RvlScene.cpp
     src/RVL/Core/Error.cpp
+    src/RVL/Core/Types.cpp
     src/RVL/Core/Window.cpp
     src/RVL/Core/ImGuiController.cpp
     src/RVL/Events/EventListener.cpp

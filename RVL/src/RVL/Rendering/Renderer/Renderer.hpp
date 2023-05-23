@@ -32,6 +32,8 @@ namespace rvl
         static void EndContext();
 
         static void GetViewport(int rViewport[2]);
+        static void SetViewport(const glm::vec2& viewport);
+
         static glm::vec2 ConvertToWorldCoords(double x, double y);
 
         struct Statistics

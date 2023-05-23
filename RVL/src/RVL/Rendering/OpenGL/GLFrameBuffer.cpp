@@ -5,6 +5,7 @@
 namespace rvl
 {
     GLFrameBuffer::GLFrameBuffer(float width, float height)
+        : _width(width), _height(height)
     {
         glGenFramebuffers(1, &_fboId);
         glBindFramebuffer(GL_FRAMEBUFFER, _fboId);
@@ -42,6 +43,11 @@ namespace rvl
 
     void GLFrameBuffer::RescaleFrameBuffer(float width, float height)
     {
+        _width = width;
+        _height = height;
+
+        glViewport(0, 0, width, height);
+
         glBindTexture(GL_TEXTURE_2D, _colorAttachment);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -61,5 +67,15 @@ namespace rvl
     void GLFrameBuffer::Unbind() const
     {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+    
+    float GLFrameBuffer::GetWidth() const
+    {
+        return _width;
+    }
+
+    float GLFrameBuffer::GetHeight() const
+    {
+        return _height;
     }
 }

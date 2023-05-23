@@ -25,6 +25,9 @@
 */
     
 
+#include <imgui/imgui.h>
+#include <glm/glm.hpp>
+
 #include "RVL/Core/Core.hpp"
 #include "RVL/Core/RvlApp.hpp"
 #include "RVL/Core/RvlScene.hpp"
@@ -32,6 +35,5 @@
 #include "RVL/API/Time.hpp"
 #include "RVL/API/Random.hpp"
 #include "RVL/API/Objects/TileMap.hpp"
-#include <imgui/imgui.h>
 
 #endif

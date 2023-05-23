@@ -23,10 +23,15 @@ namespace rvl
         void Bind() const;
         void Unbind() const;
 
+        float GetWidth() const;
+        float GetHeight() const;
+
     private:
         GLuint _fboId;
         GLuint _colorAttachment;
         GLuint _rboId;
+
+        float _width, _height;
     };
 }
 

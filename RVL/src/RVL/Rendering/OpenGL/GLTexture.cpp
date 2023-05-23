@@ -116,4 +116,10 @@ namespace rvl
     {
         return _path == "" ? _textureId == tex._textureId : _path == tex._path;
     }
+
+    std::string GLTexture::GetPath() const
+    {
+        return _path;
+    }
+
 }

@@ -318,10 +318,16 @@ namespace rvl
         rViewport[1] = viewport[3];
     }
 
+    void Renderer::SetViewport(const glm::vec2& viewport)
+    {
+        glViewport(0, 0, viewport.x, viewport.y);
+    }
+
     glm::vec2 Renderer::ConvertToWorldCoords(double x, double y)
     {
         int viewport[2];
         GetViewport(viewport);
+
         glm::vec4 vec4viewport (0, 0, viewport[0], viewport[1]);
         glm::vec3 pos (x, viewport[1] - y, 0);
 

@@ -52,4 +52,18 @@ namespace rvl
     {
         return Renderer::ConvertToWorldCoords(EventListener::GetCursorPosX(), EventListener::GetCursorPosY());
     }
+
+    glm::vec2 Input::GetCursorPositionRelative(const glm::vec2& mainViewport, const glm::vec2& currentViewport)
+    {
+        glm::vec2 pos = Renderer::ConvertToWorldCoords(
+            mainViewport.x < currentViewport.x ? (EventListener::GetCursorPosX() - glm::sqrt(glm::pow(currentViewport.x - mainViewport.x, 2))) : (EventListener::GetCursorPosX() + glm::sqrt(glm::pow(currentViewport.x - mainViewport.x, 2))),
+            mainViewport.y < currentViewport.y ? (EventListener::GetCursorPosY() - glm::sqrt(glm::pow(currentViewport.y - mainViewport.y, 2))) : (EventListener::GetCursorPosY() + glm::sqrt(glm::pow(currentViewport.y - mainViewport.y, 2)))
+        );
+        return pos;
+    }
+
+    glm::vec2 Input::GetCursorPositionRaw()
+    {
+        return glm::vec2(EventListener::GetCursorPosX(), EventListener::GetCursorPosY());
+    }
 }
