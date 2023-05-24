@@ -11,6 +11,13 @@ namespace rvl
 
     int EventListener::_currentFrame;
 
+    std::unordered_map<keycode_t, keycode_t> EventListener::_mouseButtons =
+    {
+        { GLFW_MOUSE_BUTTON_LEFT, static_cast<keycode_t>(Mouse::Left) },
+        { GLFW_MOUSE_BUTTON_RIGHT, static_cast<keycode_t>(Mouse::Right) },
+        { GLFW_MOUSE_BUTTON_MIDDLE, static_cast<keycode_t>(Mouse::Middle) }
+    };
+
     void EventListener::Init()
     {
         _keysPressed.fill(false);
@@ -29,6 +36,9 @@ namespace rvl
                 break;
             case EventCategory::CURSOR_EVENTS:
                 ListenCursorEvents(event);
+                break;
+            case EventCategory::MOUSE_EVENTS:
+                ListenMouseEvents(event);
                 break;
             default:
                 RVL_LOG_ERROR("invalid event category");
@@ -111,6 +121,35 @@ namespace rvl
 
         _cursorPosX = castedEvent->GetX();
         _cursorPosY = castedEvent->GetY();
+    }
+
+    void EventListener::ListenMouseEvents(const Event* event)
+    {
+        switch (event->GetType())
+        {
+            case EventType::MOUSE_BUTTON_PRESSED: {
+                auto castedEvent = dynamic_cast<const MouseButtonPressEvent*>(event);
+                RVL_ASSERT(castedEvent, "passed event instance does not have proper type")
+                
+                _keysPressed[_mouseButtons[castedEvent->GetButton()]] = true;
+                _changeFrames[_mouseButtons[castedEvent->GetButton()]] = _currentFrame;
+
+                break;
+            }
+            case EventType::MOUSE_BUTTON_RELEASED: {
+                auto castedEvent = dynamic_cast<const MouseButtonReleaseEvent*>(event);
+                RVL_ASSERT(castedEvent, "passed event instance does not have proper type")
+
+                _keysPressed[castedEvent->GetButton()] = false;
+                _changeFrames[castedEvent->GetButton()] = _currentFrame;
+
+                break;
+            }
+            default: {
+                RVL_LOG_ERROR("invalid event type for category");
+                RVL_DEBUG_BREAK;
+            }
+        }
     }
 
     void EventListener::PollEvents()

@@ -51,7 +51,7 @@ namespace rvl
                 _camera->GetPosition().y + Input::GetAxis(Axis::Vertical) * _cameraSpeed * Time::DeltaTime()
             });
                 
-            if (Input::IsKeyPressedOnce(Keys::Key_Space) && _selectedTile != "")
+            if (Input::IsMouseButtonPressedOnce(Mouse::Left) && _selectedTile != "")
             {
                 glm::vec2 cursor = Input::GetCursorPositionRelative(ImToGlmVec2(SceneUiData.MainWindowPosition), ImToGlmVec2(SceneUiData.SceneWindowPosition));
                 _tlm->AddTile(_selectedTile, _tlm->SpimplifyPos(cursor).x, _tlm->SpimplifyPos(cursor).y, 0.01f);

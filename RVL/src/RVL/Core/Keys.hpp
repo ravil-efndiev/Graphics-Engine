@@ -134,14 +134,18 @@ namespace rvl
         Key_RightAlt          = 346,
         Key_RightSuper        = 347,
         Key_Menu              = 348,
+
     };
 
-    // keycode_e is enum type to be passed in api functions and used by users
-    // notice: if you want to get only raw key code use keycode_t
-    // also its easy to cast keycode_e to keycode_t because Keys enum has type keycode_t
-    // api should ALWAYS take this type (keycode_e)
-    // while lower level engine functions should take keycode_t
+    enum class Mouse : keycode_t
+    {
+        Left   = 1024,
+        Right  = 1025,
+        Middle = 1026,
+    };
+
     typedef Keys keycode_e;
+    typedef Mouse mouseButton_e;
 }
 
 #endif

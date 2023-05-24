@@ -30,9 +30,12 @@ namespace rvl
 
         static int _currentFrame;
 
+        static std::unordered_map<keycode_t, keycode_t> _mouseButtons;
+
         static void ListenWindowEvents(const Event* event);
         static void ListenKeyEvents(const Event* event);
         static void ListenCursorEvents(const Event* event);
+        static void ListenMouseEvents(const Event* event);
 
     };
 }

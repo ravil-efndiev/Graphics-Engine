@@ -14,6 +14,10 @@ namespace rvl
 
         static bool IsKeyPressedOnce(keycode_e keycode);
 
+        static bool IsMouseButtonPressed(mouseButton_e button);
+
+        static bool IsMouseButtonPressedOnce(mouseButton_e button);
+
         /**
          * @brief get all axis-related key inputs, gets one-frame key press
          * 

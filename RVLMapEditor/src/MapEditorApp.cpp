@@ -111,7 +111,7 @@ namespace rvl
 
         if (ImGui::BeginMenuBar())
         {
-            if (ImGui::BeginMenu("Options"))
+            if (ImGui::BeginMenu("File"))
             {
                 if (ImGui::MenuItem("New Project", nullptr, false))
                 {

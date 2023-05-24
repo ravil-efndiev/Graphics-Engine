@@ -15,7 +15,7 @@ namespace rvl
         keycode_t GetKeyCode() const;
 
     protected:
-        KeyEvent(keycode_t keycode);
+        explicit KeyEvent(keycode_t keycode);
 
         keycode_t _keycode;
     };
@@ -27,8 +27,6 @@ namespace rvl
         KeyPressEvent(keycode_t keycode);
 
         RVL_EVENT_TYPE_METHODS(KEY_PRESSED)
-
-    private:
     };
 
     class KeyReleaseEvent : public KeyEvent
@@ -37,8 +35,6 @@ namespace rvl
         KeyReleaseEvent(keycode_t keycode);
 
         RVL_EVENT_TYPE_METHODS(KEY_RELEASED)
-
-    private:
     };
 }
 

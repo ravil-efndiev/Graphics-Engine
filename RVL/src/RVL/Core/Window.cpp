@@ -68,6 +68,22 @@ namespace rvl
             }
         });
 
+        glfwSetMouseButtonCallback(_window, [](GLFWwindow* window, int button, int action, int mode)
+        {
+            EventCallbackStruct* callback = static_cast<EventCallbackStruct*>(glfwGetWindowUserPointer(window));
+
+            if (action == GLFW_PRESS)
+            {
+                MouseButtonPressEvent event (button);
+                callback->EventCallback(&event);
+            }
+            else if (action == GLFW_RELEASE)
+            {
+                MouseButtonReleaseEvent event (button);
+                callback->EventCallback(&event);
+            }
+        });
+
         glfwSetCursorPosCallback(_window, [](GLFWwindow* window, double x, double y) 
         {
             EventCallbackStruct* callback = static_cast<EventCallbackStruct*>(glfwGetWindowUserPointer(window));
@@ -75,6 +91,7 @@ namespace rvl
             CursorPosEvent event (x, y);
             callback->EventCallback(&event);
         });
+
     }
 
     bool Window::Closes() const

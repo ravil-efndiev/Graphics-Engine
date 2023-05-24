@@ -23,6 +23,26 @@ namespace rvl
         return EventListener::GetKeyWithFrame(realKeycode);
     }
 
+    bool Input::IsMouseButtonPressed(mouseButton_e button)
+    {
+        keycode_t realCode = static_cast<keycode_t>(button);
+
+        if (realCode < MOUSE_BUTTONS_OFFSET)
+            throw Error("passed key code in mouse input function", RVL_RUNTIME_ERROR);
+            
+        return EventListener::GetKey(realCode);
+    }
+
+    bool Input::IsMouseButtonPressedOnce(mouseButton_e button)
+    {
+        keycode_t realCode = static_cast<keycode_t>(button);
+
+        if (realCode < MOUSE_BUTTONS_OFFSET)
+            throw Error("passed key code in mouse input function", RVL_RUNTIME_ERROR);
+
+        return EventListener::GetKeyWithFrame(realCode);
+    }
+
     float Input::GetAxis(Axis axis)
     {
         if (axis == Axis::Horizontal)
