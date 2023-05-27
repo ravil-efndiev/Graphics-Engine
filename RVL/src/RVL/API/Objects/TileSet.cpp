@@ -7,21 +7,23 @@ namespace rvl
 {
     TileSet::TileSet(const Ref<GLTexture>& mainTexture)
     {
+        _path = "";
         _mapTexture = mainTexture;
         _tiles = {};
     }
 
     TileSet::TileSet(const std::string& path)
     {
-        std::string tlsText = utils::GetTextFromFile(path);
+        std::string tlsText = Utils::GetTextFromFile(path);
+        _path = path;
 
-        auto tlsLines = utils::SplitStr(tlsText, '\n');
+        auto tlsLines = Utils::SplitStr(tlsText, '\n');
 
         _mapTexture = NewRef<GLTexture>(tlsLines[0]);
 
         for (int i = 1; i < tlsLines.size(); i++)
         {
-            auto tokens = utils::SplitStr(tlsLines[i], ' ');
+            auto tokens = Utils::SplitStr(tlsLines[i], ' ');
 
             if (tokens.size() < 5)
                 continue;
@@ -66,7 +68,7 @@ namespace rvl
         _tiles.emplace(name, SubTexture::Create(_mapTexture, texX, texY, texWidth, texHeight));
     }
 
-    void TileSet::SaveToFile(const char* path)
+    std::string TileSet::GetString() const
     {
         std::string text = _mapTexture->GetPath().append("\n");
 
@@ -80,9 +82,20 @@ namespace rvl
                 .append(" ")
                 .append(std::to_string((int)tile.second->GetWidth()))
                 .append(" ")
-                .append(std::to_string((int)tile.second->GetHeight()));
+                .append(std::to_string((int)tile.second->GetHeight()))
+                .append("\n");
         }
 
-        utils::SaveTextToFile(path, text);
+        return text;
+    }
+
+    void TileSet::SaveToFile(const char* path)
+    {
+        Utils::SaveTextToFile(path, GetString());
+    }
+    
+    std::string TileSet::GetPath() const
+    {
+        return _path;
     }
 }

@@ -22,8 +22,8 @@ namespace rvl
 
         static void SubmitGeometry(GLVertexArray& vertexArray, GLShaderProgram& shader);
         static void DrawRect(const Transform& transform, const glm::vec4& color);
-        static void DrawRect(const Transform& transform, const Ref<GLTexture>& texture);
-        static void DrawRect(const Transform& transform, const Ref<SubTexture>& subtexture);
+        static void DrawRect(const Transform& transform, const Ref<GLTexture>& texture, const glm::vec4& tintColor = {1.f, 1.f, 1.f, 1.f});
+        static void DrawRect(const Transform& transform, const Ref<SubTexture>& subtexture, const glm::vec4& tintColor = {1.f, 1.f, 1.f, 1.f});
 
         static void SetClearColor(const glm::vec3& clearColor);
         static void Clear();

@@ -22,7 +22,9 @@ namespace rvl
         void SetDefaults();
         
     private:
-        int32 _sceneWidth, _sceneHeight;
+        std::string _prjfileText;
+
+        std::vector<std::vector<std::string>> _projectLineTokens;
     };
 }
 

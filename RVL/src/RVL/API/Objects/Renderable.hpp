@@ -1,14 +1,15 @@
 #ifndef RVL_RENDERABLE_HPP
 #define RVL_RENDERABLE_HPP
 
-class IRenderable
+#include <glm/glm.hpp>
+
+class Renderable
 {
 public:
-    virtual ~IRenderable() {}
+    virtual ~Renderable() {}
 
     virtual void Draw() = 0;
-
-private:
+    virtual void Draw(const glm::vec4&) {}
 
 };
 

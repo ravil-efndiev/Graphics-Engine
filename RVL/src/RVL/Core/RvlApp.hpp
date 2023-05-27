@@ -18,7 +18,7 @@ namespace rvl
         status_t Run();
 
     protected:
-        Ref<RvlScene> _currentScene;
+        Ptr<RvlScene> _currentScene;
 
         virtual void Start() = 0;
         virtual void Update() = 0;

@@ -12,12 +12,14 @@ namespace rvl
         _zIndex = zIndex;
         _scale = scale;
 
-        std::string tlmText = utils::GetTextFromFile(tileMapFilePath);
-        auto tlmLines = utils::SplitStr(tlmText, '\n');
+        _path = tileMapFilePath;
+
+        std::string tlmText = Utils::GetTextFromFile(tileMapFilePath);
+        auto tlmLines = Utils::SplitStr(tlmText, '\n');
 
         for (int i = 0; i < tlmLines.size(); i++)
         {
-            auto tokens = utils::SplitStr(tlmLines[i], ' ');
+            auto tokens = Utils::SplitStr(tlmLines[i], ' ');
 
             if (tokens.size() < 3)
                 continue;
@@ -32,7 +34,7 @@ namespace rvl
                 _anyTileSize = glm::vec3(tileSprite->transform->Scale, 0.f);
 
                 tileSprite->transform->Position = glm::vec3((float)std::stoi(tokens[1]), (float)std::stoi(tokens[2]), zIndex) * _anyTileSize;
-                _mapTiles.push_back(Tile(tileSprite, {std::stoi(tokens[1]), std::stoi(tokens[2])}));
+                _mapTiles.push_back(Tile(tokens[0], tileSprite, {std::stoi(tokens[1]), std::stoi(tokens[2])}));
 
             }
             catch (const std::invalid_argument& err)
@@ -47,6 +49,7 @@ namespace rvl
         _tileSet = tileSet;
         _zIndex = zIndex;
         _scale = scale;
+        _path = "";
     }
 
     TileMap::~TileMap() {}
@@ -59,7 +62,7 @@ namespace rvl
         }
     }
     
-    void TileMap::AddTile(const std::string& name, int x, int y, int zIndex)
+    void TileMap::AddTile(const std::string& name, const glm::ivec2& mapPos, float zIndex)
     {
         auto tileSprite = Sprite::Create(glm::vec3(0.f, 0.f, zIndex), _scale);
         tileSprite->LoadTexture(_tileSet->GetTexture());
@@ -68,13 +71,13 @@ namespace rvl
         if (_anyTileSize == glm::vec3(0.f, 0.f, 0.f))
             _anyTileSize = glm::vec3(tileSprite->transform->Scale, 0.f);
 
-        tileSprite->transform->Position = glm::vec3(x, y, zIndex) * _anyTileSize; 
+        tileSprite->transform->Position = glm::vec3(mapPos.x, mapPos.y, zIndex) * _anyTileSize; 
 
-        Tile tile = {tileSprite, {x, y}};
+        Tile tile (name, tileSprite, {mapPos.x, mapPos.y});
 
-        auto it = std::find_if(_mapTiles.begin(), _mapTiles.end(), [x, y](auto& tile)
+        auto it = std::find_if(_mapTiles.begin(), _mapTiles.end(), [mapPos](auto& tile)
             {
-                return tile.GetMapPosition().x == x && tile.GetMapPosition().y == y;
+                return tile.GetMapPosition().x == mapPos.x && tile.GetMapPosition().y == mapPos.y;
             }
         );
 
@@ -82,6 +85,20 @@ namespace rvl
             *it = tile;
         else
             _mapTiles.push_back(tile);
+    }
+
+    void TileMap::RemoveTile(const glm::ivec2& mapPos)
+    {
+        auto it = std::find_if(_mapTiles.begin(), _mapTiles.end(), [mapPos](auto& tile)
+            {
+                return tile.GetMapPosition().x == mapPos.x && tile.GetMapPosition().y == mapPos.y;
+            }
+        );
+
+        if (it != _mapTiles.end())
+        {
+            _mapTiles.erase(it);
+        } 
     }
     
     glm::ivec2 TileMap::SpimplifyPos(float x, float y)
@@ -92,5 +109,47 @@ namespace rvl
     glm::ivec2 TileMap::SpimplifyPos(const glm::vec2& pos)
     {
         return glm::round(pos / glm::vec2(_anyTileSize.x, _anyTileSize.y));
+    }
+    
+    std::string TileMap::GetString() const
+    {
+        std::string text = "";
+
+        for (const Tile& tile : _mapTiles)
+        {
+            text.append(tile.GetName())
+                .append(" ")
+                .append(std::to_string(tile.GetMapPosition().x))
+                .append(" ")
+                .append(std::to_string(tile.GetMapPosition().y))
+                .append("\n");
+        }   
+
+        return text;
+    }
+
+    void TileMap::SaveToFile(const char* path)
+    {
+        Utils::SaveTextToFile(path, GetString());
+    }
+    
+    std::string TileMap::GetPath() const
+    {
+        return _path;
+    }
+    
+    glm::vec2 TileMap::GetTileSize() const
+    {
+        return _anyTileSize;
+    }
+    
+    std::string TileMap::GetNameByCoords(const glm::ivec2& pos)
+    {
+        for (Tile& tile : _mapTiles)
+        {
+            if (tile.GetMapPosition() == pos)
+                return tile.GetName();                
+        }
+        return "";
     }
 }

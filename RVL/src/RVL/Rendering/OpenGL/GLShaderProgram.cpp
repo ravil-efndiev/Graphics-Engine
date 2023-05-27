@@ -27,8 +27,8 @@ namespace rvl
             glDeleteShader(_fragmentShaderId);
         }
 
-        _vertexShaderSource = utils::GetTextFromFile(vertexShaderPath);
-        _fragmentShaderSource = utils::GetTextFromFile(fragmentShaderPath);
+        _vertexShaderSource = Utils::GetTextFromFile(vertexShaderPath);
+        _fragmentShaderSource = Utils::GetTextFromFile(fragmentShaderPath);
 
         CreateShaders();
     }

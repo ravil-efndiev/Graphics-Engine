@@ -44,6 +44,9 @@ namespace rvl
     void Sprite::LoadTexture(const Ref<GLTexture>& texture)
     {
         _texture = texture;
+        ResetScale();
+
+        _subTexture = SubTexture::Create(_texture, 0.f, 0.f, _texture->GetWidth(), _texture->GetHeight());
     }
 
     void Sprite::SetSubTexture(float x, float y, float spriteWidth, float spriteHeight)
@@ -83,6 +86,16 @@ namespace rvl
             _transform.Scale
         };
         Renderer::DrawRect(tf, _subTexture);
+    }
+
+    void Sprite::Draw(const glm::vec4& tintColor)
+    {
+        Transform tf = {
+            _hasParent ? _realPosition : _transform.Position,
+            _hasParent ? _realRotationZ : _transform.Rotation,
+            _transform.Scale
+        };
+        Renderer::DrawRect(tf, _subTexture, tintColor);   
     }
 
     Ref<GLTexture> Sprite::GetTexture() const

@@ -9,6 +9,7 @@ add_library(RVL STATIC
     src/RVL/Core/Types.cpp
     src/RVL/Core/Window.cpp
     src/RVL/Core/ImGuiController.cpp
+    src/RVL/Core/Utils/Files.cpp
     src/RVL/Events/EventListener.cpp
     src/RVL/Events/KeyEvents.cpp
     src/RVL/Events/WindowEvents.cpp

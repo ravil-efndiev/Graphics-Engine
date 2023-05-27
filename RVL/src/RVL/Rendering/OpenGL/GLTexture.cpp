@@ -41,6 +41,7 @@ namespace rvl
     GLTexture::~GLTexture() 
     {
         glDeleteTextures(1, &_textureId);
+        glDeleteSamplers(1, &_samplerId);
     }
 
     void GLTexture::LoadTexture(const std::string& path)

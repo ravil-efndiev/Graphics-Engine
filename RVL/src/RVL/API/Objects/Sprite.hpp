@@ -10,7 +10,7 @@ namespace rvl
     class GLTexture;
     class SubTexture;
 
-    class Sprite : public Entity, public IRenderable
+    class Sprite : public Entity, public Renderable
     {
     public:
         static Ref<Sprite> Create();
@@ -28,6 +28,7 @@ namespace rvl
         void ResetSubTexture();
 
         void Draw() override;
+        void Draw(const glm::vec4& tintColor) override;
 
         Ref<GLTexture> GetTexture() const;
 

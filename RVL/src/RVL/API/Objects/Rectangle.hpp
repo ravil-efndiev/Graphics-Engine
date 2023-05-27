@@ -12,7 +12,7 @@ namespace rvl
     class GLVertexArray;
     class GLShaderProgram;
 
-    class Rectangle : public Entity, public IRenderable
+    class Rectangle : public Entity, public Renderable
     {
     public:
         static Ref<Rectangle> Create();

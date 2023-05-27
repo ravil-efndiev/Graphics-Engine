@@ -11,8 +11,10 @@ namespace rvl
     class MapScene : public RvlScene
     {
     public:
-        MapScene(const std::string& texturePath);
-        MapScene(const Ref<TileSet>& tls);
+        MapScene(const std::string& projName, const std::string& texturePath);
+        MapScene(const std::string& projName, const Ref<TileSet>& tls);
+        MapScene(const std::string& projName, const Ref<TileSet>& tls, const Ref<TileMap>& tlm);
+        MapScene(const std::string& projName);
         ~MapScene();
 
         void Start() override;
@@ -21,11 +23,21 @@ namespace rvl
 
         void InputsEnabled(bool flag);
 
+        std::string GetTilemapPath() const;
+        std::string GetTilesetPath() const;
+
+        std::string GetProjectName() const;
+
+        void Save();
+
     private:
         glm::vec2 _viewportSize {0.f}; 
+        std::string _projectName;
 
         Ref<TileSet> _tls;
         Ref<TileMap> _tlm;
+
+        Ref<Sprite> _tilePreview;
 
         std::string _selectedTile = "";
 
@@ -34,6 +46,10 @@ namespace rvl
 
         int _scale = 1.f;
         float _zIndex = 0.01f;
+
+        bool _projectExists, _tileSetExists, _tileMapExists;
+
+        std::string _tlmPath, _tlsPath, _tlmText, _tlsText;
     
     private:
         void RenderUI();

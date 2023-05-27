@@ -49,7 +49,7 @@ namespace rvl
 
         for (auto& cmp : _components)
         {
-            if (utils::InstanceOf<CmpT>(cmp.get()))
+            if (Utils::InstanceOf<CmpT>(cmp.get()))
             {
                 return cmp;
             }

@@ -8,7 +8,7 @@
 namespace sb
 {
     using namespace rvl;
-    class Player : public Entity, public IRenderable
+    class Player : public Entity, public Renderable
     {
     public:
         Player();

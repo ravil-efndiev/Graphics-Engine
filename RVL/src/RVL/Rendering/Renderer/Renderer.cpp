@@ -161,7 +161,7 @@ namespace rvl
         Stats.IndiciesCount += 6;
     }
 
-    void Renderer::DrawRect(const Transform& transform, const Ref<GLTexture>& texture)
+    void Renderer::DrawRect(const Transform& transform, const Ref<GLTexture>& texture, const glm::vec4& tintColor)
     {
         if (_rectIndiciesCount >= _indiciesPerCall)
             FlushAndReset();
@@ -193,7 +193,7 @@ namespace rvl
         {
             _rectPositionVBOData.push_back(transformMat * _rectVertexPositions[i]);
             _rectTexCoordsVBOData.push_back(coords[i]);
-            _rectColorVBOData.push_back({1.f, 1.f, 1.f, 1.f});
+            _rectColorVBOData.push_back(tintColor);
             _rectTexIndexVBOData.push_back(textureIndex);
         }
 
@@ -204,7 +204,7 @@ namespace rvl
         Stats.IndiciesCount += 6;
     }
 
-    void Renderer::DrawRect(const Transform& transform, const Ref<SubTexture>& subtexture)
+    void Renderer::DrawRect(const Transform& transform, const Ref<SubTexture>& subtexture, const glm::vec4& tintColor)
     {
         if (_rectIndiciesCount >= _indiciesPerCall)
             FlushAndReset();
@@ -236,7 +236,7 @@ namespace rvl
         {
             _rectPositionVBOData.push_back(transformMat * _rectVertexPositions[i]);
             _rectTexCoordsVBOData.push_back(coords[i]);
-            _rectColorVBOData.push_back({1.f, 1.f, 1.f, 1.f});
+            _rectColorVBOData.push_back(tintColor);
             _rectTexIndexVBOData.push_back(textureIndex);
         }
 

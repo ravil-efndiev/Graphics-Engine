@@ -140,8 +140,8 @@ namespace rvl
                 auto castedEvent = dynamic_cast<const MouseButtonReleaseEvent*>(event);
                 RVL_ASSERT(castedEvent, "passed event instance does not have proper type")
 
-                _keysPressed[castedEvent->GetButton()] = false;
-                _changeFrames[castedEvent->GetButton()] = _currentFrame;
+                _keysPressed[_mouseButtons[castedEvent->GetButton()]] = false;
+                _changeFrames[_mouseButtons[castedEvent->GetButton()]] = _currentFrame;
 
                 break;
             }

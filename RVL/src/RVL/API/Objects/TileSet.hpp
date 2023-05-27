@@ -20,11 +20,15 @@ namespace rvl
 
         void AddTile(const std::string& name, float texX, float texY, float texWidth, float texHeight);
 
+        std::string GetString() const;
         void SaveToFile(const char* path);
+
+        std::string GetPath() const;
 
     private:
         Ref<GLTexture> _mapTexture;
         std::unordered_map<std::string, Ref<SubTexture>> _tiles;
+        std::string _path;
     };
 }
 

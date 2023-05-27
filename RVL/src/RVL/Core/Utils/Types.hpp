@@ -5,7 +5,7 @@
 
 namespace rvl
 {
-    namespace utils
+    namespace Utils
     {
         template<class Base, class T>
         bool InstanceOf(const T* object)
@@ -16,7 +16,7 @@ namespace rvl
         template<class Base, class T>
         bool InstanceOf(const Ref<T>& object)
         {
-            return std::dynamic_pointer_cast<Base*>(object) != nullptr;
+            return std::dynamic_pointer_cast<Base>(object) != nullptr;
         }
     }
 } 
