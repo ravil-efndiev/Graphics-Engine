@@ -20,7 +20,6 @@ rvravus2 -2 4
 rvravus2 -1 4
 rvravus2 0 4
 rvravus2 1 4
-rvravus2 1 1
 rvravus -6 5
 rvravus -5 6
 rvravus -3 7
@@ -42,7 +41,6 @@ bush3 3 7
 bush3 2 5
 bush3 2 1
 bush3 -2 3
-fence1 -4 0
 fence1 -3 0
 fence1 -2 0
 fence1 -1 0
@@ -57,4 +55,11 @@ bush2 3 -6
 bush1 3 -5
 bush1 2 -5
 bush2 1 -5
-rvravus2 12 7
+fence1 -4 0
+rvravus2 1 1
+fence1 -7 -1
+tile228 -13 4
+tile228 -10 4
+tile228 -10 3
+tile228 -10 2
+tile228 -11 4

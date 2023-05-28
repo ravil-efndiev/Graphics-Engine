@@ -14,9 +14,11 @@ namespace rvl
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
         ImGui::StyleColorsDark();
-        
+
         ImGui_ImplGlfw_InitForOpenGL(glfwWindow, true);
         ImGui_ImplOpenGL3_Init("#version 330");
+
+        io.FontDefault = io.Fonts->AddFontFromFileTTF("./assets/fonts/FixelText-Medium.ttf", 14.f);
     }
     
     void ImGuiController::Shutdown()

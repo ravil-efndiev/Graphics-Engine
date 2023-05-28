@@ -8,6 +8,19 @@
 
 namespace rvl
 {
+    struct Action
+    {
+        enum ActionType
+        {
+            TilePlace, TileRemove, TileReplace
+        };
+
+        ActionType Type;
+        glm::ivec2 Position;
+        std::string TileName;
+        std::string PrevTileName;
+    };
+
     class MapScene : public RvlScene
     {
     public:
@@ -29,28 +42,29 @@ namespace rvl
         std::string GetProjectName() const;
 
         void Save();
+        void Undo();
+        void Redo();
 
     private:
         glm::vec2 _viewportSize {0.f}; 
         std::string _projectName;
+        std::string _selectedTile = "";
 
         Ref<TileSet> _tls;
         Ref<TileMap> _tlm;
-
         Ref<Sprite> _tilePreview;
-
-        std::string _selectedTile = "";
 
         float _cameraSpeed = 7.f;
         float _cameraZoom = 10.f;
 
         int _scale = 1.f;
         float _zIndex = 0.01f;
-
         bool _projectExists, _tileSetExists, _tileMapExists;
-
         std::string _tlmPath, _tlsPath, _tlmText, _tlsText;
     
+        std::stack<Action> _actions;
+        std::stack<Action> _undoActions;
+
     private:
         void RenderUI();
     };

@@ -15,6 +15,8 @@ namespace rvl
         bool SaveTilesetWindow = false;
         bool SaveTilemapWindow = false;
 
+        bool BigIcons = true;
+
         const uint64 MaxNameSize = 1000;
         char InputTileName[1000] = "";
         int32 InputCoordX = 0, InputCoordY = 0;
@@ -28,7 +30,7 @@ namespace rvl
         ImVec2 MainWindowPosition = {0.f, 0.f};
         ImVec2 SceneWindowPosition = {0.f, 0.f};
 
-        glm::vec3 BackgroundColor = {0.f, 0.f, 0.f};
+        glm::vec3 BackgroundColor = {0.23f, 0.25f, 0.29f};
     };
 
     static SceneUIData UIData;
@@ -104,6 +106,56 @@ namespace rvl
         _tilePreview->SetSubTexture(0, 0, 0, 0);
     }
 
+    void MapScene::Undo()
+    {
+        if (_actions.top().Type == Action::TilePlace && _actions.size() > 0)
+        {
+            _undoActions.push({Action::TileRemove, _actions.top().Position, _tlm->GetNameByCoords(_actions.top().Position), ""});
+            _tlm->RemoveTile(_actions.top().Position);
+            _actions.pop();
+        }
+
+        if (_actions.top().Type == Action::TileRemove && _actions.size() > 0)
+        {
+            _undoActions.push({Action::TilePlace, _actions.top().Position, _actions.top().TileName, ""});
+            _tlm->AddTile(_actions.top().TileName, _actions.top().Position, _zIndex);
+            _actions.pop();
+        }
+
+        if (_actions.top().Type == Action::TileReplace && _actions.size() > 0)
+        {
+            _undoActions.push({Action::TileReplace, _actions.top().Position, _actions.top().PrevTileName, _actions.top().TileName});
+            _tlm->RemoveTile(_actions.top().Position);
+            _tlm->AddTile(_actions.top().PrevTileName, _actions.top().Position, _zIndex);
+            _actions.pop();
+        }
+    }
+
+    void MapScene::Redo()
+    {
+        if (_undoActions.top().Type == Action::TilePlace && _undoActions.size() > 0)
+        {
+            _actions.push({Action::TileRemove, _undoActions.top().Position, _undoActions.top().TileName});
+            _tlm->RemoveTile(_undoActions.top().Position);
+            _undoActions.pop();
+        }
+
+        if (_undoActions.top().Type == Action::TileRemove && _undoActions.size() > 0)
+        {
+            _actions.push({Action::TilePlace, _undoActions.top().Position, _undoActions.top().TileName});
+            _tlm->AddTile(_undoActions.top().TileName, _undoActions.top().Position, _zIndex);
+            _undoActions.pop();
+        }
+
+        if (_undoActions.top().Type == Action::TileReplace && _undoActions.size() > 0)
+        {
+            _actions.push({Action::TileReplace, _undoActions.top().Position, _undoActions.top().PrevTileName, _undoActions.top().TileName});
+            _tlm->RemoveTile(_undoActions.top().Position);
+            _tlm->AddTile(_undoActions.top().PrevTileName, _undoActions.top().Position, _zIndex);
+            _undoActions.pop();
+        }
+    }
+
     void MapScene::Update()
     {
         _camera->SetZoom(_cameraZoom);
@@ -111,9 +163,13 @@ namespace rvl
         if (Input::IsKeyPressed(Keys::Key_LeftControl))
         {
             if (Input::IsKeyPressedOnce(Keys::Key_S))
-            {
                 Save();
-            }
+            
+            if (Input::IsKeyPressedOnce(Keys::Key_Z))
+                Undo();
+
+            if (Input::IsKeyPressedOnce(Keys::Key_Y))
+                Redo();
         }
         else
         {
@@ -137,12 +193,45 @@ namespace rvl
                     if (Input::IsMouseButtonPressed(Mouse::Left) && _selectedTile != "")
                     {
                         glm::vec2 cursor = Input::GetCursorPositionRelative(ImToGlmVec2(UIData.MainWindowPosition), ImToGlmVec2(UIData.SceneWindowPosition));
-                        _tlm->AddTile(_selectedTile, _tlm->SpimplifyPos(cursor), 0.01f);
+                        if (_tlm->GetNameByCoords(_tlm->SpimplifyPos(cursor)) == "")
+                        {
+                            if (_tlm->GetNameByCoords(_tlm->SpimplifyPos(cursor)) != _selectedTile)
+                            {
+                                _actions.push({
+                                    Action::TilePlace,
+                                    _tlm->SpimplifyPos(cursor), "", ""
+                                });
+                            }
+                            _tlm->AddTile(_selectedTile, _tlm->SpimplifyPos(cursor), 0.01f);
+                        }   
+                        else
+                        {
+                            if (_tlm->GetNameByCoords(_tlm->SpimplifyPos(cursor)) != _selectedTile)
+                            {
+                                _actions.push({
+                                    Action::TileReplace,
+                                    _tlm->SpimplifyPos(cursor),
+                                    _selectedTile,
+                                    _tlm->GetNameByCoords(_tlm->SpimplifyPos(cursor))
+                                });
+                            }
+                            _tlm->RemoveTile(_tlm->SpimplifyPos(cursor));
+                            _tlm->AddTile(_selectedTile, _tlm->SpimplifyPos(cursor), 0.01f);
+                        }
                     }
                     if (Input::IsMouseButtonPressed(Mouse::Right))
                     {
                         glm::vec2 cursor = Input::GetCursorPositionRelative(ImToGlmVec2(UIData.MainWindowPosition), ImToGlmVec2(UIData.SceneWindowPosition));
-                        _tlm->RemoveTile(_tlm->SpimplifyPos(cursor));
+                        if (_tlm->GetNameByCoords(_tlm->SpimplifyPos(cursor)) != "")
+                        {
+                            _actions.push({
+                                Action::TileRemove,
+                                _tlm->SpimplifyPos(cursor),
+                                _tlm->GetNameByCoords(_tlm->SpimplifyPos(cursor)), ""
+                            });
+
+                            _tlm->RemoveTile(_tlm->SpimplifyPos(cursor));
+                        }
                     }
                 }
 
@@ -226,18 +315,48 @@ namespace rvl
         UIData.MainWindowPosition = ImGui::GetMainViewport()->Pos;
         ImGui::Begin("Tile Pallete", nullptr, UIData.GlobalWinFlags);
 
+        if (ImGui::RadioButton("Big Icons", UIData.BigIcons))
+        {
+            UIData.BigIcons = true;
+        }
+        ImGui::SameLine();
+        if (ImGui::RadioButton("Small Icons", !UIData.BigIcons))
+        {
+            UIData.BigIcons = false;
+        }
+
+        static float padding = 16.f;
+        static float imageSize = 50.f;
+        float cellSize = padding + imageSize;
+
+        ImGui::Spacing();
+
+        if (!UIData.BigIcons)
+        {
+            ImGui::SliderFloat("Padding", &padding, 0, 64);
+            ImGui::SliderFloat("Image size", &imageSize, 20, 128);
+        }
+
+        if (!UIData.BigIcons) ImGui::Columns(ImGui::GetContentRegionAvail().x / cellSize, nullptr, false);
+
         int id = 0;
         for (auto& tile : _tls->GetTiles())
         {
-            ImGui::SetCursorPosX(ImGui::GetWindowSize().x / 3);
+            if (UIData.BigIcons) ImGui::SetCursorPosX(ImGui::GetWindowSize().x / 3);
             ImGui::Text(tile.first.c_str());
             ImGui::PushID(id);
-            if (ImGui::ImageButton((ImTextureID)tile.second->GetTexture()->GetId(), {150, 150}, ImVec2(tile.second->GetMin().x, tile.second->GetMax().y), ImVec2(tile.second->GetMax().x, tile.second->GetMin().y)))
+  
+            ImVec2 iconSize = UIData.BigIcons ? ImVec2(ImGui::GetContentRegionAvail().x / 1.5f, ImGui::GetContentRegionAvail().x / 1.5f) : ImVec2(imageSize, imageSize);
+
+            if (ImGui::ImageButton((ImTextureID)tile.second->GetTexture()->GetId(), iconSize, ImVec2(tile.second->GetMin().x, tile.second->GetMax().y), ImVec2(tile.second->GetMax().x, tile.second->GetMin().y)))
                 _selectedTile = tile.first;
             ImGui::PopID();
-            ImGui::Separator();
+            if (UIData.BigIcons) ImGui::Separator();
+            if (!UIData.BigIcons) ImGui::NextColumn();
             id++;
         }
+
+        ImGui::Columns(1);
 
         if (ImGui::Button("+", ImVec2(50, 50)))
         {

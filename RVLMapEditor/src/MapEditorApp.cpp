@@ -145,14 +145,25 @@ namespace rvl
                     UIData.ProjectOpen = true;
                     SetDefaults();
                 } 
-                if (_currentScene)
-                {
-                    if (ImGui::MenuItem("Save", nullptr, false))
-                        dynamic_cast<MapScene*>(_currentScene.get())->Save();
-                }
+                if (ImGui::MenuItem("Save", nullptr, false,  _currentScene != nullptr))
+                    dynamic_cast<MapScene*>(_currentScene.get())->Save();
+
                 if (ImGui::MenuItem("Exit", nullptr, false)) Close();
+
                 ImGui::EndMenu();
             }
+
+            if (ImGui::BeginMenu("Edit"))
+            {
+                if (ImGui::MenuItem("Undo", nullptr, false, _currentScene != nullptr))
+                    dynamic_cast<MapScene*>(_currentScene.get())->Undo();
+
+                if (ImGui::MenuItem("Redo", nullptr, false, _currentScene != nullptr))
+                    dynamic_cast<MapScene*>(_currentScene.get())->Redo();
+
+                ImGui::EndMenu();
+            }
+
             ImGui::EndMenuBar();
         }
 
