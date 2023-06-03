@@ -219,7 +219,7 @@ namespace rvl
                 ImGui::SameLine();
                 
                 auto nameTokens = Utils::SplitStr(UIData.TexName, '/');
-                ImGui::Text(nameTokens.back().c_str());
+                ImGui::Text("%s", nameTokens.back().c_str());
                 ImGui::SameLine();
 
                 if (ImGui::Button("Clear", ImVec2(40, 20)))
@@ -253,7 +253,7 @@ namespace rvl
                 ImGui::SameLine();
                 
                 auto nameTokens = Utils::SplitStr(UIData.TlsName, '/');
-                ImGui::Text(nameTokens.back().c_str());
+                ImGui::Text("%s", nameTokens.back().c_str());
                 ImGui::SameLine();
 
                 if (ImGui::Button("Clear", ImVec2(40, 20)))
@@ -286,7 +286,7 @@ namespace rvl
                 ImGui::SameLine();
                 
                 auto nameTokens = Utils::SplitStr(UIData.TlmName, '/');
-                ImGui::Text(nameTokens.back().c_str());
+                ImGui::Text("%s", nameTokens.back().c_str());
                 ImGui::SameLine();
 
                 if (ImGui::Button("Clear", ImVec2(40, 20)))
@@ -380,7 +380,7 @@ namespace rvl
         for (int i = 0; i < _projectLineTokens.size(); i++)
         {
             std::string project = std::to_string(i + 1).append(". ").append(_projectLineTokens[i][0]).append(" (").append(_projectLineTokens[i][2]).append(" ").append(_projectLineTokens[i][1]).append(")");
-            ImGui::Text(project.c_str());
+            ImGui::Text("%s", project.c_str());
             ImGui::SameLine();
             ImGui::PushID(i);
             if (ImGui::Button("Open", ImVec2(50, 20)))

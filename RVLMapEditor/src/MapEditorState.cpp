@@ -343,7 +343,7 @@ namespace rvl
         for (auto& tile : _tls->GetTiles())
         {
             if (UIData.BigIcons) ImGui::SetCursorPosX(ImGui::GetWindowSize().x / 3);
-            ImGui::Text(tile.first.c_str());
+            ImGui::Text("%s", tile.first.c_str());
             ImGui::PushID(id);
   
             ImVec2 iconSize = UIData.BigIcons ? ImVec2(ImGui::GetContentRegionAvail().x / 1.5f, ImGui::GetContentRegionAvail().x / 1.5f) : ImVec2(imageSize, imageSize);
