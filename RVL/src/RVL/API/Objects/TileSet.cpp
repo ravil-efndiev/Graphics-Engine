@@ -3,7 +3,7 @@
 #include <Core/Utils/Files.hpp>
 #include <Rendering/OpenGL/GLTexture.hpp>
 
-namespace rvl
+namespace Rvl
 {
     TileSet::TileSet(const Ref<GLTexture>& mainTexture)
     {

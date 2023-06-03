@@ -5,7 +5,7 @@
 #include "Transform.hpp"
 #include "SubTexture.hpp"
 
-namespace rvl
+namespace Rvl
 {
     class GLVertexArray;
     class GLVertexBuffer;

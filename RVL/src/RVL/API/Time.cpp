@@ -3,7 +3,7 @@
 #include <glfw/glfw3.h>
 #include <Core/Core.hpp>
 
-namespace rvl
+namespace Rvl
 {
     TimeStep Time::_time;
     TimeStep Time::_deltaTime;

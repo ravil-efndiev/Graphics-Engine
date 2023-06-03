@@ -1,6 +1,6 @@
 #include "Entity.hpp"
 
-namespace rvl
+namespace Rvl
 {
 
     Entity::Entity(const Transform& tf)

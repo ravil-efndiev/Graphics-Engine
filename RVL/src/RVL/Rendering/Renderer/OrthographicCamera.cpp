@@ -1,7 +1,7 @@
 #include "OrthographicCamera.hpp"
 #include <Rvlpch.hpp>
 
-namespace rvl
+namespace Rvl
 {
 
     OrthographicCamera::OrthographicCamera(const glm::vec3& position, float zoom)

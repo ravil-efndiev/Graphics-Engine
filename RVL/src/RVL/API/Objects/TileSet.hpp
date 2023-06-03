@@ -4,7 +4,7 @@
 #include <Core/Core.hpp>
 #include <Rendering/Renderer/SubTexture.hpp>
 
-namespace rvl
+namespace Rvl
 {
     class TileSet
     {

@@ -2,7 +2,7 @@
 
 #include <Rvlglpch.hpp>
 
-namespace rvl
+namespace Rvl
 {
     GLFrameBuffer::GLFrameBuffer(float width, float height)
         : _width(width), _height(height)

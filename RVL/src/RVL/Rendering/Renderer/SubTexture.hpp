@@ -5,7 +5,7 @@
 #include <Rendering/OpenGL/GLTexture.hpp>
 #include <glm/glm.hpp>
 
-namespace rvl
+namespace Rvl
 {
     class SubTexture
     {

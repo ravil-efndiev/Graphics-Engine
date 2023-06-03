@@ -1,6 +1,6 @@
 #include "SubTexture.hpp"
 
-namespace rvl
+namespace Rvl
 {
     Ref<SubTexture> SubTexture::Create(const Ref<GLTexture>& baseTexture, float x, float y, float spriteWidth, float spriteHeight)
     {

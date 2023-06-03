@@ -3,7 +3,7 @@
 #include "GLContext.hpp"
 #include <Core/Core.hpp>
 
-namespace rvl
+namespace Rvl
 {
     GLContext::GLContext(GLFWwindow *pwindow)
     {

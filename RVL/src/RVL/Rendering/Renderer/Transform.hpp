@@ -3,7 +3,7 @@
 
 #include <glm/glm.hpp>
 
-namespace rvl
+namespace Rvl
 {
     class Transform
     {

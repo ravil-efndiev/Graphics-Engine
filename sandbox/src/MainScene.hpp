@@ -6,10 +6,10 @@
 #include <Rendering/OpenGL/GLTexture.hpp>
 #include <Rendering/Renderer/SubTexture.hpp>
 
-using namespace rvl;
+using namespace Rvl;
 namespace sb
 {
-    class MainScene : public rvl::RvlState
+    class MainScene : public Rvl::State
     {
     public:
         MainScene();

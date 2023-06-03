@@ -3,22 +3,22 @@
 
 #include <Rvlpch.hpp>
 #include "Core.hpp"
-#include "RvlState.hpp"
+#include "State.hpp"
 
-namespace rvl
+namespace Rvl
 {
     class Window;
 
-    class RvlApp
+    class App
     {
     public:
-        RvlApp(int windowWidth, int windowHeight, const std::string& windowName);
-        virtual ~RvlApp();
+        App(int windowWidth, int windowHeight, const std::string& windowName);
+        virtual ~App();
 
         status_t Run();
 
     protected:
-        Ptr<RvlState> _currentState;
+        Ptr<State> _currentState;
 
         virtual void Start() = 0;
         virtual void Update() = 0;
@@ -40,7 +40,7 @@ namespace rvl
      * (app you are currently using)
      * it can contain any functionallity but in any case it must initialize CurrentApp
     */
-    extern Ptr<RvlApp> OnInit() RVL_ENTRY_FUNCTION;
+    extern Ptr<App> OnInit() RVL_ENTRY_FUNCTION;
 
     /*
      * Entry function that can be defined in RVL Application
@@ -50,6 +50,6 @@ namespace rvl
     extern void OnEnd() RVL_ENTRY_FUNCTION;
 }
 
-#define RVL_IMPL_INIT(App) rvl::Ptr<rvl::RvlApp> rvl::OnInit() { return rvl::NewPtr<App>(); }
+#define RVL_IMPL_INIT(AppType) Rvl::Ptr<Rvl::App> Rvl::OnInit() { return Rvl::NewPtr<AppType>(); }
 
 #endif

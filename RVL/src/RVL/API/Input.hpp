@@ -4,7 +4,7 @@
 #include <Core/Core.hpp>
 #include <API/Math/Math.hpp>
 
-namespace rvl
+namespace Rvl
 {    
 
     class Input

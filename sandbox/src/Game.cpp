@@ -5,9 +5,9 @@
 
 namespace sb
 {
-    using namespace rvl;
+    using namespace Rvl;
 
-    Game::Game() : RvlApp(1000, 700, "rvl game") {}
+    Game::Game() : App(1000, 700, "rvl game") {}
     Game::~Game() {}
 
     void Game::Start()
@@ -28,7 +28,7 @@ namespace sb
     }
 }
 
-rvl::Ptr<rvl::RvlApp> rvl::OnInit()
+Rvl::Ptr<Rvl::App> Rvl::OnInit()
 {
-    return rvl::NewPtr<sb::Game>();
+    return Rvl::NewPtr<sb::Game>();
 }

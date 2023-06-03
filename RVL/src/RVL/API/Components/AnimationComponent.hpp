@@ -5,7 +5,7 @@
 #include <API/Time.hpp>
 #include "Component.hpp"
 
-namespace rvl
+namespace Rvl
 {
     class AnimationComponent : public Component
     {

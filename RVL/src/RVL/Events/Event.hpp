@@ -6,7 +6,7 @@
 #define RVL_EVENT_TYPE_METHODS(type)  static EventType GetTypeStatic() { return EventType::type; } \
                                       EventType GetType() const override { return GetTypeStatic(); }
 
-namespace rvl
+namespace Rvl
 {
     enum class EventType : short
     {

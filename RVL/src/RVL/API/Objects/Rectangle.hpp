@@ -5,7 +5,7 @@
 #include "Entity.hpp"
 #include "Renderable.hpp"
 
-namespace rvl
+namespace Rvl
 {
     class GLVertexBuffer;
     class GLIndexBuffer;

@@ -3,7 +3,7 @@
 
 #include "Event.hpp"
 
-namespace rvl
+namespace Rvl
 {
     class WindowResizeEvent : public Event
     {

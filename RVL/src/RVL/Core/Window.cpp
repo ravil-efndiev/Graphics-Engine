@@ -3,7 +3,7 @@
 #include "Rendering/OpenGL/GLContext.hpp"
 #include "Rvlglpch.hpp"
 
-namespace rvl
+namespace Rvl
 {
     Window::Window(int width, int height, const std::string &name)
     {

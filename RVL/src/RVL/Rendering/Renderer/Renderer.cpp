@@ -5,7 +5,7 @@
 #include "OrthographicCamera.hpp"
 #include "PerspectiveCamera.hpp"
 
-namespace rvl
+namespace Rvl
 {
     glm::mat4 Renderer::_projview (1.0f);
     glm::vec3 Renderer::_clearColor;

@@ -4,7 +4,7 @@
 #include <Core/Utils/Files.hpp>
 #include <Rendering/Renderer/SubTexture.hpp>
 
-namespace rvl
+namespace Rvl
 {
     TileMap::TileMap(const Ref<TileSet>& tileSet, const std::string& tileMapFilePath, int scale, float zIndex)
     {

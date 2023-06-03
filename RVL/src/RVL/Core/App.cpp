@@ -1,4 +1,4 @@
-#include "RvlApp.hpp"
+#include "App.hpp"
 
 #include "Window.hpp"
 #include "ImGuiController.hpp"
@@ -9,17 +9,17 @@
 #include <API/Time.hpp>
 #include <API/Random.hpp>
 
-namespace rvl
+namespace Rvl
 {
     
-    RvlApp::RvlApp(int windowWidth, int windowHeight, const std::string& windowName)
+    App::App(int windowWidth, int windowHeight, const std::string& windowName)
     {
         CreateWindow(windowWidth, windowHeight, windowName);
     }
 
-    RvlApp::~RvlApp() { }
+    App::~App() { }
 
-    status_t RvlApp::Run()
+    status_t App::Run()
     {
         try
         {
@@ -72,24 +72,24 @@ namespace rvl
         }
     }
 
-    void RvlApp::Tick() {}
+    void App::Tick() {}
 
-    void RvlApp::Render()
+    void App::Render()
     {
         _currentState->Render();
     }
 
-    void RvlApp::SetClearColor(const glm::vec3& color)
+    void App::SetClearColor(const glm::vec3& color)
     {
         Renderer::SetClearColor(color);
     }
 
-    void RvlApp::Close()
+    void App::Close()
     {
         _window->SetClose(true);
     }
 
-    void RvlApp::CreateWindow(int windowWidth, int windowHeight, const std::string &windowName)
+    void App::CreateWindow(int windowWidth, int windowHeight, const std::string &windowName)
     {
         _window = NewPtr<Window>(windowWidth, windowHeight, windowName);
 

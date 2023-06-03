@@ -6,7 +6,7 @@
 #include <Rendering/OpenGL/GLFrameBuffer.hpp>
 #include <API/Objects/Rectangle.hpp>
 
-namespace rvl
+namespace Rvl
 {
     struct Action
     {
@@ -21,7 +21,7 @@ namespace rvl
         std::string PrevTileName;
     };
 
-    class MapEditorState : public RvlState
+    class MapEditorState : public State
     {
     public:
         MapEditorState(const std::string& projName, const std::string& texturePath);

@@ -1,6 +1,6 @@
 #include "Component.hpp"
 
-namespace rvl
+namespace Rvl
 {
     Component::Component()
     {

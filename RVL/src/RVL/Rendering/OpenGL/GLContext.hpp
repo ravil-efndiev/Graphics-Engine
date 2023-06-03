@@ -3,7 +3,7 @@
 
 struct GLFWwindow;
 
-namespace rvl
+namespace Rvl
 {
     class GLContext
     {

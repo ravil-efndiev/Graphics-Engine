@@ -1,7 +1,7 @@
 #include "PerspectiveCamera.hpp"
 #include <Core/Core.hpp>
 
-namespace rvl
+namespace Rvl
 {
     
     PerspectiveCamera::PerspectiveCamera(const glm::vec3& position, float FOV)

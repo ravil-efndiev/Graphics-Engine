@@ -1,7 +1,7 @@
 #include "EventListener.hpp"
 #include "Rvlglpch.hpp"
 
-namespace rvl
+namespace Rvl
 {
     std::array<bool, 1032> EventListener::_keysPressed;
     std::array<int, 1032>  EventListener::_changeFrames;

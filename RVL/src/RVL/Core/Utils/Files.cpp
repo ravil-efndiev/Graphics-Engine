@@ -1,7 +1,7 @@
 #include "Files.hpp"
 #include "Core/Core.hpp"
 
-namespace rvl 
+namespace Rvl 
 {
     std::vector<std::string> Utils::SplitStr(const std::string& str, char sep)
     {

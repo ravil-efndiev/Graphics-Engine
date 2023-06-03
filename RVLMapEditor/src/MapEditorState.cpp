@@ -4,7 +4,7 @@
 #include <Core/Utils/Files.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-namespace rvl
+namespace Rvl
 {
     struct SceneUIData
     {

@@ -3,7 +3,7 @@
 
 #include <Core/Core.hpp>
 
-namespace rvl
+namespace Rvl
 {
     namespace Utils
     {

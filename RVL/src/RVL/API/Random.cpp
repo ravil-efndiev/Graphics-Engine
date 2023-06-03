@@ -1,6 +1,6 @@
 #include "Random.hpp"
 
-namespace rvl
+namespace Rvl
 {
     std::mt19937 Random::_generator;
 

@@ -3,7 +3,7 @@
 #include <Core/Core.hpp>
 #include <Rvlglpch.hpp>
 
-namespace rvl
+namespace Rvl
 {
     GLVertexArray::GLVertexArray()
     {

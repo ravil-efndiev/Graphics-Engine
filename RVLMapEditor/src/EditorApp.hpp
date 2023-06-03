@@ -3,9 +3,9 @@
 
 #include <RVL.hpp>
 
-namespace rvl
+namespace Rvl
 {
-    class EditorApp : public RvlApp
+    class EditorApp : public App
     {
     public:
         EditorApp();

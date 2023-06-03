@@ -2,7 +2,7 @@
 
 #include "Core/Utils/Files.hpp"
 
-namespace rvl
+namespace Rvl
 {
     GLShaderProgram::GLShaderProgram() {}
 

@@ -1,7 +1,7 @@
 #ifndef RVL_KEYS_HPP
 #define RVL_KEYS_HPP
 
-namespace rvl
+namespace Rvl
 {
 
     // specific type for key and mouse codes

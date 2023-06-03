@@ -2,7 +2,7 @@
 
 #include <API/Time.hpp>
 
-namespace rvl
+namespace Rvl
 {
     float Math::Lerp(float current, float target, float t)
     {

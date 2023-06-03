@@ -3,7 +3,7 @@
 
 #include <Rendering/Renderer/Renderer.hpp>
 
-namespace rvl
+namespace Rvl
 {
     bool Input::IsKeyPressed(keycode_e keycode)
     {

@@ -5,7 +5,7 @@
 
 #include <Core/Core.hpp>
 
-namespace rvl
+namespace Rvl
 {
     GLTexture::GLTexture() {}
 

@@ -3,7 +3,7 @@
 
 #include <Rvlglpch.hpp>
 
-namespace rvl
+namespace Rvl
 {
     class ImGuiController
     {

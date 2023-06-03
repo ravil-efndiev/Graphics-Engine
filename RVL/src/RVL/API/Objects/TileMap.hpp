@@ -5,7 +5,7 @@
 #include "Renderable.hpp"
 #include "TileSet.hpp"
 
-namespace rvl
+namespace Rvl
 {
     class Tile
     {

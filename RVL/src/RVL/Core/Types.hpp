@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 #include <imgui/imgui.h>
 
-namespace rvl
+namespace Rvl
 {
     typedef signed long  int64;
     typedef signed int   int32;

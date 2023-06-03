@@ -1,6 +1,6 @@
 #include "KeyEvents.hpp"
 
-namespace rvl
+namespace Rvl
 {
     KeyEvent::KeyEvent(keycode_t keycode)
     {

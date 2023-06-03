@@ -5,7 +5,7 @@
 #include <API/Math/Math.hpp>
 #include <API/Input.hpp>
 
-namespace rvl
+namespace Rvl
 {
     Ref<UserOrthographicCamera> UserOrthographicCamera::Create(const glm::vec2 &position, float zoom)
     {

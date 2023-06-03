@@ -5,7 +5,7 @@
 #include "Renderable.hpp"
 #include "Entity.hpp"
 
-namespace rvl
+namespace Rvl
 {
     class GLTexture;
     class SubTexture;

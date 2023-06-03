@@ -1,6 +1,6 @@
 #include "MovementComponent.hpp"
 
-namespace rvl
+namespace Rvl
 {
     Ref<MovementComponent> MovementComponent::Create(Transform* targetTransform, float maxVelocity, float acceleration, float deceleration)
     {

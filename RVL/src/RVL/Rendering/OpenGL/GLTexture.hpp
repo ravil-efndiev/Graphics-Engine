@@ -3,7 +3,7 @@
 
 #include <Rvlpch.hpp>
 
-namespace rvl
+namespace Rvl
 {
     class GLTexture
     {

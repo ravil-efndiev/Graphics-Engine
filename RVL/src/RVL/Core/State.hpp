@@ -6,7 +6,7 @@
 #include <API/Objects/UserOrthographicCamera.hpp>
 #include <Rvlpch.hpp>
 
-namespace rvl
+namespace Rvl
 {
     class PerspectiveCamera;
     class OrthographicCamera;
@@ -14,13 +14,13 @@ namespace rvl
 
     typedef UserOrthographicCamera Camera;
 
-    class RvlState
+    class State
     {
-    friend class RvlApp;
+    friend class App;
 
     public:
-        RvlState();
-        virtual ~RvlState();
+        State();
+        virtual ~State();
 
         virtual void Start() = 0;
         virtual void Update() = 0;

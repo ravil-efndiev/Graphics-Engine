@@ -8,7 +8,7 @@
 #define MOVE_RIGHT 2
 #define MOVE_LEFT 3
 
-namespace rvl
+namespace Rvl
 {
     class PerspectiveCamera
     {

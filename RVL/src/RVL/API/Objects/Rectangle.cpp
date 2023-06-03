@@ -8,7 +8,7 @@
 
 #include <Rvlglpch.hpp>
 
-namespace rvl
+namespace Rvl
 {
     Ref<Rectangle> Rectangle::Create()
     {

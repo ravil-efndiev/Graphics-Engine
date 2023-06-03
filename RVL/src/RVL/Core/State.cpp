@@ -1,4 +1,4 @@
-#include "RvlState.hpp"
+#include "State.hpp"
 
 #include <Core.hpp>
 #include "Rendering/Renderer/Renderer.hpp"
@@ -6,19 +6,19 @@
 #include "Rendering/Renderer/OrthographicCamera.hpp"
 #include "Rendering/OpenGL/GLFrameBuffer.hpp"
 
-namespace rvl
+namespace Rvl
 { 
-    RvlState::RvlState() {}
-    RvlState::~RvlState() {}
+    State::State() {}
+    State::~State() {}
 
-    void RvlState::Tick() {}
+    void State::Tick() {}
 
-    void RvlState::AddFrameBuffer(const Ref<GLFrameBuffer>& fbo)
+    void State::AddFrameBuffer(const Ref<GLFrameBuffer>& fbo)
     {
         _fbo = fbo;
     }
 
-    void RvlState::Begin()
+    void State::Begin()
     {
         if (!_camera) throw Error("camera was not initialized during scene creation", RVL_RUNTIME_ERROR);
 
@@ -34,7 +34,7 @@ namespace rvl
         Renderer::BeginContext(*_camera->GetCamera(), viewport[0], viewport[1]);
     }
 
-    void RvlState::End()
+    void State::End()
     {
         Renderer::EndContext();
         

@@ -5,7 +5,7 @@
 
 #define MOUSE_BUTTONS_OFFSET 1024
 
-namespace rvl
+namespace Rvl
 {
     class EventListener
     {

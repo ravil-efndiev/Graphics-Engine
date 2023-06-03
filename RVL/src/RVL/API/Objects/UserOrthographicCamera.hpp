@@ -7,7 +7,7 @@
 #include <API/Time.hpp>
 #include <Rendering/Renderer/OrthographicCamera.hpp>
 
-namespace rvl
+namespace Rvl
 {
     class UserOrthographicCamera
     {

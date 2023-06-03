@@ -5,7 +5,7 @@
 
 namespace sb
 {
-    class Game : public rvl::RvlApp
+    class Game : public Rvl::App
     {
     public:
         Game();

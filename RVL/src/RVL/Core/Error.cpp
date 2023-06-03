@@ -2,9 +2,9 @@
 
 #include "Macros.hpp"
 
-namespace rvl
+namespace Rvl
 {
-    void rvl::Error::Print()
+    void Rvl::Error::Print()
     {
         if (Status == RVL_RUNTIME_ERROR)
             std::cerr << RVL_LOG_COLOR_RED << "RUNTIME ERROR => " << Text << RVL_LOG_COLOR_NONE << std::endl;

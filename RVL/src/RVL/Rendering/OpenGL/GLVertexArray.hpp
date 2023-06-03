@@ -7,7 +7,7 @@
 #define RVL_COLOR_LOCATION 1
 #define RVL_TEXTURE_LOCATION 2
 
-namespace rvl
+namespace Rvl
 {
     class GLVertexArray
     {

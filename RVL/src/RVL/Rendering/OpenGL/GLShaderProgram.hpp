@@ -4,7 +4,7 @@
 #include <Rvlpch.hpp>
 #include <Rvlglpch.hpp>
 
-namespace rvl
+namespace Rvl
 {
     class GLShaderProgram
     {

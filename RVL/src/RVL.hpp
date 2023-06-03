@@ -29,8 +29,8 @@
 #include <glm/glm.hpp>
 
 #include "RVL/Core/Core.hpp"
-#include "RVL/Core/RvlApp.hpp"
-#include "RVL/Core/RvlState.hpp"
+#include "RVL/Core/App.hpp"
+#include "RVL/Core/State.hpp"
 #include "RVL/API/Input.hpp"
 #include "RVL/API/Time.hpp"
 #include "RVL/API/Random.hpp"

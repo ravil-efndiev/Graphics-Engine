@@ -4,7 +4,7 @@
 #include <Rvlglpch.hpp>
 #include <Core/Core.hpp>
 
-namespace rvl
+namespace Rvl
 {
     // should be used only once per layout element
     class GLVertexBuffer

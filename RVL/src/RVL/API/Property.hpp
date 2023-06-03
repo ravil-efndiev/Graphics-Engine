@@ -3,7 +3,7 @@
 
 #include <Core/Core.hpp>
 
-namespace rvl
+namespace Rvl
 {
     template <class T>
     class Property
@@ -46,7 +46,7 @@ namespace rvl
 }
 
 //// implementation
-namespace rvl
+namespace Rvl
 {
     template <class T>
     Property<T>::Property()

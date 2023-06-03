@@ -1,6 +1,6 @@
 #include "MouseEvents.hpp"
 
-namespace rvl
+namespace Rvl
 {
     EventType MouseEvent::GetType() const
     {

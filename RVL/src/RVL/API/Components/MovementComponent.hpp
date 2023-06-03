@@ -4,7 +4,7 @@
 #include <API/Objects/Entity.hpp>
 #include <API/Time.hpp>
 
-namespace rvl
+namespace Rvl
 {
     enum class MoveState4
     {

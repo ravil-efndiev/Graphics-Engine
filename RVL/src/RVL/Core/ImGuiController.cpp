@@ -1,7 +1,7 @@
 #include "ImGuiController.hpp"
 #include <Rendering/Renderer/Renderer.hpp>
 
-namespace rvl
+namespace Rvl
 {
     void ImGuiController::Init(GLFWwindow* glfwWindow)
     {

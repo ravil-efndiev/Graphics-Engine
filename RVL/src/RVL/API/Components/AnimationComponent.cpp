@@ -1,6 +1,6 @@
 #include "AnimationComponent.hpp"
 
-namespace rvl
+namespace Rvl
 {
     Ref<AnimationComponent> AnimationComponent::Create(const Ref<Sprite>& sprite)
     {

@@ -1,7 +1,7 @@
 #ifndef RVL_TIME_HPP
 #define RVL_TIME_HPP
 
-namespace rvl
+namespace Rvl
 {
     struct TimeStep
     {

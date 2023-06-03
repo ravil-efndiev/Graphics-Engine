@@ -1,6 +1,6 @@
 #include "WindowEvents.hpp"
 
-namespace rvl
+namespace Rvl
 {
     WindowResizeEvent::WindowResizeEvent(uint32_t width, uint32_t height)
     {

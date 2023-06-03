@@ -11,7 +11,7 @@
 
 #include "Rendering/Renderer/Renderer.hpp"
 
-namespace rvl
+namespace Rvl
 {
     Ref<Sprite> Sprite::Create()
     {

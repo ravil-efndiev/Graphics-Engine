@@ -4,7 +4,7 @@
 #include "Event.hpp"
 #include <Core/Core.hpp>
 
-namespace rvl
+namespace Rvl
 {
     class CursorPosEvent : public Event
     {

@@ -1,6 +1,6 @@
 #include "CursorEvents.hpp"
 
-namespace rvl
+namespace Rvl
 {
     CursorPosEvent::CursorPosEvent(double x, double y)
     {

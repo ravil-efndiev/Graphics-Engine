@@ -7,7 +7,7 @@
 
 #include <Core/Utils/Types.hpp>
 
-namespace rvl
+namespace Rvl
 {
 
     class Entity

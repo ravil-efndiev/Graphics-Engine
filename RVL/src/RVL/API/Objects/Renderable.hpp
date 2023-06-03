@@ -3,14 +3,17 @@
 
 #include <glm/glm.hpp>
 
-class Renderable
+namespace Rvl
 {
-public:
-    virtual ~Renderable() {}
+    class Renderable
+    {
+    public:
+        virtual ~Renderable() {}
 
-    virtual void Draw() = 0;
-    virtual void Draw(const glm::vec4&) {}
+        virtual void Draw() = 0;
+        virtual void Draw(const glm::vec4&) {}
 
-};
+    };
+}
 
 #endif

@@ -3,9 +3,9 @@
 
 #include <RVL.hpp>
 
-namespace rvl
+namespace Rvl
 {
-    class SceneEditorState : public RvlState
+    class SceneEditorState : public State
     {
     public:
         SceneEditorState();

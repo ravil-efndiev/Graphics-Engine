@@ -9,7 +9,7 @@
 #define RVL_RUNTIME_ERROR   2
 #define RVL_CLIENT_ERROR    3
 
-namespace rvl
+namespace Rvl
 {
 
     typedef unsigned short  status_t;

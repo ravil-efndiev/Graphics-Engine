@@ -1,6 +1,6 @@
 #include "GLBuffer.hpp"
 
-namespace rvl
+namespace Rvl
 {
     /// Vertex buffer
 

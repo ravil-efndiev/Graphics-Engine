@@ -6,10 +6,10 @@
 
 #include <nfd.h>
 
-RVL_IMPL_INIT(rvl::EditorApp);
+RVL_IMPL_INIT(Rvl::EditorApp);
 
-namespace rvl
-{
+namespace Rvl
+{ 
     struct AppUIData
     {
         bool ProjectCreation, ProjectOpen, PrjCreateWindowOpen = true;
@@ -34,7 +34,7 @@ namespace rvl
 
     static AppUIData UIData;
 
-    EditorApp::EditorApp() : RvlApp(1000, 700, "RVL Map Editor") {}
+    EditorApp::EditorApp() : App(1000, 700, "RVL Map Editor") {}
     EditorApp::~EditorApp() {}
 
     void EditorApp::Start()
