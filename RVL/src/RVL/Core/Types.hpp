@@ -16,8 +16,7 @@ namespace rvl
     typedef unsigned short uint16;
     typedef unsigned char  uint8;
 
-    typedef uint8  ubyte;
-    typedef int8   byte;
+    typedef uint8   byte;
 
     typedef float  float32;
     typedef double float64;

@@ -13,18 +13,18 @@ namespace sb
     void Game::Start()
     {
         SetClearColor({0.3f, 0.5f, 0.5f});
-        _currentScene = NewRef<MainScene>();
-        _currentScene->Start();
+        _currentState = NewRef<MainScene>();
+        _currentState->Start();
     }
 
     void Game::Update()
     {
-        _currentScene->Update();
+        _currentState->Update();
     }
 
     void Game::Tick()
     {
-        _currentScene->Tick();
+        _currentState->Tick();
     }
 }
 

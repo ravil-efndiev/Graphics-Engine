@@ -1,4 +1,4 @@
-#include "RvlScene.hpp"
+#include "RvlState.hpp"
 
 #include <Core.hpp>
 #include "Rendering/Renderer/Renderer.hpp"
@@ -8,20 +8,17 @@
 
 namespace rvl
 { 
-    RvlScene::RvlScene()
-    {
-    }
+    RvlState::RvlState() {}
+    RvlState::~RvlState() {}
 
-    RvlScene::~RvlScene() {}
+    void RvlState::Tick() {}
 
-    void RvlScene::Tick() {}
-
-    void RvlScene::AddFrameBuffer(const Ref<GLFrameBuffer>& fbo)
+    void RvlState::AddFrameBuffer(const Ref<GLFrameBuffer>& fbo)
     {
         _fbo = fbo;
     }
 
-    void RvlScene::Begin()
+    void RvlState::Begin()
     {
         if (!_camera) throw Error("camera was not initialized during scene creation", RVL_RUNTIME_ERROR);
 
@@ -37,7 +34,7 @@ namespace rvl
         Renderer::BeginContext(*_camera->GetCamera(), viewport[0], viewport[1]);
     }
 
-    void RvlScene::End()
+    void RvlState::End()
     {
         Renderer::EndContext();
         

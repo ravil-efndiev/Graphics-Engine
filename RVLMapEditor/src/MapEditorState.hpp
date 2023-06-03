@@ -21,14 +21,14 @@ namespace rvl
         std::string PrevTileName;
     };
 
-    class MapScene : public RvlScene
+    class MapEditorState : public RvlState
     {
     public:
-        MapScene(const std::string& projName, const std::string& texturePath);
-        MapScene(const std::string& projName, const Ref<TileSet>& tls);
-        MapScene(const std::string& projName, const Ref<TileSet>& tls, const Ref<TileMap>& tlm);
-        MapScene(const std::string& projName);
-        ~MapScene();
+        MapEditorState(const std::string& projName, const std::string& texturePath);
+        MapEditorState(const std::string& projName, const Ref<TileSet>& tls);
+        MapEditorState(const std::string& projName, const Ref<TileSet>& tls, const Ref<TileMap>& tlm);
+        MapEditorState(const std::string& projName);
+        ~MapEditorState();
 
         void Start() override;
         void Update() override;

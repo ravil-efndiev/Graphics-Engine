@@ -1,4 +1,4 @@
-#include "MapScene.hpp"
+#include "MapEditorState.hpp"
 
 #include <Rendering/Renderer/Renderer.hpp>
 #include <Core/Utils/Files.hpp>
@@ -35,7 +35,7 @@ namespace rvl
 
     static SceneUIData UIData;
 
-    MapScene::MapScene(const std::string& projName, const std::string& texturePath)
+    MapEditorState::MapEditorState(const std::string& projName, const std::string& texturePath)
     {
         _projectExists = false;
         _tileSetExists = false;
@@ -44,7 +44,7 @@ namespace rvl
         _tls = NewRef<TileSet>(NewRef<GLTexture>(texturePath));
     }
 
-    MapScene::MapScene(const std::string& projName, const Ref<TileSet>& tls)
+    MapEditorState::MapEditorState(const std::string& projName, const Ref<TileSet>& tls)
     {
         _projectExists = false;
         _tileSetExists = true;
@@ -53,7 +53,7 @@ namespace rvl
         _tls = tls;
     }
 
-    MapScene::MapScene(const std::string& projName, const Ref<TileSet>& tls, const Ref<TileMap>& tlm)
+    MapEditorState::MapEditorState(const std::string& projName, const Ref<TileSet>& tls, const Ref<TileMap>& tlm)
     {
         _projectExists = false;
         _tileSetExists = true;
@@ -65,7 +65,7 @@ namespace rvl
         _tlmPath = _tlm->GetPath();
     }
 
-    MapScene::MapScene(const std::string& projName)
+    MapEditorState::MapEditorState(const std::string& projName)
     {
         _projectName = projName;
         auto prjfileText = Utils::GetTextFromFile("./rvmData/projects.rvm");
@@ -91,9 +91,9 @@ namespace rvl
         _tlsText = Utils::GetTextFromFile(_tlsPath);
     }
 
-    MapScene::~MapScene() {}
+    MapEditorState::~MapEditorState() {}
     
-    void MapScene::Start()
+    void MapEditorState::Start()
     {
         _camera = UserOrthographicCamera::Create({0.f, 0.f}, _cameraZoom);
         AddFrameBuffer(NewRef<GLFrameBuffer>(500, 350));
@@ -106,7 +106,7 @@ namespace rvl
         _tilePreview->SetSubTexture(0, 0, 0, 0);
     }
 
-    void MapScene::Undo()
+    void MapEditorState::Undo()
     {
         if (_actions.top().Type == Action::TilePlace && _actions.size() > 0)
         {
@@ -131,7 +131,7 @@ namespace rvl
         }
     }
 
-    void MapScene::Redo()
+    void MapEditorState::Redo()
     {
         if (_undoActions.top().Type == Action::TilePlace && _undoActions.size() > 0)
         {
@@ -156,7 +156,7 @@ namespace rvl
         }
     }
 
-    void MapScene::Update()
+    void MapEditorState::Update()
     {
         _camera->SetZoom(_cameraZoom);
 
@@ -244,7 +244,7 @@ namespace rvl
         }
     }
 
-    void MapScene::Render()
+    void MapEditorState::Render()
     {
         Renderer::SetClearColor(UIData.BackgroundColor);
 
@@ -256,7 +256,7 @@ namespace rvl
         RenderUI();
     }
 
-    void MapScene::InputsEnabled(bool flag)
+    void MapEditorState::InputsEnabled(bool flag)
     {
         if (flag)
         {
@@ -268,22 +268,22 @@ namespace rvl
         }
     }
 
-    std::string MapScene::GetTilemapPath() const
+    std::string MapEditorState::GetTilemapPath() const
     {
         return _tlmPath;
     }
 
-    std::string MapScene::GetTilesetPath() const
+    std::string MapEditorState::GetTilesetPath() const
     {
         return _tlsPath;
     }
 
-    std::string MapScene::GetProjectName() const
+    std::string MapEditorState::GetProjectName() const
     {
         return _projectName;
     }
 
-    void MapScene::Save()
+    void MapEditorState::Save()
     {
         if (_projectExists)
         {
@@ -309,7 +309,7 @@ namespace rvl
         }
     }
 
-    void MapScene::RenderUI()
+    void MapEditorState::RenderUI()
     {
 
         UIData.MainWindowPosition = ImGui::GetMainViewport()->Pos;
@@ -483,5 +483,15 @@ namespace rvl
 
             ImGui::End();
         }
+
+        ImGui::Begin("Log Console", nullptr, UIData.GlobalWinFlags);
+        ImGui::Button("Clear", {40, 20});
+        ImGui::SameLine();
+        ImGui::Button("Save", {40, 20});
+        ImGui::Separator();
+        ImGui::Text("[14.49] Initialized app");
+        ImGui::Text("[14.49] Undid action 'Add tile' on (1, 2)");
+        ImGui::Text("[14.55] Saved project");
+        ImGui::End();
     }
 }

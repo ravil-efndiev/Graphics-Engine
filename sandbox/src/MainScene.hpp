@@ -9,7 +9,7 @@
 using namespace rvl;
 namespace sb
 {
-    class MainScene : public rvl::RvlScene
+    class MainScene : public rvl::RvlState
     {
     public:
         MainScene();

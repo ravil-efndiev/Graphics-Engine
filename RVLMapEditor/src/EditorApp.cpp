@@ -1,10 +1,12 @@
-#include "MapEditorApp.hpp"
-#include "MapScene.hpp"
+#include "EditorApp.hpp"
+#include "MapEditorState.hpp"
 
 #include <RVL/Core/EntryPoint.hpp>
 #include <RVL/Core/Utils/Files.hpp>
 
-RVL_IMPL_INIT(rvl::MapEditorApp);
+#include <nfd.h>
+
+RVL_IMPL_INIT(rvl::EditorApp);
 
 namespace rvl
 {
@@ -13,16 +15,17 @@ namespace rvl
         bool ProjectCreation, ProjectOpen, PrjCreateWindowOpen = true;
         bool DeleteFileWindow = false;
         bool DeleteTileSet = false, DeleteTileMap = true;
-        bool UseTls = false, UseTlm = false;
+        bool UseTls = false, UseTlm = false, UseTexture = true;
+        bool TextureSelected = false;
 
         static constexpr size_t MaxNameSize = 100;
         char ProjectName[MaxNameSize];
 
-        static constexpr size_t MaxFilenameSize = 1000;
-        char TlmName[MaxFilenameSize];
-        char TlsName[MaxFilenameSize];
+        std::string ErrorText;
 
-        char TexName[MaxFilenameSize] = "./assets/maps/test.rtls";
+        std::string TexName;
+        std::string TlmName;
+        std::string TlsName;
 
         ImGuiWindowFlags ProjectWinFlags;
 
@@ -31,10 +34,10 @@ namespace rvl
 
     static AppUIData UIData;
 
-    MapEditorApp::MapEditorApp() : RvlApp(1000, 700, "RVL Map Editor") {}
-    MapEditorApp::~MapEditorApp() {}
+    EditorApp::EditorApp() : RvlApp(1000, 700, "RVL Map Editor") {}
+    EditorApp::~EditorApp() {}
 
-    void MapEditorApp::Start()
+    void EditorApp::Start()
     {
         SetClearColor({0.0f, 0.3f, 0.3f});
 
@@ -60,7 +63,7 @@ namespace rvl
         SetDefaults();
     }
 
-    void MapEditorApp::Update()
+    void EditorApp::Update()
     {
         DockspaceAndMenu();
 
@@ -75,18 +78,18 @@ namespace rvl
         if (!UIData.PrjCreateWindowOpen)
         {
             UIData.ProjectCreation = false;
-            if (_currentScene)
-                dynamic_cast<MapScene*>(_currentScene.get())->InputsEnabled(true);
+            if (_currentState)
+                dynamic_cast<MapEditorState*>(_currentState.get())->InputsEnabled(true);
         }
 
 
-        if (!UIData.ProjectCreation && !UIData.ProjectOpen && _currentScene)
+        if (!UIData.ProjectCreation && !UIData.ProjectOpen && _currentState)
         {
-            _currentScene->Update();
+            _currentState->Update();
         }
     }
 
-    void MapEditorApp::DockspaceAndMenu()
+    void EditorApp::DockspaceAndMenu()
     {
         static bool dockspaceOpen = true;
         static bool optFullscreen = true;
@@ -145,8 +148,8 @@ namespace rvl
                     UIData.ProjectOpen = true;
                     SetDefaults();
                 } 
-                if (ImGui::MenuItem("Save", nullptr, false,  _currentScene != nullptr))
-                    dynamic_cast<MapScene*>(_currentScene.get())->Save();
+                if (ImGui::MenuItem("Save", nullptr, false,  _currentState != nullptr))
+                    dynamic_cast<MapEditorState*>(_currentState.get())->Save();
 
                 if (ImGui::MenuItem("Exit", nullptr, false)) Close();
 
@@ -155,11 +158,11 @@ namespace rvl
 
             if (ImGui::BeginMenu("Edit"))
             {
-                if (ImGui::MenuItem("Undo", nullptr, false, _currentScene != nullptr))
-                    dynamic_cast<MapScene*>(_currentScene.get())->Undo();
+                if (ImGui::MenuItem("Undo", nullptr, false, _currentState != nullptr))
+                    dynamic_cast<MapEditorState*>(_currentState.get())->Undo();
 
-                if (ImGui::MenuItem("Redo", nullptr, false, _currentScene != nullptr))
-                    dynamic_cast<MapScene*>(_currentScene.get())->Redo();
+                if (ImGui::MenuItem("Redo", nullptr, false, _currentState != nullptr))
+                    dynamic_cast<MapEditorState*>(_currentState.get())->Redo();
 
                 ImGui::EndMenu();
             }
@@ -170,10 +173,10 @@ namespace rvl
         ImGui::End();
     }
 
-    void MapEditorApp::ProjectWindow()
+    void EditorApp::ProjectWindow()
     {
-        if (_currentScene)
-            dynamic_cast<MapScene*>(_currentScene.get())->InputsEnabled(false);
+        if (_currentState)
+            dynamic_cast<MapEditorState*>(_currentState.get())->InputsEnabled(false);
 
         ImGui::Begin("Project", &UIData.PrjCreateWindowOpen, UIData.ProjectWinFlags);
         ImGui::Text("Create New Project: \n\n");
@@ -182,38 +185,153 @@ namespace rvl
         ImGui::InputText("##prjNameInput", UIData.ProjectName, UIData.MaxNameSize);
         ImGui::Text("\n");
 
-        ImGui::Checkbox("Use existing tileset", &UIData.UseTls);
-        ImGui::Checkbox("Use existing tilemap", &UIData.UseTlm);
-        ImGui::Text("Texture path or Tileset path");
-        ImGui::InputText("##textlmPathInput", UIData.TexName, UIData.MaxFilenameSize);
-        ImGui::Text("Tilemap path (can be left empty)");
-        ImGui::InputText("##tlmPathInput", UIData.TlmName, UIData.MaxFilenameSize);
+        if (ImGui::RadioButton("Texture atlas", UIData.UseTexture))
+        {
+            UIData.UseTexture = true;
+        }
+        ImGui::SameLine();
+        if (ImGui::RadioButton("Tileset/map", !UIData.UseTexture))
+        {
+            UIData.UseTexture = false;
+        }
+
+        if (UIData.UseTexture)
+        {
+            if (ImGui::Button("Select texture ..."))
+            {
+                nfdchar_t* openPath = nullptr;
+                nfdresult_t result = NFD_OpenDialog("png,jpg", "./", &openPath);
+
+                if ( result == NFD_OKAY )
+                {
+                    UIData.TexName = openPath;
+                    UIData.TextureSelected = true;
+                    free(openPath);
+                }
+                else if (result == NFD_ERROR)
+                {
+                    UIData.ErrorText = "Error when selecting a file";
+                }   
+            }
+
+            if (UIData.TextureSelected)
+            {
+                ImGui::SameLine();
+                
+                auto nameTokens = Utils::SplitStr(UIData.TexName, '/');
+                ImGui::Text(nameTokens.back().c_str());
+                ImGui::SameLine();
+
+                if (ImGui::Button("Clear", ImVec2(40, 20)))
+                {
+                    UIData.TexName = "";
+                    UIData.TextureSelected = false;
+                }
+            }
+        }
+        else
+        {
+            if (ImGui::Button("Select tileset ..."))
+            {
+                nfdchar_t* openPath = nullptr;
+                nfdresult_t result = NFD_OpenDialog("rtls", "./", &openPath);
+
+                if ( result == NFD_OKAY )
+                {
+                    UIData.UseTls = true;
+                    UIData.TlsName = openPath;
+                    free(openPath);
+                }
+                else if (result == NFD_ERROR)
+                {
+                    UIData.ErrorText = "Error when selecting a file";
+                }
+            }
+
+            if (UIData.UseTls)
+            {
+                ImGui::SameLine();
+                
+                auto nameTokens = Utils::SplitStr(UIData.TlsName, '/');
+                ImGui::Text(nameTokens.back().c_str());
+                ImGui::SameLine();
+
+                if (ImGui::Button("Clear", ImVec2(40, 20)))
+                {
+                    UIData.TlsName = "";
+                    UIData.UseTls = false;
+                }
+            }
+
+            if (ImGui::Button("Select tilemap ..."))
+            {
+                nfdchar_t* openPath = nullptr;
+                nfdresult_t result = NFD_OpenDialog("rtlm", "./", &openPath);
+
+                if ( result == NFD_OKAY )
+                {
+                    UIData.UseTlm = true;
+                    UIData.TlmName = openPath;
+                    RVL_LOG(UIData.TlmName);
+                    free(openPath);
+                }
+                else if (result == NFD_ERROR)
+                {
+                    UIData.ErrorText = "Error when selecting a file";
+                }
+            }
+
+            if (UIData.UseTlm)
+            {
+                ImGui::SameLine();
+                
+                auto nameTokens = Utils::SplitStr(UIData.TlmName, '/');
+                ImGui::Text(nameTokens.back().c_str());
+                ImGui::SameLine();
+
+                if (ImGui::Button("Clear", ImVec2(40, 20)))
+                {
+                    UIData.TlmName = "";
+                    UIData.UseTlm = false;
+                }
+            }
+        }
 
         if (ImGui::Button("Create Project", ImVec2(ImGui::GetContentRegionAvail().x, 40)))
         {
             if (!UIData.UseTls && !UIData.UseTlm)
             {
-                _currentScene = NewPtr<MapScene>(UIData.ProjectName, UIData.TexName);
-                _currentScene->Start();
+                if (!UIData.TextureSelected)
+                {    
+                    UIData.ErrorText = "Texture isn't selected";
+                }
+                else
+                {
+                    _currentState = NewPtr<MapEditorState>(UIData.ProjectName, UIData.TexName);
+                    _currentState->Start();
+                }
             }
             else if (UIData.UseTls && !UIData.UseTlm)
             {
-                Ref<TileSet> tls = NewRef<TileSet>(UIData.TexName);
-                _currentScene = NewPtr<MapScene>(UIData.ProjectName, tls);
-                _currentScene->Start();
+                Ref<TileSet> tls = NewRef<TileSet>(UIData.TlsName);
+                _currentState = NewPtr<MapEditorState>(UIData.ProjectName, tls);
+                _currentState->Start();
             }
             else if (UIData.UseTls && UIData.UseTlm)
             {
-                Ref<TileSet> tls = NewRef<TileSet>(UIData.TexName);
+                Ref<TileSet> tls = NewRef<TileSet>(UIData.TlsName);
                 Ref<TileMap> tlm = NewRef<TileMap>(tls, UIData.TlmName, 2, 0.01f);
-                _currentScene = NewPtr<MapScene>(UIData.ProjectName, tls, tlm);
-                _currentScene->Start();
+                _currentState = NewPtr<MapEditorState>(UIData.ProjectName, tls, tlm);
+                _currentState->Start();
             }
             else
-                throw Error("usuck", RVL_CLIENT_ERROR);
-                
-            UIData.ProjectCreation = false;
+                UIData.ErrorText = "Tileset isn't selected";
+
+            if (UIData.ErrorText == "")
+                UIData.ProjectCreation = false;
         }
+
+        ImGui::TextColored(ImVec4(0.8f, 0.3f, 0.3f, 1.f), "%s", UIData.ErrorText.c_str());
 
         ImGui::SetCursorPosY(ImGui::GetWindowHeight() - 100);
         ImGui::Separator();
@@ -225,8 +343,8 @@ namespace rvl
         {
             UIData.ProjectCreation = false;
 
-            if (_currentScene)            
-                dynamic_cast<MapScene*>(_currentScene.get())->InputsEnabled(true);
+            if (_currentState)
+                dynamic_cast<MapEditorState*>(_currentState.get())->InputsEnabled(true);
         }
         ImGui::PopStyleColor();
         ImGui::PopStyleColor();
@@ -241,7 +359,7 @@ namespace rvl
         ImGui::End();
     }
 
-    void MapEditorApp::ProjectOpenWindow()
+    void EditorApp::ProjectOpenWindow()
     {
         ImGui::Begin("Projects", &UIData.ProjectOpen,  ImGuiWindowFlags_NoDocking);
 
@@ -267,8 +385,8 @@ namespace rvl
             ImGui::PushID(i);
             if (ImGui::Button("Open", ImVec2(50, 20)))
             {
-                _currentScene = NewPtr<MapScene>(_projectLineTokens[i][0]);
-                _currentScene->Start();
+                _currentState = NewPtr<MapEditorState>(_projectLineTokens[i][0]);
+                _currentState->Start();
                 UIData.ProjectOpen = false;
                 UIData.ProjectCreation = false;
             }
@@ -302,48 +420,49 @@ namespace rvl
         if (UIData.DeleteFileWindow)
         {
             ImGui::Begin("Delete Project", &UIData.DeleteFileWindow, ImGuiWindowFlags_NoDocking);
-                ImGui::Checkbox("Delete tile set", &UIData.DeleteTileSet);
-                ImGui::Checkbox("Delete tile map", &UIData.DeleteTileMap);
-                if (ImGui::Button("OK", ImVec2(50, 20)))
+            ImGui::Checkbox("Delete tile set", &UIData.DeleteTileSet);
+            ImGui::Checkbox("Delete tile map", &UIData.DeleteTileMap);
+
+            if (ImGui::Button("OK", ImVec2(50, 20)))
+            {
+                if (_currentState)
                 {
-                    if (_currentScene)
+                    if (dynamic_cast<MapEditorState*>(_currentState.get())->GetProjectName() == UIData.DeletingProjectName)
                     {
-                        if (dynamic_cast<MapScene*>(_currentScene.get())->GetProjectName() == UIData.DeletingProjectName)
-                        {
-                            MapScene* scn = dynamic_cast<MapScene*>(_currentScene.release());
-                            delete scn;
-                        }
+                        MapEditorState* state = dynamic_cast<MapEditorState*>(_currentState.release());
+                        delete state;
                     }
-
-                    if (UIData.DeleteTileSet)
-                        std::filesystem::remove(UIData.DeletingTlsPath);
-
-                    if (UIData.DeleteTileMap)
-                        std::filesystem::remove(UIData.DeletingTlmPath);
-
-                    int n = 0;
-                    for (int i = 0; i < _projectLineTokens.size(); i++)
-                    {
-                        if (_projectLineTokens[i][0] == UIData.DeletingProjectName)
-                        {
-                            n = i;
-                            break;
-                        }
-                    }
-
-                    Utils::DeleteLineFromFile("./rvmData/projects.rvm", n);
-
-                    UIData.DeletingTlsPath = "";
-                    UIData.DeletingTlmPath = "";
-                    UIData.DeletingProjectName = "";
-
-                    UIData.DeleteFileWindow = false;
                 }
+
+                if (UIData.DeleteTileSet)
+                    std::filesystem::remove(UIData.DeletingTlsPath);
+
+                if (UIData.DeleteTileMap)
+                    std::filesystem::remove(UIData.DeletingTlmPath);
+
+                int n = 0;
+                for (int i = 0; i < _projectLineTokens.size(); i++)
+                {
+                    if (_projectLineTokens[i][0] == UIData.DeletingProjectName)
+                    {
+                        n = i;
+                        break;
+                    }
+                }
+
+                Utils::DeleteLineFromFile("./rvmData/projects.rvm", n);
+
+                UIData.DeletingTlsPath = "";
+                UIData.DeletingTlmPath = "";
+                UIData.DeletingProjectName = "";
+
+                UIData.DeleteFileWindow = false;
+            }
             ImGui::End();
         }
     }
     
-    void MapEditorApp::SetDefaults()
+    void EditorApp::SetDefaults()
     {
         UIData.ProjectName[0] = '\0';
 

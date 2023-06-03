@@ -2,15 +2,16 @@ cmake_minimum_required(VERSION 3.1)
 
 project(rvm)
 
-add_executable(rvm src/MapEditorApp.cpp src/MapScene.cpp)
+add_executable(rvm src/EditorApp.cpp src/MapEditorState.cpp)
 
 set_property(TARGET rvm PROPERTY CXX_STANDARD 20)
 
-target_link_libraries(rvm ${CMAKE_CURRENT_SOURCE_DIR}/vendor/libRVL.a  ${CMAKE_CURRENT_SOURCE_DIR}/../RVL/vendor/lib/libglfw3.a)
+target_link_libraries(rvm ${CMAKE_CURRENT_SOURCE_DIR}/vendor/libRVL.a  ${CMAKE_CURRENT_SOURCE_DIR}/../RVL/vendor/lib/libglfw3.a ${CMAKE_CURRENT_SOURCE_DIR}/vendor/nativefiledialog/build/lib/Release/x64/libnfd.a)
 
 set(CMAKE_BUILD_TYPE Release)
 
 target_include_directories(rvm PRIVATE .)
+target_include_directories(rvm PRIVATE ./vendor/nativefiledialog/src/include)
 target_include_directories(rvm PRIVATE ../RVL/src/RVL)
 target_include_directories(rvm PRIVATE ../RVL/vendor/)
 target_include_directories(rvm PRIVATE ../RVL/vendor/include/)

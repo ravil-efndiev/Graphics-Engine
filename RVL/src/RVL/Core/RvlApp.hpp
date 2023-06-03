@@ -3,7 +3,7 @@
 
 #include <Rvlpch.hpp>
 #include "Core.hpp"
-#include "RvlScene.hpp"
+#include "RvlState.hpp"
 
 namespace rvl
 {
@@ -18,7 +18,7 @@ namespace rvl
         status_t Run();
 
     protected:
-        Ptr<RvlScene> _currentScene;
+        Ptr<RvlState> _currentState;
 
         virtual void Start() = 0;
         virtual void Update() = 0;

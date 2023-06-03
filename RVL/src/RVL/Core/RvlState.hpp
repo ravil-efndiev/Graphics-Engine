@@ -14,13 +14,13 @@ namespace rvl
 
     typedef UserOrthographicCamera Camera;
 
-    class RvlScene
+    class RvlState
     {
     friend class RvlApp;
 
     public:
-        RvlScene();
-        virtual ~RvlScene();
+        RvlState();
+        virtual ~RvlState();
 
         virtual void Start() = 0;
         virtual void Update() = 0;

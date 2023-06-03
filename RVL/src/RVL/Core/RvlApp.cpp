@@ -4,7 +4,6 @@
 #include "ImGuiController.hpp"
 
 #include <Events/EventListener.hpp>
-
 #include <Rendering/Renderer/Renderer.hpp>
 
 #include <API/Time.hpp>
@@ -42,11 +41,11 @@ namespace rvl
 
                 Update();
 
-                if (_currentScene)
+                if (_currentState)
                 {
-                    _currentScene->Begin();
+                    _currentState->Begin();
                     Render();
-                    _currentScene->End();
+                    _currentState->End();
                 }
 
                 ImGuiController::Render();
@@ -77,7 +76,7 @@ namespace rvl
 
     void RvlApp::Render()
     {
-        _currentScene->Render();
+        _currentState->Render();
     }
 
     void RvlApp::SetClearColor(const glm::vec3& color)

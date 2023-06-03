@@ -5,11 +5,11 @@
 
 namespace rvl
 {
-    class MapEditorApp : public RvlApp
+    class EditorApp : public RvlApp
     {
     public:
-        MapEditorApp();
-        ~MapEditorApp();
+        EditorApp();
+        ~EditorApp();
 
     private:
         void Start() override;
