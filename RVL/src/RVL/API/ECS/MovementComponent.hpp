@@ -1,8 +1,12 @@
 #ifndef RVL_MOVEMENTCOMPONENT_HPP
 #define RVL_MOVEMENTCOMPONENT_HPP
 
-#include <API/Objects/Entity.hpp>
 #include <API/Time.hpp>
+#include <Core/Core.hpp>
+#include "Entity.hpp"
+#include "Component.hpp"
+#include "TransformComponent.hpp"
+#include <Rendering/Renderer/Transform.hpp>
 
 namespace Rvl
 {
@@ -17,18 +21,12 @@ namespace Rvl
     class MovementComponent : public Component
     {
     public:
-        static Ref<MovementComponent> Create(Transform* targetTransform, float maxVelocity, float acceleration, float deceleration);
-
-        MovementComponent(Transform* targetTransform, float maxVelocity, float acceleration, float deceleration);
+        MovementComponent() = default;
+        MovementComponent(const MovementComponent&) = default;
+        MovementComponent(Entity* target, float maxVelocity, float acceleration, float deceleration);
         ~MovementComponent();
 
-        // User side-only called methods
-        void Start() override;
         void Update() override;
-
-        // User / engine side call
-        // by defalt is called whenever  component gets attached to an entity
-        void OnAttach() override;
 
         void StopVelocity();
 
@@ -48,7 +46,7 @@ namespace Rvl
         MoveState4 GetMoveState4() const;
 
     private:
-        Transform* _targetTransform;
+        Entity* _target;
 
         MoveState4 _lastState;
         MoveState4 _currentState = MoveState4::StandDown;

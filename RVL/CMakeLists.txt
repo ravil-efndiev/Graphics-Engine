@@ -30,15 +30,16 @@ add_library(RVL STATIC
     src/RVL/API/Time.cpp
     src/RVL/API/Random.cpp
     src/RVL/API/Math/Math.cpp
-    src/RVL/API/Components/Component.cpp
-    src/RVL/API/Components/MovementComponent.cpp
-    src/RVL/API/Components/AnimationComponent.cpp
-    src/RVL/API/Objects/Entity.cpp
-    src/RVL/API/Objects/Rectangle.cpp
-    src/RVL/API/Objects/Sprite.cpp
     src/RVL/API/Objects/UserOrthographicCamera.cpp
     src/RVL/API/Objects/TileSet.cpp
-    src/RVL/API/Objects/TileMap.cpp
+    src/RVL/API/ECS/Entity.cpp
+    src/RVL/API/ECS/Scene.cpp
+    src/RVL/API/ECS/Component.cpp
+    src/RVL/API/ECS/SpriteComponent.cpp
+    src/RVL/API/ECS/TransformComponent.cpp
+    src/RVL/API/ECS/TileMapComponent.cpp
+    src/RVL/API/ECS/MovementComponent.cpp
+    src/RVL/API/ECS/AnimationComponent.cpp
 
     # dependencies
     vendor/lib/glad/glad.c

@@ -3,10 +3,12 @@
 
 #include <Rvlpch.hpp>
 
-// statuses
 #define RVL_SUCCESS         0
 #define RVL_INTERNAL_ERROR  1
 #define RVL_RUNTIME_ERROR   2
+
+// must be thrown and caught by client
+// is not processed by engine
 #define RVL_CLIENT_ERROR    3
 
 namespace Rvl

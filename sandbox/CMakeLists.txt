@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.1)
 
 project(sandbox)
 
-add_executable(sandbox src/Game.cpp src/MainScene.cpp src/Player.cpp)
+add_executable(sandbox src/Game.cpp src/MainScene.cpp)
 
 set_property(TARGET sandbox PROPERTY CXX_STANDARD 20)
 

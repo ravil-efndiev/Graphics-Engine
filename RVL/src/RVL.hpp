@@ -31,11 +31,14 @@
 #include "RVL/Core/Core.hpp"
 #include "RVL/Core/App.hpp"
 #include "RVL/Core/State.hpp"
+#include <RVL/API/Objects/TileSet.hpp>
+#include <RVL/API/ECS/AnimationComponent.hpp>
+#include <RVL/API/ECS/MovementComponent.hpp>
+#include <RVL/API/ECS/TransformComponent.hpp>
+#include <RVL/API/ECS/TileMapComponent.hpp>
+#include <RVL/API/ECS/SpriteComponent.hpp>
 #include "RVL/API/Input.hpp"
 #include "RVL/API/Time.hpp"
 #include "RVL/API/Random.hpp"
-#include "RVL/API/Objects/TileMap.hpp"
-#include "RVL/API/Objects/Sprite.hpp"
-#include "RVL/API/Objects/Rectangle.hpp"
 
 #endif

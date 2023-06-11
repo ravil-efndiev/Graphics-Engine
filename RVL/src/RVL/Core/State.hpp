@@ -1,8 +1,7 @@
 #ifndef RVL_RVLSCENE_HPP
 #define RVL_RVLSCENE_HPP
 
-#include <API/Objects/Rectangle.hpp>
-#include <API/Objects/Sprite.hpp>
+#include <API/ECS/Scene.hpp>
 #include <API/Objects/UserOrthographicCamera.hpp>
 #include <Rvlpch.hpp>
 
@@ -32,6 +31,8 @@ namespace Rvl
 
         Ref<UserOrthographicCamera> _camera;
         Ref<GLFrameBuffer> _fbo;
+
+        Scene _currentScene;
 
     private:
         void Begin(); // can be accessed by RvlApp parent but not RvlApp children

@@ -1,8 +1,7 @@
 #ifndef SB_MAINSCENE_HPP
 #define SB_MAINSCENE_HPP
 
-#include "Player.hpp"
-
+#include <RVL.hpp>
 #include <Rendering/OpenGL/GLTexture.hpp>
 #include <Rendering/Renderer/SubTexture.hpp>
 
@@ -21,17 +20,14 @@ namespace sb
         void Render() override;
 
     private:
-        Ref<Sprite> _sprite;
-        Ref<Sprite> _sprite1;
-        Ref<Sprite> _subtextureEx;
-
-        Ref<Player> _player;
-
-        Ptr<TileMap> _map;
-
         float _smoothSpeed = 10.f;
 
         void RenderImGui();
+
+        Entity _test;
+        Entity _tileMap;
+
+        glm::vec4 _tintColor { 1.f, 1.f, 1.f, 1.f };
     };
 }
 

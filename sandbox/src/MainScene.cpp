@@ -1,8 +1,12 @@
 #include "MainScene.hpp"
 
 #include <Rendering/Renderer/Renderer.hpp>
-#include <API/Components/MovementComponent.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <API/ECS/MovementComponent.hpp>
+#include <API/ECS/AnimationComponent.hpp>
+#include <API/ECS/SpriteComponent.hpp>
+#include <API/ECS/TileMapComponent.hpp>
+#include <API/Objects/TileSet.hpp>
 
 namespace sb
 {
@@ -12,39 +16,31 @@ namespace sb
     void MainScene::Start()
     {
         _camera = Camera::Create({0.f, 0.f}, 15.f);
-
-        _player = NewRef<Player>();
-
-        _sprite = Sprite::Create({0.f, 0.f, 0.f}, 2.f);
-        _sprite->LoadTexture("assets/textures/a.jpg");
-
-        _sprite1 = Sprite::Create({3.f, 3.f, 0.01f}, 2.f);
-        _sprite1->LoadTexture("assets/textures/floor1.png");
-
-        _subtextureEx = Sprite::Create({-3.f, -5.f, 0.01f}, 5.f);
-        _subtextureEx->LoadTexture("assets/textures/map.png");
-        _subtextureEx->SetSubTexture(0, 3, 128, 128);
-
-        Ref<TileSet> tileSet = NewRef<TileSet>(std::string("assets/maps/test.rtls"));
-
-        _map = NewPtr<TileMap>(tileSet, std::string("assets/maps/test.rtlm"), 5, 0.01f);
+        _test = _currentScene.NewEntity();
+        _tileMap = _currentScene.NewEntity();
+        
+        _tileMap.AddComponent<TileMapComponent>(NewRef<TileSet>("assets/maps/test.rtls"), "assets/maps/test.rtlm", 2.f, 0.f);
+        _test.AddComponent<SpriteComponent>(&_test, "assets/textures/floor1.png", 2.f).UseColorAsTint(true);
+        _test.AddComponent<MovementComponent>(&_test, 14.f, 140.f, 100.f);
+        _test.AddComponent<AnimationComponent>(&_test);
     }
 
     void MainScene::Update()
     {
-        _player->Update();
+        _test.GetComponent<MovementComponent>().Update();
+        _test.GetComponent<MovementComponent>().Move(Input::GetAxis(Axis::Horizontal), Input::GetAxis(Axis::Vertical));
+
+        _test.GetComponent<SpriteComponent>().SetColor(_tintColor);
     }
 
     void MainScene::Tick()
     {
-        _camera->Follow(_player, Axis::Horizontal | Axis::Vertical, true, _smoothSpeed, 0.05f, Time::FixedDeltaTime());
+        _camera->Follow(_test, Axis::Horizontal | Axis::Vertical, true, _smoothSpeed, 0.01f, Time::FixedDeltaTime());
     }
 
     void MainScene::Render()
     {
         RenderImGui();
-
-        _sprite->Draw();
 
         for (int i = -80; i < 80; i++)
         {
@@ -54,10 +50,9 @@ namespace sb
                 Renderer::DrawRect({{j, i, -0.01f}, 0.f, {0.8f, 0.8f}}, color);
             }
         }
-        _sprite1->Draw();
-        _map->Draw();
-        _subtextureEx->Draw();
-        _player->Draw();
+
+        _currentScene.DrawSprite(_test);
+        _currentScene.DrawTileMap(_tileMap);
     }
 
     void MainScene::RenderImGui()
@@ -65,8 +60,8 @@ namespace sb
         auto stats = Renderer::GetStats();
 
         ImGui::Begin("Properties");
-        ImGui::ColorPicker3("Rectangle color", _player->GetRect()->GetColorPtr());
         ImGui::SliderFloat("camera smooth speed", &_smoothSpeed, 0.f, 20.f);
+        ImGui::ColorEdit4("Tint color", glm::value_ptr(_tintColor));
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         ImGui::Text("Application immidieate %.3f ms/frame (%.1f FPS)", 1000.f / (1.f / Time::DeltaTime()), 1.f / Time::DeltaTime());
         ImGui::Text("Renderer statistics:");

@@ -2,21 +2,11 @@
 
 namespace Rvl
 {
-    Ref<MovementComponent> MovementComponent::Create(Transform* targetTransform, float maxVelocity, float acceleration, float deceleration)
-    {
-        return NewRef<MovementComponent>(targetTransform, maxVelocity, acceleration, deceleration);
-    }
-
-
-    MovementComponent::MovementComponent(Transform* targetTransform, float maxVelocity, float acceleration, float deceleration)
-        : _targetTransform(targetTransform), _maxVelocity(maxVelocity), 
+    MovementComponent::MovementComponent(Entity* target, float maxVelocity, float acceleration, float deceleration)
+        : _target(target), _maxVelocity(maxVelocity), 
         _acceleration(acceleration), _deceleration(deceleration) {}
 
     MovementComponent::~MovementComponent() {}
-    
-    void MovementComponent::Start()
-    {
-    }
     
     void MovementComponent::Update()
     {
@@ -60,8 +50,8 @@ namespace Rvl
                 _velocity.y = 0.f;
         }
 
-        _targetTransform->Position.x += _velocity.x * Time::DeltaTime();
-        _targetTransform->Position.y += _velocity.y * Time::DeltaTime();
+        _target->GetComponent<TransformComponent>().Position->x += _velocity.x * Time::DeltaTime();
+        _target->GetComponent<TransformComponent>().Position->y += _velocity.y * Time::DeltaTime();
 
         _lastState = _currentState;
 
@@ -105,10 +95,6 @@ namespace Rvl
 
     }
     
-    void MovementComponent::OnAttach()
-    {
-    }
-
     void MovementComponent::StopVelocity()
     {
         _velocity = {0.f, 0.f};

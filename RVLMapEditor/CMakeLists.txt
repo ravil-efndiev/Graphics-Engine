@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.1)
 
 project(rvm)
 
-add_executable(rvm src/EditorApp.cpp src/MapEditorState.cpp)
+add_executable(rvm src/EditorApp.cpp src/MapEditorState.cpp src/ConfigParser.cpp)
 
 set_property(TARGET rvm PROPERTY CXX_STANDARD 20)
 

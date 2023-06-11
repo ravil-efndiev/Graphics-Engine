@@ -1,8 +1,11 @@
 #include "MapEditorState.hpp"
+#include "ConfigParser.hpp"
 
 #include <Rendering/Renderer/Renderer.hpp>
 #include <Core/Utils/Files.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#include <nfd.h>
 
 namespace Rvl
 {
@@ -12,18 +15,20 @@ namespace Rvl
         bool MapviewFocused = false;
         bool ShowErrorText = false;
 
-        bool SaveTilesetWindow = false;
-        bool SaveTilemapWindow = false;
+        bool SaveTileset = false;
+        bool SaveTilemap = false;
 
         bool BigIcons = true;
+
+        bool TilemapSaved = false, TilesetSaved = false;
 
         const uint64 MaxNameSize = 1000;
         char InputTileName[1000] = "";
         int32 InputCoordX = 0, InputCoordY = 0;
         int32 InputWidth = 0, InputHeight = 0;
 
-        char InputTilesetPath[1000] = "";
-        char InputTilemapPath[1000] = "";
+        std::string InputTilesetPath;
+        std::string InputTilemapPath;
 
         ImGuiWindowFlags GlobalWinFlags = 0;
 
@@ -53,14 +58,20 @@ namespace Rvl
         _tls = tls;
     }
 
-    MapEditorState::MapEditorState(const std::string& projName, const Ref<TileSet>& tls, const Ref<TileMap>& tlm)
+    MapEditorState::MapEditorState(const std::string& projName, const Ref<TileSet>& tls, const std::string& tlmPath, float scale, float zIndex)
     {
         _projectExists = false;
         _tileSetExists = true;
         _tileMapExists = true;
+        
         _projectName = projName;
         _tls = tls;
-        _tlm = tlm;
+
+        _tlmEntity = _currentScene.NewEntity();
+        _tlmEntity.AddComponent<TileMapComponent>(tls, tlmPath, scale, zIndex);
+
+        _tlm = &_tlmEntity.GetComponent<TileMapComponent>();
+
         _tlsPath = _tls->GetPath();
         _tlmPath = _tlm->GetPath();
     }
@@ -68,24 +79,19 @@ namespace Rvl
     MapEditorState::MapEditorState(const std::string& projName)
     {
         _projectName = projName;
-        auto prjfileText = Utils::GetTextFromFile("./rvmData/projects.rvm");
+
+        _projectExists = true;
+        _tileSetExists = true;
+        _tileMapExists = true;
+
+        _tlsPath = _parser.GetStringArray(projName)[0];
+        _tlmPath = _parser.GetStringArray(projName)[1];
         
-        auto prjLines = Utils::SplitStr(prjfileText, '\n');
-        for (int i = 0; i < prjLines.size() - 1; i++)
-        {
-            auto tokens = Utils::SplitStr(prjLines[i], ' ');
-            if (tokens[0] == _projectName)
-            {
-                _projectExists = true;
-                _tileSetExists = true;
-                _tileMapExists = true;
-                _tlsPath = tokens[1];
-                _tlmPath = tokens[2];
-                _tls = NewRef<TileSet>(_tlsPath);
-                _tlm = NewRef<TileMap>(_tls, _tlmPath, _scale, -0.01f);
-                break;
-            }
-        }
+        _tls = NewRef<TileSet>(_tlsPath);
+
+        _tlmEntity = _currentScene.NewEntity();
+        _tlmEntity.AddComponent<TileMapComponent>(_tls, _tlmPath, _scale, -0.01f);
+        _tlm = &_tlmEntity.GetComponent<TileMapComponent>();
 
         _tlmText = Utils::GetTextFromFile(_tlmPath);
         _tlsText = Utils::GetTextFromFile(_tlsPath);
@@ -99,11 +105,21 @@ namespace Rvl
         AddFrameBuffer(NewRef<GLFrameBuffer>(500, 350));
 
         if (!_tlm)
-            _tlm = NewRef<TileMap>(_tls, _scale, _zIndex);
+        {
+            _tlmEntity = _currentScene.NewEntity();
+            _tlmEntity.AddComponent<TileMapComponent>(_tls, _scale, _zIndex);
 
-        _tilePreview = Sprite::Create({0.f, 0.f, 0.02f}, _scale);
-        _tilePreview->LoadTexture(_tls->GetTexture());
+            _tlm = &_tlmEntity.GetComponent<TileMapComponent>();
+        }
+
+        _tilePreviewEntity = _currentScene.NewEntity();
+        _tilePreviewEntity.AddComponent<SpriteComponent>(&_tilePreviewEntity, _tls->GetTexture(), _scale);
+
+        _tilePreview = &_tilePreviewEntity.GetComponent<SpriteComponent>();
         _tilePreview->SetSubTexture(0, 0, 0, 0);
+
+        _tilePreview->UseColorAsTint(true);
+        _tilePreview->SetColor({1.f, 1.f, 1.f, 0.5f});
     }
 
     void MapEditorState::Undo()
@@ -237,7 +253,8 @@ namespace Rvl
 
                 if (_selectedTile != "")
                 {
-                    _tilePreview->transform->Position = glm::vec3(glm::vec2(_tlm->SpimplifyPos(Input::GetCursorPositionRelative(ImToGlmVec2(UIData.MainWindowPosition), ImToGlmVec2(UIData.SceneWindowPosition)))) * _tlm->GetTileSize(), _tilePreview->transform->Position.z);
+                    auto& transform = _tilePreviewEntity.GetComponent<TransformComponent>();
+                    transform.Position = glm::vec3(glm::vec2(_tlm->SpimplifyPos(Input::GetCursorPositionRelative(ImToGlmVec2(UIData.MainWindowPosition), ImToGlmVec2(UIData.SceneWindowPosition)))) * _tlm->GetTileSize(), transform.Position->z);
                     _tilePreview->SetSubTexture((*_tls)[_selectedTile]);
                 }
             }
@@ -248,10 +265,10 @@ namespace Rvl
     {
         Renderer::SetClearColor(UIData.BackgroundColor);
 
-        _tlm->Draw();
+        _currentScene.DrawTileMap(_tlmEntity);
 
         if (_selectedTile != "")
-          _tilePreview->Draw({1.f, 1.f, 1.f, 0.5f});
+            _currentScene.DrawSprite(_tilePreviewEntity);
 
         RenderUI();
     }
@@ -293,9 +310,9 @@ namespace Rvl
         else
         {
             if (!_tileSetExists)
-                UIData.SaveTilesetWindow = true;
+                UIData.SaveTileset = true;
             if (!_tileMapExists)
-                UIData.SaveTilemapWindow = true;
+                UIData.SaveTilemap = true;
             else
             {
                 _tlm->SaveToFile(_tlmPath.c_str());
@@ -438,50 +455,83 @@ namespace Rvl
         ImGui::EndChild();
         ImGui::End();
 
-        if (UIData.SaveTilesetWindow || UIData.SaveTilemapWindow)
+        if (UIData.SaveTileset || UIData.SaveTilemap)
         {
-            ImGui::Begin("Save");
-            
-            if (UIData.SaveTilesetWindow)
+            if (UIData.SaveTileset)
             {
-                ImGui::Text("New tileset path: ");
-                ImGui::InputText("##tlsSave", UIData.InputTilesetPath, UIData.MaxNameSize);
+                nfdchar_t* savePath = nullptr;
+                nfdresult_t result = NFD_SaveDialog("rtls", "./", &savePath);
+
+                if ( result == NFD_OKAY )
+                {
+                    UIData.InputTilesetPath = savePath;
+                    _tlsPath = UIData.InputTilesetPath;
+                    _tls->SaveToFile(savePath);
+                    free(savePath);
+
+                    UIData.TilesetSaved = true;
+                    _tileSetExists = true;
+                    UIData.SaveTileset = false;
+                }
+                else
+                {
+                    UIData.TilesetSaved = false;
+                    _tileSetExists = false;
+                    UIData.SaveTileset = false;       
+                }
             }
             else
             {
-                strncpy(UIData.InputTilesetPath, _tls->GetPath().c_str(), UIData.MaxNameSize);   
+                UIData.InputTilesetPath = _tls->GetPath();
+                UIData.TilesetSaved = true;
+                _tileSetExists = true;
+                _tlsPath = UIData.InputTilesetPath;
+                UIData.SaveTileset = false;
+                _tls->SaveToFile(UIData.InputTilemapPath.c_str()); 
             }
 
-            if (UIData.SaveTilemapWindow)
+            if (UIData.SaveTilemap)
             {
-                ImGui::Text("New tilemap path: ");
-                ImGui::InputText("##tlmSave", UIData.InputTilemapPath, UIData.MaxNameSize);
+                nfdchar_t* savePath = nullptr;
+                nfdresult_t result = NFD_SaveDialog("rtlm", "./", &savePath);
+
+                if ( result == NFD_OKAY )
+                {
+                    UIData.InputTilemapPath = savePath;
+                    _tlmPath = UIData.InputTilemapPath;
+                    _tlm->SaveToFile(savePath);
+                    free(savePath);
+                    
+                    UIData.TilemapSaved = true;
+                    _tileMapExists = true;
+                    UIData.SaveTilemap = false;
+                }
+                else
+                {
+                    UIData.TilemapSaved = false;
+                    _tileMapExists = false;
+                    UIData.SaveTilemap = false;       
+                }
             }
             else
             {
-                strncpy(UIData.InputTilemapPath, _tlm->GetPath().c_str(), UIData.MaxNameSize);   
+                UIData.InputTilemapPath = _tlm->GetPath();
+                UIData.TilemapSaved = true;
+                _tileMapExists = true;
+                _tlmPath = UIData.InputTilemapPath;
+                UIData.SaveTilemap = false;
+                _tlm->SaveToFile(UIData.InputTilemapPath.c_str()); 
             }
 
-            if (ImGui::Button("Save##saveBtn", ImVec2(100, 20)))
+            if (UIData.TilemapSaved && UIData.TilesetSaved)
             {
-                _tlm->SaveToFile(UIData.InputTilemapPath);
-                _tls->SaveToFile(UIData.InputTilesetPath);
-
                 std::string projectsData = Utils::GetTextFromFile("./rvmData/projects.rvm");
+                RVL_LOG(UIData.InputTilemapPath);
                 projectsData.append(_projectName + " " + UIData.InputTilesetPath + " " + UIData.InputTilemapPath + "\n");
                 Utils::SaveTextToFile("./rvmData/projects.rvm", projectsData);
 
-                _tlsPath = UIData.InputTilesetPath;
-                _tlmPath = UIData.InputTilemapPath;
-
-                _tileSetExists = true;
-                _tileMapExists = true;
                 _projectExists = true;
-                UIData.SaveTilesetWindow = false;
-                UIData.SaveTilemapWindow = false;
             }
-
-            ImGui::End();
         }
 
         ImGui::Begin("Log Console", nullptr, UIData.GlobalWinFlags);

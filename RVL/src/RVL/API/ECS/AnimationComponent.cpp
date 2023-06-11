@@ -1,39 +1,25 @@
 #include "AnimationComponent.hpp"
+#include "SpriteComponent.hpp"
 
 namespace Rvl
 {
-    Ref<AnimationComponent> AnimationComponent::Create(const Ref<Sprite>& sprite)
-    {
-        return NewRef<AnimationComponent>(sprite);
-    }
 
-    AnimationComponent::AnimationComponent(const Ref<Sprite>& sprite)
+    AnimationComponent::AnimationComponent(Entity* sprite)
     {
+        RVL_ASSERT((sprite->HasComponent<SpriteComponent>()), "entity passed into animation component construct has no sprite component");
+
         _sprite = sprite;
     }
 
-    AnimationComponent::~AnimationComponent()
-    {
+    AnimationComponent::~AnimationComponent() {}
 
-    }
-
-    void AnimationComponent::Start()
-    {
-    }
-    
-    void AnimationComponent::Update()
-    {
-    }
-    
-    void AnimationComponent::OnAttach()
-    {
-    }
+    void AnimationComponent::Update() {}
 
     void AnimationComponent::AddAnimation(const std::string& name, TimeStep animTimer, float startX, float startY, float endX, float endY, float subSpriteWidth, float subSpriteHeight)
     {
         _animations.emplace(
             name, 
-            NewPtr<Animation>(_sprite, animTimer, startX, startY, endX, endY, subSpriteWidth, subSpriteHeight)
+            NewRef<Animation>(_sprite, animTimer, startX, startY, endX, endY, subSpriteWidth, subSpriteHeight)
         );
     }
 
@@ -52,12 +38,14 @@ namespace Rvl
         return _currentAnimation->_done;
     }
 
-    AnimationComponent::Animation::Animation(const Ref<Sprite>& sprite, TimeStep animTimer, float startX, float startY, float endX, float endY, float subSpriteWidth, float subSpriteHeight)
+    AnimationComponent::Animation::Animation(Entity* sprite, TimeStep animTimer, float startX, float startY, float endX, float endY, float subSpriteWidth, float subSpriteHeight)
         : _sprite(sprite), _startX(startX), _startY(startY), _endX(endX), _endY(endY), _animTimer(animTimer),
           _subSpriteWidth(subSpriteWidth), _subSpriteHeight(subSpriteHeight)
     {
+        RVL_ASSERT((_sprite->HasComponent<SpriteComponent>()), "entity passed into animation construct has no sprite component");
+    
         _currentX = _startX;
-        _sprite->SetSubTexture(startX, startY, subSpriteWidth, subSpriteHeight);
+        _sprite->GetComponent<SpriteComponent>().SetSubTexture(startX, startY, subSpriteWidth, subSpriteHeight);
     }
 
     void AnimationComponent::Animation::Play()
@@ -77,7 +65,7 @@ namespace Rvl
                 _currentX = _startX;
                 _done = true;
             }
-            _sprite->SetSubTexture(_currentX, _startY, _subSpriteWidth, _subSpriteHeight);
+            _sprite->GetComponent<SpriteComponent>().SetSubTexture(_currentX, _startY, _subSpriteWidth, _subSpriteHeight);
         }
     }
 }

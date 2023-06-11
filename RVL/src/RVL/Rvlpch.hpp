@@ -15,6 +15,8 @@
 #include <memory>
 #include <random>
 #include <functional>
+#include <regex>
+#include <optional>
 
 typedef uint32_t GLbitfield;
 typedef uint8_t  GLboolean;

@@ -1,7 +1,6 @@
-#ifndef SB_GAME_HPP
-#define SB_GAME_HPP
+#pragma once
 
-#include <RVL.hpp>
+#include "ConfigParser.hpp"
 
 namespace Rvl
 {
@@ -25,7 +24,7 @@ namespace Rvl
         std::string _prjfileText;
 
         std::vector<std::vector<std::string>> _projectLineTokens;
+
+        Ref<ConfigParser> _parser;
     };
 }
-
-#endif

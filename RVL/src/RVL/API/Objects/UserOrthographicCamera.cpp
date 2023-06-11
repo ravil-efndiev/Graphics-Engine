@@ -49,15 +49,17 @@ namespace Rvl
         return _camera->GetRotationZ();
     }
 
-    void UserOrthographicCamera::Follow(const Ref<Entity>& entity, Axis axis, bool smooth, float smoothSpeed, float deadZone, TimeStep deltaTime)
+    void UserOrthographicCamera::Follow(Entity entity, Axis axis, bool smooth, float smoothSpeed, float deadZone, TimeStep deltaTime)
     {
         float x = _camera->GetPosition().x, y = _camera->GetPosition().y;
 
+        auto transform = entity.GetComponent<TransformComponent>();
+
         if (static_cast<bool>(axis & Axis::Horizontal))
-            x = smooth ? Math::Lerp(_camera->GetPosition().x, entity->transform->Position.x, smoothSpeed * deltaTime, deadZone) : entity->transform->Position.x;
+            x = smooth ? Math::Lerp(_camera->GetPosition().x, transform.Position->x, smoothSpeed * deltaTime, deadZone) : transform.Position->x;
         
         if (static_cast<bool>(axis & Axis::Vertical))
-            y = smooth ? Math::Lerp(_camera->GetPosition().y, entity->transform->Position.y, smoothSpeed * deltaTime, deadZone) : entity->transform->Position.y;
+            y = smooth ? Math::Lerp(_camera->GetPosition().y, transform.Position->y, smoothSpeed * deltaTime, deadZone) : transform.Position->y;
 
         glm::vec3 pos = glm::vec3(x, y, 0.f);
 

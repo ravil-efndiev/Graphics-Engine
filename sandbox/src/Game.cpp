@@ -13,7 +13,7 @@ namespace sb
     void Game::Start()
     {
         SetClearColor({0.3f, 0.5f, 0.5f});
-        _currentState = NewRef<MainScene>();
+        _currentState = NewPtr<MainScene>();
         _currentState->Start();
     }
 

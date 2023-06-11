@@ -1,4 +1,4 @@
-#include "TileMap.hpp"
+#include "TileMapComponent.hpp"
 
 #include <Core/Core.hpp>
 #include <Core/Utils/Files.hpp>
@@ -6,7 +6,7 @@
 
 namespace Rvl
 {
-    TileMap::TileMap(const Ref<TileSet>& tileSet, const std::string& tileMapFilePath, int scale, float zIndex)
+    TileMapComponent::TileMapComponent(const Ref<TileSet>& tileSet, const std::string& tileMapFilePath, int scale, float zIndex)
     {
         _tileSet = tileSet;
         _zIndex = zIndex;
@@ -26,16 +26,11 @@ namespace Rvl
 
             try
             {
-                auto tileSprite = Sprite::Create(glm::vec3(0.f, 0.f, zIndex), _scale);
+                Tile tile (tokens[0], (*_tileSet)[tokens[0]], {std::stoi(tokens[1]), std::stoi(tokens[2])}, _scale, _zIndex);
+                _mapTiles.push_back(tile);
 
-                tileSprite->LoadTexture(_tileSet->GetTexture());
-                tileSprite->SetSubTexture((*_tileSet)[tokens[0]]);
-
-                _anyTileSize = glm::vec3(tileSprite->transform->Scale, 0.f);
-
-                tileSprite->transform->Position = glm::vec3((float)std::stoi(tokens[1]), (float)std::stoi(tokens[2]), zIndex) * _anyTileSize;
-                _mapTiles.push_back(Tile(tokens[0], tileSprite, {std::stoi(tokens[1]), std::stoi(tokens[2])}));
-
+                if (_anyTileSize == glm::vec3(0.f, 0.f, 0.f))
+                    _anyTileSize = glm::vec3(tile.GetTransform().Scale, 0.f);
             }
             catch (const std::invalid_argument& err)
             {
@@ -44,7 +39,7 @@ namespace Rvl
         }
     }
 
-    TileMap::TileMap(const Ref<TileSet>& tileSet, int scale, float zIndex)
+    TileMapComponent::TileMapComponent(const Ref<TileSet>& tileSet, int scale, float zIndex)
     {
         _tileSet = tileSet;
         _zIndex = zIndex;
@@ -52,28 +47,15 @@ namespace Rvl
         _path = "";
     }
 
-    TileMap::~TileMap() {}
+    TileMapComponent::~TileMapComponent() {}
 
-    void TileMap::Draw()
+    void TileMapComponent::AddTile(const std::string& name, const glm::ivec2& mapPos, float zIndex)
     {
-        for (auto& tile : _mapTiles)
-        {
-            tile.GetSprite()->Draw();
-        }
-    }
-    
-    void TileMap::AddTile(const std::string& name, const glm::ivec2& mapPos, float zIndex)
-    {
-        auto tileSprite = Sprite::Create(glm::vec3(0.f, 0.f, zIndex), _scale);
-        tileSprite->LoadTexture(_tileSet->GetTexture());
-        tileSprite->SetSubTexture((*_tileSet)[name]);
+        Tile tile (name, (*_tileSet)[name], {mapPos.x, mapPos.y}, _scale, _zIndex);
+        _mapTiles.push_back(tile);
 
         if (_anyTileSize == glm::vec3(0.f, 0.f, 0.f))
-            _anyTileSize = glm::vec3(tileSprite->transform->Scale, 0.f);
-
-        tileSprite->transform->Position = glm::vec3(mapPos.x, mapPos.y, zIndex) * _anyTileSize; 
-
-        Tile tile (name, tileSprite, {mapPos.x, mapPos.y});
+            _anyTileSize = glm::vec3(tile.GetTransform().Scale, 0.f);
 
         auto it = std::find_if(_mapTiles.begin(), _mapTiles.end(), [mapPos](auto& tile)
             {
@@ -87,7 +69,7 @@ namespace Rvl
             _mapTiles.push_back(tile);
     }
 
-    void TileMap::RemoveTile(const glm::ivec2& mapPos)
+    void TileMapComponent::RemoveTile(const glm::ivec2& mapPos)
     {
         auto it = std::find_if(_mapTiles.begin(), _mapTiles.end(), [mapPos](auto& tile)
             {
@@ -101,17 +83,17 @@ namespace Rvl
         } 
     }
     
-    glm::ivec2 TileMap::SpimplifyPos(float x, float y)
+    glm::ivec2 TileMapComponent::SpimplifyPos(float x, float y)
     {
         return glm::round(glm::vec2(x, y) / glm::vec2(_anyTileSize.x, _anyTileSize.y));
     }
     
-    glm::ivec2 TileMap::SpimplifyPos(const glm::vec2& pos)
+    glm::ivec2 TileMapComponent::SpimplifyPos(const glm::vec2& pos)
     {
         return glm::round(pos / glm::vec2(_anyTileSize.x, _anyTileSize.y));
     }
     
-    std::string TileMap::GetString() const
+    std::string TileMapComponent::GetString() const
     {
         std::string text = "";
 
@@ -128,22 +110,22 @@ namespace Rvl
         return text;
     }
 
-    void TileMap::SaveToFile(const char* path)
+    void TileMapComponent::SaveToFile(const char* path)
     {
         Utils::SaveTextToFile(path, GetString());
     }
     
-    std::string TileMap::GetPath() const
+    std::string TileMapComponent::GetPath() const
     {
         return _path;
     }
     
-    glm::vec2 TileMap::GetTileSize() const
+    glm::vec2 TileMapComponent::GetTileSize() const
     {
         return _anyTileSize;
     }
     
-    std::string TileMap::GetNameByCoords(const glm::ivec2& pos)
+    std::string TileMapComponent::GetNameByCoords(const glm::ivec2& pos)
     {
         for (Tile& tile : _mapTiles)
         {
@@ -151,5 +133,10 @@ namespace Rvl
                 return tile.GetName();                
         }
         return "";
+    }
+    
+    const std::vector<Tile>& TileMapComponent::GetTiles() const
+    {
+        return _mapTiles;
     }
 }

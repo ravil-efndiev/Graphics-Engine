@@ -16,6 +16,6 @@ namespace Rvl
 
     void Error::PrintErrorS(const std::string &text)
     {
-        std::cerr << "RUNTIME_ERROR => " << text << std::endl;
+        std::cerr << RVL_LOG_COLOR_RED << "RUNTIME_ERROR => " << text << RVL_LOG_COLOR_NONE << std::endl;
     }
 }

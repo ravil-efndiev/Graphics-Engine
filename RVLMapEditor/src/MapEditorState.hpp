@@ -1,19 +1,15 @@
-#ifndef RVL_MAPSCENE_HPP
-#define RVL_MAPSCENE_HPP
+#pragma once
 
 #include <RVL.hpp>
 #include <Rendering/Renderer/Renderer.hpp>
 #include <Rendering/OpenGL/GLFrameBuffer.hpp>
-#include <API/Objects/Rectangle.hpp>
+#include "ConfigParser.hpp"
 
 namespace Rvl
 {
     struct Action
     {
-        enum ActionType
-        {
-            TilePlace, TileRemove, TileReplace
-        };
+        enum ActionType { TilePlace, TileRemove, TileReplace };
 
         ActionType Type;
         glm::ivec2 Position;
@@ -26,7 +22,7 @@ namespace Rvl
     public:
         MapEditorState(const std::string& projName, const std::string& texturePath);
         MapEditorState(const std::string& projName, const Ref<TileSet>& tls);
-        MapEditorState(const std::string& projName, const Ref<TileSet>& tls, const Ref<TileMap>& tlm);
+        MapEditorState(const std::string& projName, const Ref<TileSet>& tls, const std::string& tlmPath, float scale, float zIndex);
         MapEditorState(const std::string& projName);
         ~MapEditorState();
 
@@ -51,8 +47,11 @@ namespace Rvl
         std::string _selectedTile = "";
 
         Ref<TileSet> _tls;
-        Ref<TileMap> _tlm;
-        Ref<Sprite> _tilePreview;
+        Entity _tlmEntity;
+        Entity _tilePreviewEntity;
+
+        TileMapComponent* _tlm;
+        SpriteComponent* _tilePreview;
 
         float _cameraSpeed = 7.f;
         float _cameraZoom = 10.f;
@@ -65,9 +64,9 @@ namespace Rvl
         std::stack<Action> _actions;
         std::stack<Action> _undoActions;
 
+        ConfigParser _parser { "rvmData/projects.rconfig" };
+
     private:
         void RenderUI();
     };
 }
-
-#endif

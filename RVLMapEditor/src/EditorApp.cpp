@@ -61,6 +61,18 @@ namespace Rvl
         }
 
         SetDefaults();
+
+        try
+        {
+            _parser = NewRef<ConfigParser>("rvmData/projects.rconfig");
+        }
+        catch (Error err)
+        {
+            if (err.Status == RVL_CLIENT_ERROR)
+                err.Print();
+            else
+                throw err;
+        }
     }
 
     void EditorApp::Update()
@@ -320,8 +332,7 @@ namespace Rvl
             else if (UIData.UseTls && UIData.UseTlm)
             {
                 Ref<TileSet> tls = NewRef<TileSet>(UIData.TlsName);
-                Ref<TileMap> tlm = NewRef<TileMap>(tls, UIData.TlmName, 2, 0.01f);
-                _currentState = NewPtr<MapEditorState>(UIData.ProjectName, tls, tlm);
+                _currentState = NewPtr<MapEditorState>(UIData.ProjectName, tls, UIData.TlmName, 2, 0.01f);
                 _currentState->Start();
             }
             else
@@ -363,29 +374,25 @@ namespace Rvl
     {
         ImGui::Begin("Projects", &UIData.ProjectOpen,  ImGuiWindowFlags_NoDocking);
 
-        auto rofl = Utils::GetTextFromFile("./rvmData/projects.rvm");
-        if (_prjfileText != rofl)
+        _parser->Parse();
+
+        auto arrs = _parser->GetStringArrays();
+
+        int i = 0;
+
+        for (auto& arr : arrs)
         {
-            _prjfileText = rofl;
-            auto prjLines = Utils::SplitStr(_prjfileText, '\n');
+            i++;
+            auto last2 = Utils::SplitStr(arr.second[0], '/').back();
+            auto last1 = Utils::SplitStr(arr.second[1], '/').back();
 
-            _projectLineTokens.clear();
-
-            for (int i = 0; i < prjLines.size() - 1; i++)
-            {
-                _projectLineTokens.push_back(Utils::SplitStr(prjLines[i], ' '));
-            }
-        }        
-
-        for (int i = 0; i < _projectLineTokens.size(); i++)
-        {
-            std::string project = std::to_string(i + 1).append(". ").append(_projectLineTokens[i][0]).append(" (").append(_projectLineTokens[i][2]).append(" ").append(_projectLineTokens[i][1]).append(")");
+            std::string project = std::to_string(i) + ". " + arr.first + " (" + last2 + " " + last1 + ")";
             ImGui::Text("%s", project.c_str());
             ImGui::SameLine();
             ImGui::PushID(i);
             if (ImGui::Button("Open", ImVec2(50, 20)))
             {
-                _currentState = NewPtr<MapEditorState>(_projectLineTokens[i][0]);
+                _currentState = NewPtr<MapEditorState>(arr.first);
                 _currentState->Start();
                 UIData.ProjectOpen = false;
                 UIData.ProjectCreation = false;
@@ -398,9 +405,9 @@ namespace Rvl
             ImGui::PushStyleColor(ImGuiCol_ButtonHovered, IM_COL32(255, 108, 108, 255));
             if (ImGui::Button("Delete", ImVec2(50, 20)))
             {
-                UIData.DeletingProjectName = _projectLineTokens[i][0];
-                UIData.DeletingTlsPath = _projectLineTokens[i][1];
-                UIData.DeletingTlmPath = _projectLineTokens[i][2];
+                UIData.DeletingProjectName = arr.first;
+                UIData.DeletingTlsPath = arr.second[0];
+                UIData.DeletingTlmPath = arr.second[1];
                 UIData.DeleteFileWindow = true;
             }
             ImGui::PopStyleColor();
