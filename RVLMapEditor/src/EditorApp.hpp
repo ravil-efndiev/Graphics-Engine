@@ -25,6 +25,6 @@ namespace Rvl
 
         std::vector<std::vector<std::string>> _projectLineTokens;
 
-        Ref<ConfigParser> _parser;
+        ConfigParser _parser;
     };
 }

@@ -64,7 +64,7 @@ namespace Rvl
 
         try
         {
-            _parser = NewRef<ConfigParser>("rvmData/projects.rconfig");
+            _parser = ConfigParser("rvmData/projects.rconfig");
         }
         catch (Error err)
         {
@@ -311,34 +311,46 @@ namespace Rvl
 
         if (ImGui::Button("Create Project", ImVec2(ImGui::GetContentRegionAvail().x, 40)))
         {
-            if (!UIData.UseTls && !UIData.UseTlm)
+            std::regex nameRegex (R"(^[_|A-Z|a-z]+[_|A-Z|a-z|0-9]+)");
+
+            if (!std::regex_match(UIData.ProjectName, nameRegex))
             {
-                if (!UIData.TextureSelected)
-                {    
-                    UIData.ErrorText = "Texture isn't selected";
-                }
-                else
-                {
-                    _currentState = NewPtr<MapEditorState>(UIData.ProjectName, UIData.TexName);
-                    _currentState->Start();
-                }
-            }
-            else if (UIData.UseTls && !UIData.UseTlm)
-            {
-                Ref<TileSet> tls = NewRef<TileSet>(UIData.TlsName);
-                _currentState = NewPtr<MapEditorState>(UIData.ProjectName, tls);
-                _currentState->Start();
-            }
-            else if (UIData.UseTls && UIData.UseTlm)
-            {
-                Ref<TileSet> tls = NewRef<TileSet>(UIData.TlsName);
-                _currentState = NewPtr<MapEditorState>(UIData.ProjectName, tls, UIData.TlmName, 2, 0.01f);
-                _currentState->Start();
+                UIData.ErrorText = "Project name is invalid";
             }
             else
-                UIData.ErrorText = "Tileset isn't selected";
-
-            if (UIData.ErrorText == "")
+            {
+                if (!UIData.UseTls && !UIData.UseTlm)
+                {
+                    if (!UIData.TextureSelected)
+                    {    
+                        UIData.ErrorText = "Texture isn't selected";
+                    }
+                    else
+                    {
+                        _currentState = NewPtr<MapEditorState>(UIData.ProjectName, UIData.TexName);
+                        _currentState->Start();
+                        UIData.ErrorText.clear();
+                    }
+                }
+                else if (UIData.UseTls && !UIData.UseTlm)
+                {
+                    Ref<TileSet> tls = NewRef<TileSet>(UIData.TlsName);
+                    _currentState = NewPtr<MapEditorState>(UIData.ProjectName, tls);
+                    _currentState->Start();
+                    UIData.ErrorText.clear();
+                }
+                else if (UIData.UseTls && UIData.UseTlm)
+                {
+                    Ref<TileSet> tls = NewRef<TileSet>(UIData.TlsName);
+                    _currentState = NewPtr<MapEditorState>(UIData.ProjectName, tls, UIData.TlmName, 2, 0.01f);
+                    _currentState->Start();
+                    UIData.ErrorText.clear();
+                }
+                else
+                    UIData.ErrorText = "Tileset isn't selected";
+            }
+            
+            if (UIData.ErrorText.empty())
                 UIData.ProjectCreation = false;
         }
 
@@ -374,9 +386,9 @@ namespace Rvl
     {
         ImGui::Begin("Projects", &UIData.ProjectOpen,  ImGuiWindowFlags_NoDocking);
 
-        _parser->Parse();
+        _parser.Parse();
 
-        auto arrs = _parser->GetStringArrays();
+        auto arrs = _parser.GetStringArrays();
 
         int i = 0;
 
@@ -447,17 +459,8 @@ namespace Rvl
                 if (UIData.DeleteTileMap)
                     std::filesystem::remove(UIData.DeletingTlmPath);
 
-                int n = 0;
-                for (int i = 0; i < _projectLineTokens.size(); i++)
-                {
-                    if (_projectLineTokens[i][0] == UIData.DeletingProjectName)
-                    {
-                        n = i;
-                        break;
-                    }
-                }
-
-                Utils::DeleteLineFromFile("./rvmData/projects.rvm", n);
+                _parser.Delete(UIData.DeletingProjectName);
+                _parser.Save();
 
                 UIData.DeletingTlsPath = "";
                 UIData.DeletingTlmPath = "";

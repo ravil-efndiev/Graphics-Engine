@@ -263,11 +263,13 @@ namespace Rvl
 
     void MapEditorState::Render()
     {
+        RVL_LOG("lol");
+
         Renderer::SetClearColor(UIData.BackgroundColor);
 
         _currentScene.DrawTileMap(_tlmEntity);
 
-        if (_selectedTile != "")
+        if (_selectedTile.empty())
             _currentScene.DrawSprite(_tilePreviewEntity);
 
         RenderUI();
@@ -318,9 +320,9 @@ namespace Rvl
                 _tlm->SaveToFile(_tlmPath.c_str());
                 _tls->SaveToFile(_tlsPath.c_str());
 
-                std::string projectsData = Utils::GetTextFromFile("./rvmData/projects.rvm");
-                projectsData.append(_projectName + " " + _tlsPath + " " + _tlmPath + "\n");
-                Utils::SaveTextToFile("./rvmData/projects.rvm", projectsData);
+                _parser.AddStringArray(_projectName, { _tlsPath, _tlmPath });
+                _parser.Save();
+                
                 _projectExists = true;
             }
         }
@@ -525,11 +527,8 @@ namespace Rvl
 
             if (UIData.TilemapSaved && UIData.TilesetSaved)
             {
-                std::string projectsData = Utils::GetTextFromFile("./rvmData/projects.rvm");
-                RVL_LOG(UIData.InputTilemapPath);
-                projectsData.append(_projectName + " " + UIData.InputTilesetPath + " " + UIData.InputTilemapPath + "\n");
-                Utils::SaveTextToFile("./rvmData/projects.rvm", projectsData);
-
+                _parser.AddStringArray(_projectName, { UIData.InputTilesetPath, UIData.InputTilemapPath });
+                _parser.Save();
                 _projectExists = true;
             }
         }
