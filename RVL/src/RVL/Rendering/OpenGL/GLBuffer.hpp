@@ -1,5 +1,4 @@
-#ifndef RVL_GLBUFFER_HPP
-#define RVL_GLBUFFER_HPP
+#pragma once
 
 #include <Rvlglpch.hpp>
 #include <Core/Core.hpp>
@@ -59,4 +58,3 @@ namespace Rvl
     };
 }
 
-#endif

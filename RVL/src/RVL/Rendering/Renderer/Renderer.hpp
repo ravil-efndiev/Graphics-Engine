@@ -1,5 +1,4 @@
-#ifndef RVL_RENDERER_HPP
-#define RVL_RENDERER_HPP
+#pragma once
 
 #include <Core/Core.hpp>
 #include "Transform.hpp"
@@ -83,4 +82,3 @@ namespace Rvl
     };
 }
 
-#endif

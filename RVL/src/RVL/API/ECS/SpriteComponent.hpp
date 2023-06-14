@@ -1,5 +1,4 @@
-#ifndef RVL_SPRITECOMPONENT_HPP
-#define RVL_SPRITECOMPONENT_HPP
+#pragma once
 
 #include "Entity.hpp"
 #include "TransformComponent.hpp"
@@ -8,7 +7,7 @@
 
 namespace Rvl
 {
-    class SpriteComponent
+    class SpriteComponent : public Component
     {
     public:
         SpriteComponent() = default;
@@ -39,6 +38,8 @@ namespace Rvl
         void UseColorAsTint(bool flag);
         bool ColorIsTint() const;
 
+        void Update() {}
+
     private:
         Entity* _target;
 
@@ -54,4 +55,4 @@ namespace Rvl
     };
 }
 
-#endif
+

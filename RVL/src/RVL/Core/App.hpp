@@ -1,5 +1,4 @@
-#ifndef RVL_RVLAPP_HPP
-#define RVL_RVLAPP_HPP
+#pragma once
 
 #include <Rvlpch.hpp>
 #include "Core.hpp"
@@ -52,4 +51,3 @@ namespace Rvl
 
 #define RVL_IMPL_INIT(AppType) Rvl::Ptr<Rvl::App> Rvl::OnInit() { return Rvl::NewPtr<AppType>(); }
 
-#endif

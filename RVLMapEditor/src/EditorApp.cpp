@@ -64,7 +64,7 @@ namespace Rvl
 
         try
         {
-            _parser = ConfigParser("rvmData/projects.rconfig");
+            _parser = ConfigParser("settings/projects.rconfig");
         }
         catch (Error err)
         {

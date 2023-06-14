@@ -1,5 +1,4 @@
-#ifndef RVL_CURSOREVENT_HPP
-#define RVL_CURSOREVENT_HPP
+#pragma once
 
 #include "Event.hpp"
 #include <Core/Core.hpp>
@@ -23,4 +22,3 @@ namespace Rvl
     };
 }
 
-#endif

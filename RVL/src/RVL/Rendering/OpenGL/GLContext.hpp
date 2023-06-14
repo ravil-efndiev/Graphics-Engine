@@ -1,5 +1,4 @@
-#ifndef RVL_GLCONTEXT_HPP
-#define RVL_GLCONTEXT_HPP
+#pragma once
 
 struct GLFWwindow;
 
@@ -20,4 +19,3 @@ namespace Rvl
     };
 }
 
-#endif

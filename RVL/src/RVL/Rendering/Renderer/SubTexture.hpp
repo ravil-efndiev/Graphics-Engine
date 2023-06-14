@@ -1,5 +1,4 @@
-#ifndef RVL_SUBTEXTURE_HPP
-#define RVL_SUBTEXTURE_HPP
+#pragma once
 
 #include <Core/Core.hpp>
 #include <Rendering/OpenGL/GLTexture.hpp>
@@ -37,4 +36,3 @@ namespace Rvl
     };
 }
 
-#endif

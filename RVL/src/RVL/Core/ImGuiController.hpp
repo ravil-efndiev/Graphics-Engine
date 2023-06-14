@@ -1,5 +1,4 @@
-#ifndef RVL_IMGUICONTROLLER_HPP
-#define RVL_IMGUICONTROLLER_HPP
+#pragma once
 
 #include <Rvlglpch.hpp>
 
@@ -15,4 +14,3 @@ namespace Rvl
     };
 }
 
-#endif

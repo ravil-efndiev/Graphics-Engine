@@ -1,5 +1,4 @@
-#ifndef RVL_PERSPECTIVECAMERA_HPP
-#define RVL_PERSPECTIVECAMERA_HPP
+#pragma once
 
 #include <Rvlglpch.hpp>
 
@@ -38,4 +37,3 @@ namespace Rvl
     };
 }
 
-#endif

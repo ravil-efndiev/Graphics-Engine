@@ -64,7 +64,7 @@ namespace Rvl
         std::stack<Action> _actions;
         std::stack<Action> _undoActions;
 
-        ConfigParser _parser { "rvmData/projects.rconfig" };
+        ConfigParser _parser { "settings/projects.rconfig" };
 
     private:
         void RenderUI();

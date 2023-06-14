@@ -1,5 +1,4 @@
-#ifndef RVL_TYPES_HPP
-#define RVL_TYPES_HPP
+#pragma once
 
 #include <glm/glm.hpp>
 #include <imgui/imgui.h>
@@ -25,4 +24,3 @@ namespace Rvl
     extern glm::vec2 ImToGlmVec2(const ImVec2& vec);
 }
 
-#endif

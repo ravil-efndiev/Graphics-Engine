@@ -1,5 +1,4 @@
-#ifndef RVL_MATH_HPP
-#define RVL_MATH_HPP
+#pragma once
 
 #include <glm/glm.hpp>
 
@@ -31,4 +30,3 @@ namespace Rvl
     };
 }
 
-#endif

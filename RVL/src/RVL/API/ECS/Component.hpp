@@ -1,5 +1,4 @@
-#ifndef RVL_COMPONENT_HPP
-#define RVL_COMPONENT_HPP
+#pragma once
 
 namespace Rvl
 {
@@ -13,4 +12,3 @@ namespace Rvl
     };
 }
 
-#endif

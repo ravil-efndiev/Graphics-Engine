@@ -1,5 +1,4 @@
-#ifndef RVL_GLSHADERPROGRAM_HPP
-#define RVL_GLSHADERPROGRAM_HPP
+#pragma once
 
 #include <Rvlpch.hpp>
 #include <Rvlglpch.hpp>
@@ -44,4 +43,3 @@ namespace Rvl
     };
 }
 
-#endif

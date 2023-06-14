@@ -1,5 +1,4 @@
-#ifndef RVL_ERROR_HPP
-#define RVL_ERROR_HPP
+#pragma once
 
 #include <Rvlpch.hpp>
 
@@ -35,4 +34,3 @@ namespace Rvl
     };
 }
 
-#endif

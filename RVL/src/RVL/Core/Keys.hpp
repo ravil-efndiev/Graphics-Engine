@@ -1,5 +1,4 @@
-#ifndef RVL_KEYS_HPP
-#define RVL_KEYS_HPP
+#pragma once
 
 namespace Rvl
 {
@@ -134,7 +133,6 @@ namespace Rvl
         Key_RightAlt          = 346,
         Key_RightSuper        = 347,
         Key_Menu              = 348,
-
     };
 
     enum class Mouse : keycode_t
@@ -148,4 +146,3 @@ namespace Rvl
     typedef Mouse mouseButton_e;
 }
 
-#endif

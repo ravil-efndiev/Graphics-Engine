@@ -1,5 +1,4 @@
-#ifndef RVL_GLTEXTURE_HPP
-#define RVL_GLTEXTURE_HPP
+#pragma once
 
 #include <Rvlpch.hpp>
 
@@ -39,4 +38,3 @@ namespace Rvl
     };
 }
 
-#endif

@@ -1,5 +1,4 @@
-#ifndef RVL_PLATFORM_HPP
-#define RVL_PLATFORM_HPP
+#pragma once
 
 ///////////////////////////////////////////
 /////  current engine configuration  //////
@@ -12,4 +11,3 @@
 #include "Pointers.hpp"
 #include "Types.hpp"
 
-#endif

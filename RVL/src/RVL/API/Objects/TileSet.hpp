@@ -1,5 +1,4 @@
-#ifndef RVL_TILESET_HPP
-#define RVL_TILESET_HPP
+#pragma once
 
 #include <Core/Core.hpp>
 #include <Rendering/Renderer/SubTexture.hpp>
@@ -32,4 +31,3 @@ namespace Rvl
     };
 }
 
-#endif

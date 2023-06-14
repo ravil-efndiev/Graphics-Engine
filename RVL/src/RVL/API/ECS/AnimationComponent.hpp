@@ -1,5 +1,4 @@
-#ifndef RVL_ANIMATIONCOMPONENT_HPP
-#define RVL_ANIMATIONCOMPONENT_HPP
+#pragma once
 
 #include "Entity.hpp"
 #include <API/Time.hpp>
@@ -46,4 +45,3 @@ namespace Rvl
     };
 }
 
-#endif

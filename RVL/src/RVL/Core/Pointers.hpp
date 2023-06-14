@@ -1,5 +1,4 @@
-#ifndef RVL_POINTERS_HPP
-#define RVL_POINTERS_HPP
+#pragma once
 
 #include <Rvlpch.hpp>
 
@@ -24,4 +23,3 @@ namespace Rvl
     }
 }
 
-#endif

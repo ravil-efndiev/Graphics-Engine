@@ -1,12 +1,12 @@
-#ifndef RVL_TRANSFORMCOMPONENT_HPP
-#define RVL_TRANSFORMCOMPONENT_HPP
+#pragma once
 
 #include <Rendering/Renderer/Transform.hpp>
 #include <API/Property.hpp>
+#include "Component.hpp"
 
 namespace Rvl
 {
-    class TransformComponent
+    class TransformComponent : public Component
     {
     public:
         TransformComponent() = default;
@@ -15,13 +15,13 @@ namespace Rvl
 
         Property<glm::vec3> Position;
         Property<glm::vec2> Scale;
-        Property<float> RotationZ;
+        Property<float>     RotationZ;
 
         operator const Transform& () const;
+
+        void Update() {}
 
     private:
         Transform _transform;
     };
 }
-
-#endif

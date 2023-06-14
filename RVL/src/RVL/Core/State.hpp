@@ -1,5 +1,4 @@
-#ifndef RVL_RVLSCENE_HPP
-#define RVL_RVLSCENE_HPP
+#pragma once
 
 #include <API/ECS/Scene.hpp>
 #include <API/Objects/UserOrthographicCamera.hpp>
@@ -41,4 +40,3 @@ namespace Rvl
     };
 }
 
-#endif

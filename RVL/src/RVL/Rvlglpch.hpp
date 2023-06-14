@@ -1,5 +1,4 @@
-#ifndef RVL_GL_PCH_HPP
-#define RVL_GL_PCH_HPP
+#pragma once
 
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD
 #define IMGUI_DEFINE_MATH_OPERATORS
@@ -13,4 +12,3 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#endif

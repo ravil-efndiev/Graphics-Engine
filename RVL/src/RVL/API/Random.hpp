@@ -1,5 +1,4 @@
-#ifndef RVL_RANDOM_HPP
-#define RVL_RANDOM_HPP
+#pragma once
 
 #include <Core/Core.hpp>
 
@@ -32,4 +31,3 @@ namespace Rvl
     };
 }
 
-#endif

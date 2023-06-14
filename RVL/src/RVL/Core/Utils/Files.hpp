@@ -1,5 +1,4 @@
-#ifndef RVL_FILES_HPP
-#define RVL_FILES_HPP
+#pragma once
 
 #include "Core/Core.hpp"
 
@@ -16,4 +15,3 @@ namespace Utils
 }
 }
 
-#endif

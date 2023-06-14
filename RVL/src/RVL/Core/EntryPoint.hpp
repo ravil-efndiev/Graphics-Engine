@@ -1,5 +1,4 @@
-#ifndef RVL_ENTRYPOINT_HPP
-#define RVL_ENTRYPOINT_HPP
+#pragma once
 
 #include "App.hpp"
 #include "Core.hpp"
@@ -25,4 +24,3 @@ int main(int argc, char** argv)
     return exitStatus;
 }
 
-#endif

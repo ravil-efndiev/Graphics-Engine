@@ -1,5 +1,4 @@
-#ifndef RVL_GLFRAMEBUFFER_HPP
-#define RVL_GLFRAMEBUFFER_HPP
+#pragma once
 
 #include <Core/Core.hpp>
 
@@ -35,4 +34,3 @@ namespace Rvl
     };
 }
 
-#endif

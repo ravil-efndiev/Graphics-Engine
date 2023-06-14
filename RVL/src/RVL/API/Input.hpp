@@ -1,5 +1,4 @@
-#ifndef RVL_INPUT_HPP
-#define RVL_INPUT_HPP
+#pragma once
 
 #include <Core/Core.hpp>
 #include <API/Math/Math.hpp>
@@ -34,4 +33,3 @@ namespace Rvl
     };
 }
 
-#endif

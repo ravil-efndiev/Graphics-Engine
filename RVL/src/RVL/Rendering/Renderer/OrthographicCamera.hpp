@@ -1,5 +1,4 @@
-#ifndef RVL_ORTHOGRAPHICCAMERA_HPP
-#define RVL_ORTHOGRAPHICCAMERA_HPP
+#pragma once
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -37,4 +36,3 @@ namespace Rvl
     };
 }
 
-#endif

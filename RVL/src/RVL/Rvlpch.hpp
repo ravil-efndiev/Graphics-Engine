@@ -1,5 +1,4 @@
-#ifndef RVL_RVLPCH_HPP
-#define RVL_RVLPCH_HPP
+#pragma once
 
 #include <iostream>
 #include <vector>
@@ -32,4 +31,3 @@ typedef uint32_t GLuint;
 typedef uint16_t GLushort;
 typedef void     GLvoid;
 
-#endif

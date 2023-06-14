@@ -1,5 +1,4 @@
-#ifndef RVL_TIME_HPP
-#define RVL_TIME_HPP
+#pragma once
 
 namespace Rvl
 {
@@ -34,4 +33,3 @@ namespace Rvl
     };
 }
 
-#endif

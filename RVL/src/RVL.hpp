@@ -1,5 +1,4 @@
-#ifndef RVL_INCLUDE_HPP
-#define RVL_INCLUDE_HPP
+#pragma once
 
 /* ==========================================================================*  
 ||                                                                           ||   \
@@ -41,4 +40,3 @@
 #include "RVL/API/Time.hpp"
 #include "RVL/API/Random.hpp"
 
-#endif

@@ -20,22 +20,26 @@ namespace sb
         _tileMap = _currentScene.NewEntity();
         
         _tileMap.AddComponent<TileMapComponent>(NewRef<TileSet>("assets/maps/test.rtls"), "assets/maps/test.rtlm", 2.f, 0.f);
-        _test.AddComponent<SpriteComponent>(&_test, "assets/textures/floor1.png", 2.f).UseColorAsTint(true);
-        _test.AddComponent<MovementComponent>(&_test, 14.f, 140.f, 100.f);
+        _sc = &_test.AddComponent<SpriteComponent>(&_test, "assets/textures/floor1.png", 2.f);
+        _mc = &_test.AddComponent<MovementComponent>(&_test, 14.f, 140.f, 100.f);
         _test.AddComponent<AnimationComponent>(&_test);
+
+        _tc = &_test.GetComponent<TransformComponent>();
+
+        _sc->UseColorAsTint(true);
     }
 
     void MainScene::Update()
     {
-        _test.GetComponent<MovementComponent>().Update();
-        _test.GetComponent<MovementComponent>().Move(Input::GetAxis(Axis::Horizontal), Input::GetAxis(Axis::Vertical));
+        _mc->Update();
+        _mc->Move(Input::GetAxis(Axis::Horizontal), Input::GetAxis(Axis::Vertical));
 
-        _test.GetComponent<SpriteComponent>().SetColor(_tintColor);
+        _sc->SetColor(_tintColor);
     }
 
     void MainScene::Tick()
     {
-        _camera->Follow(_test, Axis::Horizontal | Axis::Vertical, true, _smoothSpeed, 0.01f, Time::FixedDeltaTime());
+        _camera->Follow(_tc, Axis::Horizontal | Axis::Vertical, false, 0.f, 0.f, Time::FixedDeltaTime());
     }
 
     void MainScene::Render()

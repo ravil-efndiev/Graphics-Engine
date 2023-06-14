@@ -1,5 +1,4 @@
-#ifndef RVL_GLVERTEXARRAY_HPP
-#define RVL_GLVERTEXARRAY_HPP
+#pragma once
 
 #include "GLBuffer.hpp"
 
@@ -40,4 +39,3 @@ namespace Rvl
     };
 }
 
-#endif

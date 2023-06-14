@@ -1,5 +1,4 @@
-#ifndef RVL_MACROS_HPP
-#define RVL_MACROS_HPP
+#pragma once
 
 #include <Rvlpch.hpp>
 
@@ -41,4 +40,3 @@
 
 #endif
 
-#endif

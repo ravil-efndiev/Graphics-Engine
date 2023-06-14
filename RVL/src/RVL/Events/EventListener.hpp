@@ -1,5 +1,4 @@
-#ifndef RVL_EVENTLISTENER_HPP
-#define RVL_EVENTLISTENER_HPP
+#pragma once
 
 #include "Events/Events.hpp"
 
@@ -41,4 +40,3 @@ namespace Rvl
 }
 
 
-#endif

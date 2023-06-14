@@ -1,5 +1,4 @@
-#ifndef RVL_PROPERTY_HPP
-#define RVL_PROPERTY_HPP
+#pragma once
 
 #include <Core/Core.hpp>
 
@@ -170,4 +169,3 @@ namespace Rvl
     }
 }
 
-#endif

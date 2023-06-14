@@ -1,5 +1,4 @@
-#ifndef RVL_TRANSFORM_HPP
-#define RVL_TRANSFORM_HPP
+#pragma once
 
 #include <glm/glm.hpp>
 
@@ -19,8 +18,6 @@ namespace Rvl
         float Rotation;
 
         glm::vec3 Pivot;
-    private:
     };
 }
 
-#endif

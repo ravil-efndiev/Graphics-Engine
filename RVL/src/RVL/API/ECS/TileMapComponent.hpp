@@ -1,9 +1,9 @@
-#ifndef RVL_TILEMAP_COMPONENT_HPP
-#define RVL_TILEMAP_COMPONENT_HPP
+#pragma once
 
 #include <API/Objects/TileSet.hpp>
 #include <Rendering/Renderer/Transform.hpp>
 #include <Rendering/Renderer/SubTexture.hpp>
+#include "Component.hpp"
 
 namespace Rvl
 {
@@ -33,7 +33,7 @@ namespace Rvl
         Transform _transform;
     };
 
-    class TileMapComponent
+    class TileMapComponent : public Component
     {
     public:
         TileMapComponent() = default;
@@ -58,6 +58,8 @@ namespace Rvl
 
         const std::vector<Tile>& GetTiles() const;
 
+        void Update() {}
+
     private:
         Ref<TileSet> _tileSet;
         std::vector<Tile> _mapTiles;
@@ -70,4 +72,3 @@ namespace Rvl
     };
 }
 
-#endif 

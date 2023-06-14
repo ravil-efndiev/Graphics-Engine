@@ -1,5 +1,4 @@
-#ifndef RVL_ENTITY_HPP
-#define RVL_ENTITY_HPP
+#pragma once
 
 #include "Scene.hpp"
 
@@ -37,4 +36,3 @@ namespace Rvl
     };
 }
 
-#endif

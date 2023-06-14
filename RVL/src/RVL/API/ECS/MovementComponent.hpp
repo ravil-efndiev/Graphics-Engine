@@ -1,5 +1,4 @@
-#ifndef RVL_MOVEMENTCOMPONENT_HPP
-#define RVL_MOVEMENTCOMPONENT_HPP
+#pragma once
 
 #include <API/Time.hpp>
 #include <Core/Core.hpp>
@@ -60,4 +59,3 @@ namespace Rvl
     };
 }
 
-#endif

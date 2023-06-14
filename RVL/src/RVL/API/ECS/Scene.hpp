@@ -1,5 +1,4 @@
-#ifndef RVL_SCENE_HPP
-#define RVL_SCENE_HPP
+#pragma once
 
 #include <entt/entt.hpp>
 #include <Core/Core.hpp>
@@ -26,4 +25,3 @@ namespace Rvl
     };
 }
 
-#endif

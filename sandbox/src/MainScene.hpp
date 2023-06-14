@@ -27,6 +27,10 @@ namespace sb
         Entity _test;
         Entity _tileMap;
 
+        MovementComponent* _mc;
+        SpriteComponent* _sc;
+        TransformComponent* _tc;
+
         glm::vec4 _tintColor { 1.f, 1.f, 1.f, 1.f };
     };
 }

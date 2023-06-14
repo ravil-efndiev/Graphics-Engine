@@ -1,5 +1,4 @@
-#ifndef RVL_MOUSEEVENT_HPP
-#define RVL_MOUSEEVENT_HPP
+#pragma once
 
 #include "Event.hpp"
 #include <Core/Core.hpp>
@@ -38,4 +37,3 @@ namespace Rvl
     };
 }
 
-#endif

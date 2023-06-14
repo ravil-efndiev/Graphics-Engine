@@ -1,5 +1,4 @@
-#ifndef RVL_EVENT_HPP
-#define RVL_EVENT_HPP
+#pragma once
 
 #include <RVL/Rvlpch.hpp>
 
@@ -36,4 +35,3 @@ namespace Rvl
     };
 }
 
-#endif

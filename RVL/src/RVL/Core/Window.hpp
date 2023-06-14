@@ -1,5 +1,4 @@
-#ifndef RVL_WINDOW_HPP
-#define RVL_WINDOW_HPP
+#pragma once
 
 #include "Events/Events.hpp"
 
@@ -50,4 +49,3 @@ namespace Rvl
     };
 }
 
-#endif

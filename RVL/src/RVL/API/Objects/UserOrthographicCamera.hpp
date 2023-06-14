@@ -1,5 +1,4 @@
-#ifndef RVL_USERORTHOGRAPHICCAMERA_HPP
-#define RVL_USERORTHOGRAPHICCAMERA_HPP
+#pragma once
 
 #include "API/ECS/Entity.hpp"
 #include "API/ECS/TransformComponent.hpp"
@@ -27,7 +26,7 @@ namespace Rvl
         void SetRotationZ(float rotation);
         float GetRotationZ() const;
 
-        void Follow(Entity entity, Axis axis = Axis::Horizontal | Axis::Vertical, bool smooth = true, float smoothSpeed = 10.f, float deadZone = 0.05f, TimeStep deltaTime = Time::DeltaTime());
+        void Follow(TransformComponent* transform, Axis axis = Axis::Horizontal | Axis::Vertical, bool smooth = true, float smoothSpeed = 10.f, float deadZone = 0.05f, TimeStep deltaTime = Time::DeltaTime());
 
         Ref<OrthographicCamera> GetCamera();
 
@@ -36,4 +35,3 @@ namespace Rvl
     };
 }
 
-#endif

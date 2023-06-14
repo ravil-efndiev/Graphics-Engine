@@ -1,5 +1,4 @@
-#ifndef RVL_EVENTS_HPP
-#define RVL_EVENTS_HPP
+#pragma once
 
 /// Includes all event files
 /// For use by RVL developers
@@ -9,4 +8,3 @@
 #include "CursorEvents.hpp"
 #include "MouseEvents.hpp"
 
-#endif
