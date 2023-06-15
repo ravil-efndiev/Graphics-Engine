@@ -4,11 +4,9 @@
 namespace Rvl
 {
 
-    AnimationComponent::AnimationComponent(Entity* sprite)
+    AnimationComponent::AnimationComponent(Entity* self) : Component(self)
     {
-        RVL_ASSERT((sprite->HasComponent<SpriteComponent>()), "entity passed into animation component construct has no sprite component");
-
-        _sprite = sprite;
+        RVL_ASSERT((_self->HasComponent<SpriteComponent>()), "entity passed into animation component construct has no sprite component");
     }
 
     AnimationComponent::~AnimationComponent() {}
@@ -19,7 +17,7 @@ namespace Rvl
     {
         _animations.emplace(
             name, 
-            NewRef<Animation>(_sprite, animTimer, startX, startY, endX, endY, subSpriteWidth, subSpriteHeight)
+            NewRef<Animation>(_self, animTimer, startX, startY, endX, endY, subSpriteWidth, subSpriteHeight)
         );
     }
 

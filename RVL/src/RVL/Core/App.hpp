@@ -19,8 +19,8 @@ namespace Rvl
     protected:
         Ptr<State> _currentState;
 
-        virtual void Start() = 0;
-        virtual void Update() = 0;
+        virtual void Start();
+        virtual void Update();
         virtual void Tick();
         virtual void Render();
 

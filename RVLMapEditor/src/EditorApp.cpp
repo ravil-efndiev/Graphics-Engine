@@ -41,16 +41,10 @@ namespace Rvl
     {
         SetClearColor({0.0f, 0.3f, 0.3f});
 
-        _prjfileText = Utils::GetTextFromFile("./rvmData/projects.rvm");
+        _prjfileText = Utils::GetTextFromFile("./settings/projects.rconfig");
 
         if (_prjfileText != "")
         {
-            auto prjLines = Utils::SplitStr(_prjfileText, '\n');
-            for (int i = 0; i < prjLines.size() - 1; i++)
-            {
-                _projectLineTokens.push_back(Utils::SplitStr(prjLines[i], ' '));
-            }
-
             UIData.ProjectCreation = false;
             UIData.ProjectOpen = true;
         }
@@ -87,13 +81,13 @@ namespace Rvl
         else
             UIData.ProjectWinFlags &= ~ImGuiWindowFlags_NoInputs;
 
+
         if (!UIData.PrjCreateWindowOpen)
         {
             UIData.ProjectCreation = false;
             if (_currentState)
                 dynamic_cast<MapEditorState*>(_currentState.get())->InputsEnabled(true);
         }
-
 
         if (!UIData.ProjectCreation && !UIData.ProjectOpen && _currentState)
         {
@@ -187,6 +181,7 @@ namespace Rvl
 
     void EditorApp::ProjectWindow()
     {
+
         if (_currentState)
             dynamic_cast<MapEditorState*>(_currentState.get())->InputsEnabled(false);
 

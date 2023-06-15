@@ -2,9 +2,12 @@
 
 namespace Rvl
 {
-    MovementComponent::MovementComponent(Entity* target, float maxVelocity, float acceleration, float deceleration)
-        : _target(target), _maxVelocity(maxVelocity), 
-        _acceleration(acceleration), _deceleration(deceleration) {}
+    MovementComponent::MovementComponent(Entity* self, float maxVelocity, float acceleration, float deceleration)
+        : Component(self), _maxVelocity(maxVelocity), 
+        _acceleration(acceleration), _deceleration(deceleration) 
+    {
+        _selfTransform = &_self->GetComponent<TransformComponent>();
+    }
 
     MovementComponent::~MovementComponent() {}
     
@@ -50,8 +53,8 @@ namespace Rvl
                 _velocity.y = 0.f;
         }
 
-        _target->GetComponent<TransformComponent>().Position->x += _velocity.x * Time::DeltaTime();
-        _target->GetComponent<TransformComponent>().Position->y += _velocity.y * Time::DeltaTime();
+        _selfTransform->Position->x += _velocity.x * Time::DeltaTime();
+        _selfTransform->Position->y += _velocity.y * Time::DeltaTime();
 
         _lastState = _currentState;
 

@@ -48,6 +48,27 @@ namespace Rvl
         {
             Renderer::DrawRect(tile.GetTransform(), tile.GetSubtexture());
         }
+    }
 
+    void Scene::AddBehaviour(Behaviour* behaviour)
+    {
+        _behaviours.push_back(behaviour);
+        
+    }
+
+    void Scene::StartBehaviours()
+    {
+        for (auto behaviour : _behaviours)
+        {
+            behaviour->Start();
+        }
+    }
+    
+    void Scene::UpdateBehaviours()
+    {
+        for (auto behaviour : _behaviours)
+        {
+            behaviour->Update();
+        }
     }
 }

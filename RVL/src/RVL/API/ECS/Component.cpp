@@ -2,13 +2,10 @@
 
 namespace Rvl
 {
-    Component::Component()
+    Component::Component(Entity* self)
     {
-
+        _self = self;
     }
 
-    Component::~Component()
-    {
-
-    }
+    Component::~Component() {}
 }

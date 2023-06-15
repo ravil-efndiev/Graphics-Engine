@@ -50,24 +50,4 @@ namespace Rvl
         return glm::lookAt(Position, Position + _forward, _up);
     }
 
-    void PerspectiveCamera::Move(direction_t direction, float speed, const float &deltaTime)
-    {
-        switch (direction)
-        {
-            case MOVE_FORWARD:
-                Position += _forward * speed * deltaTime;
-                break;
-            case MOVE_BACKWARD:
-                Position -= _forward * speed * deltaTime;
-                break;
-            case MOVE_RIGHT:
-                Position += _right * speed * deltaTime;
-                break;   
-            case MOVE_LEFT:
-                Position -= _right * speed * deltaTime;
-                break;
-            default:
-                throw Error("Invalid camera movement direction", RVL_INTERNAL_ERROR);
-        }
-    }
 }

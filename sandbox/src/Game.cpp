@@ -3,32 +3,26 @@
 // !!INCLUDE ONLY ONCE INSIDE CPP FILE THAT IMPLEMENTS OnInit!!
 #include <RVL/Core/EntryPoint.hpp>
 
-namespace sb
+using namespace Rvl;
+
+RVL_IMPL_INIT(Game);
+
+Game::Game() : App(1000, 700, "rvl game") {}
+Game::~Game() {}
+
+void Game::Start()
 {
-    using namespace Rvl;
-
-    Game::Game() : App(1000, 700, "rvl game") {}
-    Game::~Game() {}
-
-    void Game::Start()
-    {
-        SetClearColor({0.3f, 0.5f, 0.5f});
-        _currentState = NewPtr<MainScene>();
-        _currentState->Start();
-    }
-
-    void Game::Update()
-    {
-        _currentState->Update();
-    }
-
-    void Game::Tick()
-    {
-        _currentState->Tick();
-    }
+    SetClearColor({0.3f, 0.5f, 0.5f});
+    _currentState = NewPtr<MainScene>();
+    _currentState->Start();
 }
 
-Rvl::Ptr<Rvl::App> Rvl::OnInit()
+void Game::Update()
 {
-    return Rvl::NewPtr<sb::Game>();
+    _currentState->Update();
+}
+
+void Game::Tick()
+{
+    _currentState->Tick();
 }

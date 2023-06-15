@@ -22,7 +22,7 @@ namespace Rvl
     public:
         MovementComponent() = default;
         MovementComponent(const MovementComponent&) = default;
-        MovementComponent(Entity* target, float maxVelocity, float acceleration, float deceleration);
+        MovementComponent(Entity* self, float maxVelocity, float acceleration, float deceleration);
         ~MovementComponent();
 
         void Update() override;
@@ -45,8 +45,6 @@ namespace Rvl
         MoveState4 GetMoveState4() const;
 
     private:
-        Entity* _target;
-
         MoveState4 _lastState;
         MoveState4 _currentState = MoveState4::StandDown;
 
@@ -55,6 +53,8 @@ namespace Rvl
         glm::vec2 _velocity;
         float _acceleration;
         float _deceleration;
+
+        TransformComponent* _selfTransform;
 
     };
 }

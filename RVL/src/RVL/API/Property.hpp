@@ -2,6 +2,9 @@
 
 #include <Core/Core.hpp>
 
+#define GET [this]()
+#define SET [this](const auto& value)
+
 namespace Rvl
 {
     template <class T>

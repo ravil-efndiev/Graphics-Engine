@@ -28,6 +28,7 @@ namespace Rvl
             Random::Init();
             
             Start();
+            if (_currentState) _currentState->StartScene();
 
             ImGuiController::Init(_window->GetWindowPtr());
 
@@ -40,6 +41,7 @@ namespace Rvl
                 ImGuiController::Update();
 
                 Update();
+                if (_currentState) _currentState->UpdateScene();
 
                 if (_currentState)
                 {
@@ -72,6 +74,8 @@ namespace Rvl
         }
     }
 
+    void App::Start() {}
+    void App::Update() {}
     void App::Tick() {}
 
     void App::Render()

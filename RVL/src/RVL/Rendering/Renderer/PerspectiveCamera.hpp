@@ -1,19 +1,13 @@
 #pragma once
 
-#include <Rvlglpch.hpp>
-
-#define MOVE_FORWARD 0
-#define MOVE_BACKWARD 1
-#define MOVE_RIGHT 2
-#define MOVE_LEFT 3
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Rvl
 {
     class PerspectiveCamera
     {
     public:
-        typedef unsigned short direction_t;
-        
         glm::vec3 Position;
 
         PerspectiveCamera(const glm::vec3& position, float FOV);
@@ -24,8 +18,6 @@ namespace Rvl
 
         glm::mat4 GetProjectionMatrix(float viewportWidth, float viewportHeight) const;
         glm::mat4 GetViewMatrix() const;
-
-        void Move(direction_t direction, float speed, const float& deltaTime);
 
     private:
         float _FOV;

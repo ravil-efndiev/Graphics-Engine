@@ -1,22 +1,17 @@
-#ifndef SB_GAME_HPP
-#define SB_GAME_HPP
+#pragma once
 
 #include "MainScene.hpp"
 
-namespace sb
+class Game : public Rvl::App
 {
-    class Game : public Rvl::App
-    {
-    public:
-        Game();
-        ~Game();
+public:
+    Game();
+    ~Game();
 
-    private:
-        void Start() override;
-        void Update() override;
-        void Tick() override;
+private:
+    void Start() override;
+    void Update() override;
+    void Tick() override;
 
-    };
-}
+};
 
-#endif

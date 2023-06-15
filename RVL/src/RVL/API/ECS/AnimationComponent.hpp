@@ -11,7 +11,7 @@ namespace Rvl
     public:
         AnimationComponent() = default;
         AnimationComponent(const AnimationComponent&) = default;
-        AnimationComponent(Entity* entity);
+        AnimationComponent(Entity* self);
         ~AnimationComponent();
 
         void Update() override;
@@ -39,7 +39,6 @@ namespace Rvl
 
         };
 
-        Entity* _sprite;
         std::unordered_map<std::string, Ref<Animation>> _animations;
         Animation* _currentAnimation;
     };

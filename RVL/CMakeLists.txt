@@ -35,6 +35,7 @@ add_library(RVL STATIC
     src/RVL/API/ECS/Entity.cpp
     src/RVL/API/ECS/Scene.cpp
     src/RVL/API/ECS/Component.cpp
+    src/RVL/API/ECS/Behaviour.cpp
     src/RVL/API/ECS/SpriteComponent.cpp
     src/RVL/API/ECS/TransformComponent.cpp
     src/RVL/API/ECS/TileMapComponent.cpp

@@ -21,8 +21,6 @@ namespace Rvl
          * @brief get all axis-related key inputs, gets one-frame key press
          * 
          * @returns -1.f or 1.f depending on what input is got
-         * 
-         * @ingroup input
         */
         static float GetAxis(Axis axis);
 

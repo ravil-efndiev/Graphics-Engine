@@ -58,7 +58,7 @@ namespace Rvl
 
         const std::vector<Tile>& GetTiles() const;
 
-        void Update() {}
+        void Update() override {}
 
     private:
         Ref<TileSet> _tileSet;

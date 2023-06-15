@@ -13,6 +13,16 @@ namespace Rvl
 
     void State::Tick() {}
 
+    void State::StartScene()
+    {
+        _currentScene.StartBehaviours();
+    }
+
+    void State::UpdateScene()
+    {
+        _currentScene.UpdateBehaviours();
+    }
+
     void State::AddFrameBuffer(const Ref<GLFrameBuffer>& fbo)
     {
         _fbo = fbo;

@@ -6,22 +6,25 @@ namespace Rvl
     {
         _transform = Transform(position, rotationDeg, scale);
 
-        Position = Property<glm::vec3> (
+        Position = Property<glm::vec3> 
+        (
             &_transform.Position,
-            [this]() -> glm::vec3 { return _transform.Position; },
-            [this](const auto& value) { _transform.Position = value; }
+            GET { return _transform.Position; },
+            SET { _transform.Position = value; }
         );
 
-        Scale = Property<glm::vec2> (
+        Scale = Property<glm::vec2> 
+        (
             &_transform.Scale,
-            [this]() -> glm::vec2 { return _transform.Scale; },
-            [this](const auto& value) { _transform.Scale = value; }
+            GET { return _transform.Scale; },
+            SET { _transform.Scale = value; }
         );
 
-        RotationZ = Property<float> (
+        RotationZ = Property<float> 
+        (
             &_transform.Rotation,
-            [this]() -> float { return _transform.Rotation; },
-            [this](const auto& value) { _transform.Rotation = value; }
+            GET { return _transform.Rotation; },
+            SET { _transform.Rotation = value; }
         );
     }
 

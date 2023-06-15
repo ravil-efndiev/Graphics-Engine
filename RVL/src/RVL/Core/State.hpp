@@ -25,6 +25,9 @@ namespace Rvl
         virtual void Render() = 0;
         virtual void Tick();
 
+        void StartScene();
+        void UpdateScene();
+
     protected:
         void AddFrameBuffer(const Ref<GLFrameBuffer>& fbo);
 

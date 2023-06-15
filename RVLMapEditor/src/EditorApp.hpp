@@ -23,8 +23,6 @@ namespace Rvl
     private:
         std::string _prjfileText;
 
-        std::vector<std::vector<std::string>> _projectLineTokens;
-
         ConfigParser _parser;
     };
 }
