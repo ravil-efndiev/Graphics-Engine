@@ -93,7 +93,7 @@ namespace Rvl
         ImGuiIO& io = ImGui::GetIO();
 
         int viewport[2];
-        Renderer::GetViewport(viewport);
+        RenderCommand::GetViewport(viewport);
 
 		io.DisplaySize = ImVec2((float)viewport[1], (float)viewport[2]);
 

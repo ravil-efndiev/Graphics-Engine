@@ -6,9 +6,9 @@ namespace Rvl
 {
     enum class Axis
     {
-        None       = 0,
-        Vertical   = 1,
-        Horizontal = 2,
+        None       = 1 << 0,
+        Vertical   = 1 << 1,
+        Horizontal = 1 << 2,
     };
 
     inline Axis operator|(Axis a, Axis b)

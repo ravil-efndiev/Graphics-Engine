@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.1)
 
 project(sandbox)
 
-add_executable(sandbox src/Game.cpp src/MainScene.cpp)
+add_executable(sandbox src/Game.cpp src/MainState.cpp)
 
 set_property(TARGET sandbox PROPERTY CXX_STANDARD 20)
 
@@ -15,6 +15,7 @@ target_include_directories(sandbox PRIVATE ../RVL/src/RVL)
 target_include_directories(sandbox PRIVATE ../RVL/vendor/)
 target_include_directories(sandbox PRIVATE ../RVL/vendor/include/)
 target_include_directories(sandbox PRIVATE ../RVL/vendor/include/glm)
+target_include_directories(sandbox PRIVATE ../RVL/vendor/imgui/)
 target_include_directories(sandbox PRIVATE ../RVL/src)
 target_include_directories(sandbox PRIVATE ../RVL/)
 

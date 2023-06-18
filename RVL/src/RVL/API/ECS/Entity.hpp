@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Scene.hpp"
 
 namespace Rvl

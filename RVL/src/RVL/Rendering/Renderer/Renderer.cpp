@@ -8,7 +8,6 @@
 namespace Rvl
 {
     glm::mat4 Renderer::_projview (1.0f);
-    glm::vec3 Renderer::_clearColor;
 
     Ref<GLVertexArray> Renderer::_rectVao;
     Ref<GLVertexBuffer> Renderer::_rectPositionVbo;
@@ -38,10 +37,7 @@ namespace Rvl
     static Renderer::Statistics Stats; 
 
     void Renderer::Init()
-    {
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        
+    {        
         _rectVao = NewRef<GLVertexArray>();
 
 		_rectPositionVbo = NewRef<GLVertexBuffer>(_verticiesPerCall * sizeof(glm::vec3), 3);
@@ -97,9 +93,9 @@ namespace Rvl
     {
     }
 
-    void Renderer::BeginContext(OrthographicCamera& camera, float viewportWidth, float viewportHeight)
+    void Renderer::BeginContext(const Ref<Camera>& camera, float viewportWidth, float viewportHeight)
     {
-        _projview = camera.GetProjectionMatrix(viewportWidth, viewportHeight) * camera.GetViewMatrix();
+        _projview = camera->GetProjectionMatrix(viewportWidth, viewportHeight) * camera->GetViewMatrix();
 
         _textureShader->Bind();
         _textureShader->SetUniformMat4("u_Projview", _projview);
@@ -124,17 +120,9 @@ namespace Rvl
             _textureSlots[i]->Bind(i);
         }
 
-		DrawIndicies(_rectVao, _rectIndiciesCount);
+		RenderCommand::DrawIndicies(_rectVao, _rectIndiciesCount);
 
         Stats.DrawCalls++;
-    }
-
-    void Renderer::SubmitGeometry(GLVertexArray& vertexArray, GLShaderProgram& shader)
-    {
-        shader.Bind();
-        shader.SetUniformMat4("projview", _projview);
-        DrawIndicies(vertexArray);
-        shader.Unbind();
     }
 
     void Renderer::DrawRect(const Transform& transform, const glm::vec4& color)
@@ -260,26 +248,6 @@ namespace Rvl
         Stats.IndiciesCount = 0;
     }
 
-    inline void Renderer::DrawIndicies(const Ref<GLVertexArray>& vertexArray, int indexCount)
-    {
-        int count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetIndiciesCount();
-        vertexArray->Bind();
-        vertexArray->BindIndexBuffer();
-        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
-        vertexArray->UnbindIndexBuffer();
-        vertexArray->Unbind();
-    }
-
-    inline void Renderer::DrawIndicies(GLVertexArray& vertexArray, int indexCount)
-    {
-        int count = indexCount ? indexCount : vertexArray.GetIndexBuffer()->GetIndiciesCount();
-        vertexArray.Bind();
-        vertexArray.BindIndexBuffer();
-        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
-        vertexArray.UnbindIndexBuffer();
-        vertexArray.Unbind();
-    }
-
     void Renderer::BeginBatch()
     {
         _rectIndiciesCount = 0;
@@ -298,35 +266,10 @@ namespace Rvl
         BeginBatch();
     }
 
-    void Renderer::SetClearColor(const glm::vec3& clearColor)
-    {
-        _clearColor = clearColor;
-    }
-
-    void Renderer::Clear()
-    {
-        glClearColor(_clearColor.r, _clearColor.g, _clearColor.b, 1.f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    }
-
-    void Renderer::GetViewport(int rViewport[2])
-    {
-        int viewport[4];
-        glGetIntegerv(GL_VIEWPORT, viewport);
-
-        rViewport[0] = viewport[2];
-        rViewport[1] = viewport[3];
-    }
-
-    void Renderer::SetViewport(const glm::vec2& viewport)
-    {
-        glViewport(0, 0, viewport.x, viewport.y);
-    }
-
     glm::vec2 Renderer::ConvertToWorldCoords(double x, double y)
     {
         int viewport[2];
-        GetViewport(viewport);
+        RenderCommand::GetViewport(viewport);
 
         glm::vec4 vec4viewport (0, 0, viewport[0], viewport[1]);
         glm::vec3 pos (x, viewport[1] - y, 0);

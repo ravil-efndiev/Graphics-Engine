@@ -11,6 +11,7 @@
 
 namespace Rvl
 {
+    Ref<App> App::_instance = nullptr;
     
     App::App(int windowWidth, int windowHeight, const std::string& windowName)
     {
@@ -36,7 +37,7 @@ namespace Rvl
 
             while (!_window->Closes())
             {
-                Renderer::Clear();
+                RenderCommand::Clear();
                 Time::Update();
                 ImGuiController::Update();
 
@@ -85,7 +86,7 @@ namespace Rvl
 
     void App::SetClearColor(const glm::vec3& color)
     {
-        Renderer::SetClearColor(color);
+        RenderCommand::SetClearColor(color);
     }
 
     void App::Close()
@@ -103,4 +104,8 @@ namespace Rvl
         });
     }
 
+    void App::SetCursorLocked(bool flag)
+    {
+        _window->SetCursorLocked(flag);
+    }
 }

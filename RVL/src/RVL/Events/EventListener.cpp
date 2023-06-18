@@ -9,7 +9,11 @@ namespace Rvl
     double EventListener::_cursorPosX = 0.0;
     double EventListener::_cursorPosY = 0.0;
 
+    double EventListener::_cursorDeltaX = 0.0;
+    double EventListener::_cursorDeltaY = 0.0;
+
     int EventListener::_currentFrame;
+    bool EventListener::_cursorStarted = false;
 
     std::unordered_map<keycode_t, keycode_t> EventListener::_mouseButtons =
     {
@@ -66,6 +70,16 @@ namespace Rvl
         return _cursorPosY;
     }
 
+    double EventListener::GetCursorDeltaX()
+    {
+        return _cursorDeltaX;
+    }
+
+    double EventListener::GetCursorDeltaY()
+    {
+        return _cursorDeltaY;
+    }
+
     void EventListener::ListenWindowEvents(const Event* event)
     {
         switch (event->GetType())
@@ -119,6 +133,14 @@ namespace Rvl
 
         auto castedEvent = dynamic_cast<const CursorPosEvent*>(event);
 
+        if (_cursorStarted)
+        {
+            _cursorDeltaX += castedEvent->GetX() - _cursorPosX;
+            _cursorDeltaY += castedEvent->GetY() - _cursorPosY;
+        }
+        else 
+            _cursorStarted = true;
+
         _cursorPosX = castedEvent->GetX();
         _cursorPosY = castedEvent->GetY();
     }
@@ -155,6 +177,10 @@ namespace Rvl
     void EventListener::PollEvents()
     {
         _currentFrame++;
+
+        _cursorDeltaX = 0.0;
+        _cursorDeltaY = 0.0;
+
         glfwPollEvents();
     }
 

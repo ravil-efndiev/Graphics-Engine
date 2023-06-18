@@ -21,7 +21,9 @@ add_library(RVL STATIC
     src/RVL/Rendering/OpenGL/GLVertexArray.cpp
     src/RVL/Rendering/OpenGL/GLShaderProgram.cpp
     src/RVL/Rendering/OpenGL/GLFrameBuffer.cpp
+    src/RVL/Rendering/Renderer/RenderCommand.cpp
     src/RVL/Rendering/Renderer/Renderer.cpp
+    src/RVL/Rendering/Renderer/Renderer3D.cpp
     src/RVL/Rendering/Renderer/SubTexture.cpp
     src/RVL/Rendering/Renderer/OrthographicCamera.cpp
     src/RVL/Rendering/Renderer/PerspectiveCamera.cpp
@@ -30,7 +32,9 @@ add_library(RVL STATIC
     src/RVL/API/Time.cpp
     src/RVL/API/Random.cpp
     src/RVL/API/Math/Math.cpp
+    src/RVL/API/Objects/UserCamera.cpp
     src/RVL/API/Objects/UserOrthographicCamera.cpp
+    src/RVL/API/Objects/UserPerspectiveCamera.cpp
     src/RVL/API/Objects/TileSet.cpp
     src/RVL/API/ECS/Entity.cpp
     src/RVL/API/ECS/Scene.cpp

@@ -19,8 +19,6 @@ namespace Rvl
 
         operator const Transform& () const;
 
-        void Update() override {}
-
     private:
         Transform _transform;
     };

@@ -14,7 +14,7 @@ namespace Rvl
         AnimationComponent(Entity* self);
         ~AnimationComponent();
 
-        void Update() override;
+        void Update();
 
         void AddAnimation(const std::string& name, TimeStep animTimer, float startX, float startY, float endX, float endY, float subSpriteWidth, float subSpriteHeight);
         void Play(const std::string& name);

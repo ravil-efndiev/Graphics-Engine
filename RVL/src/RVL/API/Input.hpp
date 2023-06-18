@@ -28,6 +28,7 @@ namespace Rvl
         static glm::vec2 GetCursorPositionRelative(const glm::vec2& mainViewport, const glm::vec2& currentViewport);
         static glm::vec2 GetCursorPositionRaw();
 
+        static glm::vec2 GetCursorDelta();
     };
 }
 

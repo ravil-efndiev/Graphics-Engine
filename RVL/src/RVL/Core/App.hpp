@@ -3,6 +3,7 @@
 #include <Rvlpch.hpp>
 #include "Core.hpp"
 #include "State.hpp"
+#include "Utils/Types.hpp"
 
 namespace Rvl
 {
@@ -15,6 +16,22 @@ namespace Rvl
         virtual ~App();
 
         status_t Run();
+
+        void SetCursorLocked(bool flag);
+
+        template <class T>
+        static Ref<App> Create()
+        {
+            RVL_ASSERT((_instance == nullptr), "instance of App already exists");
+
+            auto instance = NewRef<T>();
+            RVL_ASSERT((Utils::InstanceOf<App>(instance)), "specified type is not derieved from App");
+
+            _instance = instance;
+            return _instance;
+        }
+
+        static Ref<App> GetInstance() { return _instance; }
 
     protected:
         Ptr<State> _currentState;
@@ -31,6 +48,8 @@ namespace Rvl
         Ptr<Window> _window;
 
         void CreateWindow(int windowWidth, int windowHeight, const std::string& windowName);
+
+        static Ref<App> _instance;
     };
 
     /*
@@ -39,7 +58,7 @@ namespace Rvl
      * (app you are currently using)
      * it can contain any functionallity but in any case it must initialize CurrentApp
     */
-    extern Ptr<App> OnInit() RVL_ENTRY_FUNCTION;
+    extern Ref<App> OnInit() RVL_ENTRY_FUNCTION;
 
     /*
      * Entry function that can be defined in RVL Application
@@ -49,5 +68,5 @@ namespace Rvl
     extern void OnEnd() RVL_ENTRY_FUNCTION;
 }
 
-#define RVL_IMPL_INIT(AppType) Rvl::Ptr<Rvl::App> Rvl::OnInit() { return Rvl::NewPtr<AppType>(); }
+#define RVL_IMPL_INIT(AppType) Rvl::Ref<Rvl::App> Rvl::OnInit() { return Rvl::App::Create<AppType>(); }
 

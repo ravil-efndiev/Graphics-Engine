@@ -38,8 +38,6 @@ namespace Rvl
         void UseColorAsTint(bool flag);
         bool ColorIsTint() const;
 
-        void Update() override {}
-
     private:
         float _scale;
 
@@ -52,5 +50,4 @@ namespace Rvl
         bool _useColorAsTint;
     };
 }
-
 

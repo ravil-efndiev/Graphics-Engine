@@ -6,15 +6,16 @@
 #include <API/Math/Math.hpp>
 #include <API/Time.hpp>
 #include <Rendering/Renderer/OrthographicCamera.hpp>
+#include "UserCamera.hpp"
 
 namespace Rvl
 {
-    class UserOrthographicCamera
+    class UserOrthographicCamera : public UserCamera
     {
     public:
         static Ref<UserOrthographicCamera> Create(const glm::vec2& position = {0.f, 0.f}, float zoom = 1.f);
 
-        UserOrthographicCamera(const glm::vec2& position = {0.f, 0.f}, float zoom = 1.f);
+        UserOrthographicCamera(const glm::vec2& position, float zoom);
         ~UserOrthographicCamera();
 
         float GetZoom() const;
@@ -28,7 +29,7 @@ namespace Rvl
 
         void Follow(TransformComponent* transform, Axis axis = Axis::Horizontal | Axis::Vertical, bool smooth = true, float smoothSpeed = 10.f, float deadZone = 0.05f, TimeStep deltaTime = Time::DeltaTime());
 
-        Ref<OrthographicCamera> GetCamera();
+        Ref<Camera> GetCamera() const override;
 
     private:
         Ref<OrthographicCamera> _camera;

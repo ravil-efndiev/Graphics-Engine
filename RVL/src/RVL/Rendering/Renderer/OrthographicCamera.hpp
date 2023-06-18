@@ -1,11 +1,11 @@
 #pragma once
 
-#include <glm/glm.hpp>
+#include "Camera.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Rvl
 {
-    class OrthographicCamera
+    class OrthographicCamera : public Camera
     {
     public:
         OrthographicCamera(const glm::vec3& position, float zoom = 1.f);
@@ -17,8 +17,8 @@ namespace Rvl
         void SetRotationZ(float rotationZ);
         float GetRotationZ() const;
 
-        glm::mat4 GetProjectionMatrix(float viewportWidth, float viewportHeight);
-        glm::mat4 GetViewMatrix();
+        glm::mat4 GetProjectionMatrix(float viewportWidth, float viewportHeight) const override;
+        glm::mat4 GetViewMatrix() const override;
 
         float GetZoom() const;
         void SetZoom(float zoom);
@@ -26,7 +26,6 @@ namespace Rvl
     private:
         void ResetMatrix();
 
-        glm::mat4 _projectionMatrix;
         glm::mat4 _viewMatrix;
 
         glm::vec3 _position;

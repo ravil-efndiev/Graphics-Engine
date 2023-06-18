@@ -36,7 +36,6 @@ namespace Rvl
     class TileMapComponent : public Component
     {
     public:
-        TileMapComponent() = default;
         TileMapComponent(const TileMapComponent&) = default;
         TileMapComponent(const Ref<TileSet>& tileSet, const std::string& TileMapFilePath, int scale, float zIndex);
         TileMapComponent(const Ref<TileSet>& tileSet, int scale, float zIndex);
@@ -57,8 +56,6 @@ namespace Rvl
         std::string GetNameByCoords(const glm::ivec2& pos);
 
         const std::vector<Tile>& GetTiles() const;
-
-        void Update() override {}
 
     private:
         Ref<TileSet> _tileSet;

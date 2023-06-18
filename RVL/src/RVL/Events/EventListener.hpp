@@ -19,14 +19,18 @@ namespace Rvl
         static double GetCursorPosX();
         static double GetCursorPosY();
 
+        static double GetCursorDeltaX();
+        static double GetCursorDeltaY();
+
         static void PollEvents();
 
     private:
         static std::array<bool, 1032> _keysPressed;
         static std::array<int, 1032> _changeFrames;
-        static double _cursorPosX;
-        static double _cursorPosY;
+        static double _cursorPosX, _cursorDeltaX;
+        static double _cursorPosY, _cursorDeltaY;
 
+        static bool _cursorStarted;
         static int _currentFrame;
 
         static std::unordered_map<keycode_t, keycode_t> _mouseButtons;

@@ -86,4 +86,9 @@ namespace Rvl
     {
         return glm::vec2(EventListener::GetCursorPosX(), EventListener::GetCursorPosY());
     }
+    
+    glm::vec2 Input::GetCursorDelta()
+    {
+        return {-EventListener::GetCursorDeltaX(), -EventListener::GetCursorDeltaY()};
+    }
 }

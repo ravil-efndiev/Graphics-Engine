@@ -6,7 +6,7 @@
 int main(int argc, char** argv)
 {
 
-    Rvl::Ptr<Rvl::App> currentApp = Rvl::OnInit();
+    Rvl::Ref<Rvl::App> currentApp = Rvl::OnInit();
 
     if (!currentApp)
     {

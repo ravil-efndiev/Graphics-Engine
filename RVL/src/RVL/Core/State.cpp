@@ -2,6 +2,7 @@
 
 #include <Core.hpp>
 #include "Rendering/Renderer/Renderer.hpp"
+#include "Rendering/Renderer/Renderer3D.hpp"
 #include "Rendering/Renderer/PerspectiveCamera.hpp"
 #include "Rendering/Renderer/OrthographicCamera.hpp"
 #include "Rendering/OpenGL/GLFrameBuffer.hpp"
@@ -35,18 +36,18 @@ namespace Rvl
         if (_fbo)
         {
             _fbo->Bind();
-            Renderer::Clear();
+            RenderCommand::Clear();
         }
 
         int viewport[2];
-        Renderer::GetViewport(viewport);
+        RenderCommand::GetViewport(viewport);
 
-        Renderer::BeginContext(*_camera->GetCamera(), viewport[0], viewport[1]);
+        Renderer3D::BeginContext(_camera->GetCamera(), viewport[0], viewport[1]);
     }
 
     void State::End()
     {
-        Renderer::EndContext();
+        Renderer3D::EndContext();
         
         if (_fbo)
             _fbo->Unbind();

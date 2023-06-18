@@ -11,11 +11,8 @@ namespace Rvl
         Component(Entity* self);
         virtual ~Component();
 
-        virtual void Update() = 0;
-
-
     protected:
-        Entity* _self;
+        Entity* _self = nullptr;
     };
 }
 

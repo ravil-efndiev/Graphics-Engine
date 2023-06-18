@@ -10,8 +10,6 @@ namespace Rvl
     class OrthographicCamera;
     class GLFrameBuffer;
 
-    typedef UserOrthographicCamera Camera;
-
     class State
     {
     friend class App;
@@ -31,7 +29,7 @@ namespace Rvl
     protected:
         void AddFrameBuffer(const Ref<GLFrameBuffer>& fbo);
 
-        Ref<UserOrthographicCamera> _camera;
+        Ref<UserCamera> _camera;
         Ref<GLFrameBuffer> _fbo;
 
         Scene _currentScene;

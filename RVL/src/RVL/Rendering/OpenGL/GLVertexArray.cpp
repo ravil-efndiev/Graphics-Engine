@@ -13,30 +13,51 @@ namespace Rvl
 
     GLVertexArray::~GLVertexArray()
     {   
-        for (int i = 0; i < _vertexBuffers.size(); i++)
-        {
-            glDisableVertexAttribArray(i);
-        }
         glDeleteVertexArrays(1, &_vertexArrayId);
     }
 
-    void GLVertexArray::AddVertexBuffer(const std::shared_ptr<GLVertexBuffer>& vertexBuffer)
+    void GLVertexArray::SetSingleVertexBuffer(const Ref<GLVertexBuffer>& vertexBuffer)
+    {
+        RVL_ASSERT(vertexBuffer->IsLayoutUsed(), "Vertex buffer doesn't have a proper layout");
+
+        Bind();
+        vertexBuffer->Bind();
+
+        auto layout = vertexBuffer->GetLayout();
+
+        for (int i = 0; i < layout.size(); i++)
+        {
+            glEnableVertexAttribArray(i);
+
+            glVertexAttribPointer(i,
+                    static_cast<int>(layout[i].Type),
+                    GL_FLOAT, 
+                    layout[i].Normalized,
+                    layout[i].Size, (void*)layout[i].Offset);
+        }   
+
+        vertexBuffer->Unbind();
+
+    }
+
+    void GLVertexArray::AddVertexBuffer(const Ref<GLVertexBuffer>& vertexBuffer)
     {
         Bind();
         vertexBuffer->Bind();
 
-        glVertexAttribPointer(_vertexBuffers.size(),
+        glVertexAttribPointer(_currentAttribIndex,
                 vertexBuffer->GetVerticiesCount(),
                 GL_FLOAT, 
                 vertexBuffer->GetNormalized(),
                 vertexBuffer->GetVerticiesCount() * sizeof(float), nullptr);
 
-        glEnableVertexAttribArray(_vertexBuffers.size());
+        glEnableVertexAttribArray(_currentAttribIndex);
 
         _vertexBuffers.push_back(vertexBuffer);
+        _currentAttribIndex++;
     }
 
-    void GLVertexArray::AddIndexBuffer(const std::shared_ptr<GLIndexBuffer>& indexBuffer)
+    void GLVertexArray::AddIndexBuffer(const Ref<GLIndexBuffer>& indexBuffer)
     {
         Bind();
         indexBuffer->Bind();
@@ -54,7 +75,7 @@ namespace Rvl
         glBindVertexArray(0);
     }
 
-    std::shared_ptr<GLIndexBuffer> GLVertexArray::GetIndexBuffer()
+    Ref<GLIndexBuffer> GLVertexArray::GetIndexBuffer()
     {
         return _indexBuffer;
     }

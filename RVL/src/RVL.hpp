@@ -34,6 +34,8 @@
 #include "RVL/Rendering/Renderer/SubTexture.hpp"
 #include "RVL/Rendering/Renderer/Transform.hpp"
 #include <RVL/API/Objects/TileSet.hpp>
+#include <RVL/API/Objects/UserPerspectiveCamera.hpp>
+#include <RVL/API/Objects/UserOrthographicCamera.hpp>
 #include <RVL/API/ECS/AnimationComponent.hpp>
 #include <RVL/API/ECS/MovementComponent.hpp>
 #include <RVL/API/ECS/TransformComponent.hpp>

@@ -8,7 +8,6 @@ namespace Rvl
     {
         _position = position;
         _viewMatrix = glm::mat4(1.0f);
-        _projectionMatrix = glm::mat4(1.0f);
         _zoom = zoom;
         _rotationZ = 0;
         ResetMatrix();
@@ -38,14 +37,14 @@ namespace Rvl
         return _rotationZ;
     }
 
-    glm::mat4 OrthographicCamera::GetProjectionMatrix(float viewportWidth, float viewportHeight)
+    glm::mat4 OrthographicCamera::GetProjectionMatrix(float viewportWidth, float viewportHeight) const
     {
         float aspectRatio = viewportWidth / viewportHeight;
-        _projectionMatrix = glm::ortho(-aspectRatio * _zoom, aspectRatio * _zoom, -_zoom, _zoom, -1.0f, 1.0f);
-        return _projectionMatrix;
+        glm::mat4 projectionMatrix = glm::ortho(-aspectRatio * _zoom, aspectRatio * _zoom, -_zoom, _zoom, -1.0f, 1.0f);
+        return projectionMatrix;
     }
 
-    glm::mat4 OrthographicCamera::GetViewMatrix()
+    glm::mat4 OrthographicCamera::GetViewMatrix() const
     {
         return _viewMatrix;
     }

@@ -87,6 +87,21 @@ namespace Rvl
         return _bufferId;
     }
 
+    void GLVertexBuffer::SetLayout(const std::initializer_list<LayoutElement>& layout)
+    {
+        _layout = layout;
+    }
+
+    std::vector<LayoutElement> GLVertexBuffer::GetLayout() const
+    {
+        return _layout;
+    }
+
+    bool GLVertexBuffer::IsLayoutUsed() const
+    {
+        return !_layout.empty();
+    }
+
     /// Index buffer
 
     GLIndexBuffer::GLIndexBuffer(const std::vector<uint32_t>& indicies)

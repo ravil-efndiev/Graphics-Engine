@@ -27,6 +27,8 @@ namespace Rvl
 
         GLFWwindow* GetWindowPtr();
 
+        void SetCursorLocked(bool flag);
+
     private:
         struct EventCallbackStruct 
         {
@@ -41,7 +43,7 @@ namespace Rvl
         GLFWwindow* _window;
 
         Ptr<GLContext> _context;
-        
+
         void InitGlfw();
         void CreateWindow();
         void SetCallbacks();

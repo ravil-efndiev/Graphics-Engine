@@ -3,6 +3,7 @@
 #include <Core/Core.hpp>
 #include "Transform.hpp"
 #include "SubTexture.hpp"
+#include "RenderCommand.hpp"
 
 namespace Rvl
 {
@@ -10,8 +11,7 @@ namespace Rvl
     class GLVertexBuffer;
     class GLShaderProgram;
     class GLTexture;
-    class PerspectiveCamera;
-    class OrthographicCamera;
+    class Camera;
 
     class Renderer
     {
@@ -19,19 +19,12 @@ namespace Rvl
         static void Init();
         static void Shutdown();
 
-        static void SubmitGeometry(GLVertexArray& vertexArray, GLShaderProgram& shader);
         static void DrawRect(const Transform& transform, const glm::vec4& color);
         static void DrawRect(const Transform& transform, const Ref<GLTexture>& texture, const glm::vec4& tintColor = {1.f, 1.f, 1.f, 1.f});
         static void DrawRect(const Transform& transform, const Ref<SubTexture>& subtexture, const glm::vec4& tintColor = {1.f, 1.f, 1.f, 1.f});
 
-        static void SetClearColor(const glm::vec3& clearColor);
-        static void Clear();
-
-        static void BeginContext(OrthographicCamera& camera, float viewportWidth, float viewportHeight);
+        static void BeginContext(const Ref<Camera>& camera, float viewportWidth, float viewportHeight);
         static void EndContext();
-
-        static void GetViewport(int rViewport[2]);
-        static void SetViewport(const glm::vec2& viewport);
 
         static glm::vec2 ConvertToWorldCoords(double x, double y);
 
@@ -47,15 +40,11 @@ namespace Rvl
         static void ResetStats();
 
     private:
-        static void DrawIndicies(const Ref<GLVertexArray>& vertexArray, int indexCount = 0);
-        static void DrawIndicies(GLVertexArray& vertexArray, int indexCount = 0);
-
         static void BeginBatch();
         static void FlushAndReset();
 
     private:
         static glm::mat4 _projview;
-        static glm::vec3 _clearColor;
 
         static constexpr size_t _rectsPerCall = 10000;
         static constexpr size_t _verticiesPerCall = _rectsPerCall * 4;

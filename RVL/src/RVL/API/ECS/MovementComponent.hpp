@@ -25,7 +25,7 @@ namespace Rvl
         MovementComponent(Entity* self, float maxVelocity, float acceleration, float deceleration);
         ~MovementComponent();
 
-        void Update() override;
+        void Update();
 
         void StopVelocity();
 

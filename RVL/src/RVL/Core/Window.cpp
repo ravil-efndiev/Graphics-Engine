@@ -132,4 +132,9 @@ namespace Rvl
     {
         return _window;
     }
+    
+    void Window::SetCursorLocked(bool flag)
+    {
+        glfwSetInputMode(_window, GLFW_CURSOR, flag ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+    }
 }

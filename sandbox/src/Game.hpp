@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MainScene.hpp"
+#include "MainState.hpp"
 
 class Game : public Rvl::App
 {

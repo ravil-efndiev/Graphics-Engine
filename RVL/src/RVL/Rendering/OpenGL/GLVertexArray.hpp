@@ -14,13 +14,15 @@ namespace Rvl
         GLVertexArray();
         ~GLVertexArray();
 
-        void AddVertexBuffer(const std::shared_ptr<GLVertexBuffer>& vertexBuffer);
-        void AddIndexBuffer(const std::shared_ptr<GLIndexBuffer>& indexBuffer);
+        void SetSingleVertexBuffer(const Ref<GLVertexBuffer>& vertexBuffer);
+
+        void AddVertexBuffer(const Ref<GLVertexBuffer>& vertexBuffer);
+        void AddIndexBuffer(const Ref<GLIndexBuffer>& indexBuffer);
 
         void Bind();
         void Unbind();
 
-        std::shared_ptr<GLIndexBuffer> GetIndexBuffer();
+        Ref<GLIndexBuffer> GetIndexBuffer();
 
         void BindIndexBuffer();
         void UnbindIndexBuffer();
@@ -32,8 +34,8 @@ namespace Rvl
 
         int _currentAttribIndex = 0;
 
-        std::vector<std::shared_ptr<GLVertexBuffer>> _vertexBuffers;
-        std::shared_ptr<GLIndexBuffer> _indexBuffer;
+        std::vector<Ref<GLVertexBuffer>> _vertexBuffers;
+        Ref<GLIndexBuffer> _indexBuffer;
 
         void SetAttribPtr(int index, const GLVertexBuffer& vertexBuffer);
     };

@@ -7,9 +7,9 @@
 
 namespace Rvl
 {
-    Ref<UserOrthographicCamera> UserOrthographicCamera::Create(const glm::vec2 &position, float zoom)
+    Ref<UserOrthographicCamera> UserOrthographicCamera::Create(const glm::vec2& position, float zoom)
     {
-        return std::make_shared<UserOrthographicCamera>(position, zoom);
+        return NewRef<UserOrthographicCamera>(position, zoom);
     }
 
     UserOrthographicCamera::UserOrthographicCamera(const glm::vec2& position, float zoom)
@@ -64,7 +64,7 @@ namespace Rvl
         _camera->SetPosition(pos);
     }
  
-    Ref<OrthographicCamera> UserOrthographicCamera::GetCamera()
+    Ref<Camera> UserOrthographicCamera::GetCamera() const
     {
         return _camera;
     }
