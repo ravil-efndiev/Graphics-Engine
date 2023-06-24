@@ -2,7 +2,6 @@
 
 #include <RVL.hpp>
 #include <Rendering/OpenGL/GLShaderProgram.hpp>
-#include <Rendering/Renderer/Model.hpp>
 #include <Rendering/Renderer/PostProcess.hpp>
 
 using namespace Rvl;

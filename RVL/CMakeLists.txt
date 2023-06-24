@@ -25,7 +25,6 @@ add_library(RVL STATIC
     src/RVL/Rendering/Renderer/Renderer.cpp
     src/RVL/Rendering/Renderer/Renderer3D.cpp
     src/RVL/Rendering/Renderer/Mesh.cpp
-    src/RVL/Rendering/Renderer/Model.cpp
     src/RVL/Rendering/Renderer/PostProcess.cpp
     src/RVL/Rendering/Renderer/SubTexture.cpp
     src/RVL/Rendering/Renderer/OrthographicCamera.cpp
