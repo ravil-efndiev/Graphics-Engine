@@ -1,6 +1,6 @@
 #pragma once
 
-#include "2D/TransformComponent.hpp"
+#include "TransformComponent.hpp"
 
 #define RVL_BEHAVIOUR(Type) Type(Entity& self) : Behaviour(self) {} \
                            ~Type() {}

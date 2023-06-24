@@ -8,13 +8,12 @@ namespace Rvl
 {
     glm::vec3 RenderCommand::_clearColor;
 
-    void RenderCommand::GetViewport(int rViewport[2])
+    glm::vec2 RenderCommand::GetViewport()
     {
         int viewport[4];
         glGetIntegerv(GL_VIEWPORT, viewport);
 
-        rViewport[0] = viewport[2];
-        rViewport[1] = viewport[3];
+        return { viewport[2], viewport[3] };
     }
 
     void RenderCommand::SetViewport(const glm::vec2& viewport)

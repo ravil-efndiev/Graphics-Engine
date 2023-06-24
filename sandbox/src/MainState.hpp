@@ -1,11 +1,9 @@
 #pragma once
+
 #include <RVL.hpp>
-#include <Rendering/OpenGL/GLVertexArray.hpp>
-#include <Rendering/OpenGL/GLBuffer.hpp>
 #include <Rendering/OpenGL/GLShaderProgram.hpp>
-#include <Rendering/OpenGL/GLTexture.hpp>
-#include <Rendering/Renderer/SubTexture.hpp>
 #include <Rendering/Renderer/Model.hpp>
+#include <Rendering/Renderer/PostProcess.hpp>
 
 using namespace Rvl;
 class MainState : public Rvl::State
@@ -20,26 +18,16 @@ public:
     void Render() override;
 
 private:
-    float _smoothSpeed = 10.f;
-
     void RenderImGui();
 
-    Entity _test;
-    Entity _tileMap;
-
-    SpriteComponent* _sc;
-    TransformComponent* _tc;
-
-    glm::vec4 _tintColor { 1.f, 1.f, 1.f, 1.f };
+    Entity _model;
 
     glm::vec2 _camRotation {0.f};
-
-    Ref<GLShaderProgram> _mShader;
-
-    bool _lock = false;
-
     glm::vec3 _light { 10.f, 0.f, 3.f };
 
-    Ref<Model> _model;    
+    Ref<GLShaderProgram> _mShader;
+    Ref<PostProcess> _postProcess;
+
+    bool _lock = false;
 };
 

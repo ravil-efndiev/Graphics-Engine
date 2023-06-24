@@ -41,13 +41,12 @@ namespace Rvl
             RenderCommand::Clear();
         }
 
-        int viewport[2];
-        RenderCommand::GetViewport(viewport);
+        glm::vec2 viewport = RenderCommand::GetViewport();
 
         if (_mode == RenderMode::Mode_2D)
-            Renderer::BeginContext(_camera->GetCamera(), viewport[0], viewport[1]);
+            Renderer::BeginContext(_camera->GetCamera(), viewport.x, viewport.y);
         else if (_mode == RenderMode::Mode_3D)
-            Renderer3D::BeginContext(_camera->GetCamera(), viewport[0], viewport[1]);
+            Renderer3D::BeginContext(_camera->GetCamera(), viewport.x, viewport.y);
     }
 
     void State::End()

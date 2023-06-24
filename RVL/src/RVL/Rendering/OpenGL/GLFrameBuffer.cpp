@@ -29,6 +29,8 @@ namespace Rvl
         glBindRenderbuffer(GL_RENDERBUFFER, 0);
     }
 
+    GLFrameBuffer::GLFrameBuffer(const glm::vec2& size) : GLFrameBuffer(size.x, size.y) {}
+
     GLFrameBuffer::~GLFrameBuffer()
     {
         glDeleteFramebuffers(1, &_fboId);
@@ -41,7 +43,7 @@ namespace Rvl
         return _colorAttachment;
     }
 
-    void GLFrameBuffer::RescaleFrameBuffer(float width, float height)
+    void GLFrameBuffer::Resize(float width, float height)
     {
         _width = width;
         _height = height;
@@ -57,6 +59,11 @@ namespace Rvl
         glBindRenderbuffer(GL_RENDERBUFFER, _rboId);
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _rboId);
+    }
+
+    void GLFrameBuffer::Resize(const glm::vec2& size)
+    {
+        Resize(size.x, size.y);
     }
 
     void GLFrameBuffer::Bind() const

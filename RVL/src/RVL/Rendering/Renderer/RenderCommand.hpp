@@ -13,7 +13,7 @@ namespace Rvl
         static void SetClearColor(const glm::vec3& clearColor);
         static void Clear();        
 
-        static void GetViewport(int rViewport[2]);
+        static glm::vec2 GetViewport();
         static void SetViewport(const glm::vec2& viewport);
 
         static void DrawIndicies(const Ref<GLVertexArray>& vertexArray, int indexCount = 0);

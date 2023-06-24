@@ -1,12 +1,10 @@
 #include "MainState.hpp"
 
+#include <3D/ModelComponent.hpp>
 #include <Rendering/Renderer/Renderer.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <API/Objects/TileSet.hpp>
-
-#include "Rendering/Renderer/Renderer3D.hpp"
-
-#include "TestScript.hpp"
+#include <Rendering/Renderer/Renderer3D.hpp>
+#include <Rendering/OpenGL/GLFrameBuffer.hpp>
 
 MainState::MainState() : State(RenderMode::Mode_3D) {}
 MainState::~MainState() {}
@@ -15,10 +13,13 @@ void MainState::Start()
 {
     _camera = UserPerspectiveCamera::New(glm::vec3(0.f, 0.f, 3.f), 45.f);
 
-    _model = NewRef<Model>("./assets/textures/backpack.obj");
+    _fbo = NewRef<GLFrameBuffer>(RenderCommand::GetViewport());
+    _postProcess = NewRef<PostProcess>(_fbo);
 
-    _mShader = NewRef<GLShaderProgram>("assets/shaders/a.vert", "assets/shaders/a.frag");
-    _mShader->Link();
+    _model = _currentScene.NewEntity();
+    _model.AddComponent<ModelComponent>("./assets/textures/backpack.obj");
+
+    (_mShader = NewRef<GLShaderProgram>("assets/shaders/light.vert", "assets/shaders/light.frag"))->Link();
 }
 
 void MainState::Update()
@@ -49,10 +50,9 @@ void MainState::Update()
 
     if (_lock)
     {
-        int vp[2];
-        RenderCommand::GetViewport(vp);
+        glm::vec2 viewport = RenderCommand::GetViewport();
 
-        _camRotation += Input::GetCursorDelta() / (float)vp[1] * 2.f;
+        _camRotation += Input::GetCursorDelta() / (float)viewport.y * 2.f;
         
         if (_camRotation.y > glm::radians(89.f))
             _camRotation.y = glm::radians(89.f);
@@ -68,15 +68,15 @@ void MainState::Update()
     _mShader->SetUniformVec4("u_ViewPos", glm::vec4((glm::vec3)UserCamera::ToPerspective(_camera)->Position, 0.f));
 }
 
-void MainState::Tick()
-{
-}
+void MainState::Tick() {}
 
 void MainState::Render()
 {
     RenderImGui();
 
-    _model->Draw(_mShader);
+    _postProcess->Begin();
+    _currentScene.DrawModel(_model, _mShader);
+    _postProcess->End();
 }
 
 void MainState::RenderImGui()
@@ -84,18 +84,9 @@ void MainState::RenderImGui()
     auto stats = Renderer::GetStats();
 
     ImGui::Begin("Properties");
-    ImGui::SliderFloat("camera smooth speed", &_smoothSpeed, 0.f, 20.f);
-    ImGui::ColorEdit4("Tint color", glm::value_ptr(_tintColor));
-    
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
     ImGui::Text("Application immidieate %.3f ms/frame (%.1f FPS)", 1000.f / (1.f / Time::DeltaTime()), 1.f / Time::DeltaTime());
-    ImGui::Text("Renderer statistics:");
-    ImGui::Text("Draw calls count: %d", stats.DrawCalls);
-    ImGui::Text("Rectangles count: %d", stats.RectCount);
-    ImGui::Text("Verticies count: %d", stats.VerticiesCount);
-    ImGui::Text("Indicies count: %d", stats.IndiciesCount);
-
-    ImGui::SliderFloat3("Light position", glm::value_ptr(_light), -10.f, 10.f);
+    ImGui::SliderFloat3("Light direction", glm::value_ptr(_light), -10.f, 10.f);
     ImGui::End();
 
     Renderer::ResetStats();

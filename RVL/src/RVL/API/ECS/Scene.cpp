@@ -1,10 +1,13 @@
 #include "Scene.hpp"
 #include "Entity.hpp"
-#include "2D/TransformComponent.hpp"
+#include "TransformComponent.hpp"
 #include "2D/SpriteComponent.hpp"
 #include "2D/TileMapComponent.hpp"
+#include "3D/ModelComponent.hpp"
 
 #include <Rendering/Renderer/Renderer.hpp>
+#include <Rendering/Renderer/Renderer3D.hpp>
+#include <Rendering/OpenGL/GLShaderProgram.hpp>
 
 namespace Rvl
 {
@@ -14,7 +17,7 @@ namespace Rvl
     Entity Scene::NewEntity()
     {
         Entity entity (this, _registry.create());
-        entity.AddComponent<TransformComponent>(glm::vec3(0.f, 0.f, 0.f), 0.f, glm::vec2(0.f, 0.f));
+        entity.AddComponent<TransformComponent>(glm::vec3(0.f), glm::vec3(0.f), glm::vec2(0.f));
         return entity;
     }
     
@@ -50,10 +53,25 @@ namespace Rvl
         }
     }
 
+    void Scene::DrawModel(Entity entity, const Ref<GLShaderProgram>& shader)
+    {
+        RVL_ASSERT((entity.HasComponent<ModelComponent>()), "entity passed into DrawModel function doesn't have Model Component");
+        RVL_ASSERT((entity.HasComponent<TransformComponent>()), "entity passed into DrawModel function doesn't have Transform Component");
+
+        auto meshes = entity.GetComponent<ModelComponent>().GetMeshes();
+        auto transform = entity.GetComponent<TransformComponent>();
+
+        for (auto& mesh : meshes)
+        {
+            shader->Bind();
+            shader->SetUniformMat4("u_Transform", ((Transform)transform).GetMatrix());
+            Renderer3D::SubmitMesh(mesh, shader);
+        }
+    }
+
     void Scene::AddBehaviour(Behaviour* behaviour)
     {
         _behaviours.push_back(behaviour);
-        
     }
 
     void Scene::StartBehaviours()

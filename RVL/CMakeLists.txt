@@ -26,6 +26,7 @@ add_library(RVL STATIC
     src/RVL/Rendering/Renderer/Renderer3D.cpp
     src/RVL/Rendering/Renderer/Mesh.cpp
     src/RVL/Rendering/Renderer/Model.cpp
+    src/RVL/Rendering/Renderer/PostProcess.cpp
     src/RVL/Rendering/Renderer/SubTexture.cpp
     src/RVL/Rendering/Renderer/OrthographicCamera.cpp
     src/RVL/Rendering/Renderer/PerspectiveCamera.cpp
@@ -42,11 +43,12 @@ add_library(RVL STATIC
     src/RVL/API/ECS/Scene.cpp
     src/RVL/API/ECS/Component.cpp
     src/RVL/API/ECS/Behaviour.cpp
+    src/RVL/API/ECS/TransformComponent.cpp
     src/RVL/API/ECS/2D/SpriteComponent.cpp
-    src/RVL/API/ECS/2D/TransformComponent.cpp
     src/RVL/API/ECS/2D/TileMapComponent.cpp
     src/RVL/API/ECS/2D/MovementComponent.cpp
     src/RVL/API/ECS/2D/AnimationComponent.cpp
+    src/RVL/API/ECS/3D/ModelComponent.cpp
 
     # dependencies
     vendor/lib/glad/glad.c

@@ -92,10 +92,9 @@ namespace Rvl
     {
         ImGuiIO& io = ImGui::GetIO();
 
-        int viewport[2];
-        RenderCommand::GetViewport(viewport);
+        glm::vec2 viewport = RenderCommand::GetViewport();
 
-		io.DisplaySize = ImVec2((float)viewport[1], (float)viewport[2]);
+		io.DisplaySize = ImVec2((float)viewport.x, (float)viewport.y);
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

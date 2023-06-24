@@ -8,6 +8,7 @@
 namespace Rvl
 {
     class Entity;
+    class GLShaderProgram;
 
     class Scene
     {
@@ -21,6 +22,7 @@ namespace Rvl
 
         void DrawSprite(Entity entity);
         void DrawTileMap(Entity entity);
+        void DrawModel(Entity entity, const Ref<GLShaderProgram>& shader);
 
         void AddBehaviour(Behaviour* behaviour);
 
