@@ -40,8 +40,8 @@ namespace Rvl
     glm::mat4 OrthographicCamera::GetProjectionMatrix(float viewportWidth, float viewportHeight) const
     {
         float aspectRatio = viewportWidth / viewportHeight;
-        glm::mat4 projectionMatrix = glm::ortho(-aspectRatio * _zoom, aspectRatio * _zoom, -_zoom, _zoom, -1.0f, 1.0f);
-        return projectionMatrix;
+        _projectionMatrix = glm::ortho(-aspectRatio * _zoom, aspectRatio * _zoom, -_zoom, _zoom, -1.0f, 1.0f);
+        return _projectionMatrix;
     }
 
     glm::mat4 OrthographicCamera::GetViewMatrix() const

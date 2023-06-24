@@ -66,6 +66,8 @@ namespace Rvl
 
         ConfigParser _parser { "settings/projects.rconfig" };
 
+        Ref<UserOrthographicCamera> _oCamera;
+
     private:
         void RenderUI();
     };

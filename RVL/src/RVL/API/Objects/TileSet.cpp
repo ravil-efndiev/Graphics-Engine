@@ -30,7 +30,7 @@ namespace Rvl
 
             try 
             {
-                _tiles.emplace(tokens[0], SubTexture::Create(_mapTexture,
+                _tiles.emplace(tokens[0], SubTexture::New(_mapTexture,
                     (float)std::stoi(tokens[1]), 
                     (float)std::stoi(tokens[2]),
                     (float)std::stoi(tokens[3]), 
@@ -65,7 +65,7 @@ namespace Rvl
     {
         if (_tiles.find(name) != _tiles.end())
             throw Error("tile names in tileSet must be unique", RVL_RUNTIME_ERROR);
-        _tiles.emplace(name, SubTexture::Create(_mapTexture, texX, texY, texWidth, texHeight));
+        _tiles.emplace(name, SubTexture::New(_mapTexture, texX, texY, texWidth, texHeight));
     }
 
     std::string TileSet::GetString() const

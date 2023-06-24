@@ -3,7 +3,7 @@
 
 namespace Rvl
 {
-    Ref<UserPerspectiveCamera> UserPerspectiveCamera::Create(const glm::vec3& position, float fov)
+    Ref<UserPerspectiveCamera> UserPerspectiveCamera::New(const glm::vec3& position, float fov)
     {
         return NewRef<UserPerspectiveCamera>(position, fov);
     }

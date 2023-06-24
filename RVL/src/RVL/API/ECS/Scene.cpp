@@ -1,8 +1,8 @@
 #include "Scene.hpp"
 #include "Entity.hpp"
-#include "TransformComponent.hpp"
-#include "SpriteComponent.hpp"
-#include "TileMapComponent.hpp"
+#include "2D/TransformComponent.hpp"
+#include "2D/SpriteComponent.hpp"
+#include "2D/TileMapComponent.hpp"
 
 #include <Rendering/Renderer/Renderer.hpp>
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <Core/Core.hpp>
 #include "Camera.hpp"
+#include "Mesh.hpp"
 #include "RenderCommand.hpp"
 
 namespace Rvl
@@ -16,8 +17,10 @@ namespace Rvl
         static void BeginContext(const Ref<Camera>& camera, float viewportWidth, float viewportHeight);
         static void EndContext();
 
-        static void Submit(GLVertexArray& vertexArray, GLShaderProgram& shader);
-        static void Submit(const Ref<GLVertexArray>& vertexArray, const Ref<GLShaderProgram>& shader);
+        static void SubmitVa(GLVertexArray& vertexArray, GLShaderProgram& shader);
+        static void SubmitVa(const Ref<GLVertexArray>& vertexArray, const Ref<GLShaderProgram>& shader);
+
+        static void SubmitMesh(const Mesh& mesh, const Ref<GLShaderProgram>& shader);
 
     private:
         static glm::mat4 _projview;

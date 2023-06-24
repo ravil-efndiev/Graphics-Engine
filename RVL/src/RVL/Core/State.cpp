@@ -9,10 +9,12 @@
 
 namespace Rvl
 { 
-    State::State() {}
+    State::State(RenderMode mode) 
+    {
+        _mode = mode;
+    }
+    
     State::~State() {}
-
-    void State::Tick() {}
 
     void State::StartScene()
     {
@@ -42,12 +44,18 @@ namespace Rvl
         int viewport[2];
         RenderCommand::GetViewport(viewport);
 
-        Renderer3D::BeginContext(_camera->GetCamera(), viewport[0], viewport[1]);
+        if (_mode == RenderMode::Mode_2D)
+            Renderer::BeginContext(_camera->GetCamera(), viewport[0], viewport[1]);
+        else if (_mode == RenderMode::Mode_3D)
+            Renderer3D::BeginContext(_camera->GetCamera(), viewport[0], viewport[1]);
     }
 
     void State::End()
     {
-        Renderer3D::EndContext();
+        if (_mode == RenderMode::Mode_2D)
+            Renderer::EndContext();
+        else if (_mode == RenderMode::Mode_3D)
+            Renderer3D::EndContext();
         
         if (_fbo)
             _fbo->Unbind();

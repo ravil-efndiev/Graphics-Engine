@@ -24,6 +24,8 @@ add_library(RVL STATIC
     src/RVL/Rendering/Renderer/RenderCommand.cpp
     src/RVL/Rendering/Renderer/Renderer.cpp
     src/RVL/Rendering/Renderer/Renderer3D.cpp
+    src/RVL/Rendering/Renderer/Mesh.cpp
+    src/RVL/Rendering/Renderer/Model.cpp
     src/RVL/Rendering/Renderer/SubTexture.cpp
     src/RVL/Rendering/Renderer/OrthographicCamera.cpp
     src/RVL/Rendering/Renderer/PerspectiveCamera.cpp
@@ -40,11 +42,11 @@ add_library(RVL STATIC
     src/RVL/API/ECS/Scene.cpp
     src/RVL/API/ECS/Component.cpp
     src/RVL/API/ECS/Behaviour.cpp
-    src/RVL/API/ECS/SpriteComponent.cpp
-    src/RVL/API/ECS/TransformComponent.cpp
-    src/RVL/API/ECS/TileMapComponent.cpp
-    src/RVL/API/ECS/MovementComponent.cpp
-    src/RVL/API/ECS/AnimationComponent.cpp
+    src/RVL/API/ECS/2D/SpriteComponent.cpp
+    src/RVL/API/ECS/2D/TransformComponent.cpp
+    src/RVL/API/ECS/2D/TileMapComponent.cpp
+    src/RVL/API/ECS/2D/MovementComponent.cpp
+    src/RVL/API/ECS/2D/AnimationComponent.cpp
 
     # dependencies
     vendor/lib/glad/glad.c
@@ -66,14 +68,17 @@ target_include_directories(RVL PUBLIC .)
 target_include_directories(RVL PUBLIC src)
 target_include_directories(RVL PUBLIC src/RVL)
 target_include_directories(RVL PUBLIC src/RVL/Core)
+target_include_directories(RVL PUBLIC src/RVL/API/ECS)
+target_include_directories(RVL PUBLIC src/RVL/API/)
 target_include_directories(RVL PUBLIC vendor/)
+target_include_directories(RVL PUBLIC vendor/assimp/include/)
 target_include_directories(RVL PUBLIC vendor/imgui)
 target_include_directories(RVL PRIVATE vendor/include)
 target_include_directories(RVL PRIVATE vendor/include/glm)
 
 include(GNUInstallDirs)
 
-target_link_libraries(RVL /Users/Belokan/RVL\ Engine/RVL/vendor/lib/libglfw3.a)
+target_link_libraries(RVL ${CMAKE_CURRENT_SOURCE_DIR}/vendor/lib/libglfw3.a ${CMAKE_CURRENT_SOURCE_DIR}/vendor/assimp/lib/libassimp.a)
 
 set(CMAKE_CXX_FLAGS "-Wall -Wextra -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -framework CoreFoundation -Wno-deprecated -Wno-unused-command-line-argument")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")

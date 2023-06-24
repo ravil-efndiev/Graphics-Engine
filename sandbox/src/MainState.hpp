@@ -5,6 +5,7 @@
 #include <Rendering/OpenGL/GLShaderProgram.hpp>
 #include <Rendering/OpenGL/GLTexture.hpp>
 #include <Rendering/Renderer/SubTexture.hpp>
+#include <Rendering/Renderer/Model.hpp>
 
 using namespace Rvl;
 class MainState : public Rvl::State
@@ -33,10 +34,12 @@ private:
 
     glm::vec2 _camRotation {0.f};
 
-    Ref<GLVertexArray> _vao;
-    Ref<GLVertexBuffer> _vbo;
-    Ref<GLShaderProgram> _shader;
+    Ref<GLShaderProgram> _mShader;
 
     bool _lock = false;
+
+    glm::vec3 _light { 10.f, 0.f, 3.f };
+
+    Ref<Model> _model;    
 };
 

@@ -2,14 +2,14 @@
 
 namespace Rvl
 {
-    Ref<SubTexture> SubTexture::Create(const Ref<GLTexture>& baseTexture, float x, float y, float spriteWidth, float spriteHeight)
+    Ref<SubTexture> SubTexture::New(const Ref<GLTexture>& baseTexture, float x, float y, float spriteWidth, float spriteHeight)
     {
         Ref<SubTexture> texture = NewRef<SubTexture> ( baseTexture, x, y, spriteWidth, spriteHeight);
 
         return texture;
     }
 
-    Ref<SubTexture> SubTexture::Create(const Ref<GLTexture>& baseTexture, const glm::vec2& pos, const glm::vec2& size)
+    Ref<SubTexture> SubTexture::New(const Ref<GLTexture>& baseTexture, const glm::vec2& pos, const glm::vec2& size)
     {
         return NewRef<SubTexture>(baseTexture, pos.x, pos.y, size.x, size.y);
     }

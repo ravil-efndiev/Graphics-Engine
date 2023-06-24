@@ -10,18 +10,20 @@ namespace Rvl
     class OrthographicCamera;
     class GLFrameBuffer;
 
+    enum class RenderMode { Mode_3D, Mode_2D };
+
     class State
     {
     friend class App;
 
     public:
-        State();
+        State(RenderMode mode);
         virtual ~State();
 
-        virtual void Start() = 0;
-        virtual void Update() = 0;
-        virtual void Render() = 0;
-        virtual void Tick();
+        virtual void Start() {}
+        virtual void Update() {}
+        virtual void Render() {}
+        virtual void Tick() {}
 
         void StartScene();
         void UpdateScene();
@@ -35,6 +37,8 @@ namespace Rvl
         Scene _currentScene;
 
     private:
+        RenderMode _mode;
+
         void Begin(); // can be accessed by RvlApp parent but not RvlApp children
         void End();  // can be accessed by RvlApp parent but not RvlApp children
 

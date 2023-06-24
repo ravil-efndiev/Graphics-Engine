@@ -41,6 +41,7 @@ namespace Rvl
     static SceneUIData UIData;
 
     MapEditorState::MapEditorState(const std::string& projName, const std::string& texturePath)
+        : State(RenderMode::Mode_2D)
     {
         _projectExists = false;
         _tileSetExists = false;
@@ -50,6 +51,7 @@ namespace Rvl
     }
 
     MapEditorState::MapEditorState(const std::string& projName, const Ref<TileSet>& tls)
+        : State(RenderMode::Mode_2D)
     {
         _projectExists = false;
         _tileSetExists = true;
@@ -59,6 +61,7 @@ namespace Rvl
     }
 
     MapEditorState::MapEditorState(const std::string& projName, const Ref<TileSet>& tls, const std::string& tlmPath, float scale, float zIndex)
+        : State(RenderMode::Mode_2D)
     {
         _projectExists = false;
         _tileSetExists = true;
@@ -77,6 +80,7 @@ namespace Rvl
     }
 
     MapEditorState::MapEditorState(const std::string& projName)
+        : State(RenderMode::Mode_2D)
     {
         _projectName = projName;
 
@@ -101,8 +105,10 @@ namespace Rvl
     
     void MapEditorState::Start()
     {
-        _camera = UserOrthographicCamera::Create({0.f, 0.f}, _cameraZoom);
+        _camera = UserOrthographicCamera::New({0.f, 0.f}, _cameraZoom);
         AddFrameBuffer(NewRef<GLFrameBuffer>(500, 350));
+
+        _oCamera = UserCamera::ToOrtho(_camera);
 
         if (!_tlm)
         {
@@ -174,7 +180,7 @@ namespace Rvl
 
     void MapEditorState::Update()
     {
-        _camera->SetZoom(_cameraZoom);
+        _oCamera->SetZoom(_cameraZoom);
 
         if (Input::IsKeyPressed(Keys::Key_LeftControl))
         {
@@ -191,9 +197,9 @@ namespace Rvl
         {
             if ((UIData.GlobalWinFlags & ImGuiWindowFlags_NoInputs) == 0 && UIData.MapviewFocused)
             {
-                _camera->SetPosition({
-                    _camera->GetPosition().x + Input::GetAxis(Axis::Horizontal) * _cameraSpeed * Time::DeltaTime(),
-                    _camera->GetPosition().y + Input::GetAxis(Axis::Vertical) * _cameraSpeed * Time::DeltaTime()
+                _oCamera->SetPosition({
+                    _oCamera->GetPosition().x + Input::GetAxis(Axis::Horizontal) * _cameraSpeed * Time::DeltaTime(),
+                    _oCamera->GetPosition().y + Input::GetAxis(Axis::Vertical) * _cameraSpeed * Time::DeltaTime()
                 });
                     
                 if (Input::IsKeyPressed(Keys::Key_LeftAlt))
@@ -263,13 +269,11 @@ namespace Rvl
 
     void MapEditorState::Render()
     {
-        RVL_LOG("lol");
-
-        Renderer::SetClearColor(UIData.BackgroundColor);
+        RenderCommand::SetClearColor(UIData.BackgroundColor);
 
         _currentScene.DrawTileMap(_tlmEntity);
 
-        if (_selectedTile.empty())
+        if (!_selectedTile.empty())
             _currentScene.DrawSprite(_tilePreviewEntity);
 
         RenderUI();

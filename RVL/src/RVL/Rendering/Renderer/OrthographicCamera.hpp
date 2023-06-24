@@ -27,6 +27,7 @@ namespace Rvl
         void ResetMatrix();
 
         glm::mat4 _viewMatrix;
+        mutable glm::mat4 _projectionMatrix;
 
         glm::vec3 _position;
         float _rotationZ;

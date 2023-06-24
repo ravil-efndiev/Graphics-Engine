@@ -1,7 +1,7 @@
 #pragma once
 
 #include "API/ECS/Entity.hpp"
-#include "API/ECS/TransformComponent.hpp"
+#include "API/ECS/2D/TransformComponent.hpp"
 #include <Core/Core.hpp>
 #include <API/Math/Math.hpp>
 #include <API/Time.hpp>
@@ -13,7 +13,7 @@ namespace Rvl
     class UserOrthographicCamera : public UserCamera
     {
     public:
-        static Ref<UserOrthographicCamera> Create(const glm::vec2& position = {0.f, 0.f}, float zoom = 1.f);
+        static Ref<UserOrthographicCamera> New(const glm::vec2& position = {0.f, 0.f}, float zoom = 1.f);
 
         UserOrthographicCamera(const glm::vec2& position, float zoom);
         ~UserOrthographicCamera();

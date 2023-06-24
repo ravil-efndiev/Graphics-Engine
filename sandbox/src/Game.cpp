@@ -12,7 +12,7 @@ Game::~Game() {}
 
 void Game::Start()
 {
-    SetClearColor({0.3f, 0.5f, 0.5f});
+    SetClearColor({0.1f, 0.1f, 0.1f});
     _currentState = NewPtr<MainState>();
     _currentState->Start();
 }

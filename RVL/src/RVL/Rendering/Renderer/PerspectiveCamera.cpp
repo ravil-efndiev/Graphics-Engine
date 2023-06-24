@@ -56,12 +56,14 @@ namespace Rvl
     glm::mat4 PerspectiveCamera::GetProjectionMatrix(float viewportWidth, float viewportHeight) const
     {
         float aspect = viewportWidth / viewportHeight;
-        return glm::perspective(70.f, aspect, 0.1f, 100.f);
+        _projectionMatrix = glm::perspective(70.f, aspect, 0.1f, 100.f);
+        return _projectionMatrix;
     }
 
     glm::mat4 PerspectiveCamera::GetViewMatrix() const
     {
-        return glm::lookAt(_position, _position + _forward, _up);
+        _viewMatrix = glm::lookAt(_position, _position + _forward, _up);
+        return _viewMatrix;
     }
 
 }

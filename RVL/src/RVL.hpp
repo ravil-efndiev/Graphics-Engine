@@ -36,11 +36,11 @@
 #include <RVL/API/Objects/TileSet.hpp>
 #include <RVL/API/Objects/UserPerspectiveCamera.hpp>
 #include <RVL/API/Objects/UserOrthographicCamera.hpp>
-#include <RVL/API/ECS/AnimationComponent.hpp>
-#include <RVL/API/ECS/MovementComponent.hpp>
-#include <RVL/API/ECS/TransformComponent.hpp>
-#include <RVL/API/ECS/TileMapComponent.hpp>
-#include <RVL/API/ECS/SpriteComponent.hpp>
+#include <RVL/API/ECS/2D/AnimationComponent.hpp>
+#include <RVL/API/ECS/2D/MovementComponent.hpp>
+#include <RVL/API/ECS/2D/TransformComponent.hpp>
+#include <RVL/API/ECS/2D/TileMapComponent.hpp>
+#include <RVL/API/ECS/2D/SpriteComponent.hpp>
 #include <RVL/API/ECS/Behaviour.hpp>
 #include "RVL/API/Input.hpp"
 #include "RVL/API/Time.hpp"

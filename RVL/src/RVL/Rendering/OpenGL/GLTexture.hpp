@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Core/Core.hpp>
 #include <Rvlpch.hpp>
 
 namespace Rvl
@@ -14,7 +15,7 @@ namespace Rvl
         ~GLTexture();
 
         void LoadTexture(const std::string& path);
-        void SetData(uint8_t* data, int channels);
+        void SetData(byte* data, int channels);
 
         void Bind(int unit) const;
         void Unbind() const;
@@ -23,16 +24,24 @@ namespace Rvl
         int GetHeight() const;
 
         GLuint GetId() const;
+        GLuint GetSamplerId() const;
         std::string GetPath() const;
 
         bool operator== (const GLTexture& tex) const;
+
+    public:
+        static GLuint TextureFromFile(const std::string& path, bool gamma = false);
+        static void BindTextureUnit(GLuint texture, int unit);
+        static void ActivateTexture(int unit);
 
     private:
         GLuint _textureId;
         GLuint _samplerId;
         GLenum _dataFormat;
+        
         int _width, _height, _channels;        
-        unsigned char* _textureData;
+
+        byte* _textureData;
 
         std::string _path = "";
     };

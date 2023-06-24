@@ -7,3 +7,7 @@
 [submodule "RVLMapEditor/vendor/nativefiledialog"]
 	path = RVLMapEditor/vendor/nativefiledialog
 	url = https://github.com/mlabbe/nativefiledialog.git
+	
+[submodule "RVL/vendor/assimp"]
+	path = RVL/vendor/assimp
+	url = https://github.com/assimp/assimp.git

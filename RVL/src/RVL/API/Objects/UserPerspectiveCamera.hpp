@@ -13,7 +13,7 @@ namespace Rvl
     class UserPerspectiveCamera : public UserCamera
     {
     public:
-        static Ref<UserPerspectiveCamera> Create(const glm::vec3& position = {0.f, 0.f, 0.f}, float fov = 45.f);
+        static Ref<UserPerspectiveCamera> New(const glm::vec3& position = {0.f, 0.f, 0.f}, float fov = 45.f);
 
         UserPerspectiveCamera(const glm::vec3& position, float fov);
         ~UserPerspectiveCamera();

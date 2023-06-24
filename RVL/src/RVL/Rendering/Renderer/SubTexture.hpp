@@ -9,8 +9,8 @@ namespace Rvl
     class SubTexture
     {
     public:
-        static Ref<SubTexture> Create(const Ref<GLTexture>& baseTexture, float x, float y, float spriteWidth, float spriteHeight);
-        static Ref<SubTexture> Create(const Ref<GLTexture>& baseTexture, const glm::vec2& pos, const glm::vec2& size);
+        static Ref<SubTexture> New(const Ref<GLTexture>& baseTexture, float x, float y, float spriteWidth, float spriteHeight);
+        static Ref<SubTexture> New(const Ref<GLTexture>& baseTexture, const glm::vec2& pos, const glm::vec2& size);
 
         SubTexture(const Ref<GLTexture>& baseTexture, float x, float y, float spriteWidth, float spriteHeight);
         ~SubTexture();

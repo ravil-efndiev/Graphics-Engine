@@ -19,7 +19,7 @@ namespace Rvl
     {
     }
 
-    void Renderer3D::Submit(GLVertexArray& vertexArray, GLShaderProgram& shader)
+    void Renderer3D::SubmitVa(GLVertexArray& vertexArray, GLShaderProgram& shader)
     {
         shader.Bind();
         shader.SetUniformMat4("u_Projview", _projview);
@@ -27,11 +27,43 @@ namespace Rvl
         shader.Unbind();
     }
 
-    void Renderer3D::Submit(const Ref<GLVertexArray>& vertexArray, const Ref<GLShaderProgram>& shader)
+    void Renderer3D::SubmitVa(const Ref<GLVertexArray>& vertexArray, const Ref<GLShaderProgram>& shader)
     {
         shader->Bind();
         shader->SetUniformMat4("u_Projview", _projview);
         RenderCommand::DrawIndicies(vertexArray);
         shader->Unbind();
     }   
+
+    void Renderer3D::SubmitMesh(const Mesh& mesh, const Ref<GLShaderProgram>& shader)
+    {
+        int diffuseNr = 1;
+        int specularNr = 1;
+
+        auto textures =  mesh.GetTextures();
+
+        shader->Bind();
+        shader->SetUniformMat4("u_Projview", _projview);
+        
+        for (int i = 0; i < textures.size(); i++)
+        {
+            std::string number;
+            std::string name = textures[i].Type;
+
+            if (name == "texture_diffuse")
+                number = std::to_string(diffuseNr++);
+                
+            else if (name == "texture_specular")
+                number = std::to_string(specularNr++);
+
+            shader->SetUniformInt(name + number, i);
+            
+            GLTexture::BindTextureUnit(textures[i].Id, i);
+        }
+        GLTexture::ActivateTexture(0);
+
+        RenderCommand::DrawIndicies(mesh.GetVao());
+        shader->Unbind();
+    }
+
 }

@@ -20,7 +20,7 @@ namespace Rvl
         void SetCursorLocked(bool flag);
 
         template <class T>
-        static Ref<App> Create()
+        static Ref<App> New()
         {
             RVL_ASSERT((_instance == nullptr), "instance of App already exists");
 
@@ -68,5 +68,5 @@ namespace Rvl
     extern void OnEnd() RVL_ENTRY_FUNCTION;
 }
 
-#define RVL_IMPL_INIT(AppType) Rvl::Ref<Rvl::App> Rvl::OnInit() { return Rvl::App::Create<AppType>(); }
+#define RVL_IMPL_INIT(AppType) Rvl::Ref<Rvl::App> Rvl::OnInit() { return Rvl::App::New<AppType>(); }
 
