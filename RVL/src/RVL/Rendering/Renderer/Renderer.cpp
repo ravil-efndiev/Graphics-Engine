@@ -276,4 +276,15 @@ namespace Rvl
         glm::vec3 worldCoords = glm::unProject(pos, glm::mat4(1.0f), _projview, vec4viewport);
         return glm::vec2(worldCoords.x, worldCoords.y);
     }
+    
+    glm::vec2 Renderer::ConvertToWorldCoords(double x, double y, const glm::vec2& pos)
+    {
+        glm::vec2 viewport = RenderCommand::GetViewport();
+
+        glm::vec4 vec4viewport (pos.x, pos.y, viewport.x, viewport.y);
+        glm::vec3 posi (x, viewport.x - y, 0);
+
+        glm::vec3 worldCoords = glm::unProject(posi, glm::mat4(1.0f), _projview, vec4viewport);
+        return glm::vec2(worldCoords.x, worldCoords.y);
+    }
 }

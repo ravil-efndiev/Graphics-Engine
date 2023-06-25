@@ -27,6 +27,7 @@ namespace Rvl
         static void EndContext();
 
         static glm::vec2 ConvertToWorldCoords(double x, double y);
+        static glm::vec2 ConvertToWorldCoords(double x, double y, const glm::vec2& pos);
 
         struct Statistics
         {

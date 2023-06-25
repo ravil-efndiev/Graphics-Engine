@@ -119,7 +119,7 @@ namespace Rvl
         }
 
         _tilePreviewEntity = _currentScene.NewEntity();
-        _tilePreviewEntity.AddComponent<SpriteComponent>(&_tilePreviewEntity, _tls->GetTexture(), _scale);
+        _tilePreviewEntity.AddComponent<SpriteComponent>(_tls->GetTexture(), _scale);
 
         _tilePreview = &_tilePreviewEntity.GetComponent<SpriteComponent>();
         _tilePreview->SetSubTexture(0, 0, 0, 0);
@@ -447,8 +447,10 @@ namespace Rvl
         if (_viewportSize != ImToGlmVec2(viewportSize))
         {
             _viewportSize = {viewportSize.x, viewportSize.y};
-            _fbo->RescaleFrameBuffer(viewportSize.x, viewportSize.y);
+            _fbo->Resize(viewportSize.x, viewportSize.y);
         }
+
+        RenderCommand::SetViewport({_fbo->GetWidth(), _fbo->GetHeight()});
 
         UIData.SceneWindowPosition = ImGui::GetWindowPos();
 
