@@ -4,7 +4,7 @@
 
 RVL Engine is a C++ low-middle level game engine for 2D games (has 3D features that are currently being activelly worked on)
 
-It has a lot of modules such as 2D batch rendering, 3D forward rendering, 3D model loading, simple post-processing and indev lighting system
+It has a lot of modules such as 2D batch rendering, Graphical 2D tilemap editor, 3D forward rendering, 3D model loading, simple post-processing and indev lighting system
 Main game developement pattern used to create games is ECS (Entity-Component-System) and it currently has almost all functionality needed
 to make real projects, you can read detailed information on ECS and other parts of an engine in [documentation](docs.rvl)
 
