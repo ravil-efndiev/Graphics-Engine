@@ -6,23 +6,25 @@
 #include <Rendering/Renderer/Renderer3D.hpp>
 #include <Rendering/OpenGL/GLFrameBuffer.hpp>
 
-MainState::MainState() : State(RenderMode::Mode_2D) {}
+MainState::MainState() : State(RenderMode::Mode_3D) {}
 MainState::~MainState() {}
 
 void MainState::Start()
 {
     _camera = UserPerspectiveCamera::New(glm::vec3(0.f, 0.f, 3.f), 45.f);
 
+    /*
     _sprite = _currentScene.NewEntity();
     _sprite.AddComponent<SpriteComponent>("assets/textures/map.png", 1.f);
     _sprite.AddComponent<MovementComponent>(14.f, 140.f, 100.f);
-    /*_fbo = NewRef<GLFrameBuffer>(RenderCommand::GetViewport());
+    */
+    _fbo = NewRef<GLFrameBuffer>(RenderCommand::GetViewport());
     _postProcess = NewRef<PostProcess>(_fbo);
 
     _model = _currentScene.NewEntity();
     _model.AddComponent<ModelComponent>("./assets/textures/backpack.obj");
 
-    (_mShader = NewRef<GLShaderProgram>("assets/shaders/light.vert", "assets/shaders/light.frag"))->Link();*/
+    (_mShader = NewRef<GLShaderProgram>("assets/shaders/light.vert", "assets/shaders/light.frag"))->Link();
 }
 
 void MainState::Update()
@@ -66,11 +68,11 @@ void MainState::Update()
         UserCamera::ToPerspective(_camera)->Rotate(_camRotation.y, _camRotation.x, 0.f);
     }
 
-    _sprite.GetComponent<MovementComponent>().Move(Input::GetAxis(Axis::Horizontal), Input::GetAxis(Axis::Vertical));
-    /*
+    //_sprite.GetComponent<MovementComponent>().Move(Input::GetAxis(Axis::Horizontal), Input::GetAxis(Axis::Vertical));
+    
     _mShader->Bind();
     _mShader->SetUniformVec4("u_Direction", glm::vec4(_light, 0.f));
-    _mShader->SetUniformVec4("u_ViewPos", glm::vec4((glm::vec3)UserCamera::ToPerspective(_camera)->Position, 0.f));*/
+    _mShader->SetUniformVec4("u_ViewPos", glm::vec4((glm::vec3)UserCamera::ToPerspective(_camera)->Position, 0.f));
 }
 
 void MainState::Tick() {}
@@ -79,11 +81,11 @@ void MainState::Render()
 {
     RenderImGui();
 
-    _currentScene.DrawSprite(_sprite);
+    //_currentScene.DrawSprite(_sprite);
 
-    /*_postProcess->Begin();
+    _postProcess->Begin();
     _currentScene.DrawModel(_model, _mShader);
-    _postProcess->End();*/
+    _postProcess->End();
 
 
 }
