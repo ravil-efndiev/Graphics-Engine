@@ -1,5 +1,5 @@
 # RVL Engine
-
+![](https://github.com/ravil-efndiev/RVL-Engine/blob/main/img/icon.png)
 ### version alpha 1.4 
 
 RVL Engine is a C++ low-middle level game engine for 2D games (has 3D features that are currently being activelly worked on)
