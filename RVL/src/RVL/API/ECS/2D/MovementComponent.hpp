@@ -16,20 +16,18 @@ namespace Rvl
         StandLeft, MoveLeft,
     };
 
-    class MovementComponent : public Component
+    class MovementComponent
     {
     public:
         MovementComponent() = default;
         MovementComponent(const MovementComponent&) = default;
-        MovementComponent(Entity* self, float maxVelocity, float acceleration, float deceleration);
+        MovementComponent(float maxVelocity, float acceleration, float deceleration);
         ~MovementComponent();
 
         void Update();
-
-        void StopVelocity();
-
         void Move(float x, float y);
 
+        void StopVelocity();
         glm::vec2 GetVelocity() const;
 
         float GetMaxVelocity() const;
@@ -52,9 +50,6 @@ namespace Rvl
         glm::vec2 _velocity;
         float _acceleration;
         float _deceleration;
-
-        TransformComponent* _selfTransform;
-
     };
 }
 

@@ -20,6 +20,7 @@ private:
     void RenderImGui();
 
     Entity _model;
+    Entity _sprite;
 
     glm::vec2 _camRotation {0.f};
     glm::vec3 _light { 10.f, 0.f, 3.f };

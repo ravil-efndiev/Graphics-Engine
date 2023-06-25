@@ -40,7 +40,6 @@ add_library(RVL STATIC
     src/RVL/API/Objects/TileSet.cpp
     src/RVL/API/ECS/Entity.cpp
     src/RVL/API/ECS/Scene.cpp
-    src/RVL/API/ECS/Component.cpp
     src/RVL/API/ECS/Behaviour.cpp
     src/RVL/API/ECS/TransformComponent.cpp
     src/RVL/API/ECS/2D/SpriteComponent.cpp
@@ -48,6 +47,7 @@ add_library(RVL STATIC
     src/RVL/API/ECS/2D/MovementComponent.cpp
     src/RVL/API/ECS/2D/AnimationComponent.cpp
     src/RVL/API/ECS/3D/ModelComponent.cpp
+    src/RVL/API/ECS/Systems/StandartSystems.cpp
 
     # dependencies
     vendor/lib/glad/glad.c

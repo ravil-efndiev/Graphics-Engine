@@ -2,26 +2,20 @@
 
 namespace Rvl
 {
-    SpriteComponent::SpriteComponent(Entity* self, const std::string& path, float scale) : Component(self)
+    SpriteComponent::SpriteComponent(const std::string& path, float scale)
     {
-        RVL_ASSERT((_self->HasComponent<TransformComponent>()), "target entity doesn't have transform component");
-
         _scale = scale;
         LoadTexture(path);
     }
     
-    SpriteComponent::SpriteComponent(Entity* self, const Ref<GLTexture>& texture, float scale) : Component(self)
+    SpriteComponent::SpriteComponent(const Ref<GLTexture>& texture, float scale)
     {
-        RVL_ASSERT((_self->HasComponent<TransformComponent>()), "target entity doesn't have transform component");
-
         _scale = scale;
         LoadTexture(texture);
     }
 
-    SpriteComponent::SpriteComponent(Entity* self, const glm::vec4& color) : Component(self)
+    SpriteComponent::SpriteComponent(const glm::vec4& color)
     {
-        RVL_ASSERT((_self->HasComponent<TransformComponent>()), "target entity doesn't have transform component");
-
         _scale = 1.f;
         _color = color;
         _drawType = DrawType::Color;
@@ -53,7 +47,7 @@ namespace Rvl
         _subTexture = SubTexture::New(_texture, x, y, spriteWidth, spriteHeight);
 
         float ratio = spriteWidth / spriteHeight;
-        _self->GetComponent<TransformComponent>().Scale = glm::vec2(ratio * _scale, _scale);
+        _currentScale = glm::vec2(ratio * _scale, _scale);
     }
 
     void SpriteComponent::SetSubTexture(const Ref<SubTexture>& subTexture)
@@ -62,7 +56,7 @@ namespace Rvl
         _subTexture = SubTexture::New(_texture, subTexture->GetX(), subTexture->GetY(), subTexture->GetWidth(), subTexture->GetHeight());
 
         float ratio = subTexture->GetWidth() / subTexture->GetHeight();
-        _self->GetComponent<TransformComponent>().Scale = glm::vec2(ratio * _scale, _scale);
+        _currentScale = glm::vec2(ratio * _scale, _scale);
     }
 
     void SpriteComponent::ResetScale()
@@ -70,7 +64,7 @@ namespace Rvl
         RVL_ASSERT((_drawType == DrawType::Texture), "Cannot reset scale based on texture in sprite without texture");
         float ratio = (float)_texture->GetWidth() / (float)_texture->GetHeight();
 
-        _self->GetComponent<TransformComponent>().Scale = glm::vec2(ratio * _scale, _scale);
+        _currentScale = glm::vec2(ratio * _scale, _scale);
     }
 
     void SpriteComponent::ResetSubTexture()
@@ -113,5 +107,10 @@ namespace Rvl
     bool SpriteComponent::ColorIsTint() const
     {
         return _useColorAsTint;
+    }
+    
+    glm::vec2 SpriteComponent::GetCurrentScale() const
+    {
+        return _currentScale;
     }
 }

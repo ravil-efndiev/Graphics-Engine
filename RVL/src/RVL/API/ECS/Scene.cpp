@@ -9,16 +9,30 @@
 #include <Rendering/Renderer/Renderer3D.hpp>
 #include <Rendering/OpenGL/GLShaderProgram.hpp>
 
+#include "Systems/StandartSystems.hpp"
+
 namespace Rvl
 {
-    Scene::Scene() {}
+    Scene::Scene() 
+    {
+        AddSystem(Sprite2DSystem);
+        AddSystem(Movement2DSystem);
+        AddSystem(Animation2DSystem);
+    }
+
     Scene::~Scene() {}
     
     Entity Scene::NewEntity()
     {
         Entity entity (this, _registry.create());
         entity.AddComponent<TransformComponent>(glm::vec3(0.f), glm::vec3(0.f), glm::vec2(0.f));
+        _entities.push_back(entity);
         return entity;
+    }
+
+    void Scene::AddSystem(const System& system)
+    {
+        _systems.push_back(system);
     }
     
     void Scene::DrawSprite(Entity entity)
@@ -87,6 +101,11 @@ namespace Rvl
         for (auto behaviour : _behaviours)
         {
             behaviour->Update();
+        }
+
+        for (auto system : _systems)
+        {
+            system(_entities);
         }
     }
 }

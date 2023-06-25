@@ -2,41 +2,43 @@
 
 #include <Entity.hpp>
 #include <API/Time.hpp>
-#include <Component.hpp>
 
 namespace Rvl
 {
-    class AnimationComponent : public Component
+    class AnimationComponent
     {
     public:
         AnimationComponent() = default;
         AnimationComponent(const AnimationComponent&) = default;
-        AnimationComponent(Entity* self);
         ~AnimationComponent();
 
         void Update();
 
-        void AddAnimation(const std::string& name, TimeStep animTimer, float startX, float startY, float endX, float endY, float subSpriteWidth, float subSpriteHeight);
+        void AddAnimation(const std::string& name, TimeStep animTimer, float startX, float startY, float endX, float subSpriteWidth, float subSpriteHeight);
         void Play(const std::string& name);
 
         bool IsAnimationDone();
+
+        glm::vec4 GetSubTextureData() const;
 
     private:
         class Animation
         {
         public:
-            Animation(Entity* sprite, TimeStep animTimer, float startX, float startY, float endX, float endY, float subSpriteWidth, float subSpriteHeight);
+            Animation(TimeStep animTimer, float startX, float startY, float endX, float subSpriteWidth, float subSpriteHeight);
 
             void Play();
+            glm::vec4 GetSubTextureData() const;
 
             bool _done = false;
+
         private:
-            Entity* _sprite;
             TimeStep _timer, _animTimer;
-            float _startX, _startY, _endX, _endY;
+            float _startX, _startY, _endX;
             float _subSpriteWidth, _subSpriteHeight;
             float _currentX;
 
+            glm::vec4 _subTextureData;
         };
 
         std::unordered_map<std::string, Ref<Animation>> _animations;

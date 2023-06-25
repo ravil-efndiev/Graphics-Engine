@@ -4,11 +4,10 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include <Component.hpp>
 
 namespace Rvl
 {
-    class ModelComponent : public Component
+    class ModelComponent
     {
     public:
         ModelComponent(const std::string& path);

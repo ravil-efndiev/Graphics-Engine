@@ -2,11 +2,10 @@
 
 #include <Rendering/Renderer/Transform.hpp>
 #include <API/Property.hpp>
-#include <Component.hpp>
 
 namespace Rvl
 {
-    class TransformComponent : public Component
+    class TransformComponent
     {
     public:
         TransformComponent() = default;

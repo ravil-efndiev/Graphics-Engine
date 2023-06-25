@@ -7,14 +7,14 @@
 
 namespace Rvl
 {
-    class SpriteComponent : public Component
+    class SpriteComponent
     {
     public:
         SpriteComponent() = default;
         SpriteComponent(const SpriteComponent&) = default;
-        SpriteComponent(Entity* self, const std::string& path, float scale);
-        SpriteComponent(Entity* self, const Ref<GLTexture>& texture, float scale);
-        SpriteComponent(Entity* self, const glm::vec4& color);
+        SpriteComponent(const std::string& path, float scale);
+        SpriteComponent(const Ref<GLTexture>& texture, float scale);
+        SpriteComponent(const glm::vec4& color);
 
         enum class DrawType { Color, Texture };
 
@@ -38,14 +38,17 @@ namespace Rvl
         void UseColorAsTint(bool flag);
         bool ColorIsTint() const;
 
+        glm::vec2 GetCurrentScale() const;
+
     private:
         float _scale;
 
         Ref<SubTexture> _subTexture;
         Ref<GLTexture> _texture;
-        glm::vec4 _color;
-
         DrawType _drawType;
+
+        glm::vec4 _color;
+        glm::vec2 _currentScale { 0.f };
 
         bool _useColorAsTint;
     };

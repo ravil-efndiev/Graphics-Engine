@@ -3,7 +3,6 @@
 #include <API/Objects/TileSet.hpp>
 #include <Rendering/Renderer/Transform.hpp>
 #include <Rendering/Renderer/SubTexture.hpp>
-#include <Component.hpp>
 
 namespace Rvl
 {
@@ -33,7 +32,7 @@ namespace Rvl
         Transform _transform;
     };
 
-    class TileMapComponent : public Component
+    class TileMapComponent
     {
     public:
         TileMapComponent(const TileMapComponent&) = default;

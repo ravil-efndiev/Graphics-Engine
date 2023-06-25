@@ -3,22 +3,15 @@
 
 namespace Rvl
 {
-
-    AnimationComponent::AnimationComponent(Entity* self) : Component(self)
-    {
-        RVL_ASSERT((_self->HasComponent<SpriteComponent>()), "entity passed into animation component construct has no sprite component");
-    }
-
     AnimationComponent::~AnimationComponent() {}
 
     void AnimationComponent::Update() {}
 
-    void AnimationComponent::AddAnimation(const std::string& name, TimeStep animTimer, float startX, float startY, float endX, float endY, float subSpriteWidth, float subSpriteHeight)
+    void AnimationComponent::AddAnimation(const std::string& name, TimeStep animTimer, float startX, float startY, float endX, float subSpriteWidth, float subSpriteHeight)
     {
-        _animations.emplace(
-            name, 
-            NewRef<Animation>(_self, animTimer, startX, startY, endX, endY, subSpriteWidth, subSpriteHeight)
-        );
+        Ref<Animation> animation = NewRef<Animation>(animTimer, startX, startY, endX, subSpriteWidth, subSpriteHeight);
+        _animations.emplace(name, animation);
+        _currentAnimation = animation.get();
     }
 
     void AnimationComponent::Play(const std::string& name)
@@ -36,14 +29,17 @@ namespace Rvl
         return _currentAnimation->_done;
     }
 
-    AnimationComponent::Animation::Animation(Entity* sprite, TimeStep animTimer, float startX, float startY, float endX, float endY, float subSpriteWidth, float subSpriteHeight)
-        : _sprite(sprite), _startX(startX), _startY(startY), _endX(endX), _endY(endY), _animTimer(animTimer),
+    glm::vec4 AnimationComponent::GetSubTextureData() const
+    {
+        return _currentAnimation->GetSubTextureData();
+    }
+
+    AnimationComponent::Animation::Animation(TimeStep animTimer, float startX, float startY, float endX, float subSpriteWidth, float subSpriteHeight)
+        : _startX(startX), _startY(startY), _endX(endX), _animTimer(animTimer),
           _subSpriteWidth(subSpriteWidth), _subSpriteHeight(subSpriteHeight)
     {
-        RVL_ASSERT((_sprite->HasComponent<SpriteComponent>()), "entity passed into animation construct has no sprite component");
-    
         _currentX = _startX;
-        _sprite->GetComponent<SpriteComponent>().SetSubTexture(startX, startY, subSpriteWidth, subSpriteHeight);
+        _subTextureData = {startX, startY, subSpriteWidth, subSpriteHeight};
     }
 
     void AnimationComponent::Animation::Play()
@@ -63,7 +59,12 @@ namespace Rvl
                 _currentX = _startX;
                 _done = true;
             }
-            _sprite->GetComponent<SpriteComponent>().SetSubTexture(_currentX, _startY, _subSpriteWidth, _subSpriteHeight);
+            _subTextureData = {_currentX, _startY, _subSpriteWidth, _subSpriteHeight};
         }
+    }
+    
+    glm::vec4 AnimationComponent::Animation::GetSubTextureData() const
+    {
+        return _subTextureData;
     }
 }
