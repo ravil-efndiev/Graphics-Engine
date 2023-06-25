@@ -20,24 +20,14 @@ All you need to do hwen your project is set-up and successfully links to libRVL 
 This is main class for any RVL application, it will look something like this:
 
 ```cpp
-#include <RVL.hpp>
-
 class Game : public Rvl::App
 {
 public:
     Game() : Rvl::App(windowWidth, windowHeight, windowTitle) {}
 
 private:
-    void Start() override 
-    {
-        RVL_LOG("App has started");
-    }
-    
-    void Update() override
-    {
-        RVL_LOG("App is in main loop");
-    }
-
+    void Start() override; 
+    void Update() override;
 };
 ```
 
@@ -92,3 +82,11 @@ RVL_IMPL_INIT(Game)
 assuming that you are doing it in cpp file, if you want to split your game class into header and source files, you must include EntryPoint and RVL_IMPL_INIT only in cpp file.
 
 So now as you've created your very first 'Hello, World' program you should now check documentation in order to understand how to actually make a game with RVL Engine, good luck!
+
+Here you can see some screenshots that can probabbly make you more interested
+![](https://github.com/ravil-efndiev/RVL-Engine/blob/main/img/editor.png)
+2d tilemap editor
+![](https://github.com/ravil-efndiev/RVL-Engine/blob/main/img/model.png)
+3d model with lighting and basic post-processing
+![](https://github.com/ravil-efndiev/RVL-Engine/blob/main/img/2D.png)
+2d character prototype with animations and movement
