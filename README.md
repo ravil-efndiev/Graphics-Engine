@@ -1,119 +1,94 @@
-# RVL-Engine
+# RVL Engine
 
-### current version: 1.3-a (alpha) (mac build)
+### version alpha 1.4 
 
-RVL Engine is a game developement framkework for C++ and OpenGL
+RVL Engine is a C++ low-middle level game engine for 2D games (has 3D features that are currently being activelly worked on)
 
-## Short description:
-This is object-oriented game dev and graphics framework <br>
-Now with RVL Engine you can create basic 2D games, create graphics objects, scenes, cameras and so on <br>
-All client-side code is being written in project that includes libRVL.a and RVL.hpp header <br>
-It doesn't need any entry point, only basic classes, full tutorial on creating a project you can see in section below
+It has a lot of modules such as 2D batch rendering, 3D forward rendering, 3D model loading, simple post-processing and indev lighting system
+Main game developement pattern used to create games is ECS (Entity-Component-System) and it currently has almost all functionality needed
+to make real projects, you can read detailed information on ECS and other parts of an engine in [documentation](docs.rvl)
 
-## Project creation guide
-Since I have no CLI just use ```git clone https://github.com/ravil-efndiev/RVL-Engine.git``` and go to sandbox folder <br>
-There open src and there will be basic project structure and functionality tests <br>
-To compile and run type "make" and "./sandbox" or any other executable name you choose in CMakeLists.txt
+## Getting Started
 
+Engine uses CMake build system and almost all needed dependencies are included as submodules, all you need to do to install and run engine
+is to clone this repository with ```--recursive``` flag. On Windows you'll probabbly need to recompile engine itself so it compiles as 'lib' static library, but all windows-related information will be evantually written in documentation when I'll port engine to Windows
+All game code is written in "sandbox" project, or any other project that has same structure as sandbox, details can be seen in [documentation](docs.rvl)
 
-## Brief documentation (I'm to lazy to write full version, it'll be someday...)
-### App
-Every RVL program starts with your application class - it is a class that inherits from RvlApp <br>
-All basic classes have these virtual methods: Start(), Update() that have to be overridden in child classes <br>
-When child RvlApp class is created, it has to call RvlApp constructor that takes game window width, height and title <br>
-As you see in an example project - Game class implements all of those three methods <br>
-To create and render any objects you can either use Renderer commands directly (which is not recomended), <br>
-or create RvlScene child class (see usage is Scenes section)
+## 'Hello, World' program
 
-### Refs and Scopes
-Ref and Scope are basically std::shared_ptr and std::unique_ptr <br>
-to init Ref use CreateRef<T>() function (std::make_shared wrapper) and CreateScope<T>() (std::make_unique) <br>
-also most classes in engine have static Create function that returns Ref of that class (take different parameters, varying on class constructor) <br>
-examples:
-```cpp
-Ref<float> object = CreateRef<float>(10.f); // make_shared<float>(10.f)
-
-Ref<Sprite> sprite1 = CreateRef<Sprite>(glm::vec2(0.f, 5.f), 1.5f); // general sprite initialization
-Ref<Sprite> sprite2 = Sprite::Create({0.f, 5.f}, 1.5f); // Sprite-specific initialization
-```
-
-### Scenes
-Any scene is a class that is inheritedfrom RvlScene class and it is a place where all object creation and rendering happens <br>
-Any scene also has Start, Update and Render methods, that should be called in application class <br>
-Start and Update work the same, but Render is being called after update when all inside-engine work with scene has been done, and must be used to draw scene objects<br>
-RvlApp class has protected member called _currentScene - this is the scene that is curretnly being worked with <br>
-In Start of app class initialize your _currentScene with your custom scene class like this:
-```cpp
-_currentScene = CreateRef<YourSceneClass>();
-```
-Also every scene has _camera object - Ref of Camera (UserOrhtographicCamera class) which must be initialized in Start() of a scene <br>
-example of camera initialization:
-```cpp
-_camera = Camera::Create();                 // position: 0, 0; zoom: 1
-_camera = Camera::Create({1.f, 5.f}, 10.f); // position: 1, 5; zoom: 10
-```
-
-You actually mustn't create RvlScene child class
-
-### Classes
-#### Rectangle
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; defines rectangle by it's position, width, height and color / transform, color <br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; uses flat color shader (no textures) <br>
-#### Sprite
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; defines sprite by it's position and scale, texture should be initialized with LoadTexture() <br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void LoadTexture(const std::string& path) - method that sets up texture to the sprite <br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; only after texture is initialized sprite can be rendered
-
-### Rendering
-Here we'll take only rendering inside RvlScene-child class. <br>
-In scene classes all draw calls must be done in Render method, because it takes all boiler-plate scene rendering job and automates it, so you don't have to do it by your own hands <br>
-Every primitive class has it's own Draw method, so most of the time, when you create Rectangle or Sprite object you can just do ```cpp object->Draw()```. <br>
-Also there is a possibility to workdirectly with renderer using ```cpp Renderer::DrawRect(/*transform*/, /*color or texture*/)```.
-example: 
-```cpp
-Ref<Rectangle> rect = Rectangle::Create(/*positio, scale or transform*/, /*color*/);
-
-// in Render()
-rect->Draw();
-//or
-Renderer::DrawRect(rect->transform(), rect->GetColor());
-```
-
-same works with sprites:
+All you need to do hwen your project is set-up and successfully links to libRVL library is to create so-called 'Game' class taht inherits from 'App' class
+This is main class for any RVL application, it will look something like this:
 
 ```cpp
-Ref<Sprite> sprite = Sprite::Create({0.f, 0.f}, 2.f); // 2 is scale of a texture
-sprite->LoadTexture("texture.png");
+#include <RVL.hpp>
 
-// in Render()
-sprite->Draw()
-// or
-Renderer::DrawRect(sprite->transform(), *sprite->GetTexture());
-```
-
-also you can draw rectangles with color or texture directly through renderer without primitives:
-
-```cpp
-Renderer::DrawRect({{3.f, 2.f, 0.f}, 45.f, {3.f, 3.f}}, {0.5f, 0.5f, 0.5f}); // color
-
-GLTexture texture ("path.png");
-Renderer::DrawRect({{3.f, 2.f, 0.f}, 45.f, {3.f, 3.f}}, texture); // using texture
-```
-
-### Entry point
-There is no necessity to write int main() by yourself, it is already initialized, but you must specify RvlApp class object <br>
-It can be done in OnInit function that returns Scope of type RvlAppe, example:
-```cpp
-Scope<RvlApp> rvl::OnInit()
+class Game : public Rvl::App
 {
-    return CreateScope<yourAppClass>();
+public:
+    Game() : Rvl::App(windowWidth, windowHeight, windowTitle) {}
+
+private:
+    void Start() override 
+    {
+        RVL_LOG("App has started");
+    }
+    
+    void Update() override
+    {
+        RVL_LOG("App is in main loop");
+    }
+
+};
+```
+
+Here we call App constructor where we pass all our window data (width, height, title)
+And decalre two overridden methods: Start, which is called once at the begginning of the program and Update, which is called every frame.
+
+Also to specify that our class is the one which is going to be used we need to implement global 'OnInit' function like this:
+```cpp
+Rvl::Ref<Rvl::App> Rvl::OnInit() 
+{
+    return Rvl::App::New<Game>(); 
 }
 ```
-!IMPORTANT! This function MUST be initialized only once in cpp file where you include EntryPoint.hpp header which has to be included ONLY ONCE
-```cpp
-// cpp file
-#include <RVL/Core/EntryPoint.hpp>
 
-// your code
-Scope<RvlApp> rvl::OnInit() {...}
+don't be confused by all this code, it will become clear later, also there is no actual need to write this function by ourselves, we can just call 
+```cpp
+RVL_IMPL_INIT(Game)
 ```
+macro that will do it for use automatically
+
+The result of this program will be empty window and text we've written in methods logging into standart output
+
+IMPORTANT NOTE:
+RVL_IMPL_INIT macro must be called only once in cpp file where you must include <EntryPoint.hpp> header file,
+the look of your program will be something like this:
+
+```cpp
+#include <RVL.hpp>
+#include <EntryPoint.hpp>
+
+class Game : public Rvl::App
+{
+public:
+    Game() : Rvl::App(windowWidth, windowHeight, windowTitle) {}
+
+private:
+    void Start() override 
+    {
+        RVL_LOG("App has started");
+    }
+    
+    void Update() override
+    {
+        RVL_LOG("App is in main loop");
+    }
+
+};
+
+RVL_IMPL_INIT(Game)
+```
+
+assuming that you are doing it in cpp file, if you want to split your game class into header and source files, you must include EntryPoint and RVL_IMPL_INIT only in cpp file.
+
+So now as you've created your very first 'Hello, World' program you should now check documentation in order to understand how to actually make a game with RVL Engine, good luck!
