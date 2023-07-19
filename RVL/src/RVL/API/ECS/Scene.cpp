@@ -7,7 +7,6 @@
 
 #include <Rendering/Renderer/Renderer.hpp>
 #include <Rendering/Renderer/Renderer3D.hpp>
-#include <Rendering/OpenGL/GLShaderProgram.hpp>
 
 #include "Systems/StandartSystems.hpp"
 
@@ -25,7 +24,7 @@ namespace Rvl
     Entity Scene::NewEntity()
     {
         Entity entity (this, _registry.create());
-        entity.AddComponent<TransformComponent>(glm::vec3(0.f), glm::vec3(0.f), glm::vec2(0.f));
+        entity.AddComponent<TransformComponent>(glm::vec3(0.f), glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
         _entities.push_back(entity);
         return entity;
     }
@@ -77,9 +76,7 @@ namespace Rvl
 
         for (auto& mesh : meshes)
         {
-            shader->Bind();
-            shader->SetUniformMat4("u_Transform", ((Transform)transform).GetMatrix());
-            Renderer3D::SubmitMesh(mesh, shader);
+            Renderer3D::SubmitMesh(mesh, shader, (Transform)transform);
         }
     }
 

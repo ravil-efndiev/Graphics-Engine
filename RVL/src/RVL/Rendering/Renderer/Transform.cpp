@@ -8,11 +8,11 @@ namespace Rvl
     {
         Position = glm::vec3(0.f);
         Rotation = glm::vec3(0.f);
-        Scale = glm::vec2(0.f);
+        Scale = glm::vec3(0.f);
         Pivot = glm::vec3(0.f);
     }
 
-    Transform::Transform(const glm::vec3& position, const glm::vec3& rotationDeg, const glm::vec2& scale)
+    Transform::Transform(const glm::vec3& position, const glm::vec3& rotationDeg, const glm::vec3& scale)
     {
         Position = position;
         Rotation = rotationDeg;
@@ -30,7 +30,7 @@ namespace Rvl
         matrix = glm::rotate(matrix, glm::radians(Rotation.x), glm::vec3(1, 0, 0));
         matrix = glm::rotate(matrix, glm::radians(Rotation.y), glm::vec3(0, 1, 0));
         matrix = glm::rotate(matrix, glm::radians(Rotation.z), glm::vec3(0, 0, 1));
-        matrix = glm::scale(matrix, glm::vec3(Scale.x, Scale.y, 0));
+        matrix = glm::scale(matrix, Scale);
 
         return matrix;
     }

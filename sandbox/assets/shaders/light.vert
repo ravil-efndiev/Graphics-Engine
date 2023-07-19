@@ -15,5 +15,5 @@ void main()
     v_TexCoords = aTexCoords;    
     v_Normal = mat3(transpose(inverse(u_Transform))) * aNormal;
 	v_FragPos = vec4(u_Transform * vec4(aPos, 1.f)).xyz;
-    gl_Position = u_Projview * vec4(aPos, 1.0);
+    gl_Position = u_Projview * u_Transform * vec4(aPos, 1.0);
 }

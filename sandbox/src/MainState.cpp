@@ -11,18 +11,11 @@ MainState::~MainState() {}
 
 void MainState::Start()
 {
-    _camera = UserPerspectiveCamera::New(glm::vec3(0.f, 0.f, 3.f), 45.f);
-
-    /*
-    _sprite = _currentScene.NewEntity();
-    _sprite.AddComponent<SpriteComponent>("assets/textures/map.png", 1.f);
-    _sprite.AddComponent<MovementComponent>(14.f, 140.f, 100.f);
-    */
-    _fbo = NewRef<GLFrameBuffer>(RenderCommand::GetViewport());
-    _postProcess = NewRef<PostProcess>(_fbo);
+    _camera = UserPerspectiveCamera::New({0.f, 0.f, 3.f}, 45.f);
 
     _model = _currentScene.NewEntity();
     _model.AddComponent<ModelComponent>("./assets/textures/backpack.obj");
+    _model.GetComponent<TransformComponent>().Rotation->z = 30.f;
 
     (_mShader = NewRef<GLShaderProgram>("assets/shaders/light.vert", "assets/shaders/light.frag"))->Link();
 }
@@ -47,7 +40,7 @@ void MainState::Update()
     if (Input::IsKeyPressed(Keys::Key_LeftShift))
         UserCamera::ToPerspective(_camera)->Position->y -= 5.f * Time::DeltaTime();
 
-    if (Input::IsKeyPressedOnce(Keys::Key_T))
+    if (Input::IsKeyPressedOnce(Keys::Key_Escape))
     {
         _lock = !_lock;
         App::GetInstance()->SetCursorLocked(_lock);
@@ -67,8 +60,6 @@ void MainState::Update()
 
         UserCamera::ToPerspective(_camera)->Rotate(_camRotation.y, _camRotation.x, 0.f);
     }
-
-    //_sprite.GetComponent<MovementComponent>().Move(Input::GetAxis(Axis::Horizontal), Input::GetAxis(Axis::Vertical));
     
     _mShader->Bind();
     _mShader->SetUniformVec4("u_Direction", glm::vec4(_light, 0.f));
@@ -81,13 +72,7 @@ void MainState::Render()
 {
     RenderImGui();
 
-    //_currentScene.DrawSprite(_sprite);
-
-    _postProcess->Begin();
     _currentScene.DrawModel(_model, _mShader);
-    _postProcess->End();
-
-
 }
 
 void MainState::RenderImGui()

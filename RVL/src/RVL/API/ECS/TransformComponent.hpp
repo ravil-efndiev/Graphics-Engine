@@ -10,11 +10,11 @@ namespace Rvl
     public:
         TransformComponent() = default;
         TransformComponent(const TransformComponent&) = default;
-        TransformComponent(const glm::vec3& position, const glm::vec3& rotationDeg, const glm::vec2& scale);
+        TransformComponent(const glm::vec3& position, const glm::vec3& rotationDeg, const glm::vec3& scale);
 
         Property<glm::vec3> Position;
         Property<glm::vec3> Rotation;
-        Property<glm::vec2> Scale;
+        Property<glm::vec3> Scale;
 
         operator const Transform& () const;
 

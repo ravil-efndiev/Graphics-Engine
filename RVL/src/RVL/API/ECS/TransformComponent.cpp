@@ -2,7 +2,7 @@
 
 namespace Rvl
 {
-    TransformComponent::TransformComponent(const glm::vec3& position, const glm::vec3& rotationDeg, const glm::vec2& scale)
+    TransformComponent::TransformComponent(const glm::vec3& position, const glm::vec3& rotationDeg, const glm::vec3& scale)
     {
         _transform = Transform(position, rotationDeg, scale);
 
@@ -20,7 +20,7 @@ namespace Rvl
             SET { _transform.Rotation = value; }
         );
 
-        Scale = Property<glm::vec2> 
+        Scale = Property<glm::vec3> 
         (
             &_transform.Scale,
             GET { return _transform.Scale; },

@@ -14,7 +14,8 @@ namespace Rvl
             if (entity.HasComponent<SpriteComponent>())
             {
                 RVL_ASSERT(entity.HasComponent<TransformComponent>(), "entity with sprite component doesn't have transform component");
-                entity.GetComponent<TransformComponent>().Scale = entity.GetComponent<SpriteComponent>().GetCurrentScale();
+                entity.GetComponent<TransformComponent>().Scale = 
+                    glm::vec3(entity.GetComponent<SpriteComponent>().GetCurrentScale(), 0.f);
             } 
         }
     }

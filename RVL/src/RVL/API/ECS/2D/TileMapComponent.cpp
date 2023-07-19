@@ -30,7 +30,7 @@ namespace Rvl
                 _mapTiles.push_back(tile);
 
                 if (_anyTileSize == glm::vec3(0.f, 0.f, 0.f))
-                    _anyTileSize = glm::vec3(tile.GetTransform().Scale, 0.f);
+                    _anyTileSize = tile.GetTransform().Scale;
             }
             catch (const std::invalid_argument& err)
             {
@@ -55,7 +55,7 @@ namespace Rvl
         _mapTiles.push_back(tile);
 
         if (_anyTileSize == glm::vec3(0.f, 0.f, 0.f))
-            _anyTileSize = glm::vec3(tile.GetTransform().Scale, 0.f);
+            _anyTileSize = tile.GetTransform().Scale;
 
         auto it = std::find_if(_mapTiles.begin(), _mapTiles.end(), [mapPos](auto& tile)
             {

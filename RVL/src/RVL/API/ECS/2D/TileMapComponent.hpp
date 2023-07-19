@@ -13,9 +13,9 @@ namespace Rvl
             : _subtexture(subtexture), _mapPosition(pos), _name(name) 
         {
             float ratio = _subtexture->GetWidth() / _subtexture->GetHeight();
-            _transform.Scale = glm::vec2(ratio * scale, scale);
+            _transform.Scale = glm::vec3(ratio * scale, scale, 0.f);
 
-            _transform.Position = glm::vec3(glm::vec2(_mapPosition) * _transform.Scale, zIndex);
+            _transform.Position = glm::vec3(glm::vec2(_mapPosition) * glm::vec2(_transform.Scale), zIndex);
         }
 
         glm::ivec2 GetMapPosition() const { return _mapPosition; }

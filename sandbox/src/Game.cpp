@@ -1,6 +1,4 @@
 #include "Game.hpp"
-
-// !!INCLUDE ONLY ONCE INSIDE CPP FILE THAT IMPLEMENTS OnInit!!
 #include <RVL/Core/EntryPoint.hpp>
 
 using namespace Rvl;

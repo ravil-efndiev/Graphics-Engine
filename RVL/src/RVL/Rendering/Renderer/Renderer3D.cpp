@@ -35,7 +35,7 @@ namespace Rvl
         shader->Unbind();
     }   
 
-    void Renderer3D::SubmitMesh(const Mesh& mesh, const Ref<GLShaderProgram>& shader)
+    void Renderer3D::SubmitMesh(const Mesh& mesh, const Ref<GLShaderProgram>& shader, const Transform& transform)
     {
         int diffuseNr = 1;
         int specularNr = 1;
@@ -44,6 +44,7 @@ namespace Rvl
 
         shader->Bind();
         shader->SetUniformMat4("u_Projview", _projview);
+        shader->SetUniformMat4("u_Transform", transform.GetMatrix());
         
         for (int i = 0; i < textures.size(); i++)
         {
