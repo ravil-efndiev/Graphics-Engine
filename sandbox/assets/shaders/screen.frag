@@ -7,7 +7,7 @@ uniform sampler2D u_ScreenTexture;
 
 void main()
 { 
-    const int pixelSize = 1;
+    const int pixelSize = 7;
 
     float x = int(gl_FragCoord.x) % pixelSize;
     float y = int(gl_FragCoord.y) % pixelSize;
@@ -15,5 +15,5 @@ void main()
     x = floor(pixelSize / 2.0) - x + gl_FragCoord.x;
     y = floor(pixelSize / 2.0) - y + gl_FragCoord.y;
 
-    FragColor = texture(u_ScreenTexture, vec2(x, y) / textureSize(u_ScreenTexture, 0).xy) * vec4(0.6, 0.3, 0.3, 1.0);
+    FragColor = texture(u_ScreenTexture, vec2(x, y) / textureSize(u_ScreenTexture, 0).xy) * vec4(0.4, 0.3, 0.5, 1.0);
 }

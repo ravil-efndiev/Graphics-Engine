@@ -6,6 +6,9 @@ namespace Rvl
 {
     GLShaderProgram::GLShaderProgram() {}
 
+    GLShaderProgram::GLShaderProgram(const std::string& shaderPath) : GLShaderProgram(shaderPath + ".vert", shaderPath + ".frag")
+    {}
+
     GLShaderProgram::GLShaderProgram(const std::string &vertexShaderPath, const std::string &fragmentShaderPath)
     {
         Load(vertexShaderPath, fragmentShaderPath);

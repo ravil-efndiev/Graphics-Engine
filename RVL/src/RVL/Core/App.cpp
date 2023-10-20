@@ -75,6 +75,14 @@ namespace Rvl
         }
     }
 
+    void App::ProcessEvent(Event* event)
+    {
+        if (_currentState)
+        {
+            _currentState->_currentScene.OnEvent(event);
+        }
+    }
+
     void App::Start() {}
     void App::Update() {}
     void App::Tick() {}
@@ -101,6 +109,7 @@ namespace Rvl
         _window->SetEventsCallback([](Event* event)
         {
             EventListener::Listen(event);
+            App::GetInstance()->ProcessEvent(event);
         });
     }
 

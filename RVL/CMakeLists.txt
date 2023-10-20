@@ -83,4 +83,4 @@ target_link_libraries(RVL ${CMAKE_CURRENT_SOURCE_DIR}/vendor/lib/libglfw3.a ${CM
 
 set(CMAKE_CXX_FLAGS "-Wall -Wextra -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -framework CoreFoundation -Wno-deprecated -Wno-unused-command-line-argument")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+set(CMAKE_CXX_FLAGS_RELEASE "-O4")

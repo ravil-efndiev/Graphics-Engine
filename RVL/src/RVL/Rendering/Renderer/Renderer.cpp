@@ -7,13 +7,18 @@
 
 namespace Rvl
 {
+    struct RectVertex 
+    {
+        glm::vec3 Position;
+        glm::vec4 Color;
+        glm::vec2 TexCoord;
+        float TexIndex;
+    };
+
     glm::mat4 Renderer::_projview (1.0f);
 
     Ref<GLVertexArray> Renderer::_rectVao;
-    Ref<GLVertexBuffer> Renderer::_rectPositionVbo;
-    Ref<GLVertexBuffer> Renderer::_rectColorVbo;
-    Ref<GLVertexBuffer> Renderer::_rectTexctureCoordsVbo;
-    Ref<GLVertexBuffer> Renderer::_rectTextureIndexVbo;
+    Ref<GLVertexBuffer> Renderer::_rectVbo;
     Ref<GLShaderProgram> Renderer::_textureShader;
 
     uint32_t Renderer::_rectIndiciesCount = 0;
@@ -21,10 +26,7 @@ namespace Rvl
     std::array<Ref<GLTexture>, 16> Renderer::_textureSlots;
     int Renderer::_textureSlotIndex = 1;
 
-    std::vector<glm::vec3> Renderer::_rectPositionVBOData;
-    std::vector<glm::vec4> Renderer::_rectColorVBOData;
-    std::vector<glm::vec2> Renderer::_rectTexCoordsVBOData;
-    std::vector<float> Renderer::_rectTexIndexVBOData;
+    static std::vector<RectVertex> _rectVBOData;
 
     const glm::vec4 Renderer::_rectVertexPositions[4] = 
     {
@@ -40,15 +42,16 @@ namespace Rvl
     {        
         _rectVao = NewRef<GLVertexArray>();
 
-		_rectPositionVbo = NewRef<GLVertexBuffer>(_verticiesPerCall * sizeof(glm::vec3), 3);
-		_rectColorVbo = NewRef<GLVertexBuffer>(_verticiesPerCall * sizeof(glm::vec4), 4);
-        _rectTextureIndexVbo = NewRef<GLVertexBuffer>(_verticiesPerCall * sizeof(float), 1);
-        _rectTexctureCoordsVbo = NewRef<GLVertexBuffer>(_verticiesPerCall * sizeof(glm::vec2), 2);
+        _rectVbo = NewRef<GLVertexBuffer>(_verticiesPerCall * sizeof(RectVertex), 1);
+        _rectVbo->SetLayout({
+            { ElementType::Vec3, 0, sizeof(RectVertex), false },
+            { ElementType::Vec4, offsetof(RectVertex, Color), sizeof(RectVertex), false },
+            { ElementType::Vec2, offsetof(RectVertex, TexCoord), sizeof(RectVertex), false },
+            { ElementType::Float, offsetof(RectVertex, TexIndex), sizeof(RectVertex), false },
+        });
 
-		_rectVao->AddVertexBuffer(_rectPositionVbo);
-		_rectVao->AddVertexBuffer(_rectColorVbo);
-		_rectVao->AddVertexBuffer(_rectTexctureCoordsVbo);
-		_rectVao->AddVertexBuffer(_rectTextureIndexVbo);
+
+        _rectVao->SetSingleVertexBuffer(_rectVbo);
 
 		std::vector<uint32_t> rectIndexData = std::vector<uint32_t>(_indiciesPerCall, 0);
 
@@ -105,23 +108,15 @@ namespace Rvl
 
     void Renderer::EndContext()
     {
-		_rectPositionVbo->SetData(_rectPositionVBOData.data(), _rectPositionVBOData.size() * sizeof(glm::vec3));
-
-		_rectColorVbo->SetData(_rectColorVBOData.data(), _rectColorVBOData.size() * sizeof(glm::vec4));
-
-        _rectTexctureCoordsVbo->SetData(_rectTexCoordsVBOData.data(), _rectTexCoordsVBOData.size() * sizeof(glm::vec2));
-
-        _rectTextureIndexVbo->SetData(_rectTexIndexVBOData.data(), _rectTexIndexVBOData.size() * sizeof(float));        
+        _rectVbo->SetData(_rectVBOData.data(), _rectVBOData.size() * sizeof(RectVertex));
 
         _textureShader->Bind();
-
         for (int i = 0; i < _textureSlotIndex; i++)
         {
             _textureSlots[i]->Bind(i);
         }
 
 		RenderCommand::DrawIndicies(_rectVao, _rectIndiciesCount);
-
         Stats.DrawCalls++;
     }
 
@@ -136,10 +131,12 @@ namespace Rvl
         
         for (int i = 0; i < 4; i++)
         {
-            _rectPositionVBOData.push_back(transformMat * _rectVertexPositions[i]);
-            _rectTexCoordsVBOData.push_back(coords[i]);
-            _rectColorVBOData.push_back(color);
-            _rectTexIndexVBOData.push_back(0.f);
+            _rectVBOData.push_back({
+                transformMat * _rectVertexPositions[i],
+                color,
+                coords[i],
+                0.f
+            });
         }
 
 		_rectIndiciesCount += 6;
@@ -179,10 +176,12 @@ namespace Rvl
 
         for (int i = 0; i < 4; i++)
         {
-            _rectPositionVBOData.push_back(transformMat * _rectVertexPositions[i]);
-            _rectTexCoordsVBOData.push_back(coords[i]);
-            _rectColorVBOData.push_back(tintColor);
-            _rectTexIndexVBOData.push_back(textureIndex);
+            _rectVBOData.push_back({
+                transformMat * _rectVertexPositions[i],
+                tintColor,
+                coords[i],
+                textureIndex
+            });
         }
 
 		_rectIndiciesCount += 6;        
@@ -222,10 +221,12 @@ namespace Rvl
 
         for (int i = 0; i < 4; i++)
         {
-            _rectPositionVBOData.push_back(transformMat * _rectVertexPositions[i]);
-            _rectTexCoordsVBOData.push_back(coords[i]);
-            _rectColorVBOData.push_back(tintColor);
-            _rectTexIndexVBOData.push_back(textureIndex);
+            _rectVBOData.push_back({
+                transformMat * _rectVertexPositions[i],
+                tintColor,
+                coords[i],
+                textureIndex
+            });
         }
 
 		_rectIndiciesCount += 6;        
@@ -252,10 +253,7 @@ namespace Rvl
     {
         _rectIndiciesCount = 0;
 
-        _rectPositionVBOData.clear();
-        _rectColorVBOData.clear();
-        _rectTexCoordsVBOData.clear();
-        _rectTexIndexVBOData.clear();
+        _rectVBOData.clear();
 
         _textureSlotIndex = 1; 
     }

@@ -10,7 +10,7 @@
 
 namespace Rvl
 {
-    PostProcess::PostProcess(const Ref<GLFrameBuffer>& fbo) : _fbo(fbo)
+    PostProcess::PostProcess(const Ref<GLFrameBuffer>& fbo, const std::string& shader) : _fbo(fbo)
     {
         _screenVao = NewRef<GLVertexArray>();
 
@@ -34,7 +34,7 @@ namespace Rvl
         _screenVao->SetSingleVertexBuffer(_screenVbo);
         _screenVao->AddIndexBuffer(ibo);
 
-        _screenShader = NewRef<GLShaderProgram>("assets/shaders/screen.vert", "assets/shaders/screen.frag");
+        _screenShader = NewRef<GLShaderProgram>(shader + ".vert", shader + ".frag");
         _screenShader->Link();
     }
 

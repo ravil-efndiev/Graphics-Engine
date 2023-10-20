@@ -26,9 +26,14 @@ namespace Rvl
         _currentScene.UpdateBehaviours();
     }
 
-    void State::AddFrameBuffer(const Ref<GLFrameBuffer>& fbo)
+    void State::CreateFrameBuffer()
     {
-        _fbo = fbo;
+        _fbo = NewRef<GLFrameBuffer>(RenderCommand::GetViewport());
+    }
+
+    void State::CreateFrameBuffer(const glm::vec2& size)
+    {
+        _fbo = NewRef<GLFrameBuffer>(size);
     }
 
     void State::Begin()
@@ -42,17 +47,19 @@ namespace Rvl
         }
 
         glm::vec2 viewport = RenderCommand::GetViewport();
-
-        if (_mode == RenderMode::Mode_2D)
-            Renderer::BeginContext(_camera->GetCamera(), viewport.x, viewport.y);
-        else if (_mode == RenderMode::Mode_3D)
+        
+        if (_mode == RenderMode::Mode_3D)
             Renderer3D::BeginContext(_camera->GetCamera(), viewport.x, viewport.y);
+
+        else if (_mode == RenderMode::Mode_2D)
+            Renderer::BeginContext(_camera->GetCamera(), viewport.x, viewport.y);
     }
 
     void State::End()
     {
         if (_mode == RenderMode::Mode_2D)
             Renderer::EndContext();
+        
         else if (_mode == RenderMode::Mode_3D)
             Renderer3D::EndContext();
         

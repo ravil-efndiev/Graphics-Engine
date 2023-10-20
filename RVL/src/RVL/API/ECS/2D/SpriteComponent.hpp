@@ -40,6 +40,9 @@ namespace Rvl
 
         glm::vec2 GetCurrentScale() const;
 
+        bool GetFixedScale() const;
+        void SetFixedScale(bool flag);
+
     private:
         float _scale;
 
@@ -51,6 +54,7 @@ namespace Rvl
         glm::vec2 _currentScale { 0.f };
 
         bool _useColorAsTint;
+        bool _fixedScale = true;
     };
 }
 

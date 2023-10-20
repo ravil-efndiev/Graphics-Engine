@@ -10,7 +10,11 @@ namespace Rvl
     class OrthographicCamera;
     class GLFrameBuffer;
 
-    enum class RenderMode { Mode_3D, Mode_2D };
+    enum class RenderMode 
+    {
+        Mode_3D,
+        Mode_2D
+    };
 
     class State
     {
@@ -29,12 +33,13 @@ namespace Rvl
         void UpdateScene();
 
     protected:
-        void AddFrameBuffer(const Ref<GLFrameBuffer>& fbo);
-
         Ref<UserCamera> _camera;
         Ref<GLFrameBuffer> _fbo;
 
         Scene _currentScene;
+
+        void CreateFrameBuffer();
+        void CreateFrameBuffer(const glm::vec2& size);
 
     private:
         RenderMode _mode;

@@ -51,4 +51,18 @@ namespace Rvl
         vertexArray.UnbindIndexBuffer();
         vertexArray.Unbind();
     }
+    
+    void RenderCommand::DrawLines(const Ref<GLVertexArray>& vertexArray, int vertexCount)
+    {
+        vertexArray->Bind();
+        glDrawArrays(GL_LINES, 0, vertexCount);
+        vertexArray->Unbind();   
+    }
+    
+    void RenderCommand::DrawLines(GLVertexArray& vertexArray, int vertexCount)
+    {
+        vertexArray.Bind();
+        glDrawArrays(GL_LINES, 0, vertexCount);
+        vertexArray.Unbind();  
+    }
 }

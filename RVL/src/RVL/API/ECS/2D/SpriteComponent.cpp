@@ -19,6 +19,7 @@ namespace Rvl
         _scale = 1.f;
         _color = color;
         _drawType = DrawType::Color;
+        _fixedScale = false;
     }
 
     void SpriteComponent::LoadTexture(const std::string& path)
@@ -46,8 +47,11 @@ namespace Rvl
         RVL_ASSERT((_drawType == DrawType::Texture), "Cannot load subtexture into sprite without base texture");
         _subTexture = SubTexture::New(_texture, x, y, spriteWidth, spriteHeight);
 
-        float ratio = spriteWidth / spriteHeight;
-        _currentScale = glm::vec2(ratio * _scale, _scale);
+        if (_fixedScale)
+        {
+            float ratio = spriteWidth / spriteHeight;
+            _currentScale = glm::vec2(ratio * _scale, _scale);
+        }
     }
 
     void SpriteComponent::SetSubTexture(const Ref<SubTexture>& subTexture)
@@ -55,8 +59,11 @@ namespace Rvl
         RVL_ASSERT((_drawType == DrawType::Texture), "Cannot load subtexture into sprite without base texture");
         _subTexture = SubTexture::New(_texture, subTexture->GetX(), subTexture->GetY(), subTexture->GetWidth(), subTexture->GetHeight());
 
-        float ratio = subTexture->GetWidth() / subTexture->GetHeight();
-        _currentScale = glm::vec2(ratio * _scale, _scale);
+        if (_fixedScale)
+        {
+            float ratio = subTexture->GetWidth() / subTexture->GetHeight();
+            _currentScale = glm::vec2(ratio * _scale, _scale);
+        }
     }
 
     void SpriteComponent::ResetScale()
@@ -70,7 +77,10 @@ namespace Rvl
     void SpriteComponent::ResetSubTexture()
     {
         RVL_ASSERT((_drawType == DrawType::Texture), "Cannot reset subtexture in sprite without texture");
-        ResetScale();
+
+        if (_fixedScale)            
+            ResetScale();
+
         _subTexture = SubTexture::New(_texture, 0.f, 0.f, _texture->GetWidth(), _texture->GetHeight());
     }  
 
@@ -112,5 +122,15 @@ namespace Rvl
     glm::vec2 SpriteComponent::GetCurrentScale() const
     {
         return _currentScale;
+    }
+    
+    bool SpriteComponent::GetFixedScale() const
+    {
+        return _fixedScale;
+    }
+    
+    void SpriteComponent::SetFixedScale(bool flag)
+    {
+        _fixedScale = flag;
     }
 }

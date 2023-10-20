@@ -105,4 +105,12 @@ namespace Rvl
             system(_entities);
         }
     }
+    
+    void Scene::OnEvent(Event* event)
+    {
+        for (auto behaviour : _behaviours)
+        {
+            behaviour->OnEvent(event);
+        }
+    }
 }

@@ -16,6 +16,7 @@ namespace Rvl
         virtual ~App();
 
         status_t Run();
+        void ProcessEvent(Event* event);
 
         void SetCursorLocked(bool flag);
 

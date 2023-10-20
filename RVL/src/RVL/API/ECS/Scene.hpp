@@ -2,6 +2,7 @@
 
 #include <entt/entt.hpp>
 #include <Core/Core.hpp>
+#include <Events/Events.hpp>
 #include "Behaviour.hpp"
 #include "Systems/System.hpp"
 
@@ -27,6 +28,8 @@ namespace Rvl
 
         void StartBehaviours();
         void UpdateBehaviours();
+
+        void OnEvent(Event* event);
 
         friend class Entity;
 

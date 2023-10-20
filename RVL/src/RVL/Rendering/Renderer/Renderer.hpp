@@ -52,18 +52,12 @@ namespace Rvl
         static constexpr size_t _indiciesPerCall = _rectsPerCall * 6;
 
         static Ref<GLVertexArray> _rectVao;
-        static Ref<GLVertexBuffer> _rectPositionVbo;
-        static Ref<GLVertexBuffer> _rectColorVbo;
-        static Ref<GLVertexBuffer> _rectTexctureCoordsVbo;
-        static Ref<GLVertexBuffer> _rectTextureIndexVbo;
+        static Ref<GLVertexBuffer> _rectVbo;
+
         static Ref<GLShaderProgram> _textureShader;
+        static Ref<GLShaderProgram> _lineShader;
 
         static uint32_t _rectIndiciesCount;
-
-        static std::vector<glm::vec3> _rectPositionVBOData;
-        static std::vector<glm::vec4> _rectColorVBOData;
-        static std::vector<glm::vec2> _rectTexCoordsVBOData;
-        static std::vector<float> _rectTexIndexVBOData;
 
         static std::array<Ref<GLTexture>, 16> _textureSlots;
         static int _textureSlotIndex;

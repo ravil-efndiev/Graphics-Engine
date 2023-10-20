@@ -9,6 +9,7 @@ namespace Rvl
     {
     public:
         GLShaderProgram();
+        GLShaderProgram(const std::string& shaderPath);
         GLShaderProgram(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
         ~GLShaderProgram();
 
