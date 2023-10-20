@@ -108,16 +108,26 @@ namespace Rvl
 
     void Renderer::EndContext()
     {
-        _rectVbo->SetData(_rectVBOData.data(), _rectVBOData.size() * sizeof(RectVertex));
-
-        _textureShader->Bind();
-        for (int i = 0; i < _textureSlotIndex; i++)
+        if (!_rectVBOData.empty())
         {
-            _textureSlots[i]->Bind(i);
-        }
+            _rectVbo->SetData(_rectVBOData.data(), _rectVBOData.size() * sizeof(RectVertex));
 
-		RenderCommand::DrawIndicies(_rectVao, _rectIndiciesCount);
-        Stats.DrawCalls++;
+            _textureShader->Bind();
+            for (int i = 0; i < _textureSlotIndex; i++)
+            {
+                _textureSlots[i]->Bind(i);
+            }
+
+            RenderCommand::DrawIndicies(_rectVao, _rectIndiciesCount);
+
+            for (int i = 0; i < _textureSlotIndex; i++)
+            {
+                _textureSlots[i]->Unbind(i);
+            }
+            _textureShader->Unbind();
+
+            Stats.DrawCalls++;
+        }
     }
 
     void Renderer::DrawRect(const Transform& transform, const glm::vec4& color)

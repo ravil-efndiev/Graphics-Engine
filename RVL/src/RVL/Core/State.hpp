@@ -10,10 +10,10 @@ namespace Rvl
     class OrthographicCamera;
     class GLFrameBuffer;
 
-    enum class RenderMode 
+    enum RenderMode 
     {
-        Mode_3D,
-        Mode_2D
+        RenderMode_3D = 1 << 0,
+        RenderMode_2D = 1 << 1
     };
 
     class State
@@ -26,8 +26,9 @@ namespace Rvl
 
         virtual void Start() {}
         virtual void Update() {}
-        virtual void Render() {}
         virtual void Tick() {}
+        virtual void Render() {}
+        virtual void PostRender() {}
 
         void StartScene();
         void UpdateScene();

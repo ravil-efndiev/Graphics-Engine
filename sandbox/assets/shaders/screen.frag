@@ -7,7 +7,7 @@ uniform sampler2D u_ScreenTexture;
 
 void main()
 { 
-    const int pixelSize = 7;
+    const int pixelSize = 1;
 
     float x = int(gl_FragCoord.x) % pixelSize;
     float y = int(gl_FragCoord.y) % pixelSize;

@@ -15,6 +15,7 @@ public:
     void Update() override;
     void Tick() override;
     void Render() override;
+    void PostRender() override;
 
 private:
     void RenderImGui();

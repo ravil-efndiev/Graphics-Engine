@@ -49,6 +49,7 @@ namespace Rvl
                     _currentState->Begin();
                     Render();
                     _currentState->End();
+                    _currentState->PostRender();
                 }
 
                 ImGuiController::Render();

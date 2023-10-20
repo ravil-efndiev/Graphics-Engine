@@ -129,9 +129,10 @@ namespace Rvl
         glBindSampler(unit, _samplerId);
     }
 
-    void GLTexture::Unbind() const
+    void GLTexture::Unbind(int unit) const
     {
         glBindTexture(GL_TEXTURE_2D, 0);
+        glBindSampler(unit, 0);
     }
 
     int GLTexture::GetWidth() const { return _width; }

@@ -7,24 +7,25 @@
 #include "TestScript.hpp"
 #include <Rendering/OpenGL/GLFrameBuffer.hpp>
 
-MainState::MainState() : State(RenderMode::Mode_2D) {}
+MainState::MainState() : State((RenderMode)(RenderMode_3D | RenderMode_2D)) {}
 MainState::~MainState() {}
 
 void MainState::Start()
 {
     _camera = UserPerspectiveCamera::New({0.f, 0.f, 0.f}, 45.f);
 
-    /*_model = _currentScene.NewEntity();
+    _model = _currentScene.NewEntity();
     _model.AddComponent<ModelComponent>("./assets/textures/backpack.obj");
     RVL_ADD_BEHAVIOUR(_currentScene, _model, TestScript);
     
     (_mShader = NewRef<GLShaderProgram>("assets/shaders/light"))->Link();
 
     CreateFrameBuffer();
-    _postProcess = NewRef<PostProcess>(_fbo, "assets/shaders/screen");*/
+    _postProcess = NewRef<PostProcess>(_fbo, "assets/shaders/screen");
 
     _sprite = _currentScene.NewEntity();
-    _sprite.AddComponent<SpriteComponent>(glm::vec4(1, 1, 1, 1));
+    _sprite.GetComponent<TransformComponent>().Position->x = 5.f;
+    _sprite.AddComponent<SpriteComponent>("assets/textures/container.jpg", 1.f);
 }
 
 void MainState::Update()
@@ -53,9 +54,9 @@ void MainState::Update()
     }
     
     
-    //_mShader->Bind();
-    //_mShader->SetUniformVec4("u_Direction", glm::vec4(_light, 0.f));
-    //_mShader->SetUniformVec4("u_ViewPos", glm::vec4((glm::vec3)UserCamera::ToPerspective(_camera)->Position, 0.f));
+    _mShader->Bind();
+    _mShader->SetUniformVec4("u_Direction", glm::vec4(_light, 0.f));
+    _mShader->SetUniformVec4("u_ViewPos", glm::vec4((glm::vec3)UserCamera::ToPerspective(_camera)->Position, 0.f));
 }
 
 void MainState::Tick() {}
@@ -63,12 +64,14 @@ void MainState::Tick() {}
 void MainState::Render()
 {
     RenderImGui();
-
-    //_postProcess->Begin();
-    //_currentScene.DrawModel(_model, _mShader);
-    // _postProcess->End();
-    
+    _postProcess->Begin();
     _currentScene.DrawSprite(_sprite);
+    _currentScene.DrawModel(_model, _mShader);
+}
+
+void MainState::PostRender()
+{
+    _postProcess->End();
 }
 
 void MainState::RenderImGui()

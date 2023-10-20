@@ -18,7 +18,7 @@ namespace Rvl
         void SetData(byte* data, int channels);
 
         void Bind(int unit) const;
-        void Unbind() const;
+        void Unbind(int unit) const;
 
         int GetWidth() const;
         int GetHeight() const;

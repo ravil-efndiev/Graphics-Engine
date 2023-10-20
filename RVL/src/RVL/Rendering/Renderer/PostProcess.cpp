@@ -35,6 +35,9 @@ namespace Rvl
         _screenVao->AddIndexBuffer(ibo);
 
         _screenShader = NewRef<GLShaderProgram>(shader + ".vert", shader + ".frag");
+        _screenShader->Bind();
+        _screenShader->BindAttribute(0, "a_Pos");
+        _screenShader->BindAttribute(1, "a_TexCoords");
         _screenShader->Link();
     }
 
@@ -43,17 +46,18 @@ namespace Rvl
     void PostProcess::Begin()
     {
         _fbo->Resize(RenderCommand::GetViewport());
-
         _fbo->Bind();
+        RenderCommand::Clear();
     }
 
     void PostProcess::End()
     {
         _fbo->Unbind();
-
         GLTexture::BindTextureUnit(_fbo->GetColorAttachment(), 0);
-
+        _screenShader->Bind();
         _screenShader->SetUniformInt("u_ScreenTexture", 0);
         Renderer3D::SubmitVa(_screenVao, _screenShader);
+        _screenShader->Unbind();
+
     }
 }
