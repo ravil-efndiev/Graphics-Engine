@@ -22,7 +22,7 @@ namespace Rvl
 
         void DrawSprite(Entity entity);
         void DrawTileMap(Entity entity);
-        void DrawModel(Entity entity, const Ref<GLShaderProgram>& shader);
+        void DrawModel(Entity entity);
 
         void AddBehaviour(Behaviour* behaviour);
 

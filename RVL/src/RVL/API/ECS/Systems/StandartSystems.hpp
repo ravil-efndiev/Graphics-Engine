@@ -9,4 +9,6 @@ namespace Rvl
     void Movement2DSystem(const std::vector<Entity>& entities);
 
     void Animation2DSystem(const std::vector<Entity>& entities);
+
+    void MaterialSystem(const std::vector<Entity>& entities);
 }

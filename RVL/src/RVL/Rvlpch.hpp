@@ -17,6 +17,7 @@
 #include <regex>
 #include <optional>
 #include <execution>
+#include <type_traits>
 
 typedef uint32_t GLbitfield;
 typedef uint8_t  GLboolean;

@@ -1,8 +1,6 @@
 #pragma once
 
 #include <RVL.hpp>
-#include <Rendering/OpenGL/GLShaderProgram.hpp>
-#include <Rendering/Renderer/PostProcess.hpp>
 
 using namespace Rvl;
 class MainState : public Rvl::State
@@ -13,9 +11,7 @@ public:
 
     void Start() override;
     void Update() override;
-    void Tick() override;
     void Render() override;
-    void PostRender() override;
 
 private:
     void RenderImGui();
@@ -23,11 +19,16 @@ private:
     Entity _model;
     Entity _sprite;
 
+    Entity _directionalLight;
+    Entity _pointLight;
+
     glm::vec2 _camRotation {0.f};
     glm::vec3 _light { 10.f, 0.f, 3.f };
+    glm::vec3 _lightPosition;
 
-    Ref<GLShaderProgram> _mShader;
-    Ref<PostProcess> _postProcess;
+    TransformComponent* _dlTf;
+    TransformComponent* _sTf;
+    MaterialComponent* _mat;
 
     bool _lock = false;
 };

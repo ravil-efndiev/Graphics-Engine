@@ -5,6 +5,7 @@
 
 #include <Events/EventListener.hpp>
 #include <Rendering/Renderer/Renderer.hpp>
+#include <Rendering/Renderer/ShaderLibrary.hpp>
 
 #include <API/Time.hpp>
 #include <API/Random.hpp>
@@ -27,7 +28,8 @@ namespace Rvl
             EventListener::Init();
             Renderer::Init();
             Random::Init();
-            
+            StandartShaderLib::Init();            
+
             Start();
             if (_currentState) _currentState->StartScene();
 

@@ -4,6 +4,7 @@
 #include "2D/SpriteComponent.hpp"
 #include "2D/TileMapComponent.hpp"
 #include "3D/ModelComponent.hpp"
+#include "3D/MaterialComponent.hpp"
 
 #include <Rendering/Renderer/Renderer.hpp>
 #include <Rendering/Renderer/Renderer3D.hpp>
@@ -17,6 +18,7 @@ namespace Rvl
         AddSystem(Sprite2DSystem);
         AddSystem(Movement2DSystem);
         AddSystem(Animation2DSystem);
+        AddSystem(MaterialSystem);
     }
 
     Scene::~Scene() {}
@@ -66,17 +68,19 @@ namespace Rvl
         }
     }
 
-    void Scene::DrawModel(Entity entity, const Ref<GLShaderProgram>& shader)
+    void Scene::DrawModel(Entity entity)
     {
         RVL_ASSERT((entity.HasComponent<ModelComponent>()), "entity passed into DrawModel function doesn't have Model Component");
         RVL_ASSERT((entity.HasComponent<TransformComponent>()), "entity passed into DrawModel function doesn't have Transform Component");
+        RVL_ASSERT((entity.HasComponent<MaterialComponent>()), "entity passed into DrawModel function doesn't have Material Component");
 
         auto meshes = entity.GetComponent<ModelComponent>().GetMeshes();
         auto transform = entity.GetComponent<TransformComponent>();
+        auto material = entity.GetComponent<MaterialComponent>();
 
         for (auto& mesh : meshes)
         {
-            Renderer3D::SubmitMesh(mesh, shader, (Transform)transform);
+            Renderer3D::SubmitMesh(mesh, material.GetShader(), (Transform)transform);
         }
     }
 

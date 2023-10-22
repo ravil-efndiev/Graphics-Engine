@@ -30,6 +30,7 @@ add_library(RVL STATIC
     src/RVL/Rendering/Renderer/OrthographicCamera.cpp
     src/RVL/Rendering/Renderer/PerspectiveCamera.cpp
     src/RVL/Rendering/Renderer/Transform.cpp
+    src/RVL/Rendering/Renderer/ShaderLibrary.cpp
     src/RVL/API/Input.cpp
     src/RVL/API/Time.cpp
     src/RVL/API/Random.cpp
@@ -47,6 +48,9 @@ add_library(RVL STATIC
     src/RVL/API/ECS/2D/MovementComponent.cpp
     src/RVL/API/ECS/2D/AnimationComponent.cpp
     src/RVL/API/ECS/3D/ModelComponent.cpp
+    src/RVL/API/ECS/3D/DirectionalLightComponent.cpp
+    src/RVL/API/ECS/3D/PointLightComponent.cpp
+    src/RVL/API/ECS/3D/MaterialComponent.cpp
     src/RVL/API/ECS/Systems/StandartSystems.cpp
 
     # dependencies

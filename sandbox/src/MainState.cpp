@@ -1,11 +1,7 @@
 #include "MainState.hpp"
 
-#include <3D/ModelComponent.hpp>
 #include <Rendering/Renderer/Renderer.hpp>
-#include <Rendering/Renderer/Renderer3D.hpp>
-#include <Rendering/Renderer/RenderCommand.hpp>
 #include "TestScript.hpp"
-#include <Rendering/OpenGL/GLFrameBuffer.hpp>
 
 MainState::MainState() : State((RenderMode)(RenderMode_3D | RenderMode_2D)) {}
 MainState::~MainState() {}
@@ -14,18 +10,24 @@ void MainState::Start()
 {
     _camera = UserPerspectiveCamera::New({0.f, 0.f, 0.f}, 45.f);
 
+    _directionalLight = _currentScene.NewEntity();
+    _directionalLight.AddComponent<DirectionalLightComponent>(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.5f, 0.5f, 0.5f));
+    _dlTf = &_directionalLight.GetComponent<TransformComponent>();
+
     _model = _currentScene.NewEntity();
     _model.AddComponent<ModelComponent>("./assets/textures/backpack.obj");
-    RVL_ADD_BEHAVIOUR(_currentScene, _model, TestScript);
-    
-    (_mShader = NewRef<GLShaderProgram>("assets/shaders/light"))->Link();
+    _mat = &_model.AddComponent<MaterialComponent>(StandartShaderLib::Get("Light"));
+    _mat->ProcessLightSources(true);
 
-    CreateFrameBuffer();
-    _postProcess = NewRef<PostProcess>(_fbo, "assets/shaders/screen");
+    _mat->Set("u_Material.diffuse",  glm::vec3(0.5f, 0.5f, 0.5f));
+    _mat->Set("u_Material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
+    _mat->Set("u_Material.ambient",  glm::vec3(1.0f, 0.5f, 0.31f));
+    _mat->Set("u_Material.shininess", 32.f);
 
     _sprite = _currentScene.NewEntity();
-    _sprite.GetComponent<TransformComponent>().Position->x = 5.f;
-    _sprite.AddComponent<SpriteComponent>("assets/textures/container.jpg", 1.f);
+    (_sTf = &_sprite.GetComponent<TransformComponent>())->Position->x = 5.f;
+    _sprite.AddComponent<SpriteComponent>("assets/textures/container.jpg", 0.6f);
+    _sprite.AddComponent<PointLightComponent>(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.5f, 0.5f, 0.5f), 0.09f, 0.032f);
 }
 
 void MainState::Update()
@@ -52,26 +54,17 @@ void MainState::Update()
 
         UserCamera::ToPerspective(_camera)->Rotate(_camRotation.y, _camRotation.x, 0.f);
     }
-    
-    
-    _mShader->Bind();
-    _mShader->SetUniformVec4("u_Direction", glm::vec4(_light, 0.f));
-    _mShader->SetUniformVec4("u_ViewPos", glm::vec4((glm::vec3)UserCamera::ToPerspective(_camera)->Position, 0.f));
-}
 
-void MainState::Tick() {}
+    _mat->Set("u_ViewPos", glm::vec4((glm::vec3)UserCamera::ToPerspective(_camera)->Position, 0.f));
+    _dlTf->Rotation = _light;
+    _sTf->Position = _lightPosition;
+}
 
 void MainState::Render()
 {
     RenderImGui();
-    _postProcess->Begin();
     _currentScene.DrawSprite(_sprite);
-    _currentScene.DrawModel(_model, _mShader);
-}
-
-void MainState::PostRender()
-{
-    _postProcess->End();
+    _currentScene.DrawModel(_model);
 }
 
 void MainState::RenderImGui()
@@ -81,7 +74,9 @@ void MainState::RenderImGui()
     ImGui::Begin("Properties");
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
     ImGui::Text("Application immidieate %.3f ms/frame (%.1f FPS)", 1000.f / (1.f / Time::DeltaTime()), 1.f / Time::DeltaTime());
-    ImGui::SliderFloat3("Light direction", glm::value_ptr(_light), -10.f, 10.f);
+    ImGui::Separator();
+    ImGui::SliderFloat3("Light direction", glm::value_ptr(_light), -1.f, 1.f);
+    ImGui::SliderFloat3("Light Position", glm::value_ptr(_lightPosition), -10.f, 10.f);
     ImGui::Separator();
     ImGui::Text("Draw calls: %d", stats.DrawCalls);
     ImGui::Text("Total verticies: %d", stats.VerticiesCount);
