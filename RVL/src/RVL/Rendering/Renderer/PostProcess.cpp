@@ -36,9 +36,6 @@ namespace Rvl
 
         _screenShader = NewRef<GLShaderProgram>(shader + ".vert", shader + ".frag");
         _screenShader->Bind();
-        _screenShader->BindAttribute(0, "a_Pos");
-        _screenShader->BindAttribute(1, "a_TexCoords");
-        _screenShader->Link();
     }
 
     PostProcess::~PostProcess() {}

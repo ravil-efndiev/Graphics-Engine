@@ -4,34 +4,15 @@ namespace Rvl
 {
     DirectionalLightComponent::DirectionalLightComponent(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular)
     {
-        _ambient = ambient;
-        _diffuse = diffuse;
-        _specular = specular;
+        Ambient = ambient;
+        Diffuse = diffuse;
+        Specular = specular;
     }
-
-    void DirectionalLightComponent::SetAmbient(const glm::vec3& ambient) 
+    
+    DirectionalLightComponent::DirectionalLightComponent(const glm::vec3& color)
     {
-        _ambient = ambient;
-    }
-    void DirectionalLightComponent::SetDiffuse(const glm::vec3& diffuse) 
-    {
-        _diffuse = diffuse;
-    }
-    void DirectionalLightComponent::SetSpecular(const glm::vec3& specular) 
-    {
-        _specular = specular;
-    }
-
-    glm::vec3 DirectionalLightComponent::GetAmbient() const 
-    {
-        return _ambient;
-    }
-    glm::vec3 DirectionalLightComponent::GetDiffuse() const 
-    {
-        return _diffuse;
-    }
-    glm::vec3 DirectionalLightComponent::GetSpecular() const 
-    {
-        return _specular;
+        Diffuse = color;
+        Ambient = {0.2f, 0.2f, 0.2f};
+        Specular = {0.5f, 0.5f, 0.5f};
     }
 }

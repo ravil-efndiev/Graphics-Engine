@@ -1,6 +1,7 @@
 #include "MainState.hpp"
 
 #include <Rendering/Renderer/Renderer.hpp>
+#include <Rendering/OpenGL/GLFrameBuffer.hpp>
 #include "TestScript.hpp"
 
 MainState::MainState() : State((RenderMode)(RenderMode_3D | RenderMode_2D)) {}
@@ -8,6 +9,8 @@ MainState::~MainState() {}
 
 void MainState::Start()
 {
+    CreateFrameBuffer({1000, 600});
+
     _camera = UserPerspectiveCamera::New({0.f, 0.f, 0.f}, 45.f);
 
     _directionalLight = _currentScene.NewEntity();
@@ -26,7 +29,7 @@ void MainState::Start()
 
     _sprite = _currentScene.NewEntity();
     (_sTf = &_sprite.GetComponent<TransformComponent>())->Position->x = 5.f;
-    _sprite.AddComponent<SpriteComponent>("assets/textures/container.jpg", 0.6f);
+    _sprite.AddComponent<SpriteComponent>("assets/textures/container.jpg", 1.f);
     _sprite.AddComponent<PointLightComponent>(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.5f, 0.5f, 0.5f), 0.09f, 0.032f);
 }
 
@@ -63,8 +66,13 @@ void MainState::Update()
 void MainState::Render()
 {
     RenderImGui();
-    _currentScene.DrawSprite(_sprite);
+    
     _currentScene.DrawModel(_model);
+    _currentScene.DrawSprite(_sprite);
+}
+
+void MainState::PostRender()
+{
 }
 
 void MainState::RenderImGui()
@@ -82,7 +90,15 @@ void MainState::RenderImGui()
     ImGui::Text("Total verticies: %d", stats.VerticiesCount);
     ImGui::Text("Total indicies: %d", stats.IndiciesCount);
     ImGui::Text("Total Rectangles: %d", stats.RectCount);
+
+    ImGui::Image(
+        (ImTextureID)_fbo->GetColorAttachment(),
+        ImVec2(1000, 600), 
+        ImVec2(0, 1), 
+        ImVec2(1, 0)
+    );
     ImGui::End();
+
 
     Renderer::ResetStats();
 }

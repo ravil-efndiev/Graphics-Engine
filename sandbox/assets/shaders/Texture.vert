@@ -1,9 +1,9 @@
 #version 330 core
 
-in vec3 a_Position;
-in vec4 a_Color;
-in vec2 a_TexCoords;
-in float a_TexIndex;
+layout (location = 0) in vec3 a_Position;
+layout (location = 1) in vec4 a_Color;
+layout (location = 2) in vec2 a_TexCoords;
+layout (location = 3) in float a_TexIndex;
 
 out vec4 v_Color;
 out vec2 v_TexCoords;

@@ -27,9 +27,8 @@ namespace Rvl
         _drawType = DrawType::Texture;
 
         _texture = NewRef<GLTexture>(path);
-        ResetScale();
 
-        _subTexture = SubTexture::New(_texture, 0.f, 0.f, _texture->GetWidth(), _texture->GetHeight());
+        SetSubTexture(0.f, 0.f, _texture->GetWidth(), _texture->GetHeight());
     }
 
     void SpriteComponent::LoadTexture(const Ref<GLTexture>& texture)
@@ -37,9 +36,8 @@ namespace Rvl
         _drawType = DrawType::Texture;
 
         _texture = texture;
-        ResetScale();
 
-        _subTexture = SubTexture::New(_texture, 0.f, 0.f, _texture->GetWidth(), _texture->GetHeight());
+        SetSubTexture(0.f, 0.f, _texture->GetWidth(), _texture->GetHeight());
     }
 
     void SpriteComponent::SetSubTexture(float x, float y, float spriteWidth, float spriteHeight)

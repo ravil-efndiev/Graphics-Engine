@@ -41,6 +41,12 @@ namespace Rvl
         if (!_camera) throw Error("camera was not initialized during scene creation", RVL_RUNTIME_ERROR);
 
         glm::vec2 viewport = RenderCommand::GetViewport();
+
+        if (_fbo) 
+        {
+            _fbo->Bind();
+            RenderCommand::Clear();
+        }
         
         if (_mode & RenderMode_3D)
             Renderer3D::BeginContext(_camera->GetCamera(), viewport.x, viewport.y);
@@ -53,5 +59,7 @@ namespace Rvl
     {
         if (_mode & RenderMode_2D)
             Renderer::EndContext();
+
+        if (_fbo) _fbo->Unbind();
     }
 }

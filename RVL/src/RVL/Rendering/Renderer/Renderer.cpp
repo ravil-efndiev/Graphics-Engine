@@ -73,14 +73,8 @@ namespace Rvl
 		_rectVao->AddIndexBuffer(quadIB);
 
 		_textureShader = NewRef<GLShaderProgram>("assets/shaders/Texture.vert", "assets/shaders/Texture.frag");
-		_textureShader->BindAttribute(0, "a_Position");
-		_textureShader->BindAttribute(1, "a_Color");
-		_textureShader->BindAttribute(2, "a_TexCoords");
-		_textureShader->BindAttribute(3, "a_TexIndex");
-		_textureShader->Link();
 
 		_textureShader->Bind();
-
         int samples[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
         _textureShader->SetUniformIntArr("u_Textures", samples, 16);
 

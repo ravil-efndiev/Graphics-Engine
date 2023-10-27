@@ -26,7 +26,6 @@ namespace Rvl
         void SetUniformInt(const std::string &name, int uniform);
         void SetUniformIntArr(const std::string &name, int* arr, size_t count);
 
-        void Link();
 
         void Bind();
         void Unbind();
@@ -43,7 +42,7 @@ namespace Rvl
 
         void CreateShaders();
         void Compile(const char* source, GLuint id);
-
+        void Link();
     };
 }
 

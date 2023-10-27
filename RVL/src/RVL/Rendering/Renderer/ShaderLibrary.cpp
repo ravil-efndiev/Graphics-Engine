@@ -13,7 +13,6 @@ namespace Rvl
     {
         RVL_ASSERT((_shaders.find(name) == _shaders.end()), "Shader with this name already exists");
         Ref<GLShaderProgram> shader = NewRef<GLShaderProgram>(path);
-        shader->Link();
         _shaders[name] = shader;        
         return shader;
     }
