@@ -18,6 +18,8 @@ namespace Rvl
         ~Scene();
 
         Entity NewEntity();
+        Entity NewEntity(const std::string& name);
+
         void AddSystem(const System& system);
 
         void DrawSprite(Entity entity);
@@ -32,6 +34,7 @@ namespace Rvl
         void OnEvent(Event* event);
 
         friend class Entity;
+        friend class HierarchyWindow;
 
     private:
         entt::registry _registry;

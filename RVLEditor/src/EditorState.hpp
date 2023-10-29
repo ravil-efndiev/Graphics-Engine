@@ -1,18 +1,18 @@
 #pragma once
 
-#include <RVL.hpp>
+#include "HierarchyWindow.hpp"
+#include "InspectorWindow.hpp"
 
 using namespace Rvl;
-class MainState : public Rvl::State
+class EditorState : public Rvl::State
 {
 public:
-    MainState();
-    ~MainState();
+    EditorState();
+    ~EditorState();
 
     void Start() override;
     void Update() override;
     void Render() override;
-    void PostRender() override;
 
 private:
     void RenderImGui();
@@ -29,6 +29,9 @@ private:
     TransformComponent* _dlTf;
     TransformComponent* _sTf;
     MaterialComponent* _mat;
+
+    Ref<HierarchyWindow> _hierarchy;
+    Ref<InspectorWindow> _inspector;
 
     bool _lock = false;
 };

@@ -14,9 +14,10 @@ namespace Rvl
 
         std::vector<Mesh> GetMeshes() const;
 
+        friend class InspectorWindow;
     private:
         std::vector<Mesh> _meshes;
-        std::string _directory;
+        std::string _path, _directory;
         std::vector<MeshTexture> _texturesLoaded;
 
         void LoadModel(const std::string& path);

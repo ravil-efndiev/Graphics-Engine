@@ -1,10 +1,11 @@
 #include "Scene.hpp"
 #include "Entity.hpp"
-#include "TransformComponent.hpp"
+#include "General/TransformComponent.hpp"
 #include "2D/SpriteComponent.hpp"
 #include "2D/TileMapComponent.hpp"
 #include "3D/ModelComponent.hpp"
 #include "3D/MaterialComponent.hpp"
+#include "General/IdentifierComponent.hpp"
 
 #include <Rendering/Renderer/Renderer.hpp>
 #include <Rendering/Renderer/Renderer3D.hpp>
@@ -13,6 +14,8 @@
 
 namespace Rvl
 {
+    static int entityNum = 0;
+
     Scene::Scene() 
     {
         AddSystem(Sprite2DSystem);
@@ -26,6 +29,18 @@ namespace Rvl
     Entity Scene::NewEntity()
     {
         Entity entity (this, _registry.create());
+        entityNum++;
+        entity.AddComponent<IdentifierComponent>("Entity" + std::to_string(entityNum));
+        entity.AddComponent<TransformComponent>(glm::vec3(0.f), glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
+        _entities.push_back(entity);
+        return entity;
+    }
+
+    Entity Scene::NewEntity(const std::string& name)
+    {
+        Entity entity (this, _registry.create());
+        entityNum++;
+        entity.AddComponent<IdentifierComponent>(name);
         entity.AddComponent<TransformComponent>(glm::vec3(0.f), glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
         _entities.push_back(entity);
         return entity;

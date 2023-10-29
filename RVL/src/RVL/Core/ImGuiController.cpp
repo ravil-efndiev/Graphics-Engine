@@ -18,7 +18,7 @@ namespace Rvl
         ImGui_ImplGlfw_InitForOpenGL(glfwWindow, true);
         ImGui_ImplOpenGL3_Init("#version 330");
 
-        io.FontDefault = io.Fonts->AddFontFromFileTTF("./assets/fonts/FixelText-Medium.ttf", 14.f);
+        io.FontDefault = io.Fonts->AddFontFromFileTTF("./assets/fonts/FixelText-Medium.ttf", 15.f);
 
         ImGuiStyle& style = ImGui::GetStyle();
         style.Colors[ImGuiCol_Text]                  = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);

@@ -11,7 +11,6 @@
 ||                                            __/ |                          ||   |
 ||                                           |___/                           ||   |
 ||                                                                           ||   |
-||                  ** BRIEF DESCRIPTION AND COPYRIGHS **                    ||   |
 ||                                                                           ||   |
 ||                                                                           ||   |
 *============================================================================*    |
@@ -19,10 +18,6 @@
      \----------------------------------------------------------------------------*/
 
 
-/*
-        ** ALL NEEDED INFORMATION AND BIG DESCRIPTION **
-*/
-    
 
 #include <imgui/imgui.h>
 #include <glm/glm.hpp>
@@ -40,7 +35,8 @@
 #include "RVL/API/Objects/TileSet.hpp"
 #include "RVL/API/Objects/UserPerspectiveCamera.hpp"
 #include "RVL/API/Objects/UserOrthographicCamera.hpp"
-#include "RVL/API/ECS/TransformComponent.hpp"
+#include "RVL/API/ECS/General/TransformComponent.hpp"
+#include "RVL/API/ECS/General/IdentifierComponent.hpp"
 #include "RVL/API/ECS/2D/AnimationComponent.hpp"
 #include "RVL/API/ECS/2D/MovementComponent.hpp"
 #include "RVL/API/ECS/2D/TileMapComponent.hpp"

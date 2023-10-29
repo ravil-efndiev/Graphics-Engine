@@ -1,7 +1,7 @@
 #pragma once
 
 #include "API/ECS/Entity.hpp"
-#include "API/ECS/TransformComponent.hpp"
+#include "API/ECS/General/TransformComponent.hpp"
 #include <Core/Core.hpp>
 #include <API/Math/Math.hpp>
 #include <API/Time.hpp>

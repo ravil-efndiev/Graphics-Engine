@@ -1,6 +1,5 @@
 #pragma once
 
-#include "TransformComponent.hpp"
 #include <Rendering/Renderer/SubTexture.hpp>
 #include <Rendering/OpenGL/GLTexture.hpp>
 #include <Entity.hpp>
@@ -43,6 +42,7 @@ namespace Rvl
         bool GetFixedScale() const;
         void SetFixedScale(bool flag);
 
+        friend class InspectorWindow;
     private:
         float _scale;
 
@@ -50,7 +50,7 @@ namespace Rvl
         Ref<GLTexture> _texture;
         DrawType _drawType;
 
-        glm::vec4 _color;
+        glm::vec4 _color { 1.f };
         glm::vec2 _currentScale { 0.f };
 
         bool _useColorAsTint;

@@ -16,6 +16,7 @@ namespace Rvl
 
     void ModelComponent::LoadModel(const std::string& path)
     {
+        _path = path;
         Assimp::Importer importer;
         const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate);	
 

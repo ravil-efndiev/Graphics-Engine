@@ -29,6 +29,8 @@ namespace Rvl
             return _scene->_registry.any_of<T>(_id);
         }
 
+        bool operator==(const Entity& entity);
+
     private:
         entt::entity _id;
         Scene* _scene;

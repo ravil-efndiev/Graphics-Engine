@@ -1,11 +1,7 @@
-#include "MainState.hpp"
+#include "EditorState.hpp"
 
 #include <Rendering/Renderer/Renderer.hpp>
 #include <Rendering/OpenGL/GLFrameBuffer.hpp>
-#include "TestScript.hpp"
-
-MainState::MainState() : State((RenderMode)(RenderMode_3D | RenderMode_2D)) {}
-MainState::~MainState() {}
 
 struct EditorUIData 
 {
@@ -15,17 +11,20 @@ struct EditorUIData
 
 static EditorUIData UIData;
 
-void MainState::Start()
+EditorState::EditorState() : State((RenderMode)(RenderMode_3D | RenderMode_2D)) {}
+EditorState::~EditorState() {}
+
+void EditorState::Start()
 {
     CreateFrameBuffer({1000, 600});
 
     _camera = UserPerspectiveCamera::New({0.f, 0.f, 0.f}, 45.f);
 
-    _directionalLight = _currentScene.NewEntity();
+    _directionalLight = _currentScene.NewEntity("Directional light");
     _directionalLight.AddComponent<DirectionalLightComponent>(glm::vec3(0.9f, 0.9f, 0.9f));
     _dlTf = &_directionalLight.GetComponent<TransformComponent>();
 
-    _model = _currentScene.NewEntity();
+    _model = _currentScene.NewEntity("Model");
     _model.AddComponent<ModelComponent>("./assets/textures/backpack.obj");
     _mat = &_model.AddComponent<MaterialComponent>(StandartShaderLib::Get("Light"));
     _mat->ProcessLightSources(true);
@@ -35,13 +34,16 @@ void MainState::Start()
     _mat->Set("u_Material.ambient",  glm::vec3(1.0f, 0.5f, 0.31f));
     _mat->Set("u_Material.shininess", 32.f);
 
-    _sprite = _currentScene.NewEntity();
+    _sprite = _currentScene.NewEntity("Sprite");
     (_sTf = &_sprite.GetComponent<TransformComponent>())->Position->x = 5.f;
     _sprite.AddComponent<SpriteComponent>("assets/textures/container.jpg", 1.f);
     _sprite.AddComponent<PointLightComponent>(glm::vec3(0.4f, 0.9f, 0.5f), 0.09f, 0.032f);
+
+    _hierarchy = NewRef<HierarchyWindow>(_currentScene);
+    _inspector = NewRef<InspectorWindow>();
 }
 
-void MainState::Update()
+void EditorState::Update()
 {
     UserCamera::ToPerspective(_camera)->UpdateControls(ControllerType::InPlane, 5.f);
     DockspaceAndMenu();
@@ -68,11 +70,9 @@ void MainState::Update()
     }
 
     _mat->Set("u_ViewPos", glm::vec4((glm::vec3)UserCamera::ToPerspective(_camera)->Position, 0.f));
-    _dlTf->Rotation = _light;
-    _sTf->Position = _lightPosition;
 }
 
-void MainState::Render()
+void EditorState::Render()
 {
     RenderImGui();
     
@@ -80,26 +80,25 @@ void MainState::Render()
     _currentScene.DrawSprite(_sprite);
 }
 
-void MainState::PostRender()
-{
-}
-
-void MainState::RenderImGui()
+void EditorState::RenderImGui()
 {
     auto stats = Renderer::GetStats();
 
     ImGui::Begin("Properties", nullptr, UIData.GlobalWinFlags);
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-        ImGui::Text("Application immidieate %.3f ms/frame (%.1f FPS)", 1000.f / (1.f / Time::DeltaTime()), 1.f / Time::DeltaTime());
-        ImGui::Separator();
-        ImGui::SliderFloat3("Light direction", glm::value_ptr(_light), -1.f, 1.f);
-        ImGui::SliderFloat3("Light Position", glm::value_ptr(_lightPosition), -10.f, 10.f);
+        ImGui::Text("Application average %.1f FPS (%.3f ms/frame)", ImGui::GetIO().Framerate, 1000.0f / ImGui::GetIO().Framerate);
+        ImGui::Text("Application immidieate %.1f FPS (%.3f ms/frame)", 1.f / Time::DeltaTime(), 1000.f / (1.f / Time::DeltaTime()));
         ImGui::Separator();
         ImGui::Text("Draw calls: %d", stats.DrawCalls);
         ImGui::Text("Total verticies: %d", stats.VerticiesCount);
         ImGui::Text("Total indicies: %d", stats.IndiciesCount);
         ImGui::Text("Total Rectangles: %d", stats.RectCount);
+
     ImGui::End();
+
+    _hierarchy->ImGuiRender();
+
+    _inspector->SetSelected(_hierarchy->GetSelected());
+    _inspector->ImGuiRedner();
 
     ImGui::Begin("Scene", nullptr, UIData.GlobalWinFlags);
         ImGui::BeginChild("Render");
@@ -124,7 +123,7 @@ void MainState::RenderImGui()
 }
 
 
-void MainState::DockspaceAndMenu()
+void EditorState::DockspaceAndMenu()
 {
     static bool dockspaceOpen = true;
     static bool optFullscreen = true;

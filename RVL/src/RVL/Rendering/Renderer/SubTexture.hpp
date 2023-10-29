@@ -33,6 +33,7 @@ namespace Rvl
         glm::vec2 _min, _max;
 
         float _x, _y, _width, _height;
+        friend class InspectorWindow;
     };
 }
 

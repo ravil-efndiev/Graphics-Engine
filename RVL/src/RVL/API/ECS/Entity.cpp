@@ -7,4 +7,9 @@ namespace Rvl
         _scene = scene;
         _id = id;
     }
+    
+    bool Entity::operator==(const Entity& entity)
+    {
+        return _id == entity._id && _scene == entity._scene;
+    }
 }

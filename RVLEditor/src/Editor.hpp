@@ -1,12 +1,12 @@
 #pragma once
 
-#include "MainState.hpp"
+#include "EditorState.hpp"
 
-class Game : public Rvl::App
+class Editor : public Rvl::App
 {
 public:
-    Game();
-    ~Game();
+    Editor();
+    ~Editor();
 
 private:
     void Start() override;

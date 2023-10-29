@@ -3,7 +3,6 @@
 #include <API/Time.hpp>
 #include <Core/Core.hpp>
 #include <Entity.hpp>
-#include "TransformComponent.hpp"
 #include <Rendering/Renderer/Transform.hpp>
 
 namespace Rvl

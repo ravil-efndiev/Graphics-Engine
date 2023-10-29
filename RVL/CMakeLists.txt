@@ -42,7 +42,7 @@ add_library(RVL STATIC
     src/RVL/API/ECS/Entity.cpp
     src/RVL/API/ECS/Scene.cpp
     src/RVL/API/ECS/Behaviour.cpp
-    src/RVL/API/ECS/TransformComponent.cpp
+    src/RVL/API/ECS/General/TransformComponent.cpp
     src/RVL/API/ECS/2D/SpriteComponent.cpp
     src/RVL/API/ECS/2D/TileMapComponent.cpp
     src/RVL/API/ECS/2D/MovementComponent.cpp
@@ -62,6 +62,7 @@ add_library(RVL STATIC
     vendor/imgui/imgui_draw.cpp
     vendor/imgui/imgui_widgets.cpp
     vendor/imgui/imgui_tables.cpp
+    vendor/imgui/misc/cpp/imgui_stdlib.cpp
     vendor/lib/stb_image.cpp
 )
 

@@ -6,7 +6,7 @@
 #include "3D/MaterialComponent.hpp"
 #include "3D/DirectionalLightComponent.hpp"
 #include "3D/PointLightComponent.hpp"
-#include "TransformComponent.hpp"
+#include "General/TransformComponent.hpp"
 
 namespace Rvl
 {
