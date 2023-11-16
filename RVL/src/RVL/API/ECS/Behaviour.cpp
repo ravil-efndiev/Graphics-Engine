@@ -6,7 +6,7 @@ namespace Rvl
 {
     Behaviour::Behaviour(Entity& self) : 
         _self(self), 
-        _transform(_self.GetComponent<TransformComponent>()) {}
+        _transform(_self.Get<TransformComponent>()) {}
 
     Behaviour::~Behaviour() {}
 }

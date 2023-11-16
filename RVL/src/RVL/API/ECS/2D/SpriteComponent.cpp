@@ -4,131 +4,82 @@ namespace Rvl
 {
     SpriteComponent::SpriteComponent(const std::string& path, float scale)
     {
-        _scale = scale;
+        Scale = scale;
         LoadTexture(path);
     }
     
     SpriteComponent::SpriteComponent(const Ref<GLTexture>& texture, float scale)
     {
-        _scale = scale;
+        Scale = scale;
         LoadTexture(texture);
     }
 
     SpriteComponent::SpriteComponent(const glm::vec4& color)
     {
-        _scale = 1.f;
-        _color = color;
-        _drawType = DrawType::Color;
-        _fixedScale = false;
+        Scale = 1.f;
+        Color = color;
+        Drawtype = DrawType::Color;
+        UseFixedScale = false;
     }
 
     void SpriteComponent::LoadTexture(const std::string& path)
     {
-        _drawType = DrawType::Texture;
+        Drawtype = DrawType::Texture;
 
-        _texture = NewRef<GLTexture>(path);
+        Texture = NewRef<GLTexture>(path);
 
-        SetSubTexture(0.f, 0.f, _texture->GetWidth(), _texture->GetHeight());
+        SetSubTexture(0.f, 0.f, Texture->GetWidth(), Texture->GetHeight());
     }
 
     void SpriteComponent::LoadTexture(const Ref<GLTexture>& texture)
     {
-        _drawType = DrawType::Texture;
+        Drawtype = DrawType::Texture;
 
-        _texture = texture;
+        Texture = texture;
 
-        SetSubTexture(0.f, 0.f, _texture->GetWidth(), _texture->GetHeight());
+        SetSubTexture(0.f, 0.f, Texture->GetWidth(), Texture->GetHeight());
     }
 
     void SpriteComponent::SetSubTexture(float x, float y, float spriteWidth, float spriteHeight)
     {
-        RVL_ASSERT((_drawType == DrawType::Texture), "Cannot load subtexture into sprite without base texture");
-        _subTexture = SubTexture::New(_texture, x, y, spriteWidth, spriteHeight);
+        RVL_ASSERT((Drawtype == DrawType::Texture), "Cannot load subtexture into sprite without base texture");
+        Subtexture = SubTexture::New(Texture, x, y, spriteWidth, spriteHeight);
 
-        if (_fixedScale)
+        if (UseFixedScale)
         {
             float ratio = spriteWidth / spriteHeight;
-            _currentScale = glm::vec2(ratio * _scale, _scale);
+            ScaleVec2 = glm::vec2(ratio * Scale, Scale);
         }
     }
 
     void SpriteComponent::SetSubTexture(const Ref<SubTexture>& subTexture)
     {
-        RVL_ASSERT((_drawType == DrawType::Texture), "Cannot load subtexture into sprite without base texture");
-        _subTexture = SubTexture::New(_texture, subTexture->GetX(), subTexture->GetY(), subTexture->GetWidth(), subTexture->GetHeight());
+        RVL_ASSERT((Drawtype == DrawType::Texture), "Cannot load subtexture into sprite without base texture");
+        Subtexture = SubTexture::New(Texture, subTexture->GetX(), subTexture->GetY(), subTexture->GetWidth(), subTexture->GetHeight());
 
-        if (_fixedScale)
+        if (UseFixedScale)
         {
             float ratio = subTexture->GetWidth() / subTexture->GetHeight();
-            _currentScale = glm::vec2(ratio * _scale, _scale);
+            ScaleVec2 = glm::vec2(ratio * Scale, Scale);
         }
     }
 
     void SpriteComponent::ResetScale()
     {
-        RVL_ASSERT((_drawType == DrawType::Texture), "Cannot reset scale based on texture in sprite without texture");
-        float ratio = (float)_texture->GetWidth() / (float)_texture->GetHeight();
+        RVL_ASSERT((Drawtype == DrawType::Texture), "Cannot reset scale based on texture in sprite without texture");
+        float ratio = (float)Texture->GetWidth() / (float)Texture->GetHeight();
 
-        _currentScale = glm::vec2(ratio * _scale, _scale);
+        ScaleVec2 = glm::vec2(ratio * Scale, Scale);
     }
 
     void SpriteComponent::ResetSubTexture()
     {
-        RVL_ASSERT((_drawType == DrawType::Texture), "Cannot reset subtexture in sprite without texture");
+        RVL_ASSERT((Drawtype == DrawType::Texture), "Cannot reset subtexture in sprite without texture");
 
-        if (_fixedScale)            
+        if (UseFixedScale)            
             ResetScale();
 
-        _subTexture = SubTexture::New(_texture, 0.f, 0.f, _texture->GetWidth(), _texture->GetHeight());
+        Subtexture = SubTexture::New(Texture, 0.f, 0.f, Texture->GetWidth(), Texture->GetHeight());
     }  
 
-    Ref<GLTexture> SpriteComponent::GetTexture() const
-    {
-        return _texture;
-    }
-
-    Ref<SubTexture> SpriteComponent::GetSubTexture() const
-    {
-        return _subTexture;
-    }
-    
-    void SpriteComponent::SetColor(const glm::vec4& color)
-    {
-        _color = color;
-    }
-
-    glm::vec4 SpriteComponent::GetColor() const
-    {
-        return _color;
-    }
-    
-    SpriteComponent::DrawType SpriteComponent::GetDrawType() const
-    {
-        return _drawType;
-    }
-    
-    void SpriteComponent::UseColorAsTint(bool flag)
-    {
-        _useColorAsTint = flag;
-    }
-
-    bool SpriteComponent::ColorIsTint() const
-    {
-        return _useColorAsTint;
-    }
-    
-    glm::vec2 SpriteComponent::GetCurrentScale() const
-    {
-        return _currentScale;
-    }
-    
-    bool SpriteComponent::GetFixedScale() const
-    {
-        return _fixedScale;
-    }
-    
-    void SpriteComponent::SetFixedScale(bool flag)
-    {
-        _fixedScale = flag;
-    }
 }

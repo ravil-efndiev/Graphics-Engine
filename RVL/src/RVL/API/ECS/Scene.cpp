@@ -30,8 +30,8 @@ namespace Rvl
     {
         Entity entity (this, _registry.create());
         entityNum++;
-        entity.AddComponent<IdentifierComponent>("Entity" + std::to_string(entityNum));
-        entity.AddComponent<TransformComponent>(glm::vec3(0.f), glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
+        entity.Add<IdentifierComponent>("Entity" + std::to_string(entityNum));
+        entity.Add<TransformComponent>(glm::vec3(0.f), glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
         _entities.push_back(entity);
         return entity;
     }
@@ -40,8 +40,8 @@ namespace Rvl
     {
         Entity entity (this, _registry.create());
         entityNum++;
-        entity.AddComponent<IdentifierComponent>(name);
-        entity.AddComponent<TransformComponent>(glm::vec3(0.f), glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
+        entity.Add<IdentifierComponent>(name);
+        entity.Add<TransformComponent>(glm::vec3(0.f), glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
         _entities.push_back(entity);
         return entity;
     }
@@ -53,29 +53,29 @@ namespace Rvl
     
     void Scene::DrawSprite(Entity entity)
     {
-        RVL_ASSERT((entity.HasComponent<SpriteComponent>() && entity.HasComponent<TransformComponent>()), "entity passed into DrawSprite function doesn't have Sprite Component");
+        RVL_ASSERT((entity.Has<SpriteComponent>() && entity.Has<TransformComponent>()), "entity passed into DrawSprite function doesn't have Sprite Component");
 
-        auto spriteCompoent = entity.GetComponent<SpriteComponent>();
-        auto transformCompoent = entity.GetComponent<TransformComponent>();
+        auto spriteCompoent = entity.Get<SpriteComponent>();
+        auto transformCompoent = entity.Get<TransformComponent>();
         
-        if (spriteCompoent.GetDrawType() == SpriteComponent::DrawType::Color)
-            Renderer::DrawRect((Transform)transformCompoent, spriteCompoent.GetColor());
+        if (spriteCompoent.Drawtype == SpriteComponent::DrawType::Color)
+            Renderer::DrawRect((Transform)transformCompoent, spriteCompoent.Color);
 
-        else if (spriteCompoent.GetDrawType() == SpriteComponent::DrawType::Texture)
+        else if (spriteCompoent.Drawtype == SpriteComponent::DrawType::Texture)
         {
-            if (spriteCompoent.ColorIsTint())
-               Renderer::DrawRect((Transform)transformCompoent, spriteCompoent.GetSubTexture(), spriteCompoent.GetColor());
+            if (spriteCompoent.UseColorAsTint)
+               Renderer::DrawRect((Transform)transformCompoent, spriteCompoent.Subtexture, spriteCompoent.Color);
 
             else
-               Renderer::DrawRect((Transform)transformCompoent, spriteCompoent.GetSubTexture());
+               Renderer::DrawRect((Transform)transformCompoent, spriteCompoent.Subtexture);
         }
     }
     
     void Scene::DrawTileMap(Entity entity)
     {
-        RVL_ASSERT((entity.HasComponent<TileMapComponent>()), "entity passed into DrawTileMap function doesn't have TileMap Component");
+        RVL_ASSERT((entity.Has<TileMapComponent>()), "entity passed into DrawTileMap function doesn't have TileMap Component");
 
-        auto tileMapComponent = entity.GetComponent<TileMapComponent>();
+        auto tileMapComponent = entity.Get<TileMapComponent>();
         
         for (auto& tile : tileMapComponent.GetTiles())
         {
@@ -85,13 +85,13 @@ namespace Rvl
 
     void Scene::DrawModel(Entity entity)
     {
-        RVL_ASSERT((entity.HasComponent<ModelComponent>()), "entity passed into DrawModel function doesn't have Model Component");
-        RVL_ASSERT((entity.HasComponent<TransformComponent>()), "entity passed into DrawModel function doesn't have Transform Component");
-        RVL_ASSERT((entity.HasComponent<MaterialComponent>()), "entity passed into DrawModel function doesn't have Material Component");
+        RVL_ASSERT((entity.Has<ModelComponent>()), "entity passed into DrawModel function doesn't have Model Component");
+        RVL_ASSERT((entity.Has<TransformComponent>()), "entity passed into DrawModel function doesn't have Transform Component");
+        RVL_ASSERT((entity.Has<MaterialComponent>()), "entity passed into DrawModel function doesn't have Material Component");
 
-        auto meshes = entity.GetComponent<ModelComponent>().GetMeshes();
-        auto transform = entity.GetComponent<TransformComponent>();
-        auto material = entity.GetComponent<MaterialComponent>();
+        auto meshes = entity.Get<ModelComponent>().GetMeshes();
+        auto transform = entity.Get<TransformComponent>();
+        auto material = entity.Get<MaterialComponent>();
 
         for (auto& mesh : meshes)
         {

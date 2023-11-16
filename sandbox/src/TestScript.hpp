@@ -24,4 +24,3 @@ public:
         //    _transform.Rotation->y = 20;
     }
 };
-

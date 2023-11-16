@@ -14,12 +14,12 @@ void MainState::Start()
     _camera = UserPerspectiveCamera::New({0.f, 0.f, 0.f}, 45.f);
 
     _directionalLight = _currentScene.NewEntity();
-    _directionalLight.AddComponent<DirectionalLightComponent>(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.5f, 0.5f, 0.5f));
-    _dlTf = &_directionalLight.GetComponent<TransformComponent>();
+    _directionalLight.Add<DirectionalLightComponent>(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.5f, 0.5f, 0.5f));
+    _dlTf = &_directionalLight.Get<TransformComponent>();
 
     _model = _currentScene.NewEntity();
-    _model.AddComponent<ModelComponent>("./assets/textures/backpack.obj");
-    _mat = &_model.AddComponent<MaterialComponent>(StandartShaderLib::Get("Light"));
+    _model.Add<ModelComponent>("./assets/textures/backpack.obj");
+    _mat = &_model.Add<MaterialComponent>(StandartShaderLib::Get("Light"));
     _mat->ProcessLightSources(true);
 
     _mat->Set("u_Material.diffuse",  glm::vec3(0.5f, 0.5f, 0.5f));
@@ -28,9 +28,9 @@ void MainState::Start()
     _mat->Set("u_Material.shininess", 32.f);
 
     _sprite = _currentScene.NewEntity();
-    (_sTf = &_sprite.GetComponent<TransformComponent>())->Position->x = 5.f;
-    _sprite.AddComponent<SpriteComponent>("assets/textures/container.jpg", 1.f);
-    _sprite.AddComponent<PointLightComponent>(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.5f, 0.5f, 0.5f), 0.09f, 0.032f);
+    (_sTf = &_sprite.Get<TransformComponent>())->Position->x = 5.f;
+    _sprite.Add<SpriteComponent>("assets/textures/container.jpg", 1.f);
+    _sprite.Add<PointLightComponent>(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.5f, 0.5f, 0.5f), 0.09f, 0.032f);
 }
 
 void MainState::Update()

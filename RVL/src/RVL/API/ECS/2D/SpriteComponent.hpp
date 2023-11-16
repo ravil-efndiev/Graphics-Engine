@@ -6,16 +6,15 @@
 
 namespace Rvl
 {
-    class SpriteComponent
+    struct SpriteComponent
     {
-    public:
+        enum class DrawType { Color, Texture };
+
         SpriteComponent() = default;
         SpriteComponent(const SpriteComponent&) = default;
         SpriteComponent(const std::string& path, float scale);
         SpriteComponent(const Ref<GLTexture>& texture, float scale);
         SpriteComponent(const glm::vec4& color);
-
-        enum class DrawType { Color, Texture };
 
         void LoadTexture(const std::string& path);
         void LoadTexture(const Ref<GLTexture>& texture);
@@ -26,35 +25,18 @@ namespace Rvl
         void ResetScale();
         void ResetSubTexture();
 
-        Ref<GLTexture> GetTexture() const;
-        Ref<SubTexture> GetSubTexture() const;
+        float Scale;
 
-        void SetColor(const glm::vec4& color);
-        glm::vec4 GetColor() const;
+        Ref<SubTexture> Subtexture;
+        Ref<GLTexture> Texture;
+        DrawType Drawtype;
 
-        DrawType GetDrawType() const;
+        glm::vec4 Color { 1.f };
+        glm::vec2 ScaleVec2 { 0.f };
 
-        void UseColorAsTint(bool flag);
-        bool ColorIsTint() const;
+        bool UseColorAsTint;
+        bool UseFixedScale = true;
 
-        glm::vec2 GetCurrentScale() const;
-
-        bool GetFixedScale() const;
-        void SetFixedScale(bool flag);
-
-        friend class InspectorWindow;
-    private:
-        float _scale;
-
-        Ref<SubTexture> _subTexture;
-        Ref<GLTexture> _texture;
-        DrawType _drawType;
-
-        glm::vec4 _color { 1.f };
-        glm::vec2 _currentScale { 0.f };
-
-        bool _useColorAsTint;
-        bool _fixedScale = true;
     };
 }
 

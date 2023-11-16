@@ -22,9 +22,8 @@ namespace Rvl
         glm::vec4 GetSubTextureData() const;
 
     private:
-        class Animation
+        struct Animation
         {
-        public:
             Animation(TimeStep animTimer, float startX, float startY, float endX, float subSpriteWidth, float subSpriteHeight);
 
             void Play();
@@ -32,7 +31,6 @@ namespace Rvl
 
             bool _done = false;
 
-        private:
             TimeStep _timer, _animTimer;
             float _startX, _startY, _endX;
             float _subSpriteWidth, _subSpriteHeight;
