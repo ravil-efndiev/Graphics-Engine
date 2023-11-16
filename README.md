@@ -85,8 +85,6 @@ So now as you've created your very first 'Hello, World' program you should now c
 
 Here you can see some screenshots that can probabbly make you more interested
 ![](https://github.com/ravil-efndiev/RVL-Engine/blob/main/img/editor.png)
-2d tilemap editor
-![](https://github.com/ravil-efndiev/RVL-Engine/blob/main/img/model.png)
-3d model with lighting and basic post-processing
+scene editor
 ![](https://github.com/ravil-efndiev/RVL-Engine/blob/main/img/2D.png)
 2d character prototype with animations and movement
