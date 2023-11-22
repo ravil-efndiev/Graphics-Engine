@@ -94,7 +94,7 @@ void main()
     vec3 result = CalcDirLight(u_DirectionalLight, u_Material, norm, viewDir);
     for (int i = 0; i < 100; ++i)
     {
-        if (i > u_LightsCount)
+        if (i >= u_LightsCount)
             break;
 
         result += CalcPointLight(u_PointLight[i], mat, norm, fragPos, viewDir, texCoord);

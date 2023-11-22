@@ -34,8 +34,10 @@ namespace Rvl
         glm::vec3 GetRotationAngles() const;
 
         void UpdateControls(ControllerType type, float speed, TimeStep dt = Time::DeltaTime());
+        void UpdateCursorRotation(float speed);
 
     private:
+        glm::vec2 _rotation {0.f};
         Ref<PerspectiveCamera> _camera;
     };
 }

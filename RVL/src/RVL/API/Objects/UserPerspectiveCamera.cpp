@@ -1,6 +1,7 @@
 #include "UserPerspectiveCamera.hpp"
 #include <API/Time.hpp>
 #include <API/Input.hpp>
+#include <Rendering/Renderer/RenderCommand.hpp>
 
 namespace Rvl
 {
@@ -106,6 +107,21 @@ namespace Rvl
                 Position->y -= 5.f * dt;
 
         } 
+    }
+
+    void UserPerspectiveCamera::UpdateCursorRotation(float speed)
+    {
+        glm::vec2 viewport = RenderCommand::GetViewport();
+
+        _rotation += Input::GetCursorDelta() / (float)viewport.y * speed;
+        
+        if (_rotation.y > glm::radians(89.f))
+            _rotation.y = glm::radians(89.f);
+
+        if (_rotation.y < -glm::radians(89.f))
+            _rotation.y = -glm::radians(89.f);
+
+        Rotate(_rotation.y, _rotation.x, 0.f);
     }
 
 }

@@ -264,6 +264,7 @@ namespace Rvl
                 ImGui::CloseCurrentPopup();
             }
 
+            ImGui::EndPopup();
         }
 
         ImGui::End();

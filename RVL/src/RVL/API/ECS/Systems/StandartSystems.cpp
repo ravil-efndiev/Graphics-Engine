@@ -114,7 +114,7 @@ namespace Rvl
                         index++;
                     }
                 }
-                material.SetUniform("u_LightCount", index);
+                material.SetUniform("u_LightsCount", index);
             }
         
         }

@@ -38,35 +38,22 @@ void EditorState::Start()
 
 void EditorState::Update()
 {
-    UserCamera::ToPerspective(_camera)->UpdateControls(ControllerType::InPlane, 5.f);
-    DockspaceAndMenu();
-    
     if (Input::IsKeyPressedOnce(Keys::Key_Escape))
     {
         _lock = !_lock;
         App::GetInstance()->SetCursorLocked(_lock);
     }
 
-    if (_lock)
-    {
-        glm::vec2 viewport = RenderCommand::GetViewport();
+    UserCamera::ToPerspective(_camera)->UpdateControls(ControllerType::InPlane, 5.f);
 
-        _camRotation += Input::GetCursorDelta() / (float)viewport.y * 2.f;
-        
-        if (_camRotation.y > glm::radians(89.f))
-            _camRotation.y = glm::radians(89.f);
+    if (_lock) UserCamera::ToPerspective(_camera)->UpdateCursorRotation(2.f);
 
-        if (_camRotation.y < -glm::radians(89.f))
-            _camRotation.y = -glm::radians(89.f);
-
-        UserCamera::ToPerspective(_camera)->Rotate(_camRotation.y, _camRotation.x, 0.f);
-    }
-
-    //_mat->SetUniform("u_ViewPos", UserCamera::ToPerspective(_camera)->Position());
+    _mat->SetUniform("u_ViewPos", UserCamera::ToPerspective(_camera)->Position());
 }
 
 void EditorState::Render()
 {
+    DockspaceAndMenu();
     RenderImGui();
     
     SceneRenderer::Render(_currentScene);
