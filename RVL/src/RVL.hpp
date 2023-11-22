@@ -18,7 +18,7 @@
      \----------------------------------------------------------------------------*/
 
 
-
+#define IMGUI_DEFINE_MATH_OPERATORS
 #include <imgui/imgui.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>

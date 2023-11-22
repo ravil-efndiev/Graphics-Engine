@@ -116,7 +116,7 @@ namespace Rvl
 
         for (auto& mesh : meshes)
         {
-            Renderer3D::SubmitMesh(mesh, material.GetShader(), (Transform)transform);
+            Renderer3D::SubmitMesh(mesh, material.Shader, (Transform)transform);
         }
     }
 

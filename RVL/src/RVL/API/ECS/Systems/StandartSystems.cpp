@@ -9,6 +9,8 @@
 #include "3D/PointLightComponent.hpp"
 #include "General/TransformComponent.hpp"
 
+#include <Rendering/OpenGL/GLShaderProgram.hpp>
+
 namespace Rvl
 {
     static int pointLightIndex = 0;
@@ -68,12 +70,10 @@ namespace Rvl
 
             auto& material = entity.Get<MaterialComponent>();
 
-            material.Mat->Set("u_Material.diffuse",  material.Diffuse);
-            material.Mat->Set("u_Material.specular", material.Specular);
-            material.Mat->Set("u_Material.ambient",  material.Ambient);
-            material.Mat->Set("u_Material.shininess", material.Shininess);
-
-            material.Mat->Update();
+            material.SetUniform("u_Material.diffuse",  material.Diffuse);
+            material.SetUniform("u_Material.specular", material.Specular);
+            material.SetUniform("u_Material.ambient",  material.Ambient);
+            material.SetUniform("u_Material.shininess", material.Shininess);
 
             if (material.ProcessLightSources)
             {
@@ -90,10 +90,10 @@ namespace Rvl
                         auto light = entity2.Get<DirectionalLightComponent>();
                         auto lightTf = entity2.Get<TransformComponent>();
 
-                        material.Mat->Set("u_DirectionalLight.ambient",  light.Ambient);
-                        material.Mat->Set("u_DirectionalLight.diffuse",  light.Diffuse); 
-                        material.Mat->Set("u_DirectionalLight.specular", light.Specular); 
-                        material.Mat->Set("u_DirectionalLight.direction", lightTf.Rotation()); 
+                        material.SetUniform("u_DirectionalLight.ambient",  light.Ambient);
+                        material.SetUniform("u_DirectionalLight.diffuse",  light.Diffuse); 
+                        material.SetUniform("u_DirectionalLight.specular", light.Specular); 
+                        material.SetUniform("u_DirectionalLight.direction", lightTf.Rotation()); 
                     }
 
                     if (entity2.Has<PointLightComponent>())
@@ -103,29 +103,18 @@ namespace Rvl
                         auto light = entity2.Get<PointLightComponent>();
                         auto lightTf = entity2.Get<TransformComponent>();
 
-                        material.Mat->Set("u_PointLight[" + std::to_string(index) + "].ambient",   light.Ambient);
-                        material.Mat->Set("u_PointLight[" + std::to_string(index) + "].diffuse",   light.Diffuse); 
-                        material.Mat->Set("u_PointLight[" + std::to_string(index) + "].specular",  light.Specular); 
-                        material.Mat->Set("u_PointLight[" + std::to_string(index) + "].position",  lightTf.Position()); 
-                        material.Mat->Set("u_PointLight[" + std::to_string(index) + "].constant",  light.Constant);
-                        material.Mat->Set("u_PointLight[" + std::to_string(index) + "].linear",    light.Linear);
-                        material.Mat->Set("u_PointLight[" + std::to_string(index) + "].quadratic", light.Quadratic);	
-                        material.Mat->Set("u_PointLight[" + std::to_string(index) + "].none", 0.f);	
+                        material.SetUniform("u_PointLight[" + std::to_string(index) + "].ambient",   light.Ambient);
+                        material.SetUniform("u_PointLight[" + std::to_string(index) + "].diffuse",   light.Diffuse); 
+                        material.SetUniform("u_PointLight[" + std::to_string(index) + "].specular",  light.Specular); 
+                        material.SetUniform("u_PointLight[" + std::to_string(index) + "].position",  lightTf.Position()); 
+                        material.SetUniform("u_PointLight[" + std::to_string(index) + "].constant",  light.Constant);
+                        material.SetUniform("u_PointLight[" + std::to_string(index) + "].linear",    light.Linear);
+                        material.SetUniform("u_PointLight[" + std::to_string(index) + "].quadratic", light.Quadratic);	
+                        material.SetUniform("u_PointLight[" + std::to_string(index) + "].none", 0.f);	
                         index++;
                     }
                 }
-
-                for (int i = index; i < 100; i++) 
-                {
-                    material.Mat->Set("u_PointLight[" + std::to_string(i) + "].diffuse",   glm::vec3(0.f)); 
-                    material.Mat->Set("u_PointLight[" + std::to_string(i) + "].ambient",   glm::vec3(0.f));
-                    material.Mat->Set("u_PointLight[" + std::to_string(i) + "].specular",  glm::vec3(0.f)); 
-                    material.Mat->Set("u_PointLight[" + std::to_string(i) + "].position",  glm::vec3(0.f)); 
-                    material.Mat->Set("u_PointLight[" + std::to_string(i) + "].constant",  0.f);
-                    material.Mat->Set("u_PointLight[" + std::to_string(i) + "].linear",    0.f);
-                    material.Mat->Set("u_PointLight[" + std::to_string(i) + "].quadratic", 0.f);	
-                    material.Mat->Set("u_PointLight[" + std::to_string(i) + "].none", 1.f);	
-                }
+                material.SetUniform("u_LightCount", index);
             }
         
         }

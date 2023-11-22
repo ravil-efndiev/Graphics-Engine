@@ -35,13 +35,13 @@ struct PointLight {
     float constant;
     float linear;
     float quadratic;
-
-    float none;
 }; 
 
 uniform Material u_Material;
 uniform DirectionalLight u_DirectionalLight;
 uniform PointLight u_PointLight[100];
+
+uniform int u_LightsCount;
 
 vec3 CalcDirLight(DirectionalLight light, Material mat, vec3 norm, vec3 viewDir)
 { 
@@ -89,13 +89,15 @@ void main()
     vec3 fragPos = v_FragPos;
     vec2 texCoord = v_TexCoords;
 
-    vec3 result = CalcDirLight(u_DirectionalLight, u_Material, norm, viewDir);
-    for (int i = 0; i < 100; i++)
-    {
-        if (u_PointLight[i].none == 1.f)
-            continue;
+    Material mat = u_Material;
 
-        result += CalcPointLight(u_PointLight[i], u_Material, norm, fragPos, viewDir, texCoord);
+    vec3 result = CalcDirLight(u_DirectionalLight, u_Material, norm, viewDir);
+    for (int i = 0; i < 100; ++i)
+    {
+        if (i > u_LightsCount)
+            break;
+
+        result += CalcPointLight(u_PointLight[i], mat, norm, fragPos, viewDir, texCoord);
     }
 
     FragColor = vec4(result, 1.0);

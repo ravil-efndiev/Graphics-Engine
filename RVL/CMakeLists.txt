@@ -31,7 +31,6 @@ add_library(RVL STATIC
     src/RVL/Rendering/Renderer/PerspectiveCamera.cpp
     src/RVL/Rendering/Renderer/Transform.cpp
     src/RVL/Rendering/Renderer/ShaderLibrary.cpp
-    src/RVL/Rendering/Renderer/Material.cpp
     src/RVL/API/Input.cpp
     src/RVL/API/Time.cpp
     src/RVL/API/Random.cpp

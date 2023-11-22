@@ -9,8 +9,6 @@ MainState::~MainState() {}
 
 void MainState::Start()
 {
-    CreateFrameBuffer({1000, 600});
-
     _camera = UserPerspectiveCamera::New({0.f, 0.f, 0.f}, 45.f);
 
     _directionalLight = _currentScene.NewEntity();
@@ -19,13 +17,7 @@ void MainState::Start()
 
     _model = _currentScene.NewEntity();
     _model.Add<ModelComponent>("./assets/textures/backpack.obj");
-    _mat = &_model.Add<MaterialComponent>(StandartShaderLib::Get("Light"));
-    _mat->ProcessLightSources(true);
-
-    _mat->Set("u_Material.diffuse",  glm::vec3(0.5f, 0.5f, 0.5f));
-    _mat->Set("u_Material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
-    _mat->Set("u_Material.ambient",  glm::vec3(1.0f, 0.5f, 0.31f));
-    _mat->Set("u_Material.shininess", 32.f);
+    _mat = &_model.Add<MaterialComponent>(glm::vec3(0.9f, 0.8f, 0.5f), 0.5f);
 
     _sprite = _currentScene.NewEntity();
     (_sTf = &_sprite.Get<TransformComponent>())->Position->x = 5.f;
@@ -58,7 +50,7 @@ void MainState::Update()
         UserCamera::ToPerspective(_camera)->Rotate(_camRotation.y, _camRotation.x, 0.f);
     }
 
-    _mat->Set("u_ViewPos", glm::vec4((glm::vec3)UserCamera::ToPerspective(_camera)->Position, 0.f));
+    _mat->Shader->SetUniformVec4("u_ViewPos", glm::vec4((glm::vec3)UserCamera::ToPerspective(_camera)->Position, 0.f));
     _dlTf->Rotation = _light;
     _sTf->Position = _lightPosition;
 }
@@ -90,13 +82,6 @@ void MainState::RenderImGui()
     ImGui::Text("Total verticies: %d", stats.VerticiesCount);
     ImGui::Text("Total indicies: %d", stats.IndiciesCount);
     ImGui::Text("Total Rectangles: %d", stats.RectCount);
-
-    ImGui::Image(
-        (ImTextureID)_fbo->GetColorAttachment(),
-        ImVec2(1000, 600), 
-        ImVec2(0, 1), 
-        ImVec2(1, 0)
-    );
     ImGui::End();
 
 

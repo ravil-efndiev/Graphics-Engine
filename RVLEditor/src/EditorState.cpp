@@ -62,7 +62,7 @@ void EditorState::Update()
         UserCamera::ToPerspective(_camera)->Rotate(_camRotation.y, _camRotation.x, 0.f);
     }
 
-    _mat->Mat->Set("u_ViewPos", glm::vec4((glm::vec3)UserCamera::ToPerspective(_camera)->Position, 0.f));
+    //_mat->SetUniform("u_ViewPos", UserCamera::ToPerspective(_camera)->Position());
 }
 
 void EditorState::Render()
