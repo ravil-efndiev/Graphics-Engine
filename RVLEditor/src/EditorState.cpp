@@ -63,7 +63,7 @@ void EditorState::RenderImGui()
 {
     auto stats = Renderer::GetStats();
 
-    ImGui::Begin("Properties", nullptr, UIData.GlobalWinFlags);
+    ImGui::Begin("Statistics", nullptr, UIData.GlobalWinFlags);
         ImGui::Text("Application average %.1f FPS (%.3f ms/frame)", ImGui::GetIO().Framerate, 1000.0f / ImGui::GetIO().Framerate);
         ImGui::Text("Application immidieate %.1f FPS (%.3f ms/frame)", 1.f / Time::DeltaTime(), 1000.f / (1.f / Time::DeltaTime()));
         ImGui::Separator();
@@ -71,7 +71,6 @@ void EditorState::RenderImGui()
         ImGui::Text("Total verticies: %d", stats.VerticiesCount);
         ImGui::Text("Total indicies: %d", stats.IndiciesCount);
         ImGui::Text("Total Rectangles: %d", stats.RectCount);
-
     ImGui::End();
 
     _hierarchy->ImGuiRender();
