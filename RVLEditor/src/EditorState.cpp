@@ -26,16 +26,9 @@ void EditorState::Start()
 
     _model = _currentScene.NewEntity("Model");
     _model.Add<ModelComponent>("./assets/textures/backpack.obj");
-    _mat = &_model.Add<MaterialComponent>(StandartShaderLib::Get("Light"));
-    _mat->ProcessLightSources(true);
+    _mat = &_model.Add<MaterialComponent>(glm::vec3(0.5, 0.4, 0.2), 32.f);
 
-    _mat->Set("u_Material.diffuse",  glm::vec3(0.5f, 0.5f, 0.5f));
-    _mat->Set("u_Material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
-    _mat->Set("u_Material.ambient",  glm::vec3(1.0f, 0.5f, 0.31f));
-    _mat->Set("u_Material.shininess", 32.f);
-
-    _sprite = _currentScene.NewEntity("Sprite");
-    (_sTf = &_sprite.Get<TransformComponent>())->Position->x = 5.f;
+    _sprite = _currentScene.NewEntity("Sprite", {5.f, 0.f, 0.f});
     _sprite.Add<SpriteComponent>("assets/textures/container.jpg", 1.f);
     _sprite.Add<PointLightComponent>(glm::vec3(0.4f, 0.9f, 0.5f), 0.09f, 0.032f);
 
@@ -69,15 +62,14 @@ void EditorState::Update()
         UserCamera::ToPerspective(_camera)->Rotate(_camRotation.y, _camRotation.x, 0.f);
     }
 
-    _mat->Set("u_ViewPos", glm::vec4((glm::vec3)UserCamera::ToPerspective(_camera)->Position, 0.f));
+    _mat->Mat->Set("u_ViewPos", glm::vec4((glm::vec3)UserCamera::ToPerspective(_camera)->Position, 0.f));
 }
 
 void EditorState::Render()
 {
     RenderImGui();
     
-    _currentScene.DrawModel(_model);
-    _currentScene.DrawSprite(_sprite);
+    SceneRenderer::Render(_currentScene);
 }
 
 void EditorState::RenderImGui()

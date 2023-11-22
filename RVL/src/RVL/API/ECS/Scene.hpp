@@ -18,20 +18,23 @@ namespace Rvl
         ~Scene();
 
         Entity NewEntity();
+        Entity NewEntity(const glm::vec3& position);
         Entity NewEntity(const std::string& name);
+        Entity NewEntity(const std::string& name, const glm::vec3& position);
 
         void AddSystem(const System& system);
+        void AddBehaviour(Behaviour* behaviour);
 
         void DrawSprite(Entity entity);
         void DrawTileMap(Entity entity);
         void DrawModel(Entity entity);
 
-        void AddBehaviour(Behaviour* behaviour);
-
         void StartBehaviours();
         void UpdateBehaviours();
 
         void OnEvent(Event* event);
+
+        std::vector<Entity> GetEntities() const;
 
         friend class Entity;
         friend class HierarchyWindow;

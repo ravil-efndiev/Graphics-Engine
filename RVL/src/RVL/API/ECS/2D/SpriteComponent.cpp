@@ -2,6 +2,14 @@
 
 namespace Rvl
 {
+    SpriteComponent::SpriteComponent()
+    {
+        Scale = 1.f;
+        Color = {1.f, 1.f, 1.f, 1.f};
+        Drawtype = DrawType::Color;
+        UseFixedScale = false;
+    }
+
     SpriteComponent::SpriteComponent(const std::string& path, float scale)
     {
         Scale = scale;

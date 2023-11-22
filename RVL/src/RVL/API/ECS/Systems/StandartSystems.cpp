@@ -5,16 +5,19 @@
 #include "2D/AnimationComponent.hpp"
 #include "3D/MaterialComponent.hpp"
 #include "3D/DirectionalLightComponent.hpp"
+#include "3D/ModelComponent.hpp"
 #include "3D/PointLightComponent.hpp"
 #include "General/TransformComponent.hpp"
 
 namespace Rvl
 {
+    static int pointLightIndex = 0;
+
     void Sprite2DSystem(const std::vector<Entity>& entities)
     {
         for (auto entity : entities)
         {
-            if (!entity.Has<SpriteComponent>())
+            if (!entity.Has<SpriteComponent>() || entity.Has<ModelComponent>())
                 continue;
 
             RVL_ASSERT(entity.Has<TransformComponent>(), "entity with sprite component doesn't have transform component");
@@ -65,10 +68,16 @@ namespace Rvl
 
             auto& material = entity.Get<MaterialComponent>();
 
-            material.Update();
+            material.Mat->Set("u_Material.diffuse",  material.Diffuse);
+            material.Mat->Set("u_Material.specular", material.Specular);
+            material.Mat->Set("u_Material.ambient",  material.Ambient);
+            material.Mat->Set("u_Material.shininess", material.Shininess);
 
-            if (material.ShouldProcessLightSources())
+            material.Mat->Update();
+
+            if (material.ProcessLightSources)
             {
+                int index = 0;
                 for (auto entity2 : entities)
                 {
                     RVL_ASSERT(!(entity2.Has<DirectionalLightComponent>() && entity2.Has<PointLightComponent>()),
@@ -81,30 +90,65 @@ namespace Rvl
                         auto light = entity2.Get<DirectionalLightComponent>();
                         auto lightTf = entity2.Get<TransformComponent>();
 
-                        material.Set("u_DirectionalLight.ambient",  light.Ambient);
-                        material.Set("u_DirectionalLight.diffuse",  light.Diffuse); 
-                        material.Set("u_DirectionalLight.specular", light.Specular); 
-                        material.Set("u_DirectionalLight.direction", lightTf.Rotation()); 
+                        material.Mat->Set("u_DirectionalLight.ambient",  light.Ambient);
+                        material.Mat->Set("u_DirectionalLight.diffuse",  light.Diffuse); 
+                        material.Mat->Set("u_DirectionalLight.specular", light.Specular); 
+                        material.Mat->Set("u_DirectionalLight.direction", lightTf.Rotation()); 
                     }
 
                     if (entity2.Has<PointLightComponent>())
                     {
                         RVL_ASSERT(entity2.Has<TransformComponent>(), "Point light doesn't have transform component");
-                        
+
                         auto light = entity2.Get<PointLightComponent>();
                         auto lightTf = entity2.Get<TransformComponent>();
 
-                        material.Set("u_PointLight.ambient",   light.Ambient);
-                        material.Set("u_PointLight.diffuse",   light.Diffuse); 
-                        material.Set("u_PointLight.specular",  light.Specular); 
-                        material.Set("u_PointLight.position",  lightTf.Position()); 
-                        material.Set("u_PointLight.constant",  light.Constant);
-                        material.Set("u_PointLight.linear",    light.Linear);
-                        material.Set("u_PointLight.quadratic", light.Quadratic);	
+                        material.Mat->Set("u_PointLight[" + std::to_string(index) + "].ambient",   light.Ambient);
+                        material.Mat->Set("u_PointLight[" + std::to_string(index) + "].diffuse",   light.Diffuse); 
+                        material.Mat->Set("u_PointLight[" + std::to_string(index) + "].specular",  light.Specular); 
+                        material.Mat->Set("u_PointLight[" + std::to_string(index) + "].position",  lightTf.Position()); 
+                        material.Mat->Set("u_PointLight[" + std::to_string(index) + "].constant",  light.Constant);
+                        material.Mat->Set("u_PointLight[" + std::to_string(index) + "].linear",    light.Linear);
+                        material.Mat->Set("u_PointLight[" + std::to_string(index) + "].quadratic", light.Quadratic);	
+                        material.Mat->Set("u_PointLight[" + std::to_string(index) + "].none", 0.f);	
+                        index++;
                     }
+                }
+
+                for (int i = index; i < 100; i++) 
+                {
+                    material.Mat->Set("u_PointLight[" + std::to_string(i) + "].diffuse",   glm::vec3(0.f)); 
+                    material.Mat->Set("u_PointLight[" + std::to_string(i) + "].ambient",   glm::vec3(0.f));
+                    material.Mat->Set("u_PointLight[" + std::to_string(i) + "].specular",  glm::vec3(0.f)); 
+                    material.Mat->Set("u_PointLight[" + std::to_string(i) + "].position",  glm::vec3(0.f)); 
+                    material.Mat->Set("u_PointLight[" + std::to_string(i) + "].constant",  0.f);
+                    material.Mat->Set("u_PointLight[" + std::to_string(i) + "].linear",    0.f);
+                    material.Mat->Set("u_PointLight[" + std::to_string(i) + "].quadratic", 0.f);	
+                    material.Mat->Set("u_PointLight[" + std::to_string(i) + "].none", 1.f);	
                 }
             }
         
+        }
+    }
+
+    void LightSystem(const std::vector<Entity>& entities)
+    {
+        for (auto entity : entities)
+        {
+            if (entity.Has<DirectionalLightComponent>())
+            {
+                auto& dl = entity.Get<DirectionalLightComponent>();
+
+                dl.Diffuse = dl.Color * dl.Intensity;
+            }
+
+            if (entity.Has<PointLightComponent>())
+            {
+                auto& pl = entity.Get<PointLightComponent>();
+
+                pl.Diffuse = pl.Color * pl.Intensity;
+            }
+
         }
     }
 }

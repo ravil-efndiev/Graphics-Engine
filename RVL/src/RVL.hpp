@@ -35,6 +35,7 @@
 #include "RVL/API/Objects/TileSet.hpp"
 #include "RVL/API/Objects/UserPerspectiveCamera.hpp"
 #include "RVL/API/Objects/UserOrthographicCamera.hpp"
+#include "RVL/API/Objects/SceneRenderer.hpp"
 #include "RVL/API/ECS/General/TransformComponent.hpp"
 #include "RVL/API/ECS/General/IdentifierComponent.hpp"
 #include "RVL/API/ECS/2D/AnimationComponent.hpp"

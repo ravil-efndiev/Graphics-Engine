@@ -31,6 +31,7 @@ add_library(RVL STATIC
     src/RVL/Rendering/Renderer/PerspectiveCamera.cpp
     src/RVL/Rendering/Renderer/Transform.cpp
     src/RVL/Rendering/Renderer/ShaderLibrary.cpp
+    src/RVL/Rendering/Renderer/Material.cpp
     src/RVL/API/Input.cpp
     src/RVL/API/Time.cpp
     src/RVL/API/Random.cpp
@@ -38,6 +39,7 @@ add_library(RVL STATIC
     src/RVL/API/Objects/UserCamera.cpp
     src/RVL/API/Objects/UserOrthographicCamera.cpp
     src/RVL/API/Objects/UserPerspectiveCamera.cpp
+    src/RVL/API/Objects/SceneRenderer.cpp
     src/RVL/API/Objects/TileSet.cpp
     src/RVL/API/ECS/Entity.cpp
     src/RVL/API/ECS/Scene.cpp

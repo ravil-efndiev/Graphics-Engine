@@ -10,8 +10,7 @@ namespace Rvl
     {
         enum class DrawType { Color, Texture };
 
-        SpriteComponent() = default;
-        SpriteComponent(const SpriteComponent&) = default;
+        SpriteComponent();
         SpriteComponent(const std::string& path, float scale);
         SpriteComponent(const Ref<GLTexture>& texture, float scale);
         SpriteComponent(const glm::vec4& color);

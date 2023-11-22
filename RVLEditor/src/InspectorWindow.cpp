@@ -179,9 +179,15 @@ namespace Rvl
 
             if (ImGui::TreeNodeEx("Point Light##inspector_pl", UIData.NodeFlags))
             {
-                DragVec3("Ambient##pl_ambient", &pl.Ambient, {'R', 'G', 'B'});
-                DragVec3("Diffuse##pl_diffuse", &pl.Diffuse, {'R', 'G', 'B'});
-                DragVec3("Specular##pl_specular", &pl.Specular, {'R', 'G', 'B'});
+                ImGui::ColorEdit3("Color##pl_diffuse", glm::value_ptr(pl.Color));
+                DragFloat("Intensity##pl_intensity", &pl.Intensity);
+
+                ImGui::Dummy({0.f, 5.f});
+                ImGui::Text("Advanced settings");
+                ImGui::Separator();
+                ImGui::ColorEdit3("Ambient##pl_ambient", glm::value_ptr(pl.Ambient));
+                ImGui::ColorEdit3("Specular##pl_specular", glm::value_ptr(pl.Specular));
+
                 DragFloat("Linear##pl_linear", &pl.Linear);
                 DragFloat("Quadratic##pl_quadratic", &pl.Quadratic);
 
@@ -199,14 +205,65 @@ namespace Rvl
 
             if (ImGui::TreeNodeEx("Directional Light##inspector_dl", UIData.NodeFlags))
             {
-                DragVec3("Ambient##dl_ambient", &dl.Ambient, {'R', 'G', 'B'});
-                DragVec3("Diffuse##dl_diffuse", &dl.Diffuse, {'R', 'G', 'B'});
-                DragVec3("Specular##dl_specular", &dl.Specular, {'R', 'G', 'B'});
+                ImGui::ColorEdit3("Color##pl_diffuse", glm::value_ptr(dl.Color));
+                DragFloat("Intensity##pl_intensity", &dl.Intensity);
+
+                ImGui::Dummy({0.f, 5.f});
+                ImGui::Text("Advanced settings");
+                ImGui::Separator();
+                ImGui::ColorEdit3("Ambient##pl_ambient", glm::value_ptr(dl.Ambient));
+                ImGui::ColorEdit3("Specular##pl_specular", glm::value_ptr(dl.Specular));
 
                 ImGui::TreePop();
             }
 
             ImGui::Dummy({0.f, 20.f});
+        }
+
+        if (_selected.Has<MaterialComponent>())
+        {
+            ImGui::Separator();
+
+            auto& material = _selected.Get<MaterialComponent>();
+
+            if (ImGui::TreeNodeEx("Material##inspector_mat", UIData.NodeFlags))
+            {
+                ImGui::ColorEdit3("Ambient##mat_ambient", glm::value_ptr(material.Ambient));
+                ImGui::ColorEdit3("Diffuse##mat_diffuse", glm::value_ptr(material.Diffuse));
+                ImGui::ColorEdit3("Specular##mat_specular", glm::value_ptr(material.Specular));
+                DragFloat("Shininess##mat_shine", &material.Shininess);
+
+                ImGui::TreePop();
+            }
+
+            ImGui::Dummy({0.f, 20.f});
+        }
+
+        if (ImGui::Button("Add Component"))
+        {
+            ImGui::OpenPopup("Components");
+        }
+
+        if (ImGui::BeginPopup("Components"))
+        {
+            ImGui::Text("Sprite");
+            ImGui::SameLine();
+            if (ImGui::Button("Add##sadd"))
+            {
+                if (!_selected.Has<ModelComponent>() && !_selected.Has<SpriteComponent>())
+                    _selected.Add<SpriteComponent>("./assets/textures/container.jpg", 1.f);
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::Text("Point Light");
+            ImGui::SameLine();
+            if (ImGui::Button("Add##pladd"))
+            {
+                if (!_selected.Has<PointLightComponent>())
+                    _selected.Add<PointLightComponent>(glm::vec3(0.5f, 0.5f, 0.5f), 0.09f, 0.032f);
+                ImGui::CloseCurrentPopup();
+            }
+
         }
 
         ImGui::End();

@@ -22,6 +22,7 @@ namespace Rvl
         AddSystem(Movement2DSystem);
         AddSystem(Animation2DSystem);
         AddSystem(MaterialSystem);
+        AddSystem(LightSystem);
     }
 
     Scene::~Scene() {}
@@ -36,12 +37,32 @@ namespace Rvl
         return entity;
     }
 
+    Entity Scene::NewEntity(const glm::vec3& position)
+    {
+       Entity entity (this, _registry.create());
+        entityNum++;
+        entity.Add<IdentifierComponent>("Entity" + std::to_string(entityNum));
+        entity.Add<TransformComponent>(position, glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
+        _entities.push_back(entity);
+        return entity;
+    }
+
     Entity Scene::NewEntity(const std::string& name)
     {
         Entity entity (this, _registry.create());
         entityNum++;
         entity.Add<IdentifierComponent>(name);
         entity.Add<TransformComponent>(glm::vec3(0.f), glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
+        _entities.push_back(entity);
+        return entity;
+    }
+
+    Entity Scene::NewEntity(const std::string& name, const glm::vec3& position)
+    {
+        Entity entity (this, _registry.create());
+        entityNum++;
+        entity.Add<IdentifierComponent>(name);
+        entity.Add<TransformComponent>(position, glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
         _entities.push_back(entity);
         return entity;
     }
@@ -131,5 +152,10 @@ namespace Rvl
         {
             behaviour->OnEvent(event);
         }
+    }
+    
+    std::vector<Entity> Scene::GetEntities() const
+    {
+        return _entities;
     }
 }
