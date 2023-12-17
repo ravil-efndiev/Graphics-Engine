@@ -1,4 +1,5 @@
 #pragma once
+#include "UserCamera.hpp"
 #include <API/ECS/Scene.hpp>
 
 namespace Rvl
@@ -7,9 +8,7 @@ namespace Rvl
     class SceneRenderer
     {
     public:
-        enum class PriorityComponent { Sprite, Model };
-
-        static void Render(Scene& scene, PriorityComponent priority = PriorityComponent::Model);
+        static void Render(Scene& scene, const Ref<UserCamera>& camera);
 
     private:
 

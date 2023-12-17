@@ -24,19 +24,18 @@ namespace Rvl
         int GetHeight() const;
 
         GLuint GetId() const;
-        GLuint GetSamplerId() const;
         std::string GetPath() const;
 
         bool operator== (const GLTexture& tex) const;
 
     public:
         static GLuint TextureFromFile(const std::string& path, bool gamma = false);
+        static void BindTextureUnit(GLuint texture, GLuint sampler, int unit);
         static void BindTextureUnit(GLuint texture, int unit);
         static void ActivateTexture(int unit);
 
     private:
         GLuint _textureId;
-        GLuint _samplerId;
         GLenum _dataFormat;
         
         int _width, _height, _channels;        

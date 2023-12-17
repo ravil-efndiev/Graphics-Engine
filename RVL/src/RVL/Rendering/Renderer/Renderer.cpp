@@ -83,6 +83,7 @@ namespace Rvl
         uint8_t whiteTexData[3] = {0xff, 0xff, 0xff};
         whiteTexture->SetData(whiteTexData, 3);
 
+		_textureShader->Unbind();
         _textureSlots[0] = whiteTexture; 
     }
 
@@ -94,9 +95,6 @@ namespace Rvl
     {
         _projview = camera->GetProjectionMatrix(viewportWidth, viewportHeight) * camera->GetViewMatrix();
 
-        _textureShader->Bind();
-        _textureShader->SetUniformMat4("u_Projview", _projview);
-
         BeginBatch();
     }
 
@@ -107,17 +105,16 @@ namespace Rvl
             _rectVbo->SetData(_rectVBOData.data(), _rectVBOData.size() * sizeof(RectVertex));
 
             _textureShader->Bind();
+            _textureShader->SetUniformMat4("u_Projview", _projview);
+
             for (int i = 0; i < _textureSlotIndex; i++)
             {
                 _textureSlots[i]->Bind(i);
             }
 
+            GLTexture::ActivateTexture(0);
             RenderCommand::DrawIndicies(_rectVao, _rectIndiciesCount);
 
-            for (int i = 0; i < _textureSlotIndex; i++)
-            {
-                _textureSlots[i]->Unbind(i);
-            }
             _textureShader->Unbind();
 
             Stats.DrawCalls++;

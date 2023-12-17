@@ -11,6 +11,8 @@
 #define RVL_LOG_COLOR_YELLOW "\033[93m"
 #define RVL_LOG_COLOR_BLUE   "\033[94m"
 
+#define BIT(n) 1 << n
+
 #ifdef RVL_DEBUG
 
     #define RVL_DEBUG_BREAK asm volatile ("int3")

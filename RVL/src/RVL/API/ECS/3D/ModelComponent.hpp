@@ -11,10 +11,12 @@ namespace Rvl
     {
     public:
         ModelComponent(const std::string& path);
+        ModelComponent(const ModelComponent& other);
 
         std::vector<Mesh> GetMeshes() const;
 
         friend class InspectorWindow;
+        friend class HierarchyWindow;
     private:
         std::vector<Mesh> _meshes;
         std::string _path, _directory;

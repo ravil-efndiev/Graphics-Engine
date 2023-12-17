@@ -9,6 +9,11 @@ namespace Rvl
         LoadModel(path);
     }
 
+    ModelComponent::ModelComponent(const ModelComponent& other)
+    {
+        LoadModel(other._path);
+    }
+
     std::vector<Mesh> ModelComponent::GetMeshes() const
     {
         return _meshes;

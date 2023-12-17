@@ -11,7 +11,7 @@ struct EditorUIData
 
 static EditorUIData UIData;
 
-EditorState::EditorState() : State((RenderMode)(RenderMode_3D | RenderMode_2D)) {}
+EditorState::EditorState() : State(RenderMode_Any) {}
 EditorState::~EditorState() {}
 
 void EditorState::Start()
@@ -22,18 +22,15 @@ void EditorState::Start()
 
     _directionalLight = _currentScene.NewEntity("Directional light");
     _directionalLight.Add<DirectionalLightComponent>(glm::vec3(0.9f, 0.9f, 0.9f));
-    _dlTf = &_directionalLight.Get<TransformComponent>();
 
     _model = _currentScene.NewEntity("Model");
     _model.Add<ModelComponent>("./assets/textures/backpack.obj");
     _mat = &_model.Add<MaterialComponent>(glm::vec3(0.5, 0.4, 0.2), 32.f);
 
-    _sprite = _currentScene.NewEntity("Sprite", {5.f, 0.f, 0.f});
-    _sprite.Add<SpriteComponent>("assets/textures/container.jpg", 1.f);
-    _sprite.Add<PointLightComponent>(glm::vec3(0.4f, 0.9f, 0.5f), 0.09f, 0.032f);
-
     _hierarchy = NewRef<HierarchyWindow>(_currentScene);
     _inspector = NewRef<InspectorWindow>();
+
+    tex = NewRef<GLTexture>("./assets/textures/container.jpg");
 }
 
 void EditorState::Update()
@@ -55,8 +52,7 @@ void EditorState::Render()
 {
     DockspaceAndMenu();
     RenderImGui();
-    
-    SceneRenderer::Render(_currentScene);
+    SceneRenderer::Render(_currentScene, _camera);
 }
 
 void EditorState::RenderImGui()

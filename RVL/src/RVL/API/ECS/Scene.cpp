@@ -18,7 +18,6 @@ namespace Rvl
 
     Scene::Scene() 
     {
-        AddSystem(Sprite2DSystem);
         AddSystem(Movement2DSystem);
         AddSystem(Animation2DSystem);
         AddSystem(MaterialSystem);

@@ -26,13 +26,13 @@ private:
     glm::vec3 _light { 10.f, 0.f, 3.f };
     glm::vec3 _lightPosition;
 
-    TransformComponent* _dlTf;
-    TransformComponent* _sTf;
     MaterialComponent* _mat;
 
     Ref<HierarchyWindow> _hierarchy;
     Ref<InspectorWindow> _inspector;
 
     bool _lock = false;
+
+    Ref<GLTexture> tex;
 };
 

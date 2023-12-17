@@ -120,4 +120,9 @@ namespace Rvl
     {
         _window->SetCursorLocked(flag);
     }
+
+    RenderMode App::GetStateRenderMode() const
+    {
+        return _currentState->_mode;
+    }
 }

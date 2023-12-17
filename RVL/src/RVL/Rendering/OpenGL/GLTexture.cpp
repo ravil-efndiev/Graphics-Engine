@@ -7,8 +7,11 @@ namespace Rvl
 {
     GLuint GLTexture::TextureFromFile(const std::string& path, bool gamma)
     {
+        stbi_set_flip_vertically_on_load(false);
+
         GLuint textureID;
         glGenTextures(1, &textureID);
+        glBindTexture(GL_TEXTURE_2D, textureID);
 
         int width, height, channels;
         byte* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
@@ -18,18 +21,25 @@ namespace Rvl
 
         GLenum format = channels == 3 ? GL_RGB : GL_RGBA;
 
-        glBindTexture(GL_TEXTURE_2D, textureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        glBindTexture(GL_TEXTURE_2D, 0);
         stbi_image_free(data);
 
         return textureID;
+    }
+
+    void GLTexture::BindTextureUnit(GLuint texture, GLuint sampler, int unit)
+    {
+        glActiveTexture(GL_TEXTURE0 + unit);
+        glBindTexture(GL_TEXTURE_2D, texture);
+        glBindSampler(GL_TEXTURE0 + unit, sampler);
     }
 
     void GLTexture::BindTextureUnit(GLuint texture, int unit)
@@ -53,12 +63,10 @@ namespace Rvl
         glGenTextures(1, &_textureId);
         glBindTexture(GL_TEXTURE_2D, _textureId);
 
-        glGenSamplers(1, &_samplerId);
-
-        glSamplerParameteri(_samplerId, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glSamplerParameteri(_samplerId, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glSamplerParameteri(_samplerId, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glSamplerParameteri(_samplerId, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         _dataFormat = GL_RGB;
 
@@ -77,7 +85,6 @@ namespace Rvl
     GLTexture::~GLTexture() 
     {
         glDeleteTextures(1, &_textureId);
-        glDeleteSamplers(1, &_samplerId);
     }
 
     void GLTexture::LoadTexture(const std::string& path)
@@ -95,12 +102,10 @@ namespace Rvl
 
         _dataFormat = _channels == 4 ? GL_RGBA : GL_RGB;
 
-        glGenSamplers(1, &_samplerId);
-
-        glSamplerParameteri(_samplerId, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glSamplerParameteri(_samplerId, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glSamplerParameteri(_samplerId, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glSamplerParameteri(_samplerId, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         glTexImage2D(GL_TEXTURE_2D, 0, _dataFormat, _width, _height, 0, _dataFormat, GL_UNSIGNED_BYTE, _textureData);
         glGenerateMipmap(GL_TEXTURE_2D);
@@ -126,13 +131,13 @@ namespace Rvl
     {
         glActiveTexture(GL_TEXTURE0 + unit);
         glBindTexture(GL_TEXTURE_2D, _textureId);
-        glBindSampler(unit, _samplerId);
     }
 
     void GLTexture::Unbind(int unit) const
     {
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, 0);
-        glBindSampler(unit, 0);
+        glBindSampler(GL_TEXTURE0 + unit, 0);
     }
 
     int GLTexture::GetWidth() const { return _width; }
@@ -141,7 +146,6 @@ namespace Rvl
 
     GLuint GLTexture::GetId() const { return _textureId; }
 
-    GLuint GLTexture::GetSamplerId() const { return _samplerId; }
 
     std::string GLTexture::GetPath() const { return _path; }
 

@@ -1,31 +1,30 @@
 #include "SceneRenderer.hpp"
+#include <Core/App.hpp>
 #include <API/ECS/Entity.hpp>
 #include <API/ECS/2D/SpriteComponent.hpp>
 #include <API/ECS/3D/ModelComponent.hpp>
+#include <Rendering/OpenGL/GLTexture.hpp>
+#include <Rendering/Renderer/Renderer.hpp>
+#include <Rendering/Renderer/Renderer3D.hpp>
+#include <Rendering/Renderer/RenderCommand.hpp>
 
 namespace Rvl
 {
-    void SceneRenderer::Render(Scene& scene, PriorityComponent priority)
+
+    void SceneRenderer::Render(Scene& scene, const Ref<UserCamera>& camera)
     {
         for (Entity entity : scene.GetEntities())
         {
-            if (entity.Has<SpriteComponent>() && entity.Has<ModelComponent>())
-            {
-                if (priority == PriorityComponent::Sprite)
-                    scene.DrawSprite(entity);
-                else if (priority == PriorityComponent::Model)
-                    scene.DrawModel(entity);
-            }
-
-            else if (entity.Has<SpriteComponent>())
-            {
-                scene.DrawSprite(entity);   
-            }   
-
-            else if (entity.Has<ModelComponent>())
+            if (entity.Has<ModelComponent>())
             {
                 scene.DrawModel(entity);   
-            }   
+            }
+            
+            if (entity.Has<SpriteComponent>())
+            {
+                scene.DrawSprite(entity);   
+            }
         }
+
     }
 }

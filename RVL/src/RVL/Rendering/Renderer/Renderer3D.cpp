@@ -40,7 +40,7 @@ namespace Rvl
         int diffuseNr = 1;
         int specularNr = 1;
 
-        auto textures =  mesh.GetTextures();
+        auto textures = mesh.GetTextures();
 
         shader->Bind();
         shader->SetUniformMat4("u_Projview", _projview);
@@ -48,6 +48,7 @@ namespace Rvl
         
         for (int i = 0; i < textures.size(); i++)
         {
+            GLTexture::ActivateTexture(i);
             std::string number;
             std::string name = textures[i].Type;
 

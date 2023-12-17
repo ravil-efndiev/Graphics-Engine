@@ -2,7 +2,7 @@
 
 #include <API/ECS/Scene.hpp>
 #include <API/Objects/UserOrthographicCamera.hpp>
-#include <Rvlpch.hpp>
+#include <Core/Core.hpp>
 
 namespace Rvl
 {
@@ -12,8 +12,9 @@ namespace Rvl
 
     enum RenderMode 
     {
-        RenderMode_3D = 1 << 0,
-        RenderMode_2D = 1 << 1
+        RenderMode_3D = BIT(0),
+        RenderMode_2D = BIT(1),
+        RenderMode_Any = BIT(0) | BIT(1)
     };
 
     class State

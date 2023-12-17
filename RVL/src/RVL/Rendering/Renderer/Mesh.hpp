@@ -19,7 +19,7 @@ namespace Rvl
     struct MeshTexture
     {
         GLuint Id;
-        std::string Type; // diffuse / specular
+        std::string Type;
         std::string Filename;
     };
 

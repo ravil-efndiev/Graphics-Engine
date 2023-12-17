@@ -19,6 +19,7 @@ namespace Rvl
         void ProcessEvent(Event* event);
 
         void SetCursorLocked(bool flag);
+        RenderMode GetStateRenderMode() const;
 
         template <class T>
         static Ref<App> New()

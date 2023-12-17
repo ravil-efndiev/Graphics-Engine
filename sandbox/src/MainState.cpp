@@ -36,21 +36,9 @@ void MainState::Update()
     }
 
     if (_lock)
-    {
-        glm::vec2 viewport = RenderCommand::GetViewport();
+        UserCamera::ToPerspective(_camera)->UpdateCursorRotation(2.f);
 
-        _camRotation += Input::GetCursorDelta() / (float)viewport.y * 2.f;
-        
-        if (_camRotation.y > glm::radians(89.f))
-            _camRotation.y = glm::radians(89.f);
-
-        if (_camRotation.y < -glm::radians(89.f))
-            _camRotation.y = -glm::radians(89.f);
-
-        UserCamera::ToPerspective(_camera)->Rotate(_camRotation.y, _camRotation.x, 0.f);
-    }
-
-    _mat->Shader->SetUniformVec4("u_ViewPos", glm::vec4((glm::vec3)UserCamera::ToPerspective(_camera)->Position, 0.f));
+    _mat->SetUniform("u_ViewPos", UserCamera::ToPerspective(_camera)->Position());
     _dlTf->Rotation = _light;
     _sTf->Position = _lightPosition;
 }

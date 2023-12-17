@@ -264,6 +264,19 @@ namespace Rvl
                 ImGui::CloseCurrentPopup();
             }
 
+            ImGui::Text("3D Model");
+            ImGui::SameLine();
+            if (ImGui::Button("Add##madd"))
+            {
+                if (!_selected.Has<ModelComponent>())
+                {
+                    _selected.Add<ModelComponent>("/Users/Belokan/RVL Engine/RVLEditor/assets/textures/backpack.obj");
+                    _selected.Add<MaterialComponent>(glm::vec3(0.5f, 0.5f, 0.5f), 32.f);
+                    _selected.Get<ModelComponent>().LoadModel("/Users/Belokan/RVL Engine/RVLEditor/assets/textures/backpack.obj");
+                }
+                ImGui::CloseCurrentPopup();
+            }
+
             ImGui::EndPopup();
         }
 
