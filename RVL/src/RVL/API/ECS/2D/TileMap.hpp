@@ -1,7 +1,7 @@
 #pragma once
 
 #include <API/Objects/TileSet.hpp>
-#include <Rendering/Renderer/Transform.hpp>
+#include "API/ECS/General/Transform.hpp"
 #include <Rendering/Renderer/SubTexture.hpp>
 
 namespace Rvl
@@ -32,13 +32,13 @@ namespace Rvl
         Transform _transform;
     };
 
-    class TileMapComponent
+    class TileMap
     {
     public:
-        TileMapComponent(const TileMapComponent&) = default;
-        TileMapComponent(const Ref<TileSet>& tileSet, const std::string& TileMapFilePath, int scale, float zIndex);
-        TileMapComponent(const Ref<TileSet>& tileSet, int scale, float zIndex);
-        ~TileMapComponent();
+        TileMap(const TileMap&) = default;
+        TileMap(const Ref<TileSet>& tileSet, const std::string& TileMapFilePath, int scale, float zIndex);
+        TileMap(const Ref<TileSet>& tileSet, int scale, float zIndex);
+        ~TileMap();
 
         void AddTile(const std::string& name, const glm::ivec2& mapPos, float zIndex);
         void RemoveTile(const glm::ivec2& mapPos);

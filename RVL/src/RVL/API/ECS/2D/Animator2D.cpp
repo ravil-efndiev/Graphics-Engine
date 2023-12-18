@@ -1,20 +1,20 @@
-#include "AnimationComponent.hpp"
-#include "SpriteComponent.hpp"
+#include "Animator2D.hpp"
+#include "Sprite.hpp"
 
 namespace Rvl
 {
-    AnimationComponent::~AnimationComponent() {}
+    Animator2D::~Animator2D() {}
 
-    void AnimationComponent::Update() {}
+    void Animator2D::Update() {}
 
-    void AnimationComponent::AddAnimation(const std::string& name, TimeStep animTimer, float startX, float startY, float endX, float subSpriteWidth, float subSpriteHeight)
+    void Animator2D::AddAnimation(const std::string& name, TimeStep animTimer, float startX, float startY, float endX, float subSpriteWidth, float subSpriteHeight)
     {
         Ref<Animation> animation = NewRef<Animation>(animTimer, startX, startY, endX, subSpriteWidth, subSpriteHeight);
         _animations.emplace(name, animation);
         _currentAnimation = animation.get();
     }
 
-    void AnimationComponent::Play(const std::string& name)
+    void Animator2D::Play(const std::string& name)
     {
         if (_animations[name] != nullptr)
         {
@@ -24,17 +24,17 @@ namespace Rvl
         else throw Error(std::string("no animation with name '").append(name).append("' found"), RVL_RUNTIME_ERROR);
     }
 
-    bool AnimationComponent::IsAnimationDone()
+    bool Animator2D::IsAnimationDone()
     {
         return _currentAnimation->_done;
     }
 
-    glm::vec4 AnimationComponent::GetSubTextureData() const
+    glm::vec4 Animator2D::GetSubTextureData() const
     {
         return _currentAnimation->GetSubTextureData();
     }
 
-    AnimationComponent::Animation::Animation(TimeStep animTimer, float startX, float startY, float endX, float subSpriteWidth, float subSpriteHeight)
+    Animator2D::Animation::Animation(TimeStep animTimer, float startX, float startY, float endX, float subSpriteWidth, float subSpriteHeight)
         : _startX(startX), _startY(startY), _endX(endX), _animTimer(animTimer),
           _subSpriteWidth(subSpriteWidth), _subSpriteHeight(subSpriteHeight)
     {
@@ -42,7 +42,7 @@ namespace Rvl
         _subTextureData = {startX, startY, subSpriteWidth, subSpriteHeight};
     }
 
-    void AnimationComponent::Animation::Play()
+    void Animator2D::Animation::Play()
     {
         _done = false;
         _timer += 100.f * Time::DeltaTime();
@@ -63,7 +63,7 @@ namespace Rvl
         }
     }
     
-    glm::vec4 AnimationComponent::Animation::GetSubTextureData() const
+    glm::vec4 Animator2D::Animation::GetSubTextureData() const
     {
         return _subTextureData;
     }

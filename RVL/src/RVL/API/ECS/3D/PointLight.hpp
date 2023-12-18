@@ -4,11 +4,11 @@
 namespace Rvl
 {
     // Point light's position is defined by it's position in Transform component
-    struct PointLightComponent
+    struct PointLight
     {
-        PointLightComponent() = default;
-        PointLightComponent(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, float linear, float quadratic, float intensity = 1);
-        PointLightComponent(const glm::vec3& color, float linear, float quadratic, float intensity = 1);
+        PointLight() = default;
+        PointLight(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, float linear, float quadratic, float intensity = 1);
+        PointLight(const glm::vec3& color, float linear, float quadratic, float intensity = 1);
 
         const float Constant = 1.f;
 

@@ -1,8 +1,8 @@
-#include "SpriteComponent.hpp"
+#include "Sprite.hpp"
 
 namespace Rvl
 {
-    SpriteComponent::SpriteComponent()
+    Sprite::Sprite()
     {
         Scale = 1.f;
         Color = {1.f, 1.f, 1.f, 1.f};
@@ -10,19 +10,19 @@ namespace Rvl
         UseFixedScale = false;
     }
 
-    SpriteComponent::SpriteComponent(const std::string& path, float scale)
+    Sprite::Sprite(const std::string& path, float scale)
     {
         Scale = scale;
         LoadTexture(path);
     }
     
-    SpriteComponent::SpriteComponent(const Ref<GLTexture>& texture, float scale)
+    Sprite::Sprite(const Ref<GLTexture>& texture, float scale)
     {
         Scale = scale;
         LoadTexture(texture);
     }
 
-    SpriteComponent::SpriteComponent(const glm::vec4& color)
+    Sprite::Sprite(const glm::vec4& color)
     {
         Scale = 1.f;
         Color = color;
@@ -30,7 +30,7 @@ namespace Rvl
         UseFixedScale = false;
     }
 
-    void SpriteComponent::LoadTexture(const std::string& path)
+    void Sprite::LoadTexture(const std::string& path)
     {
         Drawtype = DrawType::Texture;
 
@@ -39,7 +39,7 @@ namespace Rvl
         SetSubTexture(0.f, 0.f, Texture->GetWidth(), Texture->GetHeight());
     }
 
-    void SpriteComponent::LoadTexture(const Ref<GLTexture>& texture)
+    void Sprite::LoadTexture(const Ref<GLTexture>& texture)
     {
         Drawtype = DrawType::Texture;
 
@@ -48,7 +48,7 @@ namespace Rvl
         SetSubTexture(0.f, 0.f, Texture->GetWidth(), Texture->GetHeight());
     }
 
-    void SpriteComponent::SetSubTexture(float x, float y, float spriteWidth, float spriteHeight)
+    void Sprite::SetSubTexture(float x, float y, float spriteWidth, float spriteHeight)
     {
         RVL_ASSERT((Drawtype == DrawType::Texture), "Cannot load subtexture into sprite without base texture");
         Subtexture = SubTexture::New(Texture, x, y, spriteWidth, spriteHeight);
@@ -60,7 +60,7 @@ namespace Rvl
         }
     }
 
-    void SpriteComponent::SetSubTexture(const Ref<SubTexture>& subTexture)
+    void Sprite::SetSubTexture(const Ref<SubTexture>& subTexture)
     {
         RVL_ASSERT((Drawtype == DrawType::Texture), "Cannot load subtexture into sprite without base texture");
         Subtexture = SubTexture::New(Texture, subTexture->GetX(), subTexture->GetY(), subTexture->GetWidth(), subTexture->GetHeight());
@@ -72,7 +72,7 @@ namespace Rvl
         }
     }
 
-    void SpriteComponent::ResetScale()
+    void Sprite::ResetScale()
     {
         RVL_ASSERT((Drawtype == DrawType::Texture), "Cannot reset scale based on texture in sprite without texture");
         float ratio = (float)Texture->GetWidth() / (float)Texture->GetHeight();
@@ -80,7 +80,7 @@ namespace Rvl
         ScaleVec2 = glm::vec2(ratio * Scale, Scale);
     }
 
-    void SpriteComponent::ResetSubTexture()
+    void Sprite::ResetSubTexture()
     {
         RVL_ASSERT((Drawtype == DrawType::Texture), "Cannot reset subtexture in sprite without texture");
 

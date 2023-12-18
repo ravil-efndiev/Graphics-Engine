@@ -3,7 +3,6 @@
 #include <API/Time.hpp>
 #include <Core/Core.hpp>
 #include <Entity.hpp>
-#include <Rendering/Renderer/Transform.hpp>
 
 namespace Rvl
 {
@@ -15,13 +14,13 @@ namespace Rvl
         StandLeft, MoveLeft,
     };
 
-    class MovementComponent
+    class Movement2D
     {
     public:
-        MovementComponent() = default;
-        MovementComponent(const MovementComponent&) = default;
-        MovementComponent(float maxVelocity, float acceleration, float deceleration);
-        ~MovementComponent();
+        Movement2D() = default;
+        Movement2D(const Movement2D&) = default;
+        Movement2D(float maxVelocity, float acceleration, float deceleration);
+        ~Movement2D();
 
         void Update();
         void Move(float x, float y);

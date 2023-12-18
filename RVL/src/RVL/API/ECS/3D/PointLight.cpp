@@ -1,8 +1,8 @@
-#include "PointLightComponent.hpp"
+#include "PointLight.hpp"
 
 namespace Rvl
 {
-    PointLightComponent::PointLightComponent(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, float linear, float quadratic, float intensity)
+    PointLight::PointLight(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, float linear, float quadratic, float intensity)
     {
         RVL_ASSERT((ambient.length() <= glm::vec3(1, 1, 1).length() && 
                 diffuse.length() <= glm::vec3(1, 1, 1).length() && 
@@ -18,7 +18,7 @@ namespace Rvl
         Quadratic = quadratic;
     }
 
-    PointLightComponent::PointLightComponent(const glm::vec3& color, float linear, float quadratic, float intensity)
+    PointLight::PointLight(const glm::vec3& color, float linear, float quadratic, float intensity)
     {
         RVL_ASSERT((color.length() <= glm::vec3(1, 1, 1).length()),
                 "colors must be in range of (0..1)");

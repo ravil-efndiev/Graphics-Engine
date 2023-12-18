@@ -6,14 +6,14 @@
 
 namespace Rvl
 {
-    struct SpriteComponent
+    struct Sprite
     {
         enum class DrawType { Color, Texture };
 
-        SpriteComponent();
-        SpriteComponent(const std::string& path, float scale);
-        SpriteComponent(const Ref<GLTexture>& texture, float scale);
-        SpriteComponent(const glm::vec4& color);
+        Sprite();
+        Sprite(const std::string& path, float scale);
+        Sprite(const Ref<GLTexture>& texture, float scale);
+        Sprite(const glm::vec4& color);
 
         void LoadTexture(const std::string& path);
         void LoadTexture(const Ref<GLTexture>& texture);

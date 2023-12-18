@@ -1,11 +1,11 @@
-#include "MaterialComponent.hpp"
+#include "Material.hpp"
 
 #include <Rendering/OpenGL/GLShaderProgram.hpp>
 #include <Rendering/Renderer/ShaderLibrary.hpp>
 
 namespace Rvl
 {
-    MaterialComponent::MaterialComponent(const Ref<GLShaderProgram>& shader, glm::vec3 ambient, float shininess, glm::vec3 diffuse, glm::vec3 specular)
+    Material::Material(const Ref<GLShaderProgram>& shader, glm::vec3 ambient, float shininess, glm::vec3 diffuse, glm::vec3 specular)
     {
         Shader = shader;
         Ambient = ambient;
@@ -14,7 +14,7 @@ namespace Rvl
         Specular = specular;
     }
 
-    MaterialComponent::MaterialComponent(glm::vec3 ambient, float shininess, glm::vec3 diffuse, glm::vec3 specular)
+    Material::Material(glm::vec3 ambient, float shininess, glm::vec3 diffuse, glm::vec3 specular)
     {
         Shader = StandartShaderLib::Get("Light");
         Ambient = ambient;
@@ -23,7 +23,7 @@ namespace Rvl
         Specular = specular;
     }
 
-    MaterialComponent::MaterialComponent(glm::vec3 ambient, float shininess, std::vector<MaterialTexture> textures, glm::vec3 diffuse, glm::vec3 specular)
+    Material::Material(glm::vec3 ambient, float shininess, std::vector<MaterialTexture> textures, glm::vec3 diffuse, glm::vec3 specular)
     {
         Shader = StandartShaderLib::Get("Light");
         Ambient = ambient;
@@ -33,7 +33,7 @@ namespace Rvl
         Textures = textures;
     }
 
-    MaterialComponent::MaterialComponent(const Ref<GLShaderProgram>& shader, glm::vec3 ambient, float shininess, std::vector<MaterialTexture> textures, glm::vec3 diffuse, glm::vec3 specular)
+    Material::Material(const Ref<GLShaderProgram>& shader, glm::vec3 ambient, float shininess, std::vector<MaterialTexture> textures, glm::vec3 diffuse, glm::vec3 specular)
     {
         Shader = shader;
         Ambient = ambient;

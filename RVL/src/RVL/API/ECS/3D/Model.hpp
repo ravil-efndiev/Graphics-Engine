@@ -8,11 +8,11 @@
 namespace Rvl
 {
     class Entity;
-    class ModelComponent
+    class Model
     {
     public:
-        ModelComponent(const std::string& path);
-        ModelComponent(const ModelComponent& other);
+        Model(const std::string& path);
+        Model(const Model& other);
 
         void LoadModel(const std::string& path);
 

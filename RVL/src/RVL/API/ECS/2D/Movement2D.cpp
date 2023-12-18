@@ -1,14 +1,14 @@
-#include "MovementComponent.hpp"
+#include "Movement2D.hpp"
 
 namespace Rvl
 {
-    MovementComponent::MovementComponent(float maxVelocity, float acceleration, float deceleration)
+    Movement2D::Movement2D(float maxVelocity, float acceleration, float deceleration)
         : _maxVelocity(maxVelocity), 
         _acceleration(acceleration), _deceleration(deceleration) {}
 
-    MovementComponent::~MovementComponent() {}
+    Movement2D::~Movement2D() {}
     
-    void MovementComponent::Update()
+    void Movement2D::Update()
     {
         if (_velocity.x > 0.f)
         {
@@ -92,53 +92,53 @@ namespace Rvl
 
     }
     
-    void MovementComponent::StopVelocity()
+    void Movement2D::StopVelocity()
     {
         _velocity = {0.f, 0.f};
     }
 
-    void MovementComponent::Move(float x, float y)
+    void Movement2D::Move(float x, float y)
     {
         _velocity.x += _acceleration * x * Time::DeltaTime();
         _velocity.y += _acceleration * y * Time::DeltaTime();
     }
     
-    glm::vec2 MovementComponent::GetVelocity() const
+    glm::vec2 Movement2D::GetVelocity() const
     {
         return _velocity;
     }
 
-    float MovementComponent::GetMaxVelocity() const
+    float Movement2D::GetMaxVelocity() const
     {
         return _maxVelocity;
     }
     
-    float MovementComponent::GetAcceleration() const
+    float Movement2D::GetAcceleration() const
     {
         return _acceleration;
     }
 
-    float MovementComponent::GetDeceleration() const
+    float Movement2D::GetDeceleration() const
     {
         return _deceleration;
     }
     
-    void MovementComponent::SetAcceleration(float acceleration)
+    void Movement2D::SetAcceleration(float acceleration)
     {
         _acceleration = acceleration;
     }
     
-    void MovementComponent::SetDeceleration(float deceleration)
+    void Movement2D::SetDeceleration(float deceleration)
     {
         _deceleration = deceleration;
     }
     
-    void MovementComponent::SetMaxVelocity(float maxVelocity)
+    void Movement2D::SetMaxVelocity(float maxVelocity)
     {
         _maxVelocity = maxVelocity;
     }
     
-    MoveState4 MovementComponent::GetMoveState4() const
+    MoveState4 Movement2D::GetMoveState4() const
     {
         return _currentState;
     }

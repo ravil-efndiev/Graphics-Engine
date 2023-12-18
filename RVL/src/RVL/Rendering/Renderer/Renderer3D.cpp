@@ -35,7 +35,7 @@ namespace Rvl
         shader->Unbind();
     }   
 
-    void Renderer3D::SubmitMesh(const Mesh& mesh, const MaterialComponent& material, const Transform& transform)
+    void Renderer3D::SubmitMesh(const Mesh& mesh, const Material& material, const Transform& transform)
     {
         int diffuseNr = 1;
         int specularNr = 1;

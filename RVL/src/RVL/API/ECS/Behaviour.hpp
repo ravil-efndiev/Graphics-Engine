@@ -1,6 +1,6 @@
 #pragma once
 
-#include "General/TransformComponent.hpp"
+#include "General/Transform.hpp"
 #include <Events/Events.hpp>
 
 #define RVL_BEHAVIOUR(Type) Type(Entity& self) : Behaviour(self) {} \
@@ -25,7 +25,7 @@ namespace Rvl
 
     protected:
         Entity& _self;
-        TransformComponent& _transform;
+        Transform& _transform;
     };
 }
 

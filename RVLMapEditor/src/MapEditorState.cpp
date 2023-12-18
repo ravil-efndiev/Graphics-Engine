@@ -71,9 +71,9 @@ namespace Rvl
         _tls = tls;
 
         _tlmEntity = _currentScene.NewEntity();
-        _tlmEntity.Add<TileMapComponent>(tls, tlmPath, scale, zIndex);
+        _tlmEntity.Add<TileMap>(tls, tlmPath, scale, zIndex);
 
-        _tlm = &_tlmEntity.Get<TileMapComponent>();
+        _tlm = &_tlmEntity.Get<TileMap>();
 
         _tlsPath = _tls->GetPath();
         _tlmPath = _tlm->GetPath();
@@ -94,8 +94,8 @@ namespace Rvl
         _tls = NewRef<TileSet>(_tlsPath);
 
         _tlmEntity = _currentScene.NewEntity();
-        _tlmEntity.Add<TileMapComponent>(_tls, _tlmPath, _scale, -0.01f);
-        _tlm = &_tlmEntity.Get<TileMapComponent>();
+        _tlmEntity.Add<TileMap>(_tls, _tlmPath, _scale, -0.01f);
+        _tlm = &_tlmEntity.Get<TileMap>();
 
         _tlmText = Utils::GetTextFromFile(_tlmPath);
         _tlsText = Utils::GetTextFromFile(_tlsPath);
@@ -113,15 +113,15 @@ namespace Rvl
         if (!_tlm)
         {
             _tlmEntity = _currentScene.NewEntity();
-            _tlmEntity.Add<TileMapComponent>(_tls, _scale, _zIndex);
+            _tlmEntity.Add<TileMap>(_tls, _scale, _zIndex);
 
-            _tlm = &_tlmEntity.Get<TileMapComponent>();
+            _tlm = &_tlmEntity.Get<TileMap>();
         }
 
         _tilePreviewEntity = _currentScene.NewEntity();
-        _tilePreviewEntity.Add<SpriteComponent>(_tls->GetTexture(), _scale);
+        _tilePreviewEntity.Add<Sprite>(_tls->GetTexture(), _scale);
 
-        _tilePreview = &_tilePreviewEntity.Get<SpriteComponent>();
+        _tilePreview = &_tilePreviewEntity.Get<Sprite>();
         _tilePreview->SetSubTexture(0, 0, 0, 0);
 
         _tilePreview->UseColorAsTint(true);
@@ -259,7 +259,7 @@ namespace Rvl
 
                 if (_selectedTile != "")
                 {
-                    auto& transform = _tilePreviewEntity.Get<TransformComponent>();
+                    auto& transform = _tilePreviewEntity.Get<Transform>();
                     transform.Position = glm::vec3(glm::vec2(_tlm->SpimplifyPos(Input::GetCursorPositionRelative(ImToGlmVec2(UIData.MainWindowPosition), ImToGlmVec2(UIData.SceneWindowPosition)))) * _tlm->GetTileSize(), transform.Position->z);
                     _tilePreview->SetSubTexture((*_tls)[_selectedTile]);
                 }

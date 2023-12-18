@@ -67,7 +67,7 @@ namespace Rvl
             return;
         }
 
-        DrawComponent<IdentifierComponent>("Identifier", _selected, [](auto& id) 
+        DrawComponent<Identifier>("Identifier", _selected, [](auto& id) 
         {
             ImGui::InputText("Name", &id.Name);
 
@@ -75,35 +75,35 @@ namespace Rvl
                 id.Name = "Entity";
         }, false);
 
-        DrawComponent<TransformComponent>("Transform", _selected, [](auto& transform) 
+        DrawComponent<Transform>("Transform", _selected, [](auto& transform) 
         {
-            DragVec3("Position##transform_position", transform.Position.GetValuePtr());
-            DragVec3("Rotation##transform_rotation", transform.Rotation.GetValuePtr());
-            DragVec3("Scale##transform_scale", transform.Scale.GetValuePtr());
+            DragVec3("Position##transform_position", &transform.Position);
+            DragVec3("Rotation##transform_rotation", &transform.Rotation);
+            DragVec3("Scale##transform_scale", &transform.Scale);
         });
 
-        DrawComponent<SpriteComponent>("Sprite", _selected, [](auto& sprite) 
+        DrawComponent<Sprite>("Sprite", _selected, [](auto& sprite) 
         {
             UIData.SubtextureSize = {sprite.Subtexture->GetWidth(), sprite.Subtexture->GetHeight()};
             UIData.SubtexturePos = {sprite.Subtexture->GetX(), sprite.Subtexture->GetY()};
 
-            if (ImGui::BeginCombo("Draw Type", sprite.Drawtype == SpriteComponent::DrawType::Color ? "Color" : "Texture"))
+            if (ImGui::BeginCombo("Draw Type", sprite.Drawtype == Sprite::DrawType::Color ? "Color" : "Texture"))
             {
                 bool colorSelected = false, texSelected = false;
 
                 if (ImGui::Selectable("Texture", &texSelected))
-                    sprite.Drawtype = SpriteComponent::DrawType::Texture;
+                    sprite.Drawtype = Sprite::DrawType::Texture;
 
                 if (ImGui::Selectable("Color", &colorSelected))
                 {
-                    sprite.Drawtype = SpriteComponent::DrawType::Color;
+                    sprite.Drawtype = Sprite::DrawType::Color;
                     sprite.UseFixedScale = false;
                 }
 
                 ImGui::EndCombo();
             }
 
-            if (sprite.Drawtype == SpriteComponent::DrawType::Texture)
+            if (sprite.Drawtype == Sprite::DrawType::Texture)
             {
                 auto str = "Texture: " + (Utils::SplitStr(sprite.Texture->GetPath(), '/').back());
                 ImGui::Text("%s", str.c_str());
@@ -117,10 +117,10 @@ namespace Rvl
 
             ImGui::Dummy({0.f, 5.f});
 
-            if (sprite.Drawtype == SpriteComponent::DrawType::Texture)
+            if (sprite.Drawtype == Sprite::DrawType::Texture)
                 ImGui::Checkbox("Use Fixed Scale", &sprite.UseFixedScale);
 
-            if (sprite.Drawtype == SpriteComponent::DrawType::Color)
+            if (sprite.Drawtype == Sprite::DrawType::Color)
                 sprite.UseFixedScale = false;
 
             if (sprite.UseFixedScale)
@@ -133,12 +133,12 @@ namespace Rvl
 
             ImGui::ColorEdit4("Color##sprite_color", glm::value_ptr(sprite.Color));
 
-            if (sprite.Drawtype == SpriteComponent::DrawType::Texture)
+            if (sprite.Drawtype == Sprite::DrawType::Texture)
                 ImGui::Checkbox("Use Color as Tint", &sprite.UseColorAsTint);
 
             ImGui::Dummy({0.f, 10.f});
             
-            if (sprite.Drawtype == SpriteComponent::DrawType::Texture)
+            if (sprite.Drawtype == Sprite::DrawType::Texture)
             {
                 ImGui::Checkbox("Use custom subtexture", &UIData.UseSubTexture);
                 if (UIData.UseSubTexture)
@@ -154,7 +154,7 @@ namespace Rvl
             }
         });
 
-        DrawComponent<ModelComponent>("Model", _selected, [](auto& model) 
+        DrawComponent<Model>("Model", _selected, [](auto& model) 
         {
             auto str = "Model path: " + (Utils::SplitStr(model.Path, '/').back());
             ImGui::Text("%s", str.c_str());
@@ -165,7 +165,7 @@ namespace Rvl
                 model.LoadModel(path);
         });
 
-        DrawComponent<PointLightComponent>("Point Light", _selected, [](auto& pl) 
+        DrawComponent<PointLight>("Point Light", _selected, [](auto& pl) 
         {
             ImGui::ColorEdit3("Color##pl_diffuse", glm::value_ptr(pl.Color));
             DragFloat("Intensity##pl_intensity", &pl.Intensity);
@@ -180,7 +180,7 @@ namespace Rvl
             DragFloat("Quadratic##pl_quadratic", &pl.Quadratic);
         });
 
-        DrawComponent<DirectionalLightComponent>("Directional Light", _selected, [](auto& dl) 
+        DrawComponent<DirectionalLight>("Directional Light", _selected, [](auto& dl) 
         {
             ImGui::ColorEdit3("Color##dl_diffuse", glm::value_ptr(dl.Color));
             DragFloat("Intensity##dl_intensity", &dl.Intensity);
@@ -192,7 +192,7 @@ namespace Rvl
             ImGui::ColorEdit3("Specular##dl_specular", glm::value_ptr(dl.Specular));
         });
 
-        DrawComponent<MaterialComponent>("Material", _selected, [](auto& material) 
+        DrawComponent<Material>("Material", _selected, [](auto& material) 
         {
             ImGui::ColorEdit3("Ambient##mat_ambient", glm::value_ptr(material.Ambient));
             ImGui::ColorEdit3("Diffuse##mat_diffuse", glm::value_ptr(material.Diffuse));
@@ -229,8 +229,8 @@ namespace Rvl
             ImGui::SameLine();
             if (ImGui::Button("Add##sadd"))
             {
-                if (!_selected.Has<ModelComponent>() && !_selected.Has<SpriteComponent>())
-                    _selected.Add<SpriteComponent>("./assets/textures/container.jpg", 1.f);
+                if (!_selected.Has<Model>() && !_selected.Has<Sprite>())
+                    _selected.Add<Sprite>("./assets/textures/container.jpg", 1.f);
                 ImGui::CloseCurrentPopup();
             }
 
@@ -238,8 +238,8 @@ namespace Rvl
             ImGui::SameLine();
             if (ImGui::Button("Add##pladd"))
             {
-                if (!_selected.Has<PointLightComponent>())
-                    _selected.Add<PointLightComponent>(glm::vec3(0.5f, 0.5f, 0.5f), 0.09f, 0.032f);
+                if (!_selected.Has<PointLight>())
+                    _selected.Add<PointLight>(glm::vec3(0.5f, 0.5f, 0.5f), 0.09f, 0.032f);
                 ImGui::CloseCurrentPopup();
             }
 
@@ -247,10 +247,10 @@ namespace Rvl
             ImGui::SameLine();
             if (ImGui::Button("Add##madd"))
             {
-                if (!_selected.Has<ModelComponent>())
+                if (!_selected.Has<Model>())
                 {
-                    _selected.Add<ModelComponent>("/Users/Belokan/RVL Engine/RVLEditor/assets/textures/backpack.obj");
-                    _selected.Add<MaterialComponent>(glm::vec3(0.5f, 0.5f, 0.5f), 32.f);
+                    _selected.Add<Model>("/Users/Belokan/RVL Engine/RVLEditor/assets/textures/backpack.obj");
+                    _selected.Add<Material>(glm::vec3(0.5f, 0.5f, 0.5f), 32.f);
                 }
                 ImGui::CloseCurrentPopup();
             }

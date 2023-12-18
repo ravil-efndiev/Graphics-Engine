@@ -21,10 +21,10 @@ void EditorState::Start()
     _camera = UserPerspectiveCamera::New({0.f, 0.f, 0.f}, 45.f);
 
     _directionalLight = _currentScene.NewEntity("Directional light");
-    _directionalLight.Add<DirectionalLightComponent>(glm::vec3(0.9f, 0.9f, 0.9f));
+    _directionalLight.Add<DirectionalLight>(glm::vec3(0.9f, 0.9f, 0.9f));
 
     _model = _currentScene.NewEntity("Model");
-    _model.Add<ModelComponent>("./assets/textures/backpack.obj");
+    _model.Add<Model>("./assets/textures/backpack.obj");
 
     _hierarchy = NewRef<HierarchyWindow>(_currentScene);
     _inspector = NewRef<InspectorWindow>();

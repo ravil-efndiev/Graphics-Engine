@@ -1,4 +1,4 @@
-#include "TileMapComponent.hpp"
+#include "TileMap.hpp"
 
 #include <Core/Core.hpp>
 #include <Core/Utils/Files.hpp>
@@ -6,7 +6,7 @@
 
 namespace Rvl
 {
-    TileMapComponent::TileMapComponent(const Ref<TileSet>& tileSet, const std::string& tileMapFilePath, int scale, float zIndex)
+    TileMap::TileMap(const Ref<TileSet>& tileSet, const std::string& tileMapFilePath, int scale, float zIndex)
     {
         _tileSet = tileSet;
         _zIndex = zIndex;
@@ -39,7 +39,7 @@ namespace Rvl
         }
     }
 
-    TileMapComponent::TileMapComponent(const Ref<TileSet>& tileSet, int scale, float zIndex)
+    TileMap::TileMap(const Ref<TileSet>& tileSet, int scale, float zIndex)
     {
         _tileSet = tileSet;
         _zIndex = zIndex;
@@ -47,9 +47,9 @@ namespace Rvl
         _path = "";
     }
 
-    TileMapComponent::~TileMapComponent() {}
+    TileMap::~TileMap() {}
 
-    void TileMapComponent::AddTile(const std::string& name, const glm::ivec2& mapPos, float zIndex)
+    void TileMap::AddTile(const std::string& name, const glm::ivec2& mapPos, float zIndex)
     {
         Tile tile (name, (*_tileSet)[name], {mapPos.x, mapPos.y}, _scale, _zIndex);
         _mapTiles.push_back(tile);
@@ -69,7 +69,7 @@ namespace Rvl
             _mapTiles.push_back(tile);
     }
 
-    void TileMapComponent::RemoveTile(const glm::ivec2& mapPos)
+    void TileMap::RemoveTile(const glm::ivec2& mapPos)
     {
         auto it = std::find_if(_mapTiles.begin(), _mapTiles.end(), [mapPos](auto& tile)
             {
@@ -83,17 +83,17 @@ namespace Rvl
         } 
     }
     
-    glm::ivec2 TileMapComponent::SpimplifyPos(float x, float y)
+    glm::ivec2 TileMap::SpimplifyPos(float x, float y)
     {
         return glm::round(glm::vec2(x, y) / glm::vec2(_anyTileSize.x, _anyTileSize.y));
     }
     
-    glm::ivec2 TileMapComponent::SpimplifyPos(const glm::vec2& pos)
+    glm::ivec2 TileMap::SpimplifyPos(const glm::vec2& pos)
     {
         return glm::round(pos / glm::vec2(_anyTileSize.x, _anyTileSize.y));
     }
     
-    std::string TileMapComponent::GetString() const
+    std::string TileMap::GetString() const
     {
         std::string text = "";
 
@@ -110,22 +110,22 @@ namespace Rvl
         return text;
     }
 
-    void TileMapComponent::SaveToFile(const char* path)
+    void TileMap::SaveToFile(const char* path)
     {
         Utils::SaveTextToFile(path, GetString());
     }
     
-    std::string TileMapComponent::GetPath() const
+    std::string TileMap::GetPath() const
     {
         return _path;
     }
     
-    glm::vec2 TileMapComponent::GetTileSize() const
+    glm::vec2 TileMap::GetTileSize() const
     {
         return _anyTileSize;
     }
     
-    std::string TileMapComponent::GetNameByCoords(const glm::ivec2& pos)
+    std::string TileMap::GetNameByCoords(const glm::ivec2& pos)
     {
         for (Tile& tile : _mapTiles)
         {
@@ -135,7 +135,7 @@ namespace Rvl
         return "";
     }
     
-    const std::vector<Tile>& TileMapComponent::GetTiles() const
+    const std::vector<Tile>& TileMap::GetTiles() const
     {
         return _mapTiles;
     }

@@ -5,12 +5,12 @@
 
 namespace Rvl
 {
-    class AnimationComponent
+    class Animator2D
     {
     public:
-        AnimationComponent() = default;
-        AnimationComponent(const AnimationComponent&) = default;
-        ~AnimationComponent();
+        Animator2D() = default;
+        Animator2D(const Animator2D&) = default;
+        ~Animator2D();
 
         void Update();
 

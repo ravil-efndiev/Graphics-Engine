@@ -29,7 +29,6 @@ add_library(RVL STATIC
     src/RVL/Rendering/Renderer/SubTexture.cpp
     src/RVL/Rendering/Renderer/OrthographicCamera.cpp
     src/RVL/Rendering/Renderer/PerspectiveCamera.cpp
-    src/RVL/Rendering/Renderer/Transform.cpp
     src/RVL/Rendering/Renderer/ShaderLibrary.cpp
     src/RVL/API/Input.cpp
     src/RVL/API/Time.cpp
@@ -43,15 +42,15 @@ add_library(RVL STATIC
     src/RVL/API/ECS/Entity.cpp
     src/RVL/API/ECS/Scene.cpp
     src/RVL/API/ECS/Behaviour.cpp
-    src/RVL/API/ECS/General/TransformComponent.cpp
-    src/RVL/API/ECS/2D/SpriteComponent.cpp
-    src/RVL/API/ECS/2D/TileMapComponent.cpp
-    src/RVL/API/ECS/2D/MovementComponent.cpp
-    src/RVL/API/ECS/2D/AnimationComponent.cpp
-    src/RVL/API/ECS/3D/ModelComponent.cpp
-    src/RVL/API/ECS/3D/DirectionalLightComponent.cpp
-    src/RVL/API/ECS/3D/PointLightComponent.cpp
-    src/RVL/API/ECS/3D/MaterialComponent.cpp
+    src/RVL/API/ECS/General/Transform.cpp
+    src/RVL/API/ECS/2D/Sprite.cpp
+    src/RVL/API/ECS/2D/TileMap.cpp
+    src/RVL/API/ECS/2D/Movement2D.cpp
+    src/RVL/API/ECS/2D/Animator2D.cpp
+    src/RVL/API/ECS/3D/Model.cpp
+    src/RVL/API/ECS/3D/DirectionalLight.cpp
+    src/RVL/API/ECS/3D/PointLight.cpp
+    src/RVL/API/ECS/3D/Material.cpp
     src/RVL/API/ECS/Systems/StandartSystems.cpp
     src/RVL/API/ECS/Systems/ModelLoader.cpp
 

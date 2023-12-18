@@ -50,8 +50,8 @@ namespace Rvl
         Entity _tlmEntity;
         Entity _tilePreviewEntity;
 
-        TileMapComponent* _tlm;
-        SpriteComponent* _tilePreview;
+        TileMap* _tlm;
+        Sprite* _tilePreview;
 
         float _cameraSpeed = 7.f;
         float _cameraZoom = 10.f;

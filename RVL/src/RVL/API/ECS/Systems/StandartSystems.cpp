@@ -1,13 +1,13 @@
 #include "StandartSystems.hpp"
 
-#include "2D/SpriteComponent.hpp"
-#include "2D/MovementComponent.hpp"
-#include "2D/AnimationComponent.hpp"
-#include "3D/MaterialComponent.hpp"
-#include "3D/DirectionalLightComponent.hpp"
-#include "3D/ModelComponent.hpp"
-#include "3D/PointLightComponent.hpp"
-#include "General/TransformComponent.hpp"
+#include "2D/Sprite.hpp"
+#include "2D/Movement2D.hpp"
+#include "2D/Animator2D.hpp"
+#include "3D/Material.hpp"
+#include "3D/DirectionalLight.hpp"
+#include "3D/Model.hpp"
+#include "3D/PointLight.hpp"
+#include "General/Transform.hpp"
 
 #include <Rendering/OpenGL/GLShaderProgram.hpp>
 
@@ -19,15 +19,15 @@ namespace Rvl
     {
         for (auto entity : entities)
         {
-            if (!entity.Has<SpriteComponent>() || entity.Has<ModelComponent>())
+            if (!entity.Has<Sprite>() || entity.Has<Model>())
                 continue;
 
-            RVL_ASSERT(entity.Has<TransformComponent>(), "entity with sprite component doesn't have transform component");
+            RVL_ASSERT(entity.Has<Transform>(), "entity with sprite component doesn't have transform component");
 
-            auto spriteComponent = entity.Get<SpriteComponent>();
-            if (spriteComponent.UseFixedScale)
+            auto sprite = entity.Get<Sprite>();
+            if (sprite.UseFixedScale)
             {
-                entity.Get<TransformComponent>().Scale = glm::vec3(spriteComponent.ScaleVec2, 0.f);
+                entity.Get<Transform>().Scale = glm::vec3(sprite.ScaleVec2, 0.f);
             }
         }
     }
@@ -36,14 +36,14 @@ namespace Rvl
     {
         for (auto entity : entities)
         {
-            if (!entity.Has<MovementComponent>())
+            if (!entity.Has<Movement2D>())
                 continue;
 
-            RVL_ASSERT(entity.Has<TransformComponent>(), "entity with movement component doesn't have transform component");
-            auto& movement = entity.Get<MovementComponent>();
+            RVL_ASSERT(entity.Has<Transform>(), "entity with movement component doesn't have transform component");
+            auto& movement = entity.Get<Movement2D>();
 
             movement.Update();
-            entity.Get<TransformComponent>().Position += glm::vec3(movement.GetVelocity(), 0.0) * (float)Time::DeltaTime();
+            entity.Get<Transform>().Position += glm::vec3(movement.GetVelocity(), 0.0) * (float)Time::DeltaTime();
         }
     }
 
@@ -51,13 +51,13 @@ namespace Rvl
     {
         for (auto entity : entities)
         {
-            if (!entity.Has<AnimationComponent>())
+            if (!entity.Has<Animator2D>())
                 continue;
 
-            RVL_ASSERT(entity.Has<SpriteComponent>(), "entity with animation component doesn't have sprite component");
+            RVL_ASSERT(entity.Has<Sprite>(), "entity with animation component doesn't have sprite component");
 
-            glm::vec4 subtextureData = entity.Get<AnimationComponent>().GetSubTextureData();
-            entity.Get<SpriteComponent>().SetSubTexture(subtextureData.x, subtextureData.y, subtextureData.z, subtextureData.w);
+            glm::vec4 subtextureData = entity.Get<Animator2D>().GetSubTextureData();
+            entity.Get<Sprite>().SetSubTexture(subtextureData.x, subtextureData.y, subtextureData.z, subtextureData.w);
         }
     }
 
@@ -65,10 +65,10 @@ namespace Rvl
     {
         for (auto entity : entities)
         {
-            if (!entity.Has<MaterialComponent>())
+            if (!entity.Has<Material>())
                 continue;
 
-            auto& material = entity.Get<MaterialComponent>();
+            auto& material = entity.Get<Material>();
 
             material.SetUniform("u_Material.diffuse",  material.Diffuse);
             material.SetUniform("u_Material.specular", material.Specular);
@@ -80,33 +80,33 @@ namespace Rvl
                 int index = 0;
                 for (auto entity2 : entities)
                 {
-                    RVL_ASSERT(!(entity2.Has<DirectionalLightComponent>() && entity2.Has<PointLightComponent>()),
+                    RVL_ASSERT(!(entity2.Has<DirectionalLight>() && entity2.Has<PointLight>()),
                         "Entity has multiple light components interfiering with each other");
 
-                    if (entity2.Has<DirectionalLightComponent>())
+                    if (entity2.Has<DirectionalLight>())
                     {
-                        RVL_ASSERT(entity2.Has<TransformComponent>(), "Directional light doesn't have transform component");
+                        RVL_ASSERT(entity2.Has<Transform>(), "Directional light doesn't have transform component");
                         
-                        auto light = entity2.Get<DirectionalLightComponent>();
-                        auto lightTf = entity2.Get<TransformComponent>();
+                        auto light = entity2.Get<DirectionalLight>();
+                        auto lightTf = entity2.Get<Transform>();
 
                         material.SetUniform("u_DirectionalLight.ambient",  light.Ambient);
                         material.SetUniform("u_DirectionalLight.diffuse",  light.Diffuse); 
                         material.SetUniform("u_DirectionalLight.specular", light.Specular); 
-                        material.SetUniform("u_DirectionalLight.direction", lightTf.Rotation()); 
+                        material.SetUniform("u_DirectionalLight.direction", lightTf.Rotation); 
                     }
 
-                    if (entity2.Has<PointLightComponent>())
+                    if (entity2.Has<PointLight>())
                     {
-                        RVL_ASSERT(entity2.Has<TransformComponent>(), "Point light doesn't have transform component");
+                        RVL_ASSERT(entity2.Has<Transform>(), "Point light doesn't have transform component");
 
-                        auto light = entity2.Get<PointLightComponent>();
-                        auto lightTf = entity2.Get<TransformComponent>();
+                        auto light = entity2.Get<PointLight>();
+                        auto lightTf = entity2.Get<Transform>();
 
                         material.SetUniform("u_PointLight[" + std::to_string(index) + "].ambient",   light.Ambient);
                         material.SetUniform("u_PointLight[" + std::to_string(index) + "].diffuse",   light.Diffuse); 
                         material.SetUniform("u_PointLight[" + std::to_string(index) + "].specular",  light.Specular); 
-                        material.SetUniform("u_PointLight[" + std::to_string(index) + "].position",  lightTf.Position()); 
+                        material.SetUniform("u_PointLight[" + std::to_string(index) + "].position",  lightTf.Position); 
                         material.SetUniform("u_PointLight[" + std::to_string(index) + "].constant",  light.Constant);
                         material.SetUniform("u_PointLight[" + std::to_string(index) + "].linear",    light.Linear);
                         material.SetUniform("u_PointLight[" + std::to_string(index) + "].quadratic", light.Quadratic);	
@@ -124,16 +124,16 @@ namespace Rvl
     {
         for (auto entity : entities)
         {
-            if (entity.Has<DirectionalLightComponent>())
+            if (entity.Has<DirectionalLight>())
             {
-                auto& dl = entity.Get<DirectionalLightComponent>();
+                auto& dl = entity.Get<DirectionalLight>();
 
                 dl.Diffuse = dl.Color * dl.Intensity;
             }
 
-            if (entity.Has<PointLightComponent>())
+            if (entity.Has<PointLight>())
             {
-                auto& pl = entity.Get<PointLightComponent>();
+                auto& pl = entity.Get<PointLight>();
 
                 pl.Diffuse = pl.Color * pl.Intensity;
             }

@@ -1,11 +1,11 @@
 #include "Scene.hpp"
 #include "Entity.hpp"
-#include "General/TransformComponent.hpp"
-#include "2D/SpriteComponent.hpp"
-#include "2D/TileMapComponent.hpp"
-#include "3D/ModelComponent.hpp"
-#include "3D/MaterialComponent.hpp"
-#include "General/IdentifierComponent.hpp"
+#include "General/Transform.hpp"
+#include "2D/Sprite.hpp"
+#include "2D/TileMap.hpp"
+#include "3D/Model.hpp"
+#include "3D/Material.hpp"
+#include "General/Identifier.hpp"
 
 #include <Rendering/Renderer/Renderer.hpp>
 #include <Rendering/Renderer/Renderer3D.hpp>
@@ -31,8 +31,8 @@ namespace Rvl
     {
         Entity entity (this, _registry.create());
         entityNum++;
-        entity.Add<IdentifierComponent>("Entity" + std::to_string(entityNum));
-        entity.Add<TransformComponent>(glm::vec3(0.f), glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
+        entity.Add<Identifier>("Entity" + std::to_string(entityNum));
+        entity.Add<Transform>(glm::vec3(0.f), glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
         _entities.push_back(entity);
         return entity;
     }
@@ -41,8 +41,8 @@ namespace Rvl
     {
        Entity entity (this, _registry.create());
         entityNum++;
-        entity.Add<IdentifierComponent>("Entity" + std::to_string(entityNum));
-        entity.Add<TransformComponent>(position, glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
+        entity.Add<Identifier>("Entity" + std::to_string(entityNum));
+        entity.Add<Transform>(position, glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
         _entities.push_back(entity);
         return entity;
     }
@@ -51,8 +51,8 @@ namespace Rvl
     {
         Entity entity (this, _registry.create());
         entityNum++;
-        entity.Add<IdentifierComponent>(name);
-        entity.Add<TransformComponent>(glm::vec3(0.f), glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
+        entity.Add<Identifier>(name);
+        entity.Add<Transform>(glm::vec3(0.f), glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
         _entities.push_back(entity);
         return entity;
     }
@@ -61,8 +61,8 @@ namespace Rvl
     {
         Entity entity (this, _registry.create());
         entityNum++;
-        entity.Add<IdentifierComponent>(name);
-        entity.Add<TransformComponent>(position, glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
+        entity.Add<Identifier>(name);
+        entity.Add<Transform>(position, glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
         _entities.push_back(entity);
         return entity;
     }
@@ -80,15 +80,15 @@ namespace Rvl
     
     void Scene::DrawSprite(Entity entity)
     {
-        RVL_ASSERT((entity.Has<SpriteComponent>() && entity.Has<TransformComponent>()), "entity passed into DrawSprite function doesn't have Sprite Component");
+        RVL_ASSERT((entity.Has<Sprite>() && entity.Has<Transform>()), "entity passed into DrawSprite function doesn't have Sprite Component");
 
-        auto spriteCompoent = entity.Get<SpriteComponent>();
-        auto transformCompoent = entity.Get<TransformComponent>();
+        auto spriteCompoent = entity.Get<Sprite>();
+        auto transformCompoent = entity.Get<Transform>();
         
-        if (spriteCompoent.Drawtype == SpriteComponent::DrawType::Color)
+        if (spriteCompoent.Drawtype == Sprite::DrawType::Color)
             Renderer::DrawRect((Transform)transformCompoent, spriteCompoent.Color);
 
-        else if (spriteCompoent.Drawtype == SpriteComponent::DrawType::Texture)
+        else if (spriteCompoent.Drawtype == Sprite::DrawType::Texture)
         {
             if (spriteCompoent.UseColorAsTint)
                Renderer::DrawRect((Transform)transformCompoent, spriteCompoent.Subtexture, spriteCompoent.Color);
@@ -100,11 +100,11 @@ namespace Rvl
     
     void Scene::DrawTileMap(Entity entity)
     {
-        RVL_ASSERT((entity.Has<TileMapComponent>()), "entity passed into DrawTileMap function doesn't have TileMap Component");
+        RVL_ASSERT((entity.Has<TileMap>()), "entity passed into DrawTileMap function doesn't have TileMap Component");
 
-        auto tileMapComponent = entity.Get<TileMapComponent>();
+        auto tilemap = entity.Get<TileMap>();
         
-        for (auto& tile : tileMapComponent.GetTiles())
+        for (auto& tile : tilemap.GetTiles())
         {
             Renderer::DrawRect(tile.GetTransform(), tile.GetSubtexture());
         }
@@ -112,13 +112,13 @@ namespace Rvl
 
     void Scene::DrawModel(Entity entity)
     {
-        RVL_ASSERT((entity.Has<ModelComponent>()), "entity passed into DrawModel function doesn't have Model Component");
-        RVL_ASSERT((entity.Has<TransformComponent>()), "entity passed into DrawModel function doesn't have Transform Component");
-        RVL_ASSERT((entity.Has<MaterialComponent>()), "entity passed into DrawModel function doesn't have Material Component");
+        RVL_ASSERT((entity.Has<Model>()), "entity passed into DrawModel function doesn't have Model Component");
+        RVL_ASSERT((entity.Has<Transform>()), "entity passed into DrawModel function doesn't have Transform Component");
+        RVL_ASSERT((entity.Has<Material>()), "entity passed into DrawModel function doesn't have Material Component");
 
-        auto meshes = entity.Get<ModelComponent>().Meshes;
-        auto transform = entity.Get<TransformComponent>();
-        auto material = entity.Get<MaterialComponent>();
+        auto meshes = entity.Get<Model>().Meshes;
+        auto transform = entity.Get<Transform>();
+        auto material = entity.Get<Material>();
 
         for (auto& mesh : meshes)
         {

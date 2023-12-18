@@ -1,13 +1,13 @@
 #include "StandartSystems.hpp"
 
-#include "2D/SpriteComponent.hpp"
-#include "2D/MovementComponent.hpp"
-#include "2D/AnimationComponent.hpp"
-#include "3D/MaterialComponent.hpp"
-#include "3D/DirectionalLightComponent.hpp"
-#include "3D/ModelComponent.hpp"
-#include "3D/PointLightComponent.hpp"
-#include "General/TransformComponent.hpp"
+#include "2D/Sprite.hpp"
+#include "2D/Movement2D.hpp"
+#include "2D/Animator2D.hpp"
+#include "3D/Material.hpp"
+#include "3D/DirectionalLight.hpp"
+#include "3D/Model.hpp"
+#include "3D/PointLight.hpp"
+#include "General/Transform.hpp"
 
 #include <Rendering/Renderer/Mesh.hpp>
 #include <assimp/Importer.hpp>
@@ -23,20 +23,20 @@ namespace Rvl
     static std::string directory;
     static std::vector<MaterialTexture> texturesLoaded;
 
-    std::pair<std::vector<Mesh>, MaterialComponent> LoadModel(const std::string&);
-    std::pair<std::vector<Mesh>, MaterialComponent> ProcessNode(aiNode*, const aiScene*);
-    std::pair<Mesh, MaterialComponent> ProcessMesh(aiMesh*, const aiScene*);
-    MaterialComponent LoadMaterial(aiMaterial* mat);
+    std::pair<std::vector<Mesh>, Material> LoadModel(const std::string&);
+    std::pair<std::vector<Mesh>, Material> ProcessNode(aiNode*, const aiScene*);
+    std::pair<Mesh, Material> ProcessMesh(aiMesh*, const aiScene*);
+    Material LoadMaterial(aiMaterial* mat);
     std::vector<MaterialTexture> LoadMaterialTextures(aiMaterial*, aiTextureType, const std::string&);
 
     void ModelLoaderSystem(const std::vector<Entity>& entities)
     {
         for (auto entity : entities)
         {
-            if (!entity.Has<ModelComponent>())
+            if (!entity.Has<Model>())
                 continue;
             
-            auto& model = entity.Get<ModelComponent>();
+            auto& model = entity.Get<Model>();
             
             if (model._load) 
             {
@@ -44,9 +44,9 @@ namespace Rvl
                 directory = model.Directory;
                 auto result = LoadModel(model.Path);
                 model.Meshes = result.first;
-                if (!entity.Has<MaterialComponent>())
+                if (!entity.Has<Material>())
                 {
-                    entity.Add<MaterialComponent>(
+                    entity.Add<Material>(
                         result.second.Shader,
                         result.second.Ambient,
                         result.second.Shininess,
@@ -58,7 +58,7 @@ namespace Rvl
                 }
                 else
                 {
-                    auto& mat = entity.Get<MaterialComponent>();
+                    auto& mat = entity.Get<Material>();
                     if (mat.Textures.empty())
                     {
                         RVL_LOG(result.second.Diffuse.r);
@@ -70,7 +70,7 @@ namespace Rvl
         }
     }
 
-    std::pair<std::vector<Mesh>, MaterialComponent> LoadModel(const std::string& path)
+    std::pair<std::vector<Mesh>, Material> LoadModel(const std::string& path)
     {
         Assimp::Importer importer;
         const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate);	
@@ -81,10 +81,10 @@ namespace Rvl
         return ProcessNode(scene->mRootNode, scene);
     }
 
-    std::pair<std::vector<Mesh>, MaterialComponent> ProcessNode(aiNode* node, const aiScene* scene)
+    std::pair<std::vector<Mesh>, Material> ProcessNode(aiNode* node, const aiScene* scene)
     {
         std::vector<Mesh> meshes;
-        MaterialComponent mat;
+        Material mat;
 
         for (int i = 0; i < node->mNumMeshes; i++)
         {
@@ -109,7 +109,7 @@ namespace Rvl
         return std::make_pair(meshes, mat);
     }
 
-    std::pair<Mesh, MaterialComponent> ProcessMesh(aiMesh* mesh, const aiScene* scene)
+    std::pair<Mesh, Material> ProcessMesh(aiMesh* mesh, const aiScene* scene)
     {
         std::vector<MeshVertex> vertices;
         std::vector<uint32> indices;
@@ -140,7 +140,7 @@ namespace Rvl
                 indices.push_back(face.mIndices[j]);
         }
 
-        MaterialComponent material;
+        Material material;
         if (scene->mNumMaterials > mesh->mMaterialIndex)
         {
             aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
@@ -151,9 +151,9 @@ namespace Rvl
         return std::make_pair(Mesh(vertices, indices), material);
     }
 
-    MaterialComponent LoadMaterial(aiMaterial* mat) 
+    Material LoadMaterial(aiMaterial* mat) 
     {
-        MaterialComponent material;
+        Material material;
         aiColor3D color(0.f, 0.f, 0.f);
         float shininess;
         std::vector<MaterialTexture> textures;
