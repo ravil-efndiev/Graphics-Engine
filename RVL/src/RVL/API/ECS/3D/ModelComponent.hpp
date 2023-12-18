@@ -7,25 +7,23 @@
 
 namespace Rvl
 {
+    class Entity;
     class ModelComponent
     {
     public:
         ModelComponent(const std::string& path);
         ModelComponent(const ModelComponent& other);
 
-        std::vector<Mesh> GetMeshes() const;
-
-        friend class InspectorWindow;
-        friend class HierarchyWindow;
-    private:
-        std::vector<Mesh> _meshes;
-        std::string _path, _directory;
-        std::vector<MeshTexture> _texturesLoaded;
-
         void LoadModel(const std::string& path);
-        void ProcessNode(aiNode* node, const aiScene* scene);
-        Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
-        std::vector<MeshTexture> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName);
+
+        std::vector<Mesh> Meshes;
+        std::string Path, Directory;
+
+        friend void ModelLoaderSystem(const std::vector<Entity>&);
+        friend class HierarchyWindow;
+
+    private:
+        bool _load = false;
     };
 }
 

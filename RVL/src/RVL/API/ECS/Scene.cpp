@@ -22,6 +22,7 @@ namespace Rvl
         AddSystem(Animation2DSystem);
         AddSystem(MaterialSystem);
         AddSystem(LightSystem);
+        AddSystem(ModelLoaderSystem);
     }
 
     Scene::~Scene() {}
@@ -64,6 +65,12 @@ namespace Rvl
         entity.Add<TransformComponent>(position, glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
         _entities.push_back(entity);
         return entity;
+    }
+
+    void Scene::RemoveEntity(Entity entity)
+    {
+        _entities.erase(std::remove(_entities.begin(), _entities.end(), entity));
+        _registry.destroy(entity.GetId());
     }
 
     void Scene::AddSystem(const System& system)
@@ -109,13 +116,13 @@ namespace Rvl
         RVL_ASSERT((entity.Has<TransformComponent>()), "entity passed into DrawModel function doesn't have Transform Component");
         RVL_ASSERT((entity.Has<MaterialComponent>()), "entity passed into DrawModel function doesn't have Material Component");
 
-        auto meshes = entity.Get<ModelComponent>().GetMeshes();
+        auto meshes = entity.Get<ModelComponent>().Meshes;
         auto transform = entity.Get<TransformComponent>();
         auto material = entity.Get<MaterialComponent>();
 
         for (auto& mesh : meshes)
         {
-            Renderer3D::SubmitMesh(mesh, material.Shader, (Transform)transform);
+            Renderer3D::SubmitMesh(mesh, material, (Transform)transform);
         }
     }
 

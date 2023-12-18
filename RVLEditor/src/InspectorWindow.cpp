@@ -25,219 +25,198 @@ namespace Rvl
         _selected = entity;
     }
 
+    template<class T>
+    void DrawComponent(const char* label, Entity selected, const std::function<void(T&)>& drawFunc, bool canBeDeleted = true) 
+    {
+        if (selected.Has<T>())
+        {
+            bool componentRemoved = false;
+            ImGui::Separator();
+
+            auto& component = selected.Get<T>();
+
+            bool open = ImGui::TreeNodeEx(label, UIData.NodeFlags);
+
+            if (ImGui::BeginPopupContextItem())
+            {
+                if (ImGui::MenuItem("Remove Component", "", nullptr, canBeDeleted))
+                    componentRemoved = true;
+
+                ImGui::EndPopup();
+            }
+
+            if (open)
+            {
+                drawFunc(component);       
+                ImGui::TreePop();
+            }
+            
+            ImGui::Dummy({0.f, 20.f});
+            if (componentRemoved)
+                selected.Remove<T>();
+        }
+    }
+
     void InspectorWindow::ImGuiRedner()
     {
         ImGui::Begin("Inspector");
 
-        if (_selected.Has<IdentifierComponent>())
+        if (_selected == Entity())
         {
-            ImGui::Separator();
-
-            auto& id = _selected.Get<IdentifierComponent>();
-
-            if (ImGui::TreeNodeEx("Identifier##inspector_identifier", UIData.NodeFlags))
-            {
-                ImGui::InputText("Name", &id.Name);
-
-                if (id.Name.empty())
-                    id.Name = "Entity";
-
-                ImGui::TreePop();
-            }
-            
-            ImGui::Dummy({0.f, 20.f});
+            ImGui::End();
+            return;
         }
 
-        if (_selected.Has<TransformComponent>())
+        DrawComponent<IdentifierComponent>("Identifier", _selected, [](auto& id) 
         {
-            ImGui::Separator();
+            ImGui::InputText("Name", &id.Name);
 
-            auto& transform = _selected.Get<TransformComponent>();
+            if (id.Name.empty())
+                id.Name = "Entity";
+        }, false);
 
-            if (ImGui::TreeNodeEx("Transform##inspector_transform", UIData.NodeFlags))
-            {
-                DragVec3("Position##transform_position", transform.Position.GetValuePtr());
-                DragVec3("Rotation##transform_rotation", transform.Rotation.GetValuePtr());
-                DragVec3("Scale##transform_scale", transform.Scale.GetValuePtr());
-
-                ImGui::TreePop();
-            }
-            
-            ImGui::Dummy({0.f, 20.f});
-        }
-
-        if (_selected.Has<SpriteComponent>())
+        DrawComponent<TransformComponent>("Transform", _selected, [](auto& transform) 
         {
-            ImGui::Separator();
+            DragVec3("Position##transform_position", transform.Position.GetValuePtr());
+            DragVec3("Rotation##transform_rotation", transform.Rotation.GetValuePtr());
+            DragVec3("Scale##transform_scale", transform.Scale.GetValuePtr());
+        });
 
-            auto& sprite = _selected.Get<SpriteComponent>();
-
+        DrawComponent<SpriteComponent>("Sprite", _selected, [](auto& sprite) 
+        {
             UIData.SubtextureSize = {sprite.Subtexture->GetWidth(), sprite.Subtexture->GetHeight()};
             UIData.SubtexturePos = {sprite.Subtexture->GetX(), sprite.Subtexture->GetY()};
 
-            if (ImGui::TreeNodeEx("Sprite##inspector_sprite", UIData.NodeFlags))
+            if (ImGui::BeginCombo("Draw Type", sprite.Drawtype == SpriteComponent::DrawType::Color ? "Color" : "Texture"))
             {
-                if (ImGui::BeginCombo("Draw Type", sprite.Drawtype == SpriteComponent::DrawType::Color ? "Color" : "Texture"))
+                bool colorSelected = false, texSelected = false;
+
+                if (ImGui::Selectable("Texture", &texSelected))
+                    sprite.Drawtype = SpriteComponent::DrawType::Texture;
+
+                if (ImGui::Selectable("Color", &colorSelected))
                 {
-                    bool colorSelected = false, texSelected = false;
-
-                    if (ImGui::Selectable("Texture", &texSelected))
-                        sprite.Drawtype = SpriteComponent::DrawType::Texture;
-
-                    if (ImGui::Selectable("Color", &colorSelected))
-                    {
-                        sprite.Drawtype = SpriteComponent::DrawType::Color;
-                        sprite.UseFixedScale = false;
-                    }
-
-                    ImGui::EndCombo();
-                }
-
-                if (sprite.Drawtype == SpriteComponent::DrawType::Texture)
-                {
-                    auto str = "Texture: " + (Utils::SplitStr(sprite.Texture->GetPath(), '/').back());
-                    ImGui::Text("%s", str.c_str());
-                    ImGui::SameLine();
-
-                    auto path = OpenFileDialogButton("Select ...##texture_select", "png,jpg");
-
-                    if (!path.empty())
-                        sprite.LoadTexture(path);
-                }
-
-                ImGui::Dummy({0.f, 5.f});
-
-                if (sprite.Drawtype == SpriteComponent::DrawType::Texture)
-                    ImGui::Checkbox("Use Fixed Scale", &sprite.UseFixedScale);
-
-                if (sprite.Drawtype == SpriteComponent::DrawType::Color)
+                    sprite.Drawtype = SpriteComponent::DrawType::Color;
                     sprite.UseFixedScale = false;
-
-                if (sprite.UseFixedScale)
-                {
-                    DragFloat("Fixed Scale", &sprite.Scale);
-                    sprite.ResetScale();
                 }
 
-                ImGui::Dummy({0.f, 10.f});
-
-                ImGui::ColorEdit4("Color##sprite_color", glm::value_ptr(sprite.Color));
-
-                if (sprite.Drawtype == SpriteComponent::DrawType::Texture)
-                    ImGui::Checkbox("Use Color as Tint", &sprite.UseColorAsTint);
-
-                ImGui::Dummy({0.f, 10.f});
-                
-                if (sprite.Drawtype == SpriteComponent::DrawType::Texture)
-                {
-                    ImGui::Checkbox("Use custom subtexture", &UIData.UseSubTexture);
-                    if (UIData.UseSubTexture)
-                    {
-                        DragVec2("Tile size (px)", &UIData.SubtextureSize, {'W', 'H'});
-                        DragVec2("Tile coords", &UIData.SubtexturePos);
-
-                        sprite.SetSubTexture(UIData.SubtexturePos.x, UIData.SubtexturePos.y, UIData.SubtextureSize.x, UIData.SubtextureSize.y);
-                    }
-                    else if (!(sprite.Subtexture->_x == 0.f && sprite.Subtexture->_y == 0.f &&
-                             sprite.Subtexture->_width == sprite.Texture->GetWidth() && sprite.Subtexture->_height == sprite.Texture->GetHeight()))
-                        sprite.ResetSubTexture();
-                }
-
-                ImGui::TreePop();
+                ImGui::EndCombo();
             }
 
-            ImGui::Dummy({0.f, 20.f});
-        }
-
-        if (_selected.Has<ModelComponent>())
-        {
-            ImGui::Separator();
-
-            auto& model = _selected.Get<ModelComponent>();
-
-            if (ImGui::TreeNodeEx("Model##inspector_model", UIData.NodeFlags))
+            if (sprite.Drawtype == SpriteComponent::DrawType::Texture)
             {
-                auto str = "Model path: " + (Utils::SplitStr(model._path, '/').back());
+                auto str = "Texture: " + (Utils::SplitStr(sprite.Texture->GetPath(), '/').back());
                 ImGui::Text("%s", str.c_str());
                 ImGui::SameLine();
 
-                auto path = OpenFileDialogButton("Select ...##modelpath_select", "obj");
-                if (!path.empty() && path != model._path)
-                    model.LoadModel(path);
+                auto path = OpenFileDialogButton("Select ...##texture_select", "png,jpg");
 
-                ImGui::TreePop();
+                if (!path.empty())
+                    sprite.LoadTexture(path);
             }
 
-            ImGui::Dummy({0.f, 20.f});
-        }
+            ImGui::Dummy({0.f, 5.f});
 
-        if (_selected.Has<PointLightComponent>())
-        {
-            ImGui::Separator();
+            if (sprite.Drawtype == SpriteComponent::DrawType::Texture)
+                ImGui::Checkbox("Use Fixed Scale", &sprite.UseFixedScale);
 
-            auto& pl = _selected.Get<PointLightComponent>();
+            if (sprite.Drawtype == SpriteComponent::DrawType::Color)
+                sprite.UseFixedScale = false;
 
-            if (ImGui::TreeNodeEx("Point Light##inspector_pl", UIData.NodeFlags))
+            if (sprite.UseFixedScale)
             {
-                ImGui::ColorEdit3("Color##pl_diffuse", glm::value_ptr(pl.Color));
-                DragFloat("Intensity##pl_intensity", &pl.Intensity);
-
-                ImGui::Dummy({0.f, 5.f});
-                ImGui::Text("Advanced settings");
-                ImGui::Separator();
-                ImGui::ColorEdit3("Ambient##pl_ambient", glm::value_ptr(pl.Ambient));
-                ImGui::ColorEdit3("Specular##pl_specular", glm::value_ptr(pl.Specular));
-
-                DragFloat("Linear##pl_linear", &pl.Linear);
-                DragFloat("Quadratic##pl_quadratic", &pl.Quadratic);
-
-                ImGui::TreePop();
+                DragFloat("Fixed Scale", &sprite.Scale);
+                sprite.ResetScale();
             }
 
-            ImGui::Dummy({0.f, 20.f});
-        }   
+            ImGui::Dummy({0.f, 10.f});
 
-        if (_selected.Has<DirectionalLightComponent>())
-        {
-            ImGui::Separator();
+            ImGui::ColorEdit4("Color##sprite_color", glm::value_ptr(sprite.Color));
 
-            auto& dl = _selected.Get<DirectionalLightComponent>();
+            if (sprite.Drawtype == SpriteComponent::DrawType::Texture)
+                ImGui::Checkbox("Use Color as Tint", &sprite.UseColorAsTint);
 
-            if (ImGui::TreeNodeEx("Directional Light##inspector_dl", UIData.NodeFlags))
+            ImGui::Dummy({0.f, 10.f});
+            
+            if (sprite.Drawtype == SpriteComponent::DrawType::Texture)
             {
-                ImGui::ColorEdit3("Color##pl_diffuse", glm::value_ptr(dl.Color));
-                DragFloat("Intensity##pl_intensity", &dl.Intensity);
+                ImGui::Checkbox("Use custom subtexture", &UIData.UseSubTexture);
+                if (UIData.UseSubTexture)
+                {
+                    DragVec2("Tile size (px)", &UIData.SubtextureSize, {'W', 'H'});
+                    DragVec2("Tile coords", &UIData.SubtexturePos);
 
-                ImGui::Dummy({0.f, 5.f});
-                ImGui::Text("Advanced settings");
-                ImGui::Separator();
-                ImGui::ColorEdit3("Ambient##pl_ambient", glm::value_ptr(dl.Ambient));
-                ImGui::ColorEdit3("Specular##pl_specular", glm::value_ptr(dl.Specular));
-
-                ImGui::TreePop();
+                    sprite.SetSubTexture(UIData.SubtexturePos.x, UIData.SubtexturePos.y, UIData.SubtextureSize.x, UIData.SubtextureSize.y);
+                }
+                else if (!(sprite.Subtexture->_x == 0.f && sprite.Subtexture->_y == 0.f &&
+                            sprite.Subtexture->_width == sprite.Texture->GetWidth() && sprite.Subtexture->_height == sprite.Texture->GetHeight()))
+                    sprite.ResetSubTexture();
             }
+        });
 
-            ImGui::Dummy({0.f, 20.f});
-        }
-
-        if (_selected.Has<MaterialComponent>())
+        DrawComponent<ModelComponent>("Model", _selected, [](auto& model) 
         {
+            auto str = "Model path: " + (Utils::SplitStr(model.Path, '/').back());
+            ImGui::Text("%s", str.c_str());
+            ImGui::SameLine();
+
+            auto path = OpenFileDialogButton("Select ...##modelpath_select", "obj");
+            if (!path.empty() && path != model.Path)
+                model.LoadModel(path);
+        });
+
+        DrawComponent<PointLightComponent>("Point Light", _selected, [](auto& pl) 
+        {
+            ImGui::ColorEdit3("Color##pl_diffuse", glm::value_ptr(pl.Color));
+            DragFloat("Intensity##pl_intensity", &pl.Intensity);
+
+            ImGui::Dummy({0.f, 5.f});
+            ImGui::Text("Advanced settings");
             ImGui::Separator();
+            ImGui::ColorEdit3("Ambient##pl_ambient", glm::value_ptr(pl.Ambient));
+            ImGui::ColorEdit3("Specular##pl_specular", glm::value_ptr(pl.Specular));
 
-            auto& material = _selected.Get<MaterialComponent>();
+            DragFloat("Linear##pl_linear", &pl.Linear);
+            DragFloat("Quadratic##pl_quadratic", &pl.Quadratic);
+        });
 
-            if (ImGui::TreeNodeEx("Material##inspector_mat", UIData.NodeFlags))
+        DrawComponent<DirectionalLightComponent>("Directional Light", _selected, [](auto& dl) 
+        {
+            ImGui::ColorEdit3("Color##dl_diffuse", glm::value_ptr(dl.Color));
+            DragFloat("Intensity##dl_intensity", &dl.Intensity);
+
+            ImGui::Dummy({0.f, 5.f});
+            ImGui::Text("Advanced settings");
+            ImGui::Separator();
+            ImGui::ColorEdit3("Ambient##dl_ambient", glm::value_ptr(dl.Ambient));
+            ImGui::ColorEdit3("Specular##dl_specular", glm::value_ptr(dl.Specular));
+        });
+
+        DrawComponent<MaterialComponent>("Material", _selected, [](auto& material) 
+        {
+            ImGui::ColorEdit3("Ambient##mat_ambient", glm::value_ptr(material.Ambient));
+            ImGui::ColorEdit3("Diffuse##mat_diffuse", glm::value_ptr(material.Diffuse));
+            ImGui::ColorEdit3("Specular##mat_specular", glm::value_ptr(material.Specular));
+            DragFloat("Shininess##mat_shine", &material.Shininess);
+
+            for (auto& texture : material.Textures)
             {
-                ImGui::ColorEdit3("Ambient##mat_ambient", glm::value_ptr(material.Ambient));
-                ImGui::ColorEdit3("Diffuse##mat_diffuse", glm::value_ptr(material.Diffuse));
-                ImGui::ColorEdit3("Specular##mat_specular", glm::value_ptr(material.Specular));
-                DragFloat("Shininess##mat_shine", &material.Shininess);
+                ImGui::Text("%s", texture.Filename.c_str());
+                ImGui::SameLine();
+                ImGui::Text("%s", texture.Type.c_str());
+                ImGui::SameLine();
 
-                ImGui::TreePop();
+                auto path = OpenFileDialogButton("Select ...##modeltexture_select", "png,jpg");
+                if (!path.empty())
+                {
+                    texture =        
+                    {
+                        GLTexture::TextureFromFile(path),
+                        texture.Type, Utils::SplitStr(path, '/').back()
+                    };
+                }
             }
-
-            ImGui::Dummy({0.f, 20.f});
-        }
+        });
 
         if (ImGui::Button("Add Component"))
         {
@@ -272,7 +251,6 @@ namespace Rvl
                 {
                     _selected.Add<ModelComponent>("/Users/Belokan/RVL Engine/RVLEditor/assets/textures/backpack.obj");
                     _selected.Add<MaterialComponent>(glm::vec3(0.5f, 0.5f, 0.5f), 32.f);
-                    _selected.Get<ModelComponent>().LoadModel("/Users/Belokan/RVL Engine/RVLEditor/assets/textures/backpack.obj");
                 }
                 ImGui::CloseCurrentPopup();
             }

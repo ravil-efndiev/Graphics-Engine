@@ -6,11 +6,10 @@
 
 namespace Rvl
 {
-    Mesh::Mesh(const std::vector<MeshVertex>& verticies, const std::vector<uint32>& indicies, const std::vector<MeshTexture>& textures)
+    Mesh::Mesh(const std::vector<MeshVertex>& verticies, const std::vector<uint32>& indicies)
     {
         _verticies = verticies;
         _indicies = indicies;
-        _textures = textures;
 
         Generate();
     }
@@ -32,11 +31,6 @@ namespace Rvl
 
         _vao->SetSingleVertexBuffer(_vbo);
         _vao->AddIndexBuffer(_ibo);
-    }
-
-    std::vector<MeshTexture> Mesh::GetTextures() const
-    {
-        return _textures;
     }
 
     Ref<GLVertexArray> Mesh::GetVao() const

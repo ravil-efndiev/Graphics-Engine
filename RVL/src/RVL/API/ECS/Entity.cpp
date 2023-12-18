@@ -12,4 +12,14 @@ namespace Rvl
     {
         return _id == entity._id && _scene == entity._scene;
     }
+
+    entt::entity Entity::GetId() const
+    {
+        return _id;
+    }
+    
+    uint32 Entity::GetIdInt() const
+    {
+        return (uint32)_id;
+    }
 }

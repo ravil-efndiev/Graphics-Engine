@@ -16,20 +16,12 @@ namespace Rvl
         glm::vec2 TexCoord;
     };
 
-    struct MeshTexture
-    {
-        GLuint Id;
-        std::string Type;
-        std::string Filename;
-    };
-
     class Mesh
     {
     public:
-        Mesh(const std::vector<MeshVertex>& verticies, const std::vector<uint32>& indicies, const std::vector<MeshTexture>& textures);
+        Mesh(const std::vector<MeshVertex>& verticies, const std::vector<uint32>& indicies);
         ~Mesh();
 
-        std::vector<MeshTexture> GetTextures() const;
         Ref<GLVertexArray> GetVao() const;
 
     private:
@@ -37,7 +29,6 @@ namespace Rvl
 
         std::vector<MeshVertex> _verticies;
         std::vector<uint32> _indicies;
-        std::vector<MeshTexture> _textures;
 
         Ref<GLVertexArray> _vao;
         Ref<GLVertexBuffer> _vbo;

@@ -22,6 +22,8 @@ namespace Rvl
         Entity NewEntity(const std::string& name);
         Entity NewEntity(const std::string& name, const glm::vec3& position);
 
+        void RemoveEntity(Entity entity);
+
         void AddSystem(const System& system);
         void AddBehaviour(Behaviour* behaviour);
 

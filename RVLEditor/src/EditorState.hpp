@@ -26,8 +26,6 @@ private:
     glm::vec3 _light { 10.f, 0.f, 3.f };
     glm::vec3 _lightPosition;
 
-    MaterialComponent* _mat;
-
     Ref<HierarchyWindow> _hierarchy;
     Ref<InspectorWindow> _inspector;
 

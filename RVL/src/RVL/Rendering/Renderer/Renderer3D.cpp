@@ -35,12 +35,13 @@ namespace Rvl
         shader->Unbind();
     }   
 
-    void Renderer3D::SubmitMesh(const Mesh& mesh, const Ref<GLShaderProgram>& shader, const Transform& transform)
+    void Renderer3D::SubmitMesh(const Mesh& mesh, const MaterialComponent& material, const Transform& transform)
     {
         int diffuseNr = 1;
         int specularNr = 1;
 
-        auto textures = mesh.GetTextures();
+        auto textures = material.Textures;
+        auto shader = material.Shader;
 
         shader->Bind();
         shader->SetUniformMat4("u_Projview", _projview);

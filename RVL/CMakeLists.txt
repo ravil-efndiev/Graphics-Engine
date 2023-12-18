@@ -53,6 +53,7 @@ add_library(RVL STATIC
     src/RVL/API/ECS/3D/PointLightComponent.cpp
     src/RVL/API/ECS/3D/MaterialComponent.cpp
     src/RVL/API/ECS/Systems/StandartSystems.cpp
+    src/RVL/API/ECS/Systems/ModelLoader.cpp
 
     # dependencies
     vendor/lib/glad/glad.c

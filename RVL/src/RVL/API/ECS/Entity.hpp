@@ -29,7 +29,17 @@ namespace Rvl
             return _scene->_registry.any_of<T>(_id);
         }
 
+        template <class T>
+        void Remove()
+        {
+            RVL_ASSERT(Has<T>(), "Entity doesn't have the component you were trying to remove");
+            _scene->_registry.remove<T>(_id);
+        }
+
         bool operator==(const Entity& entity);
+
+        entt::entity GetId() const;
+        uint32 GetIdInt() const;
 
     private:
         entt::entity _id;

@@ -13,4 +13,6 @@ namespace Rvl
     void MaterialSystem(const std::vector<Entity>& entities);
 
     void LightSystem(const std::vector<Entity>& entities);
+
+    void ModelLoaderSystem(const std::vector<Entity>& entities);
 }

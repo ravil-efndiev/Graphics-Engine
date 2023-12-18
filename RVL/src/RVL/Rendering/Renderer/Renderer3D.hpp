@@ -4,6 +4,7 @@
 #include "Mesh.hpp"
 #include "RenderCommand.hpp"
 #include "Transform.hpp"
+#include "API/ECS/3D/MaterialComponent.hpp"
 
 namespace Rvl
 {
@@ -21,7 +22,7 @@ namespace Rvl
         static void SubmitVa(GLVertexArray& vertexArray, GLShaderProgram& shader);
         static void SubmitVa(const Ref<GLVertexArray>& vertexArray, const Ref<GLShaderProgram>& shader);
 
-        static void SubmitMesh(const Mesh& mesh, const Ref<GLShaderProgram>& shader, const Transform& transform);
+        static void SubmitMesh(const Mesh& mesh, const MaterialComponent& material, const Transform& transform);
 
     private:
         static glm::mat4 _projview;

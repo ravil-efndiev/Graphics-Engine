@@ -25,7 +25,6 @@ void EditorState::Start()
 
     _model = _currentScene.NewEntity("Model");
     _model.Add<ModelComponent>("./assets/textures/backpack.obj");
-    _mat = &_model.Add<MaterialComponent>(glm::vec3(0.5, 0.4, 0.2), 32.f);
 
     _hierarchy = NewRef<HierarchyWindow>(_currentScene);
     _inspector = NewRef<InspectorWindow>();
@@ -44,8 +43,6 @@ void EditorState::Update()
     UserCamera::ToPerspective(_camera)->UpdateControls(ControllerType::InPlane, 5.f);
 
     if (_lock) UserCamera::ToPerspective(_camera)->UpdateCursorRotation(2.f);
-
-    _mat->SetUniform("u_ViewPos", UserCamera::ToPerspective(_camera)->Position());
 }
 
 void EditorState::Render()

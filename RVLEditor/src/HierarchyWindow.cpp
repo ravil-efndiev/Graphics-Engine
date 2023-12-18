@@ -19,6 +19,7 @@ namespace Rvl
         
         for (auto entity : _scene._entities)
         {
+            bool entityDeleted = false;
             auto name = entity.Get<IdentifierComponent>().Name;
 
             ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
@@ -28,8 +29,26 @@ namespace Rvl
             if (ImGui::IsItemClicked()) 
                 _selected = entity;
 
+            if (ImGui::BeginPopupContextItem())
+            {
+                if (ImGui::MenuItem("Delete Entity"))
+                {
+                    entityDeleted = true;
+                }
+
+                ImGui::EndPopup();
+            }
+
             if (op)
                 ImGui::TreePop();
+
+            if (entityDeleted)
+            {
+                _scene.RemoveEntity(entity);
+                if (_selected == entity)
+                    _selected = {};
+            }
+
         }
 
         if (ImGui::Button("+", {20.f, 20.f}))
@@ -68,5 +87,6 @@ namespace Rvl
         }
 
         ImGui::End();
+
     }
 }

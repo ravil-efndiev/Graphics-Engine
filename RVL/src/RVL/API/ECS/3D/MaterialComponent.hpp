@@ -1,15 +1,25 @@
 #pragma once
 #include <Core/Core.hpp>
 #include <Rendering/OpenGL/GLShaderProgram.hpp>
+#include <Rendering/Renderer/Mesh.hpp>
 
 namespace Rvl
 {
+    struct MaterialTexture
+    {
+        GLuint Id;
+        std::string Type;
+        std::string Filename;
+    };
+
     class GLShaderProgram;
     struct MaterialComponent
     {
         MaterialComponent() = default;
         MaterialComponent(const Ref<GLShaderProgram>& shader, glm::vec3 ambient, float shininess, glm::vec3 diffuse = glm::vec3(1.f), glm::vec3 specular = glm::vec3(0.5f));
         MaterialComponent(glm::vec3 ambient, float shininess, glm::vec3 diffuse = glm::vec3(1.f), glm::vec3 specular = glm::vec3(0.5f));
+        MaterialComponent(const Ref<GLShaderProgram>& shader, glm::vec3 ambient, float shininess, std::vector<MaterialTexture> textures, glm::vec3 diffuse = glm::vec3(1.f), glm::vec3 specular = glm::vec3(0.5f));
+        MaterialComponent(glm::vec3 ambient, float shininess, std::vector<MaterialTexture> textures, glm::vec3 diffuse = glm::vec3(1.f), glm::vec3 specular = glm::vec3(0.5f));
         ~MaterialComponent() {}
 
         bool ProcessLightSources = true;
@@ -18,6 +28,7 @@ namespace Rvl
         glm::vec3 Ambient;
         glm::vec3 Specular;
         Ref<GLShaderProgram> Shader;
+        std::vector<MaterialTexture> Textures;
 
         template <class T> 
         inline void SetUniform(const std::string& name, const T& value)
