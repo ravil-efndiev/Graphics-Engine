@@ -1,6 +1,6 @@
 #include "Model.hpp"
 #include <Rendering/OpenGL/GLTexture.hpp>
-#include <Rendering/Renderer/Renderer3D.hpp>
+#include <Rendering/Renderer/StandartMeshes.hpp>
 
 namespace Rvl
 {
@@ -11,13 +11,15 @@ namespace Rvl
 
     Model::Model(const Model& other)
     {
-        LoadModel(other.Path);
+        Meshes = other.Meshes;
+        Path = other.Path;
+        Type = other.Type;
     }
 
     void Model::LoadModel(const std::string& path)
     {
+        Type = MeshType::Custom;
         Path = path;
-        Directory = Path.substr(0, Path.find_last_of('/'));
         _load = true;
     }
 

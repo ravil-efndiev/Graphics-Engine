@@ -35,6 +35,6 @@ namespace Rvl
     void StandartShaderLib::Init()
     {
         _lib = NewRef<ShaderLibrary>();
-        _lib->Load("Light", "assets/shaders/light");
+        _lib->Load("Light", "standart_assets/shaders/light");
     }
 }

@@ -1,87 +1,48 @@
-#include "StandartSystems.hpp"
-
-#include "2D/Sprite.hpp"
-#include "2D/Movement2D.hpp"
-#include "2D/Animator2D.hpp"
-#include "3D/Material.hpp"
-#include "3D/DirectionalLight.hpp"
-#include "3D/Model.hpp"
-#include "3D/PointLight.hpp"
-#include "General/Transform.hpp"
-
-#include <Rendering/Renderer/Mesh.hpp>
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-
-#include <Rendering/OpenGL/GLTexture.hpp>
-#include <Rendering/Renderer/ShaderLibrary.hpp>
-#include <Rendering/Renderer/Renderer3D.hpp>
+#include "ModelLoader.hpp"
+#include "ShaderLibrary.hpp"
+#include "Rendering/OpenGL/GLTexture.hpp"
 
 namespace Rvl
 {
-    static std::string directory;
-    static std::vector<MaterialTexture> texturesLoaded;
 
-    std::pair<std::vector<Mesh>, Material> LoadModel(const std::string&);
-    std::pair<std::vector<Mesh>, Material> ProcessNode(aiNode*, const aiScene*);
-    std::pair<Mesh, Material> ProcessMesh(aiMesh*, const aiScene*);
-    Material LoadMaterial(aiMaterial* mat);
-    std::vector<MaterialTexture> LoadMaterialTextures(aiMaterial*, aiTextureType, const std::string&);
-
-    void ModelLoaderSystem(const std::vector<Entity>& entities)
+    ModelLoader::ModelLoader(const std::string& path)
     {
-        for (auto entity : entities)
-        {
-            if (!entity.Has<Model>())
-                continue;
-            
-            auto& model = entity.Get<Model>();
-            
-            if (model._load) 
-            {
-                texturesLoaded.clear();
-                directory = model.Directory;
-                auto result = LoadModel(model.Path);
-                model.Meshes = result.first;
-                if (!entity.Has<Material>())
-                {
-                    entity.Add<Material>(
-                        result.second.Shader,
-                        result.second.Ambient,
-                        result.second.Shininess,
-                        result.second.Textures,
-                        result.second.Diffuse,
-                        result.second.Specular
-                    );
-                    RVL_LOG(result.second.Shininess);
-                }
-                else
-                {
-                    auto& mat = entity.Get<Material>();
-                    if (mat.Textures.empty())
-                    {
-                        RVL_LOG(result.second.Diffuse.r);
-                        mat.Textures = result.second.Textures;
-                    }
-                }
-                model._load = false;
-            }
-        }
+        _path = path;
     }
 
-    std::pair<std::vector<Mesh>, Material> LoadModel(const std::string& path)
+    void ModelLoader::LoadModel()
     {
+        if (!_path.empty())
+            LoadModel(_path);
+    }
+
+    std::vector<Mesh> ModelLoader::GetMeshes() const
+    {
+        return _meshes;
+    }
+
+    Material ModelLoader::GetMaterial() const
+    {
+        return _material;
+    }
+
+    void ModelLoader::LoadModel(const std::string& path)
+    {
+        _path = path;
+        _directory = path.substr(0, path.find_last_of('/'));
+
         Assimp::Importer importer;
         const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate);	
 
         if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) 
             throw Error(std::string("Assimp error:") + importer.GetErrorString(), RVL_INTERNAL_ERROR);
 
-        return ProcessNode(scene->mRootNode, scene);
+        auto result = ProcessNode(scene->mRootNode, scene);
+        _meshes = result.first;
+        _material = result.second;
     }
 
-    std::pair<std::vector<Mesh>, Material> ProcessNode(aiNode* node, const aiScene* scene)
+    std::pair<std::vector<Mesh>, Material> ModelLoader::ProcessNode(aiNode* node, const aiScene* scene)
     {
         std::vector<Mesh> meshes;
         Material mat;
@@ -103,13 +64,14 @@ namespace Rvl
             mat.Diffuse = result.second.Diffuse;
             mat.Specular = result.second.Specular;
             mat.Shininess = result.second.Shininess;
+            mat.UseTexture = result.second.UseTexture;
             mat.Shader = result.second.Shader;
         }
         
         return std::make_pair(meshes, mat);
     }
 
-    std::pair<Mesh, Material> ProcessMesh(aiMesh* mesh, const aiScene* scene)
+    std::pair<Mesh, Material> ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene)
     {
         std::vector<MeshVertex> vertices;
         std::vector<uint32> indices;
@@ -151,7 +113,7 @@ namespace Rvl
         return std::make_pair(Mesh(vertices, indices), material);
     }
 
-    Material LoadMaterial(aiMaterial* mat) 
+    Material ModelLoader::LoadMaterial(aiMaterial* mat) 
     {
         Material material;
         aiColor3D color(0.f, 0.f, 0.f);
@@ -172,18 +134,26 @@ namespace Rvl
         mat->Get(AI_MATKEY_SHININESS, shininess);
         material.Shininess = shininess;
 
-        std::vector<MaterialTexture> diffuseMaps = LoadMaterialTextures(mat, aiTextureType_DIFFUSE, "texture_diffuse");
-        textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+        if (mat->GetTextureCount(aiTextureType_DIFFUSE) > 0)
+        {
+            std::vector<MaterialTexture> diffuseMaps = LoadMaterialTextures(mat, aiTextureType_DIFFUSE, RVL_TEXTURE_DIFFUSE);
+            textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
-        std::vector<MaterialTexture> specularMaps = LoadMaterialTextures(mat, aiTextureType_SPECULAR, "texture_specular");
-        textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+            std::vector<MaterialTexture> specularMaps = LoadMaterialTextures(mat, aiTextureType_SPECULAR, RVL_TEXTURE_DIFFUSE);
+            textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 
-        material.Textures = textures;
-
+            material.Textures = textures;
+            material.UseTexture = true;
+        }
+        else
+        {
+            material.UseTexture = false;
+        }
+        
         return material;
     }
 
-    std::vector<MaterialTexture> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName)
+    std::vector<MaterialTexture> ModelLoader::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName)
     {
         std::vector<MaterialTexture> textures;
 
@@ -193,7 +163,7 @@ namespace Rvl
             mat->GetTexture(type, i, &filename);
             bool skip = false;
 
-            for (const auto& tex : texturesLoaded)
+            for (const auto& tex : _texturesLoaded)
             {
                 if (tex.Filename == filename.C_Str())
                 {
@@ -207,14 +177,15 @@ namespace Rvl
             {
                 MaterialTexture texture = 
                 {
-                    GLTexture::TextureFromFile(directory + '/' + filename.C_Str()),
+                    GLTexture::TextureFromFile(_directory + '/' + filename.C_Str()),
                     typeName, filename.C_Str()
                 };
 
                 textures.push_back(texture);
-                texturesLoaded.push_back(texture);
+                _texturesLoaded.push_back(texture);
             }
         }
         return textures;
     }
+
 }

@@ -12,6 +12,8 @@ namespace Rvl
         void ImGuiRedner();
 
     private:
+        void AddComponentMenu();
+
         Entity _selected;
     };
 }

@@ -1,4 +1,5 @@
 #include "HierarchyWindow.hpp"
+#include <Rendering/Renderer/StandartMeshes.hpp>
 
 namespace Rvl
 {
@@ -64,19 +65,54 @@ namespace Rvl
                 ImGui::CloseCurrentPopup();
             }
 
+            ImGui::Separator();
+            ImGui::Text("2D Objects");
+
             if (ImGui::Button("Sprite")) 
             {
                 _scene.NewEntity().Add<Sprite>("assets/textures/container.jpg", 1.f);
                 ImGui::CloseCurrentPopup();
             }
 
-            if (ImGui::Button("3D Model")) 
+            ImGui::Separator();
+            ImGui::Text("3D Meshes");
+
+            if (ImGui::Button("Cube")) 
             {
                 Entity model = _scene.NewEntity();
-                model.Add<Model>("/Users/Belokan/RVL Engine/RVLEditor/assets/textures/backpack.obj");
-                model.Add<Material>(glm::vec3(0.5f, 0.5f, 0.5f), 32.f);
+                
+                model.Add<Model>().Meshes = StandartMeshes::Get("Cube");
+                model.Add<Material>(StandartMeshes::GetMaterial());
+
                 ImGui::CloseCurrentPopup();
             }
+
+            if (ImGui::Button("Sphere")) 
+            {
+                Entity model = _scene.NewEntity();
+                
+                auto& mc = model.Add<Model>();
+                mc.Meshes = StandartMeshes::Get("Sphere");
+                mc.Type = MeshType::Sphere;
+                model.Add<Material>(StandartMeshes::GetMaterial());
+
+                ImGui::CloseCurrentPopup();
+            }
+
+            if (ImGui::Button("Cylinder")) 
+            {
+                Entity model = _scene.NewEntity();
+                
+                auto& mc = model.Add<Model>();
+                mc.Meshes = StandartMeshes::Get("Cylinder");
+                mc.Type = MeshType::Cylinder;
+                model.Add<Material>(StandartMeshes::GetMaterial());
+
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::Separator();
+            ImGui::Text("3D Lighting");
 
             if (ImGui::Button("Point light")) 
             {

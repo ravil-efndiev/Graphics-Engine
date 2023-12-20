@@ -72,7 +72,7 @@ namespace Rvl
 		Ref<GLIndexBuffer> quadIB = NewRef<GLIndexBuffer>(rectIndexData);
 		_rectVao->AddIndexBuffer(quadIB);
 
-		_textureShader = NewRef<GLShaderProgram>("assets/shaders/Texture.vert", "assets/shaders/Texture.frag");
+		_textureShader = NewRef<GLShaderProgram>("standart_assets/shaders/Texture.vert", "standart_assets/shaders/Texture.frag");
 
 		_textureShader->Bind();
         int samples[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};

@@ -3,6 +3,7 @@
 #include <imgui/misc/cpp/imgui_stdlib.h>
 #include <Core/Utils/Files.hpp>
 #include "GuiElements.hpp"
+#include <Rendering/Renderer/StandartMeshes.hpp>
 
 namespace Rvl
 {
@@ -67,12 +68,14 @@ namespace Rvl
             return;
         }
 
-        DrawComponent<Identifier>("Identifier", _selected, [](auto& id) 
+        DrawComponent<Identifier>("Identifier", _selected, [&](auto& id) 
         {
             ImGui::InputText("Name", &id.Name);
 
             if (id.Name.empty())
                 id.Name = "Entity";
+
+            ImGui::Text("Entity id: %d", (uint32)_selected.GetId());
         }, false);
 
         DrawComponent<Transform>("Transform", _selected, [](auto& transform) 
@@ -156,6 +159,60 @@ namespace Rvl
 
         DrawComponent<Model>("Model", _selected, [](auto& model) 
         {
+            std::string preview;
+            if (model.Type == MeshType::Cube) preview = "Cube";
+            if (model.Type == MeshType::Sphere) preview = "Sphere";
+            if (model.Type == MeshType::Cylinder) preview = "Cylinder";
+            if (model.Type == MeshType::Custom) preview = "Custom";
+
+            if (ImGui::BeginCombo("Mesh Type", preview.c_str()))
+            {
+                bool cube = false, sphere = false, cyl = false, custom = false;
+
+                if (ImGui::Selectable("Cube", &cube))
+                {
+                    if (!model.Meshes.empty() && model.Type == MeshType::Custom)
+                        model.MeshesSaved = model.Meshes;
+
+                    model.Type = MeshType::Cube;
+                    model.Meshes = StandartMeshes::Get("Cube");
+                }
+
+                if (ImGui::Selectable("Sphere", &sphere))
+                {
+                    if (!model.Meshes.empty() && model.Type == MeshType::Custom)
+                        model.MeshesSaved = model.Meshes;
+
+                    model.Type = MeshType::Sphere;
+                    model.Meshes = StandartMeshes::Get("Sphere");
+                }
+
+                if (ImGui::Selectable("Cylinder", &cyl))
+                {
+                    if (!model.Meshes.empty() && model.Type == MeshType::Custom)
+                        model.MeshesSaved = model.Meshes;
+                    
+                    model.Type = MeshType::Cylinder;
+                    model.Meshes = StandartMeshes::Get("Cylinder");
+                }
+
+                if (ImGui::Selectable("Custom", &custom))
+                {
+                    if (!model.MeshesSaved.empty())
+                    {                    
+                        model.Type = MeshType::Custom;
+                        model.Meshes = model.MeshesSaved;
+                    }
+                    else
+                    {
+                        model.Type = MeshType::Cube;
+                        model.Meshes = StandartMeshes::Get("Cube");
+                    }
+                }
+
+                ImGui::EndCombo();
+            }
+
             auto str = "Model path: " + (Utils::SplitStr(model.Path, '/').back());
             ImGui::Text("%s", str.c_str());
             ImGui::SameLine();
@@ -199,25 +256,39 @@ namespace Rvl
             ImGui::ColorEdit3("Specular##mat_specular", glm::value_ptr(material.Specular));
             DragFloat("Shininess##mat_shine", &material.Shininess);
 
-            for (auto& texture : material.Textures)
-            {
-                ImGui::Text("%s", texture.Filename.c_str());
-                ImGui::SameLine();
-                ImGui::Text("%s", texture.Type.c_str());
-                ImGui::SameLine();
+            ImGui::Checkbox("Use texture##mat_tex", &material.UseTexture);
 
-                auto path = OpenFileDialogButton("Select ...##modeltexture_select", "png,jpg");
-                if (!path.empty())
-                {
-                    texture =        
-                    {
-                        GLTexture::TextureFromFile(path),
-                        texture.Type, Utils::SplitStr(path, '/').back()
-                    };
-                }
-            }
+            int sz = material.Textures.size();
+            ImGui::Text("%s", sz <= 0 ? "none" : material.Textures[0].Filename.c_str());
+            ImGui::SameLine();
+            ImGui::Text("%s", "texture");
+            ImGui::SameLine();
+
+            auto path1 = OpenFileDialogButton("Select ...##mattex2", "png,jpg");
+            if (!path1.empty() && sz <= 0)
+                material.Textures.push_back({GLTexture::TextureFromFile(path1), RVL_TEXTURE_DIFFUSE, Utils::SplitStr(path1, '/').back()});
+            if (!path1.empty() && sz >= 1)
+                material.Textures[0] = {GLTexture::TextureFromFile(path1), RVL_TEXTURE_DIFFUSE, Utils::SplitStr(path1, '/').back()};
+
+            ImGui::Text("%s", sz <= 1 ? "none" : material.Textures[1].Filename.c_str());
+            ImGui::SameLine();
+            ImGui::Text("%s", "specular map");
+            ImGui::SameLine();
+
+            auto path2 = OpenFileDialogButton("Select ...##mattex3", "png,jpg");
+            if (!path2.empty() && sz <= 0)
+                material.Textures.push_back({GLTexture::TextureFromFile(path2), RVL_TEXTURE_SPECULAR, Utils::SplitStr(path2, '/').back()});
+            if (!path2.empty() && sz >= 1)
+                material.Textures[0] = {GLTexture::TextureFromFile(path2), RVL_TEXTURE_SPECULAR, Utils::SplitStr(path2, '/').back()};
         });
 
+        AddComponentMenu();
+
+        ImGui::End();
+    }
+
+    void InspectorWindow::AddComponentMenu()
+    {
         if (ImGui::Button("Add Component"))
         {
             ImGui::OpenPopup("Components");
@@ -249,15 +320,15 @@ namespace Rvl
             {
                 if (!_selected.Has<Model>())
                 {
-                    _selected.Add<Model>("/Users/Belokan/RVL Engine/RVLEditor/assets/textures/backpack.obj");
-                    _selected.Add<Material>(glm::vec3(0.5f, 0.5f, 0.5f), 32.f);
+                    auto& model = _selected.Add<Model>();
+                    model.Meshes = StandartMeshes::Get("Cube");
+                    if (!_selected.Has<Material>())
+                        _selected.Add<Material>(StandartMeshes::GetMaterial());
                 }
                 ImGui::CloseCurrentPopup();
             }
 
             ImGui::EndPopup();
         }
-
-        ImGui::End();
     }
 }

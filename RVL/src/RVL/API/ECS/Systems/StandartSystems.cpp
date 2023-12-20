@@ -10,6 +10,7 @@
 #include "General/Transform.hpp"
 
 #include <Rendering/OpenGL/GLShaderProgram.hpp>
+#include <Rendering/Renderer/ModelLoader.hpp>
 
 namespace Rvl
 {
@@ -69,11 +70,6 @@ namespace Rvl
                 continue;
 
             auto& material = entity.Get<Material>();
-
-            material.SetUniform("u_Material.diffuse",  material.Diffuse);
-            material.SetUniform("u_Material.specular", material.Specular);
-            material.SetUniform("u_Material.ambient",  material.Ambient);
-            material.SetUniform("u_Material.shininess", material.Shininess);
 
             if (material.ProcessLightSources)
             {
@@ -138,6 +134,47 @@ namespace Rvl
                 pl.Diffuse = pl.Color * pl.Intensity;
             }
 
+        }
+    }
+
+
+    void ModelLoaderSystem(const std::vector<Entity>& entities)
+    {
+        for (auto entity : entities)
+        {
+            if (!entity.Has<Model>())
+                continue;
+            
+            auto& model = entity.Get<Model>();
+            
+            if (model._load) 
+            {
+                ModelLoader loader (model.Path);
+                loader.LoadModel();
+
+                model.Meshes = loader.GetMeshes();
+                auto mat = loader.GetMaterial();
+
+                if (!entity.Has<Material>())
+                {
+                    entity.Add<Material>(
+                        mat.Shader,
+                        mat.Ambient,
+                        mat.Shininess,
+                        mat.Textures,
+                        mat.Diffuse,
+                        mat.Specular,
+                        mat.UseTexture
+                    );
+                }
+                else
+                {
+                    auto& mat = entity.Get<Material>();
+                    if (mat.Textures.empty() && mat.UseTexture)
+                        mat.Textures = mat.Textures;
+                }
+                model._load = false;
+            }
         }
     }
 }

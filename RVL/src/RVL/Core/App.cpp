@@ -6,6 +6,7 @@
 #include <Events/EventListener.hpp>
 #include <Rendering/Renderer/Renderer.hpp>
 #include <Rendering/Renderer/ShaderLibrary.hpp>
+#include <Rendering/Renderer/StandartMeshes.hpp>
 
 #include <API/Time.hpp>
 #include <API/Random.hpp>
@@ -29,6 +30,7 @@ namespace Rvl
             Renderer::Init();
             Random::Init();
             StandartShaderLib::Init();            
+            StandartMeshes::Init();            
 
             Start();
             if (_currentState) _currentState->StartScene();

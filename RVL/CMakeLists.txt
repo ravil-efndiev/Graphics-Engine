@@ -30,6 +30,8 @@ add_library(RVL STATIC
     src/RVL/Rendering/Renderer/OrthographicCamera.cpp
     src/RVL/Rendering/Renderer/PerspectiveCamera.cpp
     src/RVL/Rendering/Renderer/ShaderLibrary.cpp
+    src/RVL/Rendering/Renderer/ModelLoader.cpp
+    src/RVL/Rendering/Renderer/StandartMeshes.cpp
     src/RVL/API/Input.cpp
     src/RVL/API/Time.cpp
     src/RVL/API/Random.cpp
@@ -52,7 +54,6 @@ add_library(RVL STATIC
     src/RVL/API/ECS/3D/PointLight.cpp
     src/RVL/API/ECS/3D/Material.cpp
     src/RVL/API/ECS/Systems/StandartSystems.cpp
-    src/RVL/API/ECS/Systems/ModelLoader.cpp
 
     # dependencies
     vendor/lib/glad/glad.c

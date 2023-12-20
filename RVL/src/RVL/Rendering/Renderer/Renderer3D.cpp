@@ -46,26 +46,31 @@ namespace Rvl
         shader->Bind();
         shader->SetUniformMat4("u_Projview", _projview);
         shader->SetUniformMat4("u_Transform", transform.GetMatrix());
+        shader->SetUniformInt("u_HasTexture", (int)material.UseTexture);
+        shader->SetUniformVec3("u_Material.diffuse",  material.Diffuse);
+        shader->SetUniformVec3("u_Material.specular", material.Specular);
+        shader->SetUniformVec3("u_Material.ambient",  material.Ambient);
+        shader->SetUniformFloat("u_Material.shininess", material.Shininess);
         
         for (int i = 0; i < textures.size(); i++)
         {
             GLTexture::ActivateTexture(i);
             std::string number;
             std::string name = textures[i].Type;
-
-            if (name == "texture_diffuse")
+            
+            if (name == RVL_TEXTURE_DIFFUSE)
                 number = std::to_string(diffuseNr++);
                 
-            else if (name == "texture_specular")
+            else if (name == RVL_TEXTURE_DIFFUSE)
                 number = std::to_string(specularNr++);
 
             shader->SetUniformInt(name + number, i);
             
             GLTexture::BindTextureUnit(textures[i].Id, i);
         }
-        GLTexture::ActivateTexture(0);
 
         RenderCommand::DrawIndicies(mesh.GetVao());
+        GLTexture::BindTextureUnit(0, 0);
         shader->Unbind();
     }
 
