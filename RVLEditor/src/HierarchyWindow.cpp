@@ -3,10 +3,10 @@
 
 namespace Rvl
 {
-    HierarchyWindow::HierarchyWindow(Scene& scene)
+    HierarchyWindow::HierarchyWindow(const Ref<Scene>& scene)
         : _scene(scene)
     {
-        _selected = _scene._entities[0];
+        _selected = _scene->_entities[0];
     }
 
     Entity HierarchyWindow::GetSelected() const
@@ -18,7 +18,7 @@ namespace Rvl
     {
         ImGui::Begin("Hierarchy");
         
-        for (auto entity : _scene._entities)
+        for (auto entity : _scene->_entities)
         {
             bool entityDeleted = false;
             auto name = entity.Get<Identifier>().Name;
@@ -45,14 +45,14 @@ namespace Rvl
 
             if (entityDeleted)
             {
-                _scene.RemoveEntity(entity);
+                _scene->RemoveEntity(entity);
                 if (_selected == entity)
                     _selected = {};
             }
 
         }
 
-        if (ImGui::Button("+", {20.f, 20.f}))
+        if (ImGui::Button("+", {30.f, 30.f}))
         {
             ImGui::OpenPopup("New Entity");
         }
@@ -61,7 +61,7 @@ namespace Rvl
         {
             if (ImGui::Button("Empty object")) 
             {
-                _scene.NewEntity();
+                _scene->NewEntity();
                 ImGui::CloseCurrentPopup();
             }
 
@@ -70,7 +70,7 @@ namespace Rvl
 
             if (ImGui::Button("Sprite")) 
             {
-                _scene.NewEntity().Add<Sprite>("assets/textures/container.jpg", 1.f);
+                _scene->NewEntity().Add<Sprite>("assets/textures/container.jpg", 1.f);
                 ImGui::CloseCurrentPopup();
             }
 
@@ -79,7 +79,7 @@ namespace Rvl
 
             if (ImGui::Button("Cube")) 
             {
-                Entity model = _scene.NewEntity();
+                Entity model = _scene->NewEntity();
                 
                 model.Add<Model>().Meshes = StandartMeshes::Get("Cube");
                 model.Add<Material>(StandartMeshes::GetMaterial());
@@ -89,7 +89,7 @@ namespace Rvl
 
             if (ImGui::Button("Sphere")) 
             {
-                Entity model = _scene.NewEntity();
+                Entity model = _scene->NewEntity();
                 
                 auto& mc = model.Add<Model>();
                 mc.Meshes = StandartMeshes::Get("Sphere");
@@ -101,7 +101,7 @@ namespace Rvl
 
             if (ImGui::Button("Cylinder")) 
             {
-                Entity model = _scene.NewEntity();
+                Entity model = _scene->NewEntity();
                 
                 auto& mc = model.Add<Model>();
                 mc.Meshes = StandartMeshes::Get("Cylinder");
@@ -116,7 +116,13 @@ namespace Rvl
 
             if (ImGui::Button("Point light")) 
             {
-                _scene.NewEntity().Add<PointLight>(glm::vec3(1.f, 1.f, 1.f), 0.9f, 0.32f);
+                _scene->NewEntity().Add<PointLight>(glm::vec3(1.f, 1.f, 1.f), 0.9f, 0.32f);
+                ImGui::CloseCurrentPopup();
+            }
+
+            if (ImGui::Button("Directional light")) 
+            {
+                _scene->NewEntity().Add<DirectionalLight>(glm::vec3(1.f, 1.f, 1.f));
                 ImGui::CloseCurrentPopup();
             }
             ImGui::EndPopup();
@@ -125,4 +131,11 @@ namespace Rvl
         ImGui::End();
 
     }
+
+    void HierarchyWindow::SetScene(const Ref<Scene>& scene)
+    {
+        _scene = scene;
+        _selected = _scene->_entities[0];
+    }
+
 }

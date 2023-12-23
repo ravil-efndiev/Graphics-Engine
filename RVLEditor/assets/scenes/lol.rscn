@@ -1,0 +1,70 @@
+Scene: Name
+Entities:
+  - ID: 0
+    Identifier:
+      Name: Directional light
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, -0.200000003, -0.100000001]
+      Scale: [1, 1, 1]
+    DirectionalLight:
+      Color: [1, 0, 0]
+      Ambient: [0.200000003, 0.200000003, 0.200000003]
+      Diffuse: [1.39999998, 0, 0]
+      Specular: [0.5, 0.5, 0.5]
+      Intensity: 1.39999998
+  - ID: 1
+    Identifier:
+      Name: sprite
+    Transform:
+      Position: [-2.20000005, 0, 2.79999995]
+      Rotation: [0, -37.0999985, 0]
+      Scale: [1, 1, 1]
+    Sprite:
+      Color: [0.911504507, 1, 0, 1]
+      Texture: assets/textures/container.jpg
+      Scale: 1
+      UseColorAsTint: true
+      UseFixedScale: true
+      SubTexture: [-6.19999981, 1.10000002, 451.799988, 250]
+    PointLight:
+      Color: [0.0240565185, 0.911504447, 0.0161328297]
+      Ambient: [0.200000003, 0.200000003, 0.200000003]
+      Diffuse: [0.121004291, 4.58486748, 0.0811481401]
+      Specular: [0.5, 0.5, 0.5]
+      Intensity: 5.03000021
+      Linear: 1.39999998
+      Quadratic: 0.0900000036
+  - ID: 2
+    Identifier:
+      Name: backpack
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Material:
+      Ambient: [1, 1, 1]
+      Diffuse: [0.800000012, 0.800000012, 0.800000012]
+      Specular: [0.5, 0.5, 0.5]
+      Shininess: 225
+      UseTextures: true
+      ProcessLightSources: true
+      TexturePath: assets/textures/diffuse.jpg
+      SpecularMapPath: assets/textures/specular.jpg
+    Model:
+      Path: /Users/Belokan/RVL Engine/RVLEditor/assets/textures/backpack.obj
+      MeshType: Custom
+  - ID: 3
+    Identifier:
+      Name: Entity5
+    Transform:
+      Position: [3.70000005, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1.29999995, 1, 1]
+    Sprite:
+      Color: [1, 1, 1, 1]
+      Texture: /Users/Belokan/RVL Engine/RVLEditor/assets/textures/a.jpg
+      Scale: 1.20000005
+      UseColorAsTint: false
+      UseFixedScale: true
+      SubTexture: [0, 0, 2376, 1776]

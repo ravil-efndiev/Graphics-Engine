@@ -40,6 +40,7 @@ namespace Rvl
 
         friend class Entity;
         friend class HierarchyWindow;
+        friend class SceneSerializer;
 
     private:
         entt::registry _registry;

@@ -84,7 +84,7 @@ namespace Rvl
     {
         if (_currentState)
         {
-            _currentState->_currentScene.OnEvent(event);
+            _currentState->_currentScene->OnEvent(event);
         }
     }
 

@@ -11,18 +11,18 @@
 namespace Rvl
 {
 
-    void SceneRenderer::Render(Scene& scene, const Ref<UserCamera>& camera)
+    void SceneRenderer::Render(const Ref<Scene>& scene, const Ref<UserCamera>& camera)
     {
-        for (Entity entity : scene.GetEntities())
+        for (Entity entity : scene->GetEntities())
         {
             if (entity.Has<Model>())
             {
-                scene.DrawModel(entity);   
+                scene->DrawModel(entity);   
             }
             
             if (entity.Has<Sprite>())
             {
-                scene.DrawSprite(entity);   
+                scene->DrawSprite(entity);   
             }
         }
 

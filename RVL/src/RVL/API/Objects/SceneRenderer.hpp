@@ -8,7 +8,7 @@ namespace Rvl
     class SceneRenderer
     {
     public:
-        static void Render(Scene& scene, const Ref<UserCamera>& camera);
+        static void Render(const Ref<Scene>& scene, const Ref<UserCamera>& camera);
 
     private:
 

@@ -178,7 +178,7 @@ namespace Rvl
                 MaterialTexture texture = 
                 {
                     GLTexture::TextureFromFile(_directory + '/' + filename.C_Str()),
-                    typeName, filename.C_Str()
+                    typeName, filename.C_Str(), _directory + '/' + filename.C_Str()
                 };
 
                 textures.push_back(texture);

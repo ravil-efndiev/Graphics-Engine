@@ -38,7 +38,7 @@ namespace Rvl
         Ref<UserCamera> _camera;
         Ref<GLFrameBuffer> _fbo;
 
-        Scene _currentScene;
+        Ref<Scene> _currentScene;
 
         void CreateFrameBuffer();
         void CreateFrameBuffer(const glm::vec2& size);

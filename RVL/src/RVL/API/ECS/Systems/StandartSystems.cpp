@@ -169,9 +169,9 @@ namespace Rvl
                 }
                 else
                 {
-                    auto& mat = entity.Get<Material>();
-                    if (mat.Textures.empty() && mat.UseTexture)
-                        mat.Textures = mat.Textures;
+                    auto& mat2 = entity.Get<Material>();
+                    if (mat2.Textures.empty() && mat2.UseTexture)
+                        mat2.Textures = mat.Textures;
                 }
                 model._load = false;
             }

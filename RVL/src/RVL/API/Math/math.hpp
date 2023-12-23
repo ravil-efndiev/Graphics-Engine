@@ -1,14 +1,15 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <Core/Core.hpp>
 
 namespace Rvl
 {
     enum class Axis
     {
-        None       = 1 << 0,
-        Vertical   = 1 << 1,
-        Horizontal = 1 << 2,
+        None       = BIT(0),
+        Vertical   = BIT(1),
+        Horizontal = BIT(2),
     };
 
     inline Axis operator|(Axis a, Axis b)

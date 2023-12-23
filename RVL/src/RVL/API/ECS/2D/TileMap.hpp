@@ -55,12 +55,13 @@ namespace Rvl
         std::string GetNameByCoords(const glm::ivec2& pos);
 
         const std::vector<Tile>& GetTiles() const;
+        Ref<TileSet> GetTileSet() const;
 
+        float _zIndex;
+        int _scale;
     private:
         Ref<TileSet> _tileSet;
         std::vector<Tile> _mapTiles;
-        float _zIndex;
-        int _scale;
 
         glm::vec3 _anyTileSize { 0.f, 0.f, 0.f };
 

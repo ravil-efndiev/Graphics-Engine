@@ -1,6 +1,11 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.12)
 
 project(RVL)
+
+file(GLOB yamlFiles
+    "vendor/yaml/src/*.h"
+    "vendor/yaml/src/*.cpp"
+)
 
 add_library(RVL STATIC
     src/RVL/Core/App.cpp
@@ -40,6 +45,7 @@ add_library(RVL STATIC
     src/RVL/API/Objects/UserOrthographicCamera.cpp
     src/RVL/API/Objects/UserPerspectiveCamera.cpp
     src/RVL/API/Objects/SceneRenderer.cpp
+    src/RVL/API/Objects/SceneSerializer.cpp
     src/RVL/API/Objects/TileSet.cpp
     src/RVL/API/ECS/Entity.cpp
     src/RVL/API/ECS/Scene.cpp
@@ -66,6 +72,7 @@ add_library(RVL STATIC
     vendor/imgui/imgui_tables.cpp
     vendor/imgui/misc/cpp/imgui_stdlib.cpp
     vendor/lib/stb_image.cpp
+    ${yamlFiles}
 )
 
 set(CMAKE_BUILD_TYPE Release)
@@ -81,6 +88,7 @@ target_include_directories(RVL PUBLIC src/RVL/API/)
 target_include_directories(RVL PUBLIC vendor/)
 target_include_directories(RVL PUBLIC vendor/assimp/include/)
 target_include_directories(RVL PUBLIC vendor/imgui)
+target_include_directories(RVL PUBLIC vendor/yaml/include/)
 target_include_directories(RVL PRIVATE vendor/include)
 target_include_directories(RVL PRIVATE vendor/include/glm)
 

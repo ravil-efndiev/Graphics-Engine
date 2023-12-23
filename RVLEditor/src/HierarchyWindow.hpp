@@ -6,14 +6,15 @@ namespace Rvl
     class HierarchyWindow
     {
     public:
-        HierarchyWindow(Scene& scene);
+        HierarchyWindow(const Ref<Scene>& scene);
 
         Entity GetSelected() const;
 
         void ImGuiRender();
+        void SetScene(const Ref<Scene>& scene);
 
     private:
-        Scene& _scene;
+        Ref<Scene> _scene;
         Entity _selected;
     };
 }

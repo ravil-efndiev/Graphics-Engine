@@ -139,4 +139,10 @@ namespace Rvl
     {
         return _mapTiles;
     }
+
+    Ref<TileSet> TileMap::GetTileSet() const
+    {
+        return _tileSet;
+    }
+
 }

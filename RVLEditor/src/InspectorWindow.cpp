@@ -265,10 +265,10 @@ namespace Rvl
             ImGui::SameLine();
 
             auto path1 = OpenFileDialogButton("Select ...##mattex2", "png,jpg");
-            if (!path1.empty() && sz <= 0)
-                material.Textures.push_back({GLTexture::TextureFromFile(path1), RVL_TEXTURE_DIFFUSE, Utils::SplitStr(path1, '/').back()});
-            if (!path1.empty() && sz >= 1)
-                material.Textures[0] = {GLTexture::TextureFromFile(path1), RVL_TEXTURE_DIFFUSE, Utils::SplitStr(path1, '/').back()};
+            if (!path1.empty() && sz <= 1)
+                material.Textures.push_back({GLTexture::TextureFromFile(path1), RVL_TEXTURE_DIFFUSE, Utils::SplitStr(path1, '/').back(), path1});
+            if (!path1.empty() && sz > 1)
+                material.Textures[1] = {GLTexture::TextureFromFile(path1), RVL_TEXTURE_DIFFUSE, Utils::SplitStr(path1, '/').back(), path1};
 
             ImGui::Text("%s", sz <= 1 ? "none" : material.Textures[1].Filename.c_str());
             ImGui::SameLine();
@@ -276,10 +276,10 @@ namespace Rvl
             ImGui::SameLine();
 
             auto path2 = OpenFileDialogButton("Select ...##mattex3", "png,jpg");
-            if (!path2.empty() && sz <= 0)
-                material.Textures.push_back({GLTexture::TextureFromFile(path2), RVL_TEXTURE_SPECULAR, Utils::SplitStr(path2, '/').back()});
-            if (!path2.empty() && sz >= 1)
-                material.Textures[0] = {GLTexture::TextureFromFile(path2), RVL_TEXTURE_SPECULAR, Utils::SplitStr(path2, '/').back()};
+            if (!path2.empty() && sz <= 1)
+                material.Textures.push_back({GLTexture::TextureFromFile(path2), RVL_TEXTURE_SPECULAR, Utils::SplitStr(path2, '/').back(), path2});
+            if (!path2.empty() && sz > 1)
+                material.Textures[1] = {GLTexture::TextureFromFile(path2), RVL_TEXTURE_SPECULAR, Utils::SplitStr(path2, '/').back(), path2};
         });
 
         AddComponentMenu();

@@ -11,3 +11,6 @@
 [submodule "RVL/vendor/assimp"]
 	path = RVL/vendor/assimp
 	url = https://github.com/assimp/assimp.git
+[submodule "RVL/vendor/yaml"]
+	path = RVL/vendor/yaml
+	url = https://github.com/jbeder/yaml-cpp.git

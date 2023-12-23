@@ -12,18 +12,19 @@ namespace Rvl
     State::State(RenderMode mode) 
     {
         _mode = mode;
+        _currentScene = NewRef<Scene>();
     }
     
     State::~State() {}
 
     void State::StartScene()
     {
-        _currentScene.StartBehaviours();
+        _currentScene->StartBehaviours();
     }
 
     void State::UpdateScene()
     {
-        _currentScene.UpdateBehaviours();
+        _currentScene->UpdateBehaviours();
     }
 
     void State::CreateFrameBuffer()

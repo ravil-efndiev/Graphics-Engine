@@ -13,6 +13,7 @@ namespace Rvl
         GLuint Id;
         std::string Type;
         std::string Filename;
+        std::string Path;
     };
 
     class GLShaderProgram;

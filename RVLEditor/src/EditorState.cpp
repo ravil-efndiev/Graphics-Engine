@@ -2,6 +2,7 @@
 
 #include <Rendering/Renderer/Renderer.hpp>
 #include <Rendering/OpenGL/GLFrameBuffer.hpp>
+#include <nfd.h>
 
 struct EditorUIData 
 {
@@ -20,16 +21,11 @@ void EditorState::Start()
 
     _camera = UserPerspectiveCamera::New({0.f, 0.f, 0.f}, 45.f);
 
-    _directionalLight = _currentScene.NewEntity("Directional light");
+    _directionalLight = _currentScene->NewEntity("Directional light");
     _directionalLight.Add<DirectionalLight>(glm::vec3(0.9f, 0.9f, 0.9f));
-
-    _model = _currentScene.NewEntity("Model");
-    _model.Add<Model>("./assets/textures/backpack.obj");
 
     _hierarchy = NewRef<HierarchyWindow>(_currentScene);
     _inspector = NewRef<InspectorWindow>();
-
-    tex = NewRef<GLTexture>("./assets/textures/container.jpg");
 }
 
 void EditorState::Update()
@@ -82,7 +78,7 @@ void EditorState::RenderImGui()
         }
 
         ImGui::Image(
-            (ImTextureID)_fbo->GetColorAttachment(), 
+            reinterpret_cast<ImTextureID>(_fbo->GetColorAttachment()), 
             ImGui::GetContentRegionAvail(), 
             ImVec2(0, 1), 
             ImVec2(1, 0)
@@ -142,7 +138,57 @@ void EditorState::DockspaceAndMenu()
     {
         if (ImGui::BeginMenu("File"))   
         {
-            ImGui::MenuItem("File");
+            if (ImGui::MenuItem("Save"))
+            {
+                SceneSerializer sz (_currentScene);
+
+                if (!_scenePath.empty())
+                    sz.Serialize(_scenePath);
+                else
+                {
+                    nfdchar_t* openPath = nullptr;
+                    nfdresult_t result = NFD_SaveDialog("rscn", "assets/", &openPath);
+
+                    if (result == NFD_OKAY)
+                    {
+                        sz.Serialize(openPath);
+                        _scenePath = openPath;
+                        free(openPath);
+                    }
+                }
+            }
+
+            if (ImGui::MenuItem("Save As"))
+            {
+                nfdchar_t* openPath = nullptr;
+                nfdresult_t result = NFD_SaveDialog("rscn", "assets/", &openPath);
+
+                if (result == NFD_OKAY)
+                {
+                    SceneSerializer sz (_currentScene);
+                    sz.Serialize(openPath);
+                    _scenePath = openPath;
+                    free(openPath);
+                }
+            }
+
+            if (ImGui::MenuItem("Open"))
+            {
+                nfdchar_t* openPath = nullptr;
+                nfdresult_t result = NFD_OpenDialog("rscn", "assets/", &openPath);
+
+                if (result == NFD_OKAY)
+                {
+                    _currentScene = NewRef<Scene>();
+                    SceneSerializer sz (_currentScene);
+                    sz.Deserialize(openPath);
+                    _hierarchy->SetScene(_currentScene);
+                    _scenePath = openPath;
+                    free(openPath);
+                }
+
+            }
+
             ImGui::EndMenu();
         }
         ImGui::EndMenuBar();

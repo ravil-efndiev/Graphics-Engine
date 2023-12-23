@@ -18,7 +18,7 @@ namespace Rvl
         ImGui_ImplGlfw_InitForOpenGL(glfwWindow, true);
         ImGui_ImplOpenGL3_Init("#version 330");
 
-        io.FontDefault = io.Fonts->AddFontFromFileTTF("./assets/fonts/FixelText-Medium.ttf", 15.f);
+        io.FontDefault = io.Fonts->AddFontFromFileTTF("./standart_assets/fonts/FixelText-Medium.ttf", 15.f);
 
         ImGuiStyle& style = ImGui::GetStyle();
         style.Colors[ImGuiCol_Text]                  = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
@@ -71,7 +71,6 @@ namespace Rvl
         style.Colors[ImGuiCol_NavWindowingHighlight] = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
         style.Colors[ImGuiCol_NavWindowingDimBg]     = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
         style.Colors[ImGuiCol_ModalWindowDimBg]      = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
-        style.GrabRounding                           = style.FrameRounding = 2.3f;
     }
     
     void ImGuiController::Shutdown()
