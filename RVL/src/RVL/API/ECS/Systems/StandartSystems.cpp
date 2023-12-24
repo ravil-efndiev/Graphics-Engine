@@ -3,6 +3,7 @@
 #include "2D/Sprite.hpp"
 #include "2D/Movement2D.hpp"
 #include "2D/Animator2D.hpp"
+#include "2D/TileMap.hpp"
 #include "3D/Material.hpp"
 #include "3D/DirectionalLight.hpp"
 #include "3D/Model.hpp"
@@ -55,10 +56,29 @@ namespace Rvl
             if (!entity.Has<Animator2D>())
                 continue;
 
-            RVL_ASSERT(entity.Has<Sprite>(), "entity with animation component doesn't have sprite component");
+            RVL_ASSERT(entity.Has<Sprite>(), "entity with animation component doesn't have a sprite component");
 
             glm::vec4 subtextureData = entity.Get<Animator2D>().GetSubTextureData();
             entity.Get<Sprite>().SetSubTexture(subtextureData.x, subtextureData.y, subtextureData.z, subtextureData.w);
+        }
+    }
+
+    void TileMapSystem(const std::vector<Entity>& entities)
+    {
+        for (auto entity : entities)
+        {
+            if (!entity.Has<TileMap>())
+                continue;
+
+            RVL_ASSERT(entity.Has<Transform>(), "entity with tilemap component doesn't have a transform component");
+
+            auto& map = entity.Get<TileMap>();
+            auto& tf = entity.Get<Transform>();
+            
+            for (Tile& tile : map.MapTiles)
+            {
+                tile.GetWorldPosition() = tile.GetRelativePosition() + tf.Position;
+            }
         }
     }
 

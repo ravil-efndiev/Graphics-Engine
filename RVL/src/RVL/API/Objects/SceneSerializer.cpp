@@ -255,10 +255,10 @@ namespace Rvl
 
             emitter << YAML::Key << "TileMap" << YAML::Value;
             emitter << YAML::BeginMap;
-            emitter << YAML::Key << "TileSetPath" << YAML::Value <<  map.GetTileSet()->GetPath();
-            emitter << YAML::Key << "TileMapPath" << YAML::Value << map.GetPath();
-            emitter << YAML::Key << "Scale" << YAML::Value << map._scale;
-            emitter << YAML::Key << "ZIndex" << YAML::Value << map._zIndex;
+            emitter << YAML::Key << "TileSetPath" << YAML::Value <<  map.Tileset->GetPath();
+            emitter << YAML::Key << "TileMapPath" << YAML::Value << map.Path;
+            emitter << YAML::Key << "Scale" << YAML::Value << map.Scale;
+            emitter << YAML::Key << "ZIndex" << YAML::Value << map.ZIndex;
             emitter << YAML::EndMap;
         }
 

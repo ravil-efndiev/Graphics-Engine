@@ -10,6 +10,8 @@ namespace Rvl
 
     void Animation2DSystem(const std::vector<Entity>& entities);
 
+    void TileMapSystem(const std::vector<Entity>& entities);
+
     void MaterialSystem(const std::vector<Entity>& entities);
 
     void LightSystem(const std::vector<Entity>& entities);

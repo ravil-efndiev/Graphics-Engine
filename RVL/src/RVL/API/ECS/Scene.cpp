@@ -20,6 +20,7 @@ namespace Rvl
     {
         AddSystem(Movement2DSystem);
         AddSystem(Animation2DSystem);
+        AddSystem(TileMapSystem);
         AddSystem(MaterialSystem);
         AddSystem(LightSystem);
         AddSystem(ModelLoaderSystem);
@@ -104,9 +105,9 @@ namespace Rvl
 
         auto tilemap = entity.Get<TileMap>();
         
-        for (auto& tile : tilemap.GetTiles())
+        for (auto& tile : tilemap.MapTiles)
         {
-            Renderer::DrawRect(tile.GetTransform(), tile.GetSubtexture());
+            Renderer::DrawRect({tile.GetWorldPosition(), {0.f, 0.f, 0.f}, tile.GetScale()}, tile.GetSubtexture());
         }
     }
 

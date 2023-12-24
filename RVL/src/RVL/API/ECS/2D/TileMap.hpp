@@ -1,6 +1,6 @@
 #pragma once
 
-#include <API/Objects/TileSet.hpp>
+#include "API/Objects/TileSet.hpp"
 #include "API/ECS/General/Transform.hpp"
 #include <Rendering/Renderer/SubTexture.hpp>
 
@@ -13,28 +13,31 @@ namespace Rvl
             : _subtexture(subtexture), _mapPosition(pos), _name(name) 
         {
             float ratio = _subtexture->GetWidth() / _subtexture->GetHeight();
-            _transform.Scale = glm::vec3(ratio * scale, scale, 0.f);
+            _scale = glm::vec3(ratio * scale, scale, 0.f);
 
-            _transform.Position = glm::vec3(glm::vec2(_mapPosition) * glm::vec2(_transform.Scale), zIndex);
+            _relativePos = glm::vec3(glm::vec2(_mapPosition) * glm::vec2(_scale), zIndex);
         }
 
         glm::ivec2 GetMapPosition() const { return _mapPosition; }
-        glm::vec3 GetRealPosition() const { return _transform.Position; }
+        glm::vec3 GetRelativePosition() const { return _relativePos; }
+        glm::vec3& GetWorldPosition() { return _worldPos; }
+        glm::vec3 GetScale() const { return _scale; }
 
         Ref<SubTexture> GetSubtexture() const { return _subtexture; }
-        Transform GetTransform() const { return _transform; }
         std::string GetName() const { return _name; }
 
     private:
         Ref<SubTexture> _subtexture;
-        glm::ivec2 _mapPosition;
         std::string _name;
-        Transform _transform;
+
+        glm::ivec2 _mapPosition;
+        glm::vec3 _relativePos;
+        glm::vec3 _worldPos;
+        glm::vec3 _scale;
     };
 
-    class TileMap
+    struct TileMap
     {
-    public:
         TileMap(const TileMap&) = default;
         TileMap(const Ref<TileSet>& tileSet, const std::string& TileMapFilePath, int scale, float zIndex);
         TileMap(const Ref<TileSet>& tileSet, int scale, float zIndex);
@@ -48,24 +51,16 @@ namespace Rvl
 
         std::string GetString() const;
         void SaveToFile(const char* path);
-
-        std::string GetPath() const;
-        glm::vec2 GetTileSize() const;
-
         std::string GetNameByCoords(const glm::ivec2& pos);
 
-        const std::vector<Tile>& GetTiles() const;
-        Ref<TileSet> GetTileSet() const;
+        float ZIndex;
+        int Scale;
 
-        float _zIndex;
-        int _scale;
-    private:
-        Ref<TileSet> _tileSet;
-        std::vector<Tile> _mapTiles;
+        Ref<TileSet> Tileset;
+        std::vector<Tile> MapTiles;
 
-        glm::vec3 _anyTileSize { 0.f, 0.f, 0.f };
-
-        std::string _path;
+        std::string Path;
+        glm::vec3 TileSize { 0.f, 0.f, 0.f };
     };
 }
 
