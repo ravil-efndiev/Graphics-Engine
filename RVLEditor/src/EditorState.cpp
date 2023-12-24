@@ -3,6 +3,7 @@
 #include <Rendering/Renderer/Renderer.hpp>
 #include <Rendering/OpenGL/GLFrameBuffer.hpp>
 #include <nfd.h>
+#include <Core/Utils/Files.hpp>
 
 struct EditorUIData 
 {
@@ -23,6 +24,10 @@ void EditorState::Start()
 
     _directionalLight = _currentScene->NewEntity("Directional light");
     _directionalLight.Add<DirectionalLight>(glm::vec3(0.9f, 0.9f, 0.9f));
+
+    _tlm = _currentScene->NewEntity("tilemap");
+    auto tls = NewRef<TileSet>("assets/maps/test.rtls");
+    _tlmc = &_tlm.Add<TileMap>(tls, "assets/maps/test.rtlm", 1.f, 0.f);
 
     _hierarchy = NewRef<HierarchyWindow>(_currentScene);
     _inspector = NewRef<InspectorWindow>();

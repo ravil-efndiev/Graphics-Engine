@@ -14,27 +14,6 @@
 
 namespace Rvl
 {
-    YAML::Emitter& operator<< (YAML::Emitter& emitter, const glm::vec3& vec)
-    {
-        emitter << YAML::Flow;
-        emitter << YAML::BeginSeq << vec.x << vec.y << vec.z << YAML::EndSeq;
-        return emitter;
-    }
-
-    YAML::Emitter& operator<< (YAML::Emitter& emitter, const glm::vec4& vec)
-    {
-        emitter << YAML::Flow;
-        emitter << YAML::BeginSeq << vec.x << vec.y << vec.z << vec.w << YAML::EndSeq;
-        return emitter;
-    }
-
-    YAML::Emitter& operator<< (YAML::Emitter& emitter, const glm::vec2& vec)
-    {
-        emitter << YAML::Flow;
-        emitter << YAML::BeginSeq << vec.x << vec.y << YAML::EndSeq;
-        return emitter;
-    }
-
     SceneSerializer::SceneSerializer(const Ref<Scene>& scene)
     {
         _scene = scene;

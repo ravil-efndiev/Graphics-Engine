@@ -1,4 +1,6 @@
-assets/textures/map.png
-bush1 1 11 128 128
-bush2 6 11 128 128
-fence1 6 0 128 128
+Texture: assets/textures/map.png
+Tiles:
+  fence1: [6, 0, 128, 128]
+  bush2: [6, 11, 128, 128]
+  rofl: [3, 3, 128, 128]
+  bush1: [1, 11, 128, 128]

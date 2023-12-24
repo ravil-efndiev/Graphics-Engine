@@ -2,6 +2,7 @@
 #include <Core/App.hpp>
 #include <API/ECS/Entity.hpp>
 #include <API/ECS/2D/Sprite.hpp>
+#include <API/ECS/2D/TileMap.hpp>
 #include <API/ECS/3D/Model.hpp>
 #include <Rendering/OpenGL/GLTexture.hpp>
 #include <Rendering/Renderer/Renderer.hpp>
@@ -23,6 +24,11 @@ namespace Rvl
             if (entity.Has<Sprite>())
             {
                 scene->DrawSprite(entity);   
+            }
+
+            if (entity.Has<TileMap>())
+            {
+                scene->DrawTileMap(entity);   
             }
         }
 

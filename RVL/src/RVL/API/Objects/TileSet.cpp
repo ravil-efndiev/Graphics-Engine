@@ -3,6 +3,8 @@
 #include <Core/Utils/Files.hpp>
 #include <Rendering/OpenGL/GLTexture.hpp>
 
+#include <yaml-cpp/yaml.h>
+
 namespace Rvl
 {
     TileSet::TileSet(const Ref<GLTexture>& mainTexture)
@@ -14,8 +16,32 @@ namespace Rvl
 
     TileSet::TileSet(const std::string& path)
     {
-        std::string tlsText = Utils::GetTextFromFile(path);
         _path = path;
+
+        std::ifstream stream (_path);
+        std::stringstream strStream;
+        strStream << stream.rdbuf();
+
+        YAML::Node data = YAML::Load(strStream.str());       
+
+        _mapTexture = NewRef<GLTexture>(data["Texture"].as<std::string>());
+
+        if (data["Tiles"])
+        {
+            auto tiles = data["Tiles"];
+            
+            for (auto ytile : tiles)
+            {
+                _tiles.emplace(ytile.first.as<std::string>(),
+                    SubTexture::New(_mapTexture,
+                        ytile.second[0].as<float>(), 
+                        ytile.second[1].as<float>(), 
+                        ytile.second[2].as<float>(), 
+                        ytile.second[3].as<float>()
+                ));
+            }
+        }
+        /*std::string tlsText = Utils::GetTextFromFile(path);
 
         auto tlsLines = Utils::SplitStr(tlsText, '\n');
 
@@ -41,7 +67,7 @@ namespace Rvl
             {
                 throw Error(std::string("invalid data in tile-set file, more info: \n").append(err.what()), RVL_RUNTIME_ERROR);
             }
-        }
+        }*/
     }
 
     TileSet::~TileSet() {}
@@ -70,22 +96,26 @@ namespace Rvl
 
     std::string TileSet::GetString() const
     {
-        std::string text = _mapTexture->GetPath().append("\n");
+        std::string text = "";
 
-        for (auto& tile : _tiles)
+        YAML::Emitter emitter;
+        emitter << YAML::BeginMap;
+        emitter << YAML::Key << "Texture" << YAML::Value << _mapTexture->GetPath();
+        emitter << YAML::Key << "Tiles" << YAML::Value << YAML::BeginMap;
+
+        for (const auto& tile : _tiles)
         {
-            text = text.append(tile.first)
-                .append(" ")
-                .append(std::to_string((int)tile.second->GetX()))
-                .append(" ")
-                .append(std::to_string((int)tile.second->GetY()))
-                .append(" ")
-                .append(std::to_string((int)tile.second->GetWidth()))
-                .append(" ")
-                .append(std::to_string((int)tile.second->GetHeight()))
-                .append("\n");
-        }
+            emitter << YAML::Key << tile.first << YAML::Value << glm::vec4(
+                (int)tile.second->GetX(),
+                (int)tile.second->GetY(),
+                (int)tile.second->GetWidth(),
+                (int)tile.second->GetHeight()
+            );
+        }   
 
+        emitter << YAML::EndMap << YAML::EndMap;
+
+        text = emitter.c_str();
         return text;
     }
 

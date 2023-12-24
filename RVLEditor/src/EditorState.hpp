@@ -18,7 +18,8 @@ private:
     void RenderImGui();
     void DockspaceAndMenu();
 
-    Entity _directionalLight;
+    Entity _directionalLight, _tlm;
+    TileMap* _tlmc;
 
     glm::vec2 _camRotation {0.f};
 

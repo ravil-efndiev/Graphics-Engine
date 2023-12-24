@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include <imgui/imgui.h>
+#include <yaml-cpp/yaml.h>
 
 namespace Rvl
 {
@@ -22,5 +23,10 @@ namespace Rvl
     
     extern ImVec2 GlmToImVec2(const glm::vec2& vec);
     extern glm::vec2 ImToGlmVec2(const ImVec2& vec);
+
+    YAML::Emitter& operator<< (YAML::Emitter&, const glm::vec3&);
+    YAML::Emitter& operator<< (YAML::Emitter&, const glm::vec4&);
+    YAML::Emitter& operator<< (YAML::Emitter&, const glm::vec2&);
+    YAML::Emitter& operator<< (YAML::Emitter&, const glm::ivec2&);
 }
 
