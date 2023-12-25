@@ -10,7 +10,7 @@ Editor::~Editor() {}
 
 void Editor::Start()
 {
-    SetClearColor({0.10f, 0.10f, 0.12f});
+    SetClearColor({0.22f, 0.22f, 0.27f});
     _currentState = NewPtr<EditorState>();
     _currentState->Start();
 }

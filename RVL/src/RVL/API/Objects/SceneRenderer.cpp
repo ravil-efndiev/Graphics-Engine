@@ -31,20 +31,14 @@ namespace Rvl
     {
         RVL_ASSERT((entity.Has<Sprite>() && entity.Has<Transform>()), "entity passed into DrawSprite function doesn't have Sprite Component");
 
-        auto spriteCompoent = entity.Get<Sprite>();
+        auto sprite = entity.Get<Sprite>();
         auto transformCompoent = entity.Get<Transform>();
         
-        if (spriteCompoent.Drawtype == Sprite::DrawType::Color)
-            Renderer::DrawRect((Transform)transformCompoent, spriteCompoent.Color);
+        if (!sprite.UseTexture)
+            Renderer::DrawRect((Transform)transformCompoent, sprite.Color);
 
-        else if (spriteCompoent.Drawtype == Sprite::DrawType::Texture)
-        {
-            if (spriteCompoent.UseColorAsTint)
-               Renderer::DrawRect((Transform)transformCompoent, spriteCompoent.Subtexture, spriteCompoent.Color);
-
-            else
-               Renderer::DrawRect((Transform)transformCompoent, spriteCompoent.Subtexture);
-        }
+        else if (sprite.UseTexture && sprite.Texture)
+            Renderer::DrawRect((Transform)transformCompoent, sprite.Subtexture, sprite.Color);
     }
     
     void SceneRenderer::DrawTileMap(Entity entity)

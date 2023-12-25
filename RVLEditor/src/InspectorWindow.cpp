@@ -93,59 +93,28 @@ namespace Rvl
                 UIData.SubtexturePos = {sprite.Subtexture->GetX(), sprite.Subtexture->GetY()};
             }
 
-            if (ImGui::BeginCombo("Draw Type", sprite.Drawtype == Sprite::DrawType::Color ? "Color" : "Texture"))
-            {
-                bool colorSelected = false, texSelected = false;
+            auto str = sprite.Texture ? "Texture: " + (Utils::SplitStr(sprite.Texture->GetPath(), '/').back())
+                : "Texture: none";
+            ImGui::Text("%s", str.c_str());
+            ImGui::SameLine();
 
-                if (ImGui::Selectable("Texture", &texSelected))
-                    sprite.Drawtype = Sprite::DrawType::Texture;
+            auto path = OpenFileDialogButton("Select ...##texture_select", "png,jpg");
+            if (!path.empty()) sprite.LoadTexture(path);
 
-                if (ImGui::Selectable("Color", &colorSelected))
-                {
-                    sprite.Drawtype = Sprite::DrawType::Color;
-                    sprite.UseFixedScale = false;
-                }
+            ImGui::Checkbox("Use Texture", &sprite.UseTexture);
 
-                ImGui::EndCombo();
-            }
-
-            if (sprite.Drawtype == Sprite::DrawType::Texture)
-            {
-                auto str = sprite.Texture ? "Texture: " + (Utils::SplitStr(sprite.Texture->GetPath(), '/').back())
-                    : "Texture: none";
-                ImGui::Text("%s", str.c_str());
-                ImGui::SameLine();
-
-                auto path = OpenFileDialogButton("Select ...##texture_select", "png,jpg");
-
-                if (!path.empty())
-                    sprite.LoadTexture(path);
-            }
-
-            ImGui::Dummy({0.f, 5.f});
-
-            if (sprite.Drawtype == Sprite::DrawType::Texture && sprite.Texture)
+            if (sprite.UseTexture && sprite.Texture)
                 ImGui::Checkbox("Use Fixed Scale", &sprite.UseFixedScale);
 
-            if (sprite.Drawtype == Sprite::DrawType::Color)
+            if (!sprite.UseTexture)
                 sprite.UseFixedScale = false;
 
             if (sprite.UseFixedScale)
-            {
-                DragFloat("Fixed Scale", &sprite.Scale);
-                sprite.ResetScale();
-            }
-
-            ImGui::Dummy({0.f, 10.f});
+                DragFloat("Fixed Scale", &sprite.FixedScale);
 
             ImGui::ColorEdit4("Color##sprite_color", glm::value_ptr(sprite.Color));
 
-            if (sprite.Drawtype == Sprite::DrawType::Texture)
-                ImGui::Checkbox("Use Color as Tint", &sprite.UseColorAsTint);
-
-            ImGui::Dummy({0.f, 10.f});
-            
-            if (sprite.Drawtype == Sprite::DrawType::Texture && sprite.Texture)
+            if (sprite.UseTexture && sprite.Texture)
             {
                 ImGui::Checkbox("Use custom subtexture", &UIData.UseSubTexture);
                 if (UIData.UseSubTexture)

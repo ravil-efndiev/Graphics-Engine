@@ -110,8 +110,8 @@ namespace Rvl
             emitter << YAML::BeginMap;
             emitter << YAML::Key << "Color" << YAML::Value << sprite.Color;
             emitter << YAML::Key << "Texture" << YAML::Value << sprite.Texture->GetPath();
-            emitter << YAML::Key << "Scale" << YAML::Value << sprite.Scale;
-            emitter << YAML::Key << "UseColorAsTint" << YAML::Value << sprite.UseColorAsTint;
+            emitter << YAML::Key << "Scale" << YAML::Value << sprite.FixedScale;
+            emitter << YAML::Key << "UseTexture" << YAML::Value << sprite.UseTexture;
             emitter << YAML::Key << "UseFixedScale" << YAML::Value << sprite.UseFixedScale;
             emitter << YAML::Key << "SubTexture" << YAML::Value << glm::vec4(
                 sprite.Subtexture->GetX(),
@@ -243,15 +243,20 @@ namespace Rvl
 
             auto texture = sprite["Texture"].as<std::string>();
             float scale = sprite["Scale"].as<float>();
-            bool useColor = sprite["UseColorAsTint"].as<bool>();
             bool useFScale = sprite["UseFixedScale"].as<bool>();
+            bool useTex = sprite["UseTexture"].as<bool>();
             auto subTexture = sprite["SubTexture"];
             
-            auto& sc = loadEntity.Add<Sprite>(texture, scale);
-            sc.Color = vecCol;
-            sc.UseColorAsTint = useColor;
-            sc.UseFixedScale = useFScale;
-            sc.SetSubTexture(subTexture[0].as<float>(), subTexture[1].as<float>(), subTexture[2].as<float>(), subTexture[3].as<float>());
+            Sprite* sc;
+            if (!texture.empty())
+                sc = &loadEntity.Add<Sprite>(texture, scale);
+            else
+                sc = &loadEntity.Add<Sprite>(vecCol);
+
+            sc->Color = vecCol;
+            sc->UseTexture = useTex;
+            sc->UseFixedScale = useFScale;
+            sc->SetSubTexture(subTexture[0].as<float>(), subTexture[1].as<float>(), subTexture[2].as<float>(), subTexture[3].as<float>());
         }
 
         auto tlm = entity["TileMap"];

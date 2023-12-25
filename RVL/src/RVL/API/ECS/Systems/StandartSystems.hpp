@@ -6,7 +6,7 @@ namespace Rvl
 {
     void TransformSystem(const std::vector<Entity>& entities);
 
-    void Sprite2DSystem(const std::vector<Entity>& entities);
+    void SpriteSystem(const std::vector<Entity>& entities);
 
     void Movement2DSystem(const std::vector<Entity>& entities);
 

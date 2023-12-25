@@ -45,7 +45,7 @@ namespace Rvl
         }   
     }
 
-    void Sprite2DSystem(const std::vector<Entity>& entities)
+    void SpriteSystem(const std::vector<Entity>& entities)
     {
         for (auto entity : entities)
         {
@@ -54,10 +54,12 @@ namespace Rvl
 
             RVL_ASSERT(entity.Has<Transform>(), "entity with sprite component doesn't have transform component");
 
-            auto sprite = entity.Get<Sprite>();
-            if (sprite.UseFixedScale)
+            auto& sprite = entity.Get<Sprite>();
+            if (sprite.UseFixedScale && sprite.Subtexture)
             {
-                entity.Get<Transform>().Scale = glm::vec3(sprite.ScaleVec2, 0.f);
+                float ratio = sprite.Subtexture->GetWidth() / sprite.Subtexture->GetHeight();
+                glm::vec2 scale = glm::vec2(ratio * sprite.FixedScale, sprite.FixedScale);
+                entity.Get<Transform>().Scale = glm::vec3(scale, 0.f);
             }
         }
     }

@@ -5,6 +5,7 @@
 namespace Rvl
 {
     static std::vector<Entity> children;
+    static int id = 0;
 
     HierarchyWindow::HierarchyWindow(const Ref<Scene>& scene)
         : _scene(scene)
@@ -21,19 +22,19 @@ namespace Rvl
     {
         ImGui::Begin("Hierarchy");
         
-        Hierarchy(_scene->GetEntities());
+        Hierarchy(_scene->GetEntities(), 0);
 
         if (ImGui::Button("+", {30.f, 30.f}))
         {
-            ImGui::OpenPopup("New Entity");
+            ImGui::OpenPopup("NewEntity");
         }
-        CreateEntityPopup(Entity(_scene.get(), entt::null));
+        CreateEntityPopup("NewEntity", Entity(_scene.get(), entt::null));
 
         ImGui::End();
 
     }
 
-    void HierarchyWindow::Hierarchy(const std::vector<Entity>& entities)
+    void HierarchyWindow::Hierarchy(const std::vector<Entity>& entities, int pid)
     {
         for (auto entity : entities)
         {
@@ -69,23 +70,24 @@ namespace Rvl
                 
                 if (ImGui::MenuItem("Create Entity"))
                 {
-                    lol = true;
+                    _openPopup = true;
                 }
 
                 ImGui::EndPopup();
             }
 
-            if (lol)
+            if (_openPopup)
             {
-                ImGui::OpenPopup("New Entity");
-                lol = false;
+                ImGui::OpenPopup((std::string("NewChild##") + std::to_string(pid)).c_str());
+                _openPopup = false;
             }
-            CreateEntityPopup(entity);
+            
+            CreateEntityPopup("NewChild##" + std::to_string(pid), entity);
 
             if (op)
             {
                 if (!entityDeleted)
-                    Hierarchy(entity.GetData().Children);
+                    Hierarchy(entity.GetData().Children, ++pid);
                 ImGui::TreePop();
             }
 
@@ -98,9 +100,9 @@ namespace Rvl
         }
     }
 
-    void HierarchyWindow::CreateEntityPopup(Entity parent)
+    void HierarchyWindow::CreateEntityPopup(const std::string& name, Entity parent)
     {
-        if (ImGui::BeginPopup("New Entity"))
+        if (ImGui::BeginPopup(name.c_str()))
         {
             if (ImGui::Button("Empty object")) 
             {
@@ -198,6 +200,8 @@ namespace Rvl
             }
             ImGui::EndPopup();
         }   
+        
+        RVL_LOG(ImGui::IsPopupOpen("NewChild")); 
     }
 
 

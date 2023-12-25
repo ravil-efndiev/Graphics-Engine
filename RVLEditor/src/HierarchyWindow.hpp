@@ -17,10 +17,10 @@ namespace Rvl
     private:
         Ref<Scene> _scene;
         Entity _selected;
-        bool _skip = false, lol = false;
+        bool _skip = false, _openPopup = false;
 
-        void Hierarchy(const std::vector<Entity>& entities);
-        void CreateEntityPopup(Entity parent);
+        void Hierarchy(const std::vector<Entity>& entities, int pid);
+        void CreateEntityPopup(const std::string& name, Entity parent);
     };
 }
 

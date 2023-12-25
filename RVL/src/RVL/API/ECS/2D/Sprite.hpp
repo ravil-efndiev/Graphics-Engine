@@ -21,20 +21,18 @@ namespace Rvl
         void SetSubTexture(float x, float y, float spriteWidth, float spriteHeight);
         void SetSubTexture(const Ref<SubTexture>& subTexture);
         
-        void ResetScale();
         void ResetSubTexture();
 
-        float Scale;
+        float FixedScale;
 
         Ref<SubTexture> Subtexture;
         Ref<GLTexture> Texture;
-        DrawType Drawtype;
 
         glm::vec4 Color { 1.f };
         glm::vec2 ScaleVec2 { 0.f };
 
-        bool UseColorAsTint;
         bool UseFixedScale = true;
+        bool UseTexture;
 
     };
 }
