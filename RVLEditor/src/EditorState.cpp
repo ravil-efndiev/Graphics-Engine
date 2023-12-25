@@ -29,6 +29,8 @@ void EditorState::Start()
     auto tls = NewRef<TileSet>("assets/maps/test.rtls");
     _tlmc = &_tlm.Add<TileMap>(tls, "assets/maps/test.rtlm", 1.f, 0.f);
 
+    _directionalLight.AddChild(_tlm);
+
     _hierarchy = NewRef<HierarchyWindow>(_currentScene);
     _inspector = NewRef<InspectorWindow>();
 }

@@ -8,7 +8,7 @@ namespace Rvl
         _id = id;
     }
     
-    bool Entity::operator==(const Entity& entity)
+    bool Entity::operator==(const Entity& entity) const
     {
         return _id == entity._id && _scene == entity._scene;
     }
@@ -21,5 +21,15 @@ namespace Rvl
     uint32 Entity::GetIdInt() const
     {
         return (uint32)_id;
+    }
+
+    void Entity::AddChild(Entity child)
+    {
+        _scene->AddChild(*this, child);
+    }
+
+    EntityData& Entity::GetData()
+    {
+        return _scene->GetEntityData(*this);
     }
 }

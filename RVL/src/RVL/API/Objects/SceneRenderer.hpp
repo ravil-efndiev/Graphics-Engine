@@ -10,8 +10,9 @@ namespace Rvl
     public:
         static void Render(const Ref<Scene>& scene, const Ref<UserCamera>& camera);
 
-    private:
-
+        static void DrawSprite(Entity entity);
+        static void DrawTileMap(Entity entity);
+        static void DrawModel(Entity entity);
     };
 }
 

@@ -8,8 +8,14 @@
 
 namespace Rvl
 {
-    class Entity;
     class GLShaderProgram;
+    class Entity;
+    struct EntityData;
+
+    struct EntityHasher
+    {
+        std::size_t operator()(const Entity& k) const;
+    };
 
     class Scene
     {
@@ -27,16 +33,15 @@ namespace Rvl
         void AddSystem(const System& system);
         void AddBehaviour(Behaviour* behaviour);
 
-        void DrawSprite(Entity entity);
-        void DrawTileMap(Entity entity);
-        void DrawModel(Entity entity);
-
         void StartBehaviours();
         void UpdateBehaviours();
 
         void OnEvent(Event* event);
 
         std::vector<Entity> GetEntities() const;
+
+        void AddChild(Entity parent, Entity child);
+        EntityData& GetEntityData(Entity entity);
 
         friend class Entity;
         friend class HierarchyWindow;
@@ -48,6 +53,7 @@ namespace Rvl
         std::vector<Behaviour*> _behaviours;
         std::vector<Entity> _entities;
         std::vector<System> _systems;
+        std::unordered_map<Entity, EntityData, EntityHasher> _entitiesData;
     };
 }
 

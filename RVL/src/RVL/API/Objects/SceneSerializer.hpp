@@ -15,9 +15,11 @@ namespace Rvl
 
     private:
         Ref<Scene> _scene;
+        bool _skip = false;
     
     private:
         void SerializeEntity(YAML::Emitter& emitter, Entity entity);
+        void DeserializeEntity(YAML::Node entity, Entity parent);
     };
 }
 

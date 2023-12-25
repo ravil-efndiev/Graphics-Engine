@@ -20,7 +20,6 @@ namespace Rvl
 
         glm::ivec2 GetMapPosition() const { return _mapPosition; }
         glm::vec3 GetRelativePosition() const { return _relativePos; }
-        glm::vec3& GetWorldPosition() { return _worldPos; }
         glm::vec3 GetScale() const { return _scale; }
 
         Ref<SubTexture> GetSubtexture() const { return _subtexture; }
@@ -32,7 +31,6 @@ namespace Rvl
 
         glm::ivec2 _mapPosition;
         glm::vec3 _relativePos;
-        glm::vec3 _worldPos;
         glm::vec3 _scale;
     };
 

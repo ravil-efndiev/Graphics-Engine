@@ -13,9 +13,14 @@ namespace Rvl
         void ImGuiRender();
         void SetScene(const Ref<Scene>& scene);
 
+
     private:
         Ref<Scene> _scene;
         Entity _selected;
+        bool _skip = false, lol = false;
+
+        void Hierarchy(const std::vector<Entity>& entities);
+        void CreateEntityPopup(Entity parent);
     };
 }
 

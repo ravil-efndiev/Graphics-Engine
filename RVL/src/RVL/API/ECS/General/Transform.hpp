@@ -11,6 +11,8 @@ namespace Rvl
         Transform(const glm::vec3& position, const glm::vec3& rotationDeg, const glm::vec3& scale);
         ~Transform();
 
+        bool operator== (const Transform& other);
+
         glm::mat4 GetMatrix() const;
 
         glm::vec3 Position;

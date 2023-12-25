@@ -18,9 +18,9 @@ namespace Rvl
 
     Scene::Scene() 
     {
+        AddSystem(TransformSystem);
         AddSystem(Movement2DSystem);
         AddSystem(Animation2DSystem);
-        AddSystem(TileMapSystem);
         AddSystem(MaterialSystem);
         AddSystem(LightSystem);
         AddSystem(ModelLoaderSystem);
@@ -35,6 +35,7 @@ namespace Rvl
         entity.Add<Identifier>("Entity" + std::to_string(entityNum));
         entity.Add<Transform>(glm::vec3(0.f), glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
         _entities.push_back(entity);
+        _entitiesData.emplace(entity, EntityData());
         return entity;
     }
 
@@ -45,6 +46,7 @@ namespace Rvl
         entity.Add<Identifier>("Entity" + std::to_string(entityNum));
         entity.Add<Transform>(position, glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
         _entities.push_back(entity);
+        _entitiesData.emplace(entity, EntityData());
         return entity;
     }
 
@@ -55,6 +57,7 @@ namespace Rvl
         entity.Add<Identifier>(name);
         entity.Add<Transform>(glm::vec3(0.f), glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
         _entities.push_back(entity);
+        _entitiesData.emplace(entity, EntityData());
         return entity;
     }
 
@@ -65,12 +68,14 @@ namespace Rvl
         entity.Add<Identifier>(name);
         entity.Add<Transform>(position, glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
         _entities.push_back(entity);
+        _entitiesData.emplace(entity, EntityData());
         return entity;
     }
 
     void Scene::RemoveEntity(Entity entity)
     {
         _entities.erase(std::remove(_entities.begin(), _entities.end(), entity));
+        _entitiesData.erase(entity);
         _registry.destroy(entity.GetId());
     }
 
@@ -79,54 +84,6 @@ namespace Rvl
         _systems.push_back(system);
     }
     
-    void Scene::DrawSprite(Entity entity)
-    {
-        RVL_ASSERT((entity.Has<Sprite>() && entity.Has<Transform>()), "entity passed into DrawSprite function doesn't have Sprite Component");
-
-        auto spriteCompoent = entity.Get<Sprite>();
-        auto transformCompoent = entity.Get<Transform>();
-        
-        if (spriteCompoent.Drawtype == Sprite::DrawType::Color)
-            Renderer::DrawRect((Transform)transformCompoent, spriteCompoent.Color);
-
-        else if (spriteCompoent.Drawtype == Sprite::DrawType::Texture)
-        {
-            if (spriteCompoent.UseColorAsTint)
-               Renderer::DrawRect((Transform)transformCompoent, spriteCompoent.Subtexture, spriteCompoent.Color);
-
-            else
-               Renderer::DrawRect((Transform)transformCompoent, spriteCompoent.Subtexture);
-        }
-    }
-    
-    void Scene::DrawTileMap(Entity entity)
-    {
-        RVL_ASSERT((entity.Has<TileMap>()), "entity passed into DrawTileMap function doesn't have TileMap Component");
-
-        auto tilemap = entity.Get<TileMap>();
-        
-        for (auto& tile : tilemap.MapTiles)
-        {
-            Renderer::DrawRect({tile.GetWorldPosition(), {0.f, 0.f, 0.f}, tile.GetScale()}, tile.GetSubtexture());
-        }
-    }
-
-    void Scene::DrawModel(Entity entity)
-    {
-        RVL_ASSERT((entity.Has<Model>()), "entity passed into DrawModel function doesn't have Model Component");
-        RVL_ASSERT((entity.Has<Transform>()), "entity passed into DrawModel function doesn't have Transform Component");
-        RVL_ASSERT((entity.Has<Material>()), "entity passed into DrawModel function doesn't have Material Component");
-
-        auto meshes = entity.Get<Model>().Meshes;
-        auto transform = entity.Get<Transform>();
-        auto material = entity.Get<Material>();
-
-        for (auto& mesh : meshes)
-        {
-            Renderer3D::SubmitMesh(mesh, material, (Transform)transform);
-        }
-    }
-
     void Scene::AddBehaviour(Behaviour* behaviour)
     {
         _behaviours.push_back(behaviour);
@@ -165,4 +122,20 @@ namespace Rvl
     {
         return _entities;
     }
+
+    EntityData& Scene::GetEntityData(Entity entity)
+    {
+        return _entitiesData[entity];
+    }
+
+    void Scene::AddChild(Entity parent, Entity child)
+    {
+        _entitiesData[parent].Children.push_back(child);
+    }
+
+    std::size_t EntityHasher::operator()(const Entity& k) const
+    {
+        return (std::hash<uint32>()(k.GetIdInt()));
+    }
+
 }

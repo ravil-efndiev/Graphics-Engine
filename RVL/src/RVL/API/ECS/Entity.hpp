@@ -1,8 +1,15 @@
 #pragma once
 #include "Scene.hpp"
+#include "General/Transform.hpp"
 
 namespace Rvl
 {
+    struct EntityData
+    {
+        std::vector<Entity> Children;
+        Transform LastTransformValue;
+    };
+
     class Entity
     {
     public:
@@ -36,10 +43,13 @@ namespace Rvl
             _scene->_registry.remove<T>(_id);
         }
 
-        bool operator==(const Entity& entity);
+        bool operator==(const Entity& entity) const;
 
         entt::entity GetId() const;
         uint32 GetIdInt() const;
+
+        void AddChild(Entity child);
+        EntityData& GetData();
 
     private:
         entt::entity _id;

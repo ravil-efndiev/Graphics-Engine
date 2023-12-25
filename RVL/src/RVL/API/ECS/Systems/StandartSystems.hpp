@@ -4,13 +4,13 @@
 
 namespace Rvl
 {
+    void TransformSystem(const std::vector<Entity>& entities);
+
     void Sprite2DSystem(const std::vector<Entity>& entities);
 
     void Movement2DSystem(const std::vector<Entity>& entities);
 
     void Animation2DSystem(const std::vector<Entity>& entities);
-
-    void TileMapSystem(const std::vector<Entity>& entities);
 
     void MaterialSystem(const std::vector<Entity>& entities);
 

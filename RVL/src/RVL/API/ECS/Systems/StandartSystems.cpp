@@ -17,6 +17,34 @@ namespace Rvl
 {
     static int pointLightIndex = 0;
 
+    void TransformSystem(const std::vector<Entity>& entities)
+    {
+        for (auto entity : entities)
+        {
+            if (!entity.Has<Transform>())
+                continue;
+            
+            EntityData& data = entity.GetData();
+            
+            if (data.Children.size() > 0)
+            {
+                auto tf = entity.Get<Transform>();
+
+                if (!(tf == data.LastTransformValue))
+                {
+                    for (auto child : data.Children)
+                    {
+                        child.Get<Transform>().Position += (tf.Position - data.LastTransformValue.Position);
+                        child.Get<Transform>().Rotation += (tf.Rotation - data.LastTransformValue.Rotation);
+                        child.Get<Transform>().Scale    += (tf.Scale - data.LastTransformValue.Scale);
+                    }
+                }
+
+                data.LastTransformValue = tf;
+            }
+        }   
+    }
+
     void Sprite2DSystem(const std::vector<Entity>& entities)
     {
         for (auto entity : entities)
@@ -60,25 +88,6 @@ namespace Rvl
 
             glm::vec4 subtextureData = entity.Get<Animator2D>().GetSubTextureData();
             entity.Get<Sprite>().SetSubTexture(subtextureData.x, subtextureData.y, subtextureData.z, subtextureData.w);
-        }
-    }
-
-    void TileMapSystem(const std::vector<Entity>& entities)
-    {
-        for (auto entity : entities)
-        {
-            if (!entity.Has<TileMap>())
-                continue;
-
-            RVL_ASSERT(entity.Has<Transform>(), "entity with tilemap component doesn't have a transform component");
-
-            auto& map = entity.Get<TileMap>();
-            auto& tf = entity.Get<Transform>();
-            
-            for (Tile& tile : map.MapTiles)
-            {
-                tile.GetWorldPosition() = tile.GetRelativePosition() + tf.Position;
-            }
         }
     }
 

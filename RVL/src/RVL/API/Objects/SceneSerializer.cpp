@@ -28,6 +28,19 @@ namespace Rvl
 
         for (Entity entity : _scene->_entities)
         {
+            for (auto entity2 : _scene->_entities)
+            {
+                auto children = entity2.GetData().Children;
+                if (std::find(children.begin(), children.end(), entity) != children.end())
+                    _skip = true;
+            }
+
+            if (_skip) 
+            {
+                _skip = false;
+                continue;
+            }
+
             SerializeEntity(emitter, entity);
         }
 
@@ -47,165 +60,25 @@ namespace Rvl
         if (!data["Scene"]) return;
 
         auto sceneName = data["Scene"].as<std::string>();
-
         auto entities = data["Entities"];
 
-        if (entities)
+        if (!entities) return;
+
+        for (auto entity : entities)
         {
-            for (auto entity : entities)
-            {
-                uint32 id = entity["ID"].as<uint32>();
-                std::string name;
-                auto identifier = entity["Identifier"];
-                if (identifier)
-                    name = identifier["Name"].as<std::string>();
-
-                Entity loadEntity = _scene->NewEntity(name);
-
-                auto transform = entity["Transform"];
-                if (transform)
-                {
-                    auto pos = transform["Position"];
-                    glm::vec3 vecPos = {pos[0].as<float>(), pos[1].as<float>(), pos[2].as<float>()};
-
-                    auto rot = transform["Rotation"];
-                    glm::vec3 vecRot = {rot[0].as<float>(), rot[1].as<float>(), rot[2].as<float>()};
-
-                    auto scale = transform["Scale"];
-                    glm::vec3 vecScale = {scale[0].as<float>(), scale[1].as<float>(), scale[2].as<float>()};
-
-                    loadEntity.Get<Transform>() = Transform(vecPos, vecRot, vecScale);
-                }
-
-                auto sprite = entity["Sprite"];
-                if (sprite)
-                {
-                    auto color = sprite["Color"];
-                    glm::vec4 vecCol = {color[0].as<float>(), color[1].as<float>(), color[2].as<float>(), color[3].as<float>()};
-
-                    auto texture = sprite["Texture"].as<std::string>();
-                    float scale = sprite["Scale"].as<float>();
-                    bool useColor = sprite["UseColorAsTint"].as<bool>();
-                    bool useFScale = sprite["UseFixedScale"].as<bool>();
-                    auto subTexture = sprite["SubTexture"];
-                    
-                    auto& sc = loadEntity.Add<Sprite>(texture, scale);
-                    sc.Color = vecCol;
-                    sc.UseColorAsTint = useColor;
-                    sc.UseFixedScale = useFScale;
-                    sc.SetSubTexture(subTexture[0].as<float>(), subTexture[1].as<float>(), subTexture[2].as<float>(), subTexture[3].as<float>());
-                }
-
-                auto dl = entity["DirectionalLight"];
-                if (dl)
-                {
-                    auto col = dl["Color"];
-                    glm::vec3 vecCol = {col[0].as<float>(), col[1].as<float>(), col[2].as<float>()};
-
-                    auto spec = dl["Specular"];
-                    glm::vec3 vecSpec = {spec[0].as<float>(), spec[1].as<float>(), spec[2].as<float>()};
-
-                    auto ambient = dl["Ambient"];
-                    glm::vec3 vecAmbient = {ambient[0].as<float>(), ambient[1].as<float>(), ambient[2].as<float>()};
-
-                    float intensity = dl["Intensity"].as<float>();
-                    auto& dlc = loadEntity.Add<DirectionalLight>(vecCol, intensity);
-                    dlc.Specular = vecSpec;
-                    dlc.Ambient = vecAmbient;
-                }
-
-                auto pl = entity["PointLight"];
-                if (pl)
-                {
-                    auto col = pl["Color"];
-                    glm::vec3 vecCol = {col[0].as<float>(), col[1].as<float>(), col[2].as<float>()};
-
-                    auto diff = pl["Diffuse"];
-                    glm::vec3 vecDif = {diff[0].as<float>(), diff[1].as<float>(), diff[2].as<float>()};
-
-                    auto spec = pl["Specular"];
-                    glm::vec3 vecSpec = {spec[0].as<float>(), spec[1].as<float>(), spec[2].as<float>()};
-
-                    auto ambient = pl["Ambient"];
-                    glm::vec3 vecAmbient = {ambient[0].as<float>(), ambient[1].as<float>(), ambient[2].as<float>()};
-
-                    float intensity = pl["Intensity"].as<float>();
-                    float linear = pl["Linear"].as<float>();
-                    float quad = pl["Quadratic"].as<float>();
-
-                    auto& plc = loadEntity.Add<PointLight>(vecCol, linear, quad, intensity);
-                    plc.Ambient = vecAmbient;
-                    plc.Specular = vecSpec;
-                }
-
-                auto mat = entity["Material"];
-                if (mat)
-                {
-                    auto diff = mat["Diffuse"];
-                    glm::vec3 vecDif = {diff[0].as<float>(), diff[1].as<float>(), diff[2].as<float>()};
-
-                    auto spec = mat["Specular"];
-                    glm::vec3 vecSpec = {spec[0].as<float>(), spec[1].as<float>(), spec[2].as<float>()};
-
-                    auto ambient = mat["Ambient"];
-                    glm::vec3 vecAmbient = {ambient[0].as<float>(), ambient[1].as<float>(), ambient[2].as<float>()};
-
-                    float shininess = mat["Shininess"].as<float>();
-                    bool useTex = mat["UseTextures"].as<bool>();
-                    bool procLight = mat["ProcessLightSources"].as<bool>();
-
-                    std::string texPath, specPath;
-                    if (mat["TexturePath"])
-                        texPath = mat["TexturePath"].as<std::string>();
-
-                    if (mat["SpecularMapPath"])
-                        specPath = mat["SpecularMapPath"].as<std::string>();
-
-
-                    std::vector<MaterialTexture> textures;
-                    if (!texPath.empty())
-                    {
-                        textures.push_back({
-                            GLTexture::TextureFromFile(texPath), RVL_TEXTURE_DIFFUSE, Utils::SplitStr(texPath, '/').back(), texPath
-                        });
-                    }
-
-                    if (!specPath.empty() && !texPath.empty())
-                    {
-                        textures.push_back({
-                            GLTexture::TextureFromFile(specPath), RVL_TEXTURE_SPECULAR, Utils::SplitStr(specPath, '/').back(), specPath
-                        });
-                    }
-
-                    loadEntity.Add<Material>(StandartShaderLib::Get("Light"), vecAmbient, shininess, textures, vecDif, vecSpec, useTex).ProcessLightSources = procLight;
-                }
-
-                auto model = entity["Model"];
-                if (model)
-                {
-                    auto path = model["Path"].as<std::string>();
-                    auto type = model["MeshType"].as<std::string>();
-
-                    MeshType mtype;
-                    if (type == "Cube") mtype = MeshType::Cube;
-                    if (type == "Sphere") mtype = MeshType::Sphere;
-                    if (type == "Cylinder") mtype = MeshType::Cylinder;
-                    if (type == "Custom") mtype = MeshType::Custom;
-
-                    if (!path.empty())
-                        loadEntity.Add<Model>(path).Type = mtype;
-                    else
-                        loadEntity.Add<Model>().Type = mtype;
-                }
-
-            }
-        }        
+            DeserializeEntity(entity, Entity(_scene.get(), entt::null));
+        }
     }   
     
     void SceneSerializer::SerializeEntity(YAML::Emitter& emitter, Entity entity)
     {
         emitter << YAML::BeginMap;
         emitter << YAML::Key << "ID" << YAML::Value << std::to_string((uint32)entity.GetId());
+        emitter << YAML::Key << "Children" << YAML::Value << YAML::BeginSeq;
+        auto children = entity.GetData().Children;
+        for (auto child : children)
+            SerializeEntity(emitter, child);
+        emitter << YAML::EndSeq;
 
         if (entity.Has<Identifier>())
         {
@@ -332,6 +205,174 @@ namespace Rvl
         
         emitter << YAML::EndMap;
 
+    }
+    
+    void SceneSerializer::DeserializeEntity(YAML::Node entity, Entity parent)
+    {
+        uint32 id = entity["ID"].as<uint32>();
+        std::string name;
+        auto identifier = entity["Identifier"];
+        if (identifier)
+            name = identifier["Name"].as<std::string>();
+
+        Entity loadEntity = _scene->NewEntity(name);
+
+        if (parent.GetId() != entt::null)
+            parent.AddChild(loadEntity);
+
+        auto transform = entity["Transform"];
+        if (transform)
+        {
+            auto pos = transform["Position"];
+            glm::vec3 vecPos = {pos[0].as<float>(), pos[1].as<float>(), pos[2].as<float>()};
+
+            auto rot = transform["Rotation"];
+            glm::vec3 vecRot = {rot[0].as<float>(), rot[1].as<float>(), rot[2].as<float>()};
+
+            auto scale = transform["Scale"];
+            glm::vec3 vecScale = {scale[0].as<float>(), scale[1].as<float>(), scale[2].as<float>()};
+
+            loadEntity.Get<Transform>() = Transform(vecPos, vecRot, vecScale);
+        }
+
+        auto sprite = entity["Sprite"];
+        if (sprite)
+        {
+            auto color = sprite["Color"];
+            glm::vec4 vecCol = {color[0].as<float>(), color[1].as<float>(), color[2].as<float>(), color[3].as<float>()};
+
+            auto texture = sprite["Texture"].as<std::string>();
+            float scale = sprite["Scale"].as<float>();
+            bool useColor = sprite["UseColorAsTint"].as<bool>();
+            bool useFScale = sprite["UseFixedScale"].as<bool>();
+            auto subTexture = sprite["SubTexture"];
+            
+            auto& sc = loadEntity.Add<Sprite>(texture, scale);
+            sc.Color = vecCol;
+            sc.UseColorAsTint = useColor;
+            sc.UseFixedScale = useFScale;
+            sc.SetSubTexture(subTexture[0].as<float>(), subTexture[1].as<float>(), subTexture[2].as<float>(), subTexture[3].as<float>());
+        }
+
+        auto tlm = entity["TileMap"];
+        if (tlm)
+        {
+            auto tlmPath = tlm["TileMapPath"].as<std::string>();
+            auto tlsPath = tlm["TileSetPath"].as<std::string>();
+            auto scale = tlm["Scale"].as<int>();
+            auto zIndex = tlm["ZIndex"].as<float>();
+
+            loadEntity.Add<TileMap>(NewRef<TileSet>(tlsPath), tlmPath, scale, zIndex);
+        }   
+
+        auto dl = entity["DirectionalLight"];
+        if (dl)
+        {
+            auto col = dl["Color"];
+            glm::vec3 vecCol = {col[0].as<float>(), col[1].as<float>(), col[2].as<float>()};
+
+            auto spec = dl["Specular"];
+            glm::vec3 vecSpec = {spec[0].as<float>(), spec[1].as<float>(), spec[2].as<float>()};
+
+            auto ambient = dl["Ambient"];
+            glm::vec3 vecAmbient = {ambient[0].as<float>(), ambient[1].as<float>(), ambient[2].as<float>()};
+
+            float intensity = dl["Intensity"].as<float>();
+            auto& dlc = loadEntity.Add<DirectionalLight>(vecCol, intensity);
+            dlc.Specular = vecSpec;
+            dlc.Ambient = vecAmbient;
+        }
+
+        auto pl = entity["PointLight"];
+        if (pl)
+        {
+            auto col = pl["Color"];
+            glm::vec3 vecCol = {col[0].as<float>(), col[1].as<float>(), col[2].as<float>()};
+
+            auto diff = pl["Diffuse"];
+            glm::vec3 vecDif = {diff[0].as<float>(), diff[1].as<float>(), diff[2].as<float>()};
+
+            auto spec = pl["Specular"];
+            glm::vec3 vecSpec = {spec[0].as<float>(), spec[1].as<float>(), spec[2].as<float>()};
+
+            auto ambient = pl["Ambient"];
+            glm::vec3 vecAmbient = {ambient[0].as<float>(), ambient[1].as<float>(), ambient[2].as<float>()};
+
+            float intensity = pl["Intensity"].as<float>();
+            float linear = pl["Linear"].as<float>();
+            float quad = pl["Quadratic"].as<float>();
+
+            auto& plc = loadEntity.Add<PointLight>(vecCol, linear, quad, intensity);
+            plc.Ambient = vecAmbient;
+            plc.Specular = vecSpec;
+        }
+
+        auto mat = entity["Material"];
+        if (mat)
+        {
+            auto diff = mat["Diffuse"];
+            glm::vec3 vecDif = {diff[0].as<float>(), diff[1].as<float>(), diff[2].as<float>()};
+
+            auto spec = mat["Specular"];
+            glm::vec3 vecSpec = {spec[0].as<float>(), spec[1].as<float>(), spec[2].as<float>()};
+
+            auto ambient = mat["Ambient"];
+            glm::vec3 vecAmbient = {ambient[0].as<float>(), ambient[1].as<float>(), ambient[2].as<float>()};
+
+            float shininess = mat["Shininess"].as<float>();
+            bool useTex = mat["UseTextures"].as<bool>();
+            bool procLight = mat["ProcessLightSources"].as<bool>();
+
+            std::string texPath, specPath;
+            if (mat["TexturePath"])
+                texPath = mat["TexturePath"].as<std::string>();
+
+            if (mat["SpecularMapPath"])
+                specPath = mat["SpecularMapPath"].as<std::string>();
+
+
+            std::vector<MaterialTexture> textures;
+            if (!texPath.empty())
+            {
+                textures.push_back({
+                    GLTexture::TextureFromFile(texPath), RVL_TEXTURE_DIFFUSE, Utils::SplitStr(texPath, '/').back(), texPath
+                });
+            }
+
+            if (!specPath.empty() && !texPath.empty())
+            {
+                textures.push_back({
+                    GLTexture::TextureFromFile(specPath), RVL_TEXTURE_SPECULAR, Utils::SplitStr(specPath, '/').back(), specPath
+                });
+            }
+
+            loadEntity.Add<Material>(StandartShaderLib::Get("Light"), vecAmbient, shininess, textures, vecDif, vecSpec, useTex).ProcessLightSources = procLight;
+        }
+
+        auto model = entity["Model"];
+        if (model)
+        {
+            auto path = model["Path"].as<std::string>();
+            auto type = model["MeshType"].as<std::string>();
+
+            MeshType mtype;
+            if (type == "Cube") mtype = MeshType::Cube;
+            if (type == "Sphere") mtype = MeshType::Sphere;
+            if (type == "Cylinder") mtype = MeshType::Cylinder;
+            if (type == "Custom") mtype = MeshType::Custom;
+
+            if (!path.empty())
+                loadEntity.Add<Model>(path).Type = mtype;
+            else
+                loadEntity.Add<Model>().Type = mtype;
+        }
+
+        auto children = entity["Children"];
+
+        for (auto child : children)
+        {
+            DeserializeEntity(child, loadEntity);
+        }
     }
 }
 

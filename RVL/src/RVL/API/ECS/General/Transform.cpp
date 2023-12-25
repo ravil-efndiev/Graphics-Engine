@@ -34,4 +34,9 @@ namespace Rvl
 
         return matrix;
     }
+
+    bool Transform::operator== (const Transform& other)
+    {
+        return (other.Position == Position && Rotation == other.Rotation && Scale == other.Scale);
+    }
 }

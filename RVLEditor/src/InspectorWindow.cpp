@@ -87,8 +87,11 @@ namespace Rvl
 
         DrawComponent<Sprite>("Sprite", _selected, [](auto& sprite) 
         {
-            UIData.SubtextureSize = {sprite.Subtexture->GetWidth(), sprite.Subtexture->GetHeight()};
-            UIData.SubtexturePos = {sprite.Subtexture->GetX(), sprite.Subtexture->GetY()};
+            if (sprite.Subtexture)
+            {
+                UIData.SubtextureSize = {sprite.Subtexture->GetWidth(), sprite.Subtexture->GetHeight()};
+                UIData.SubtexturePos = {sprite.Subtexture->GetX(), sprite.Subtexture->GetY()};
+            }
 
             if (ImGui::BeginCombo("Draw Type", sprite.Drawtype == Sprite::DrawType::Color ? "Color" : "Texture"))
             {
@@ -108,7 +111,8 @@ namespace Rvl
 
             if (sprite.Drawtype == Sprite::DrawType::Texture)
             {
-                auto str = "Texture: " + (Utils::SplitStr(sprite.Texture->GetPath(), '/').back());
+                auto str = sprite.Texture ? "Texture: " + (Utils::SplitStr(sprite.Texture->GetPath(), '/').back())
+                    : "Texture: none";
                 ImGui::Text("%s", str.c_str());
                 ImGui::SameLine();
 
@@ -120,7 +124,7 @@ namespace Rvl
 
             ImGui::Dummy({0.f, 5.f});
 
-            if (sprite.Drawtype == Sprite::DrawType::Texture)
+            if (sprite.Drawtype == Sprite::DrawType::Texture && sprite.Texture)
                 ImGui::Checkbox("Use Fixed Scale", &sprite.UseFixedScale);
 
             if (sprite.Drawtype == Sprite::DrawType::Color)
@@ -141,7 +145,7 @@ namespace Rvl
 
             ImGui::Dummy({0.f, 10.f});
             
-            if (sprite.Drawtype == Sprite::DrawType::Texture)
+            if (sprite.Drawtype == Sprite::DrawType::Texture && sprite.Texture)
             {
                 ImGui::Checkbox("Use custom subtexture", &UIData.UseSubTexture);
                 if (UIData.UseSubTexture)
@@ -301,7 +305,7 @@ namespace Rvl
             if (ImGui::Button("Add##sadd"))
             {
                 if (!_selected.Has<Model>() && !_selected.Has<Sprite>())
-                    _selected.Add<Sprite>("./assets/textures/container.jpg", 1.f);
+                    _selected.Add<Sprite>(glm::vec4(1, 1, 1, 1));
                 ImGui::CloseCurrentPopup();
             }
 
