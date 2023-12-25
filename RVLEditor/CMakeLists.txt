@@ -26,6 +26,6 @@ target_include_directories(editor PRIVATE ./vendor/nativefiledialog/src/include)
 
 include(GNUInstallDirs)
 
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -framework CoreFoundation -Wno-unused -Wno-deprecated")
+set(CMAKE_CXX_FLAGS "-Wall -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -framework CoreFoundation -Wno-unused -Wno-deprecated")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O4")

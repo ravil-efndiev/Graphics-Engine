@@ -38,9 +38,6 @@ namespace Rvl
     {
         for (auto entity : entities)
         {
-            bool entityDeleted = false;
-            auto name = entity.Get<Identifier>().Name;
-
             for (auto entity2 : entities)
             {
                 auto children = entity2.GetData().Children;
@@ -54,6 +51,10 @@ namespace Rvl
                 continue;
             }
 
+            bool entityDeleted = false;
+
+            auto name = entity.Has<Identifier>() ? entity.Get<Identifier>().Name : "rofl";
+
             ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
             if (_selected == entity) flags |= ImGuiTreeNodeFlags_Selected;
 
@@ -64,14 +65,10 @@ namespace Rvl
             if (ImGui::BeginPopupContextItem())
             {
                 if (ImGui::MenuItem("Delete Entity"))
-                {
                     entityDeleted = true;
-                }
                 
                 if (ImGui::MenuItem("Create Entity"))
-                {
                     _openPopup = true;
-                }
 
                 ImGui::EndPopup();
             }
@@ -87,7 +84,8 @@ namespace Rvl
             if (op)
             {
                 if (!entityDeleted)
-                    Hierarchy(entity.GetData().Children, ++pid);
+                    Hierarchy(entity.GetData().Children, pid + 1);
+                
                 ImGui::TreePop();
             }
 
@@ -200,8 +198,6 @@ namespace Rvl
             }
             ImGui::EndPopup();
         }   
-        
-        RVL_LOG(ImGui::IsPopupOpen("NewChild")); 
     }
 
 

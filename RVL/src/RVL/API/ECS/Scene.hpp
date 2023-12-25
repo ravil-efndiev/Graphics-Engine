@@ -41,6 +41,7 @@ namespace Rvl
         std::vector<Entity> GetEntities() const;
 
         void AddChild(Entity parent, Entity child);
+        void RemoveChild(Entity parent, Entity child);
         EntityData& GetEntityData(Entity entity);
 
         friend class Entity;

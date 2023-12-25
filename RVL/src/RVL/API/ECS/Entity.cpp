@@ -28,8 +28,15 @@ namespace Rvl
         _scene->AddChild(*this, child);
     }
 
+    void Entity::RemoveChild(Entity child)
+    {
+        _scene->RemoveChild(*this, child);
+    }
+
     EntityData& Entity::GetData()
     {
         return _scene->GetEntityData(*this);
     }
+
+
 }

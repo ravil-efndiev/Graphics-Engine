@@ -46,6 +46,10 @@ void EditorState::Update()
     UserCamera::ToPerspective(_camera)->UpdateControls(ControllerType::InPlane, 5.f);
 
     if (_lock) UserCamera::ToPerspective(_camera)->UpdateCursorRotation(2.f);
+
+    if (Input::IsKeyPressedOnce(Key_Space))
+        _currentScene->RemoveEntity(_tlm);
+
 }
 
 void EditorState::Render()

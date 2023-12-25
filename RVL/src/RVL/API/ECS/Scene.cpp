@@ -42,7 +42,7 @@ namespace Rvl
 
     Entity Scene::NewEntity(const glm::vec3& position)
     {
-       Entity entity (this, _registry.create());
+        Entity entity (this, _registry.create());
         entityNum++;
         entity.Add<Identifier>("Entity" + std::to_string(entityNum));
         entity.Add<Transform>(position, glm::vec3(0.f), glm::vec3(1.f, 1.f, 1.f));
@@ -75,8 +75,15 @@ namespace Rvl
 
     void Scene::RemoveEntity(Entity entity)
     {
-        _entities.erase(std::remove(_entities.begin(), _entities.end(), entity));
+
+        for (auto entity2 : _entities)
+        {
+            auto children = _entitiesData[entity2].Children;
+            if (std::find(children.begin(), children.end(), entity) != children.end())
+                RemoveChild(entity2, entity);
+        }
         _entitiesData.erase(entity);
+        _entities.erase(std::remove(_entities.begin(), _entities.end(), entity));
         _registry.destroy(entity.GetId());
     }
 
@@ -132,6 +139,11 @@ namespace Rvl
     void Scene::AddChild(Entity parent, Entity child)
     {
         _entitiesData[parent].Children.push_back(child);
+    }
+
+    void Scene::RemoveChild(Entity parent, Entity child)
+    {
+        _entitiesData[parent].Children.erase(std::remove(_entitiesData[parent].Children.begin(), _entitiesData[parent].Children.end(), child));
     }
 
     std::size_t EntityHasher::operator()(const Entity& k) const

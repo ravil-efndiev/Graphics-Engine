@@ -49,6 +49,7 @@ namespace Rvl
         uint32 GetIdInt() const;
 
         void AddChild(Entity child);
+        void RemoveChild(Entity child);
         EntityData& GetData();
 
     private:
