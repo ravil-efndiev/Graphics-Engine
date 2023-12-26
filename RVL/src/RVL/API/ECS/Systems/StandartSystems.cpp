@@ -168,7 +168,6 @@ namespace Rvl
         }
     }
 
-
     void ModelLoaderSystem(const std::vector<Entity>& entities)
     {
         for (auto entity : entities)
@@ -188,15 +187,7 @@ namespace Rvl
 
                 if (!entity.Has<Material>())
                 {
-                    entity.Add<Material>(
-                        mat.Shader,
-                        mat.Ambient,
-                        mat.Shininess,
-                        mat.Textures,
-                        mat.Diffuse,
-                        mat.Specular,
-                        mat.UseTexture
-                    );
+                    entity.Add<Material>(mat.Shader, mat.Ambient, mat.Shininess, mat.Textures, mat.Diffuse, mat.Specular, mat.UseTexture);
                 }
                 else
                 {

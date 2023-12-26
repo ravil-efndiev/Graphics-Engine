@@ -1,5 +1,7 @@
-./assets/textures/map.png
-bush2 3 3 128 128
-bush3 2 3 128 128
-tree2 2 1 128 128
-tree1 2 2 128 128
+Texture: ./assets/textures/map.png
+Tiles:
+  w: [4, 4, 128, 128]
+  tree1: [2, 2, 128, 128]
+  tree2: [2, 1, 128, 128]
+  bush3: [2, 3, 128, 128]
+  bush2: [3, 3, 128, 128]

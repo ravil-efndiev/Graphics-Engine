@@ -30,11 +30,11 @@ namespace Rvl
 
         void RemoveEntity(Entity entity);
 
-        void AddSystem(const System& system);
+        Scene& AddSystem(const System& system);
         void AddBehaviour(Behaviour* behaviour);
 
-        void StartBehaviours();
-        void UpdateBehaviours();
+        void Start();
+        void Update();
 
         void OnEvent(Event* event);
 

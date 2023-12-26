@@ -41,33 +41,6 @@ namespace Rvl
                 ));
             }
         }
-        /*std::string tlsText = Utils::GetTextFromFile(path);
-
-        auto tlsLines = Utils::SplitStr(tlsText, '\n');
-
-        _mapTexture = NewRef<GLTexture>(tlsLines[0]);
-
-        for (int i = 1; i < tlsLines.size(); i++)
-        {
-            auto tokens = Utils::SplitStr(tlsLines[i], ' ');
-
-            if (tokens.size() < 5)
-                continue;
-
-            try 
-            {
-                _tiles.emplace(tokens[0], SubTexture::New(_mapTexture,
-                    (float)std::stoi(tokens[1]), 
-                    (float)std::stoi(tokens[2]),
-                    (float)std::stoi(tokens[3]), 
-                    (float)std::stoi(tokens[4])
-                ));
-            }
-            catch (const std::invalid_argument& err)
-            {
-                throw Error(std::string("invalid data in tile-set file, more info: \n").append(err.what()), RVL_RUNTIME_ERROR);
-            }
-        }*/
     }
 
     TileSet::~TileSet() {}
@@ -92,6 +65,17 @@ namespace Rvl
         if (_tiles.find(name) != _tiles.end())
             throw Error("tile names in tileSet must be unique", RVL_RUNTIME_ERROR);
         _tiles.emplace(name, SubTexture::New(_mapTexture, texX, texY, texWidth, texHeight));
+    }
+
+    void TileSet::RemoveTile(const std::string& name)
+    {
+        _tiles.erase(name);   
+    }
+
+    void TileSet::Clear()
+    {
+        for (auto tile : _tiles)
+            RemoveTile(tile.first);
     }
 
     std::string TileSet::GetString() const

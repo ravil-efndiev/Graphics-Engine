@@ -1,1 +1,2 @@
-Rofl = ['/Users/Belokan/RVL Engine/RVLMapEditor/assets/maps/test.rtls' '/Users/Belokan/RVL Engine/RVLMapEditor/assets/maps/test.rtlm' ]
+Rofl = ['assets/maps/maprvl.rtls' 'assets/maps/maprvl.rtlm' ]
+test = ['/Users/Belokan/RVL Engine/RVLEditor/assets/maps/test.rtls' '/Users/Belokan/RVL Engine/RVLEditor/assets/maps/test.rtlm' ]

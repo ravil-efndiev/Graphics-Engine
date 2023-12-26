@@ -19,12 +19,12 @@ namespace Rvl
 
     void State::StartScene()
     {
-        _currentScene->StartBehaviours();
+        _currentScene->Start();
     }
 
     void State::UpdateScene()
     {
-        _currentScene->UpdateBehaviours();
+        _currentScene->Update();
     }
 
     void State::CreateFrameBuffer()

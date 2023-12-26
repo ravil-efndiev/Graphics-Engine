@@ -41,6 +41,8 @@ namespace Rvl
         void Undo();
         void Redo();
 
+        void GenerateTileSet(int tileSize);
+
     private:
         glm::vec2 _viewportSize {0.f}; 
         std::string _projectName;

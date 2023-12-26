@@ -12,6 +12,8 @@ namespace Utils
     void SaveTextToFile(const char* path, const std::string& text);
 
     void DeleteLineFromFile(const std::string& path, int n);
+
+    bool FileExists(const std::string& path);
 }
 }
 

@@ -18,6 +18,8 @@ namespace Rvl
         const std::unordered_map<std::string, Ref<SubTexture>>& GetTiles() const;
 
         void AddTile(const std::string& name, float texX, float texY, float texWidth, float texHeight);
+        void RemoveTile(const std::string& name);
+        void Clear();
 
         std::string GetString() const;
         void SaveToFile(const char* path);

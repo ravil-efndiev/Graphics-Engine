@@ -4,6 +4,7 @@
 #include "InspectorWindow.hpp"
 
 using namespace Rvl;
+
 class EditorState : public Rvl::State
 {
 public:

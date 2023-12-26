@@ -87,9 +87,10 @@ namespace Rvl
         _registry.destroy(entity.GetId());
     }
 
-    void Scene::AddSystem(const System& system)
+    Scene& Scene::AddSystem(const System& system)
     {
         _systems.push_back(system);
+        return *this;
     }
     
     void Scene::AddBehaviour(Behaviour* behaviour)
@@ -97,7 +98,7 @@ namespace Rvl
         _behaviours.push_back(behaviour);
     }
 
-    void Scene::StartBehaviours()
+    void Scene::Start()
     {
         for (auto behaviour : _behaviours)
         {
@@ -105,7 +106,7 @@ namespace Rvl
         }
     }
     
-    void Scene::UpdateBehaviours()
+    void Scene::Update()
     {
         for (auto behaviour : _behaviours)
         {

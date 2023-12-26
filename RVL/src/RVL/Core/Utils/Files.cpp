@@ -84,4 +84,10 @@ namespace Rvl
 
         file.close();
     }
+
+    bool Utils::FileExists(const std::string& path)
+    {
+        std::ifstream file (path.c_str());
+        return file.is_open();
+    }
 } 

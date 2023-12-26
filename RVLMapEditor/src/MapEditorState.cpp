@@ -18,7 +18,9 @@ namespace Rvl
         bool SaveTileset = false;
         bool SaveTilemap = false;
 
-        bool BigIcons = true;
+        bool BigIcons = false;
+        bool ShowNames = false;
+        bool GenerateTlsFlag = false;
 
         bool TilemapSaved = false, TilesetSaved = false;
 
@@ -26,6 +28,7 @@ namespace Rvl
         char InputTileName[1000] = "";
         int32 InputCoordX = 0, InputCoordY = 0;
         int32 InputWidth = 0, InputHeight = 0;
+        int32 InputSize = 0;
 
         std::string InputTilesetPath;
         std::string InputTilemapPath;
@@ -41,17 +44,18 @@ namespace Rvl
     static SceneUIData UIData;
 
     MapEditorState::MapEditorState(const std::string& projName, const std::string& texturePath)
-        : State(RenderMode::Mode_2D)
+        : State(RenderMode_2D)
     {
         _projectExists = false;
         _tileSetExists = false;
         _tileMapExists = false;
         _projectName = projName;
         _tls = NewRef<TileSet>(NewRef<GLTexture>(texturePath));
+        UIData.GenerateTlsFlag = true;
     }
 
     MapEditorState::MapEditorState(const std::string& projName, const Ref<TileSet>& tls)
-        : State(RenderMode::Mode_2D)
+        : State(RenderMode_2D)
     {
         _projectExists = false;
         _tileSetExists = true;
@@ -61,7 +65,7 @@ namespace Rvl
     }
 
     MapEditorState::MapEditorState(const std::string& projName, const Ref<TileSet>& tls, const std::string& tlmPath, float scale, float zIndex)
-        : State(RenderMode::Mode_2D)
+        : State(RenderMode_2D)
     {
         _projectExists = false;
         _tileSetExists = true;
@@ -70,17 +74,17 @@ namespace Rvl
         _projectName = projName;
         _tls = tls;
 
-        _tlmEntity = _currentScene.NewEntity();
+        _tlmEntity = _currentScene->NewEntity();
         _tlmEntity.Add<TileMap>(tls, tlmPath, scale, zIndex);
 
         _tlm = &_tlmEntity.Get<TileMap>();
 
         _tlsPath = _tls->GetPath();
-        _tlmPath = _tlm->GetPath();
+        _tlmPath = _tlm->Path;
     }
 
     MapEditorState::MapEditorState(const std::string& projName)
-        : State(RenderMode::Mode_2D)
+        : State(RenderMode_2D)
     {
         _projectName = projName;
 
@@ -93,7 +97,7 @@ namespace Rvl
         
         _tls = NewRef<TileSet>(_tlsPath);
 
-        _tlmEntity = _currentScene.NewEntity();
+        _tlmEntity = _currentScene->NewEntity();
         _tlmEntity.Add<TileMap>(_tls, _tlmPath, _scale, -0.01f);
         _tlm = &_tlmEntity.Get<TileMap>();
 
@@ -106,26 +110,26 @@ namespace Rvl
     void MapEditorState::Start()
     {
         _camera = UserOrthographicCamera::New({0.f, 0.f}, _cameraZoom);
-        AddFrameBuffer(NewRef<GLFrameBuffer>(500, 350));
+        CreateFrameBuffer({500, 350});
 
         _oCamera = UserCamera::ToOrtho(_camera);
 
         if (!_tlm)
         {
-            _tlmEntity = _currentScene.NewEntity();
+            _tlmEntity = _currentScene->NewEntity();
             _tlmEntity.Add<TileMap>(_tls, _scale, _zIndex);
 
             _tlm = &_tlmEntity.Get<TileMap>();
         }
 
-        _tilePreviewEntity = _currentScene.NewEntity();
+        _tilePreviewEntity = _currentScene->NewEntity();
         _tilePreviewEntity.Add<Sprite>(_tls->GetTexture(), _scale);
 
         _tilePreview = &_tilePreviewEntity.Get<Sprite>();
         _tilePreview->SetSubTexture(0, 0, 0, 0);
 
-        _tilePreview->UseColorAsTint(true);
-        _tilePreview->SetColor({1.f, 1.f, 1.f, 0.5f});
+        _tilePreview->Color = {1.f, 1.f, 1.f, 0.5f};
+        _tilePreview->UseTexture = true;
     }
 
     void MapEditorState::Undo()
@@ -195,7 +199,7 @@ namespace Rvl
         }
         else
         {
-            if ((UIData.GlobalWinFlags & ImGuiWindowFlags_NoInputs) == 0 && UIData.MapviewFocused)
+            if ((UIData.GlobalWinFlags & ImGuiWindowFlags_NoInputs) == 0 && UIData.MapviewFocused)  
             {
                 _oCamera->SetPosition({
                     _oCamera->GetPosition().x + Input::GetAxis(Axis::Horizontal) * _cameraSpeed * Time::DeltaTime(),
@@ -260,7 +264,12 @@ namespace Rvl
                 if (_selectedTile != "")
                 {
                     auto& transform = _tilePreviewEntity.Get<Transform>();
-                    transform.Position = glm::vec3(glm::vec2(_tlm->SpimplifyPos(Input::GetCursorPositionRelative(ImToGlmVec2(UIData.MainWindowPosition), ImToGlmVec2(UIData.SceneWindowPosition)))) * _tlm->GetTileSize(), transform.Position->z);
+                    transform.Position = glm::vec3(
+                            (glm::vec2)_tlm->SpimplifyPos(Input::GetCursorPositionRelative(
+                                ImToGlmVec2(UIData.MainWindowPosition),
+                                ImToGlmVec2(UIData.SceneWindowPosition)
+                            ))
+                            , transform.Position.z);
                     _tilePreview->SetSubTexture((*_tls)[_selectedTile]);
                 }
             }
@@ -271,10 +280,10 @@ namespace Rvl
     {
         RenderCommand::SetClearColor(UIData.BackgroundColor);
 
-        _currentScene.DrawTileMap(_tlmEntity);
+        SceneRenderer::DrawTileMap(_tlmEntity);
 
         if (!_selectedTile.empty())
-            _currentScene.DrawSprite(_tilePreviewEntity);
+            SceneRenderer::DrawSprite(_tilePreviewEntity);
 
         RenderUI();
     }
@@ -334,9 +343,25 @@ namespace Rvl
 
     void MapEditorState::RenderUI()
     {
-
         UIData.MainWindowPosition = ImGui::GetMainViewport()->Pos;
         ImGui::Begin("Tile Pallete", nullptr, UIData.GlobalWinFlags);
+
+        if (UIData.GenerateTlsFlag)
+        {
+            ImGui::OpenPopup("GenerateTls");
+            UIData.ShowNames = false;
+            UIData.GenerateTlsFlag = false;
+        }
+
+        if (ImGui::BeginPopup("GenerateTls"))
+        {
+            ImGui::InputInt("Sprite size (px)", &UIData.InputSize);
+
+            if (ImGui::Button("Submit##gtls"))
+                GenerateTileSet(UIData.InputSize);
+
+            ImGui::EndPopup();
+        }
 
         if (ImGui::RadioButton("Big Icons", UIData.BigIcons))
         {
@@ -348,8 +373,8 @@ namespace Rvl
             UIData.BigIcons = false;
         }
 
-        static float padding = 16.f;
-        static float imageSize = 50.f;
+        static float padding = 12.f;
+        static float imageSize = 30.f;
         float cellSize = padding + imageSize;
 
         ImGui::Spacing();
@@ -360,13 +385,15 @@ namespace Rvl
             ImGui::SliderFloat("Image size", &imageSize, 20, 128);
         }
 
+        ImGui::Checkbox("Show tile names", &UIData.ShowNames);
+
         if (!UIData.BigIcons) ImGui::Columns(ImGui::GetContentRegionAvail().x / cellSize, nullptr, false);
 
         int id = 0;
         for (auto& tile : _tls->GetTiles())
         {
             if (UIData.BigIcons) ImGui::SetCursorPosX(ImGui::GetWindowSize().x / 3);
-            ImGui::Text("%s", tile.first.c_str());
+            if (UIData.ShowNames) ImGui::Text("%s", tile.first.c_str());
             ImGui::PushID(id);
   
             ImVec2 iconSize = UIData.BigIcons ? ImVec2(ImGui::GetContentRegionAvail().x / 1.5f, ImGui::GetContentRegionAvail().x / 1.5f) : ImVec2(imageSize, imageSize);
@@ -382,9 +409,11 @@ namespace Rvl
         ImGui::Columns(1);
 
         if (ImGui::Button("+", ImVec2(50, 50)))
-        {
             UIData.AddTilePopup = true;
-        }
+
+        if (ImGui::Button("Generate automatically"))
+            UIData.GenerateTlsFlag = true;
+
         ImGui::End();
 
         if (UIData.AddTilePopup)
@@ -434,7 +463,7 @@ namespace Rvl
         ImGui::DragFloat("Camera Zoom##ZoomDrag", &_cameraZoom, 0.4f, 0.f, 100.f);
         ImGui::Separator();
         ImGui::Text("Background Color");
-        ImGui::ColorPicker3("##bgcol", glm::value_ptr(UIData.BackgroundColor));
+        ImGui::ColorEdit3("##bgcol", glm::value_ptr(UIData.BackgroundColor));
         ImGui::End();
 
         ImGui::Begin("Map View", nullptr, UIData.GlobalWinFlags);
@@ -446,20 +475,19 @@ namespace Rvl
         ImVec2 viewportSize = ImGui::GetContentRegionAvail();
         if (_viewportSize != ImToGlmVec2(viewportSize))
         {
+            _fbo->Resize(ImToGlmVec2(viewportSize));
             _viewportSize = {viewportSize.x, viewportSize.y};
-            _fbo->Resize(viewportSize.x, viewportSize.y);
         }
-
-        RenderCommand::SetViewport({_fbo->GetWidth(), _fbo->GetHeight()});
 
         UIData.SceneWindowPosition = ImGui::GetWindowPos();
 
         ImGui::Image(
-            (ImTextureID)_fbo->GetColorAttachment(), 
-            ImGui::GetContentRegionAvail(), 
-            ImVec2(0, 1), 
+            reinterpret_cast<ImTextureID>(_fbo->GetColorAttachment()),
+            viewportSize,
+            ImVec2(0, 1),
             ImVec2(1, 0)
         );
+
         ImGui::EndChild();
         ImGui::End();
 
@@ -523,7 +551,7 @@ namespace Rvl
             }
             else
             {
-                UIData.InputTilemapPath = _tlm->GetPath();
+                UIData.InputTilemapPath = _tlm->Path;
                 UIData.TilemapSaved = true;
                 _tileMapExists = true;
                 _tlmPath = UIData.InputTilemapPath;
@@ -549,4 +577,36 @@ namespace Rvl
         ImGui::Text("[14.55] Saved project");
         ImGui::End();
     }
+
+    void MapEditorState::GenerateTileSet(int tileSize)
+    {
+        _tls->Clear();
+        auto tex = _tls->GetTexture();
+        int reali = 0, realj = 0;
+
+        std::vector<int> xPoses;
+        std::vector<int> yPoses;
+        for (int i = 0; i < tex->GetHeight(); i += tileSize)
+        {
+            yPoses.push_back(reali);
+            reali++;
+        }
+
+        for (int j = 0; j < tex->GetWidth(); j += tileSize)
+        {
+            xPoses.push_back(realj);
+            realj++;
+        }
+
+        int lol = 0;
+
+        for (int y : yPoses)
+        {
+            for (int x : xPoses)
+            {
+                _tls->AddTile("Tile" + std::to_string(lol++), x, y, tileSize, tileSize);
+            }
+        }
+    }
+
 }

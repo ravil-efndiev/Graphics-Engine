@@ -16,6 +16,8 @@ namespace Rvl
     };
 
     glm::mat4 Renderer::_projview (1.0f);
+    static glm::mat4 proj (1.0f);
+    static glm::mat4 view (1.0f);
 
     Ref<GLVertexArray> Renderer::_rectVao;
     Ref<GLVertexBuffer> Renderer::_rectVbo;
@@ -94,6 +96,8 @@ namespace Rvl
     void Renderer::BeginContext(const Ref<Camera>& camera, float viewportWidth, float viewportHeight)
     {
         _projview = camera->GetProjectionMatrix(viewportWidth, viewportHeight) * camera->GetViewMatrix();
+        proj = camera->GetProjectionMatrix(viewportWidth, viewportHeight);
+        view = camera->GetViewMatrix();
 
         BeginBatch();
     }
@@ -270,10 +274,10 @@ namespace Rvl
         glm::vec2 viewport = RenderCommand::GetViewport();
 
         glm::vec4 vec4viewport (0, 0, viewport.x, viewport.y);
-        glm::vec3 pos (x, viewport.x - y, 0);
+        glm::vec3 pos (x, viewport.y - y, 0);
 
-        glm::vec3 worldCoords = glm::unProject(pos, glm::mat4(1.0f), _projview, vec4viewport);
-        return glm::vec2(worldCoords.x, worldCoords.y);
+        glm::vec3 worldCoords = glm::unProject(pos, glm::mat4(1.f), _projview, vec4viewport);
+        return glm::vec2(worldCoords);
     }
     
     glm::vec2 Renderer::ConvertToWorldCoords(double x, double y, const glm::vec2& pos)
@@ -281,9 +285,9 @@ namespace Rvl
         glm::vec2 viewport = RenderCommand::GetViewport();
 
         glm::vec4 vec4viewport (pos.x, pos.y, viewport.x, viewport.y);
-        glm::vec3 posi (x, viewport.x - y, 0);
+        glm::vec3 posi (x, viewport.y - y, 0);
 
-        glm::vec3 worldCoords = glm::unProject(posi, glm::mat4(1.0f), _projview, vec4viewport);
+        glm::vec3 worldCoords = glm::unProject(posi, view, proj, vec4viewport);
         return glm::vec2(worldCoords.x, worldCoords.y);
     }
 }
