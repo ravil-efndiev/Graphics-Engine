@@ -92,6 +92,28 @@ namespace Rvl
 		ImGui::PopID();
     }
 
+	void DragInt(const std::string& label, int* value, float columnWidth)
+	{
+		std::string labelDisp = Utils::SplitStr(label, '#').front();
+
+		ImGui::PushID(label.c_str());
+		ImGui::Columns(2);
+        
+		ImGui::SetColumnWidth(0, columnWidth);
+		ImGui::Text("%s", labelDisp.c_str());
+		ImGui::NextColumn();
+        
+		ImGui::PushItemWidth(ImGui::CalcItemWidth() / 2.f);
+
+        ImGui::Text(" ");
+		ImGui::SameLine();
+		ImGui::DragInt("##int", value, 0.1f, 0.f, 0.f, "%.2f");
+		ImGui::PopItemWidth();
+
+		ImGui::Columns(1);
+		ImGui::PopID();
+	}
+
     std::string OpenFileDialogButton(const std::string& label, const char* extFilter, const char* startPath)
     {
         if (ImGui::Button(label.c_str()))

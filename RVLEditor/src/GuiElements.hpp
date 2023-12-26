@@ -11,6 +11,8 @@ namespace Rvl
 	void DragVec2(const std::string& label, glm::vec2* values, std::array<char, 2> elementNames = {'X', 'Y'}, float columnWidth = 100.0f);
 
 	void DragFloat(const std::string& label, float* value, float columnWidth = 100.0f);
+	
+	void DragInt(const std::string& label, int* value, float columnWidth = 100.0f);
 
     std::string OpenFileDialogButton(const std::string& label, const char* extFilter, const char* startPath = "./");    
 

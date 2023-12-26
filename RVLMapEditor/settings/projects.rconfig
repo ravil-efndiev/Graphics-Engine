@@ -1,2 +1,3 @@
 Rofl = ['assets/maps/maprvl.rtls' 'assets/maps/maprvl.rtlm' ]
 test = ['/Users/Belokan/RVL Engine/RVLEditor/assets/maps/test.rtls' '/Users/Belokan/RVL Engine/RVLEditor/assets/maps/test.rtlm' ]
+testlayer2 = ['/Users/Belokan/RVL Engine/RVLMapEditor/assets/maps/test_layer2.rtls' '/Users/Belokan/RVL Engine/RVLMapEditor/assets/maps/test_layer2.rtlm' ]

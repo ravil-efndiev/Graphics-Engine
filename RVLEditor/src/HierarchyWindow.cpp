@@ -126,6 +126,17 @@ namespace Rvl
                 ImGui::CloseCurrentPopup();
             }
 
+            if (ImGui::Button("Tile Map")) 
+            {
+                Entity entity = _scene->NewEntity();
+                entity.Add<TileMap>();
+
+                if (parent.GetId() != entt::null)
+                    parent.AddChild(entity);
+                
+                ImGui::CloseCurrentPopup();
+            }
+            
             ImGui::Separator();
             ImGui::Text("3D Meshes");
 

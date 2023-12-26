@@ -36,10 +36,13 @@ namespace Rvl
 
     struct TileMap
     {
+        TileMap() = default;
         TileMap(const TileMap&) = default;
-        TileMap(const Ref<TileSet>& tileSet, const std::string& TileMapFilePath, int scale, float zIndex);
+        TileMap(const Ref<TileSet>& tileSet, const std::string& tileMapFilePath, int scale, float zIndex);
         TileMap(const Ref<TileSet>& tileSet, int scale, float zIndex);
         ~TileMap();
+
+        void Load(const Ref<TileSet>& tileSet, const std::string& tileMapFilePath, int scale, float zIndex);
 
         void AddTile(const std::string& name, const glm::ivec2& mapPos, float zIndex);
         void RemoveTile(const glm::ivec2& mapPos);
@@ -51,8 +54,8 @@ namespace Rvl
         void SaveToFile(const char* path);
         std::string GetNameByCoords(const glm::ivec2& pos);
 
-        float ZIndex;
-        int Scale;
+        float ZIndex = 0.f;
+        int Scale = 1;
 
         Ref<TileSet> Tileset;
         std::vector<Tile> MapTiles;

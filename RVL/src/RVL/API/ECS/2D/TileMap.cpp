@@ -10,6 +10,19 @@ namespace Rvl
 {
     TileMap::TileMap(const Ref<TileSet>& tileSet, const std::string& tileMapFilePath, int scale, float zIndex)
     {
+        Load(tileSet, tileMapFilePath, scale, zIndex);   
+    }
+
+    TileMap::TileMap(const Ref<TileSet>& tileSet, int scale, float zIndex)
+    {
+        Tileset = tileSet;
+        ZIndex = zIndex;
+        Scale = scale;
+        Path = "";
+    }
+
+    void TileMap::Load(const Ref<TileSet>& tileSet, const std::string& tileMapFilePath, int scale, float zIndex)
+    {
         Tileset = tileSet;
         ZIndex = zIndex;
         Scale = scale;
@@ -21,6 +34,7 @@ namespace Rvl
         strStream << stream.rdbuf();
 
         YAML::Node data = YAML::Load(strStream.str());       
+        MapTiles.clear();
 
         if (data["Tiles"])
         {
@@ -41,14 +55,6 @@ namespace Rvl
                     TileSize = tile.GetScale();
             }
         }
-    }
-
-    TileMap::TileMap(const Ref<TileSet>& tileSet, int scale, float zIndex)
-    {
-        Tileset = tileSet;
-        ZIndex = zIndex;
-        Scale = scale;
-        Path = "";
     }
 
     TileMap::~TileMap() {}

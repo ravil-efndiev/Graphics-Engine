@@ -14,16 +14,27 @@ namespace Rvl
         glm::vec2 SubtexturePos {0.f};
         glm::vec2 SubtextureSize {0.f};
 
+        std::string TlmPath, TlsPath;
+        bool TlmLoadFlag = true;
+
         ImGuiTreeNodeFlags NodeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanAvailWidth;
     };
 
     static InspectorUIData UIData;
+    static Entity PrevSelected;
 
     InspectorWindow::InspectorWindow() {}
 
     void InspectorWindow::SetSelected(Entity entity)
     {
         _selected = entity;
+        if (_selected != PrevSelected)
+        {
+            UIData.TlmLoadFlag = true;
+            UIData.TlmPath.clear();
+            UIData.TlsPath.clear();
+        }
+        PrevSelected = _selected;
     }
 
     template<class T>
@@ -130,6 +141,38 @@ namespace Rvl
             }
         });
 
+        DrawComponent<TileMap>("Tile Map", _selected, [](auto& tlm) 
+        {
+            if (UIData.TlmLoadFlag)
+            {
+                if (!tlm.Path.empty()) UIData.TlmPath = tlm.Path;
+                if (tlm.Tileset) UIData.TlsPath = tlm.Tileset->GetPath();
+                UIData.TlmLoadFlag = false;
+            }
+
+            ImGui::Text("Tile Map path: %s", UIData.TlmPath.empty() ? "none" : Utils::SplitStr(UIData.TlmPath, '/').back().c_str());
+            ImGui::SameLine();
+            auto tp = OpenFileDialogButton("Select##tlm", "rtlm", "./assets");
+            if (!tp.empty()) UIData.TlmPath = tp;
+
+            ImGui::Text("Tile Set path: %s", UIData.TlsPath.empty() ? "none" : Utils::SplitStr(UIData.TlsPath, '/').back().c_str());
+            ImGui::SameLine();
+            auto sp = OpenFileDialogButton("Select##tls", "rtls", "./assets");
+            if (!sp.empty()) UIData.TlsPath = sp;
+
+            DragInt("Tile scale", &tlm.Scale);
+
+            if (ImGui::Button("Load##tlmload"))
+            {
+                if (UIData.TlmPath.empty() || UIData.TlsPath.empty())
+                    return;
+                
+                tlm.Load(NewRef<TileSet>(UIData.TlsPath), UIData.TlmPath, tlm.Scale, 0.f);
+                UIData.TlmLoadFlag = true;
+            }
+        });
+
+
         DrawComponent<Model>("Model", _selected, [](auto& model) 
         {
             std::string preview;
@@ -186,8 +229,7 @@ namespace Rvl
                 ImGui::EndCombo();
             }
 
-            auto str = "Model path: " + (Utils::SplitStr(model.Path, '/').back());
-            ImGui::Text("%s", str.c_str());
+            ImGui::Text("Model path: %s", Utils::SplitStr(model.Path, '/').back().c_str());
             ImGui::SameLine();
 
             auto path = OpenFileDialogButton("Select ...##modelpath_select", "obj");
@@ -269,27 +311,39 @@ namespace Rvl
 
         if (ImGui::BeginPopup("Components"))
         {
-            ImGui::Text("Sprite");
-            ImGui::SameLine();
-            if (ImGui::Button("Add##sadd"))
+            ImGui::Text("2D Objects");
+            ImGui::Separator();
+            if (ImGui::Button("Sprite##sadd"))
             {
                 if (!_selected.Has<Model>() && !_selected.Has<Sprite>())
                     _selected.Add<Sprite>(glm::vec4(1, 1, 1, 1));
                 ImGui::CloseCurrentPopup();
             }
 
-            ImGui::Text("Point Light");
-            ImGui::SameLine();
-            if (ImGui::Button("Add##pladd"))
+            if (ImGui::Button("Tile Map##tlmadd"))
+            {
+                if (!_selected.Has<TileMap>())
+                    _selected.Add<TileMap>();
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::Text("3D Objects");
+            ImGui::Separator();
+            if (ImGui::Button("Point Light##pladd"))
             {
                 if (!_selected.Has<PointLight>())
                     _selected.Add<PointLight>(glm::vec3(0.5f, 0.5f, 0.5f), 0.09f, 0.032f);
                 ImGui::CloseCurrentPopup();
             }
 
-            ImGui::Text("3D Model");
-            ImGui::SameLine();
-            if (ImGui::Button("Add##madd"))
+            if (ImGui::Button("Directional Light##dladd"))
+            {
+                if (!_selected.Has<DirectionalLight>())
+                    _selected.Add<DirectionalLight>(glm::vec3(0.5f, 0.5f, 0.5f));
+                ImGui::CloseCurrentPopup();
+            }
+
+            if (ImGui::Button("3D Mesh##madd"))
             {
                 if (!_selected.Has<Model>())
                 {

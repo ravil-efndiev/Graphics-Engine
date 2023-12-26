@@ -1,0 +1,44 @@
+Scene: Name
+Entities:
+  - ID: 0
+    Children:
+      - ID: 1
+        Children:
+          []
+        Identifier:
+          Name: layer1
+        Transform:
+          Position: [0, 0, 0]
+          Rotation: [0, 0, 0]
+          Scale: [3, 3, 3]
+        TileMap:
+          TileSetPath: assets/maps/test.rtls
+          TileMapPath: assets/maps/test.rtlm
+          Scale: 6
+          ZIndex: 0
+      - ID: 2
+        Children:
+          []
+        Identifier:
+          Name: layer2
+        Transform:
+          Position: [0, 0, 0.00999999978]
+          Rotation: [0, 0, 0]
+          Scale: [2, 2, 2]
+        TileMap:
+          TileSetPath: /Users/Belokan/RVL Engine/RVLEditor/assets/maps/test.rtls
+          TileMapPath: /Users/Belokan/RVL Engine/RVLMapEditor/assets/maps/test_layer2.rtlm
+          Scale: 1
+          ZIndex: 0
+    Identifier:
+      Name: Directional light
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    DirectionalLight:
+      Color: [0.899999976, 0.899999976, 0.899999976]
+      Ambient: [0.200000003, 0.200000003, 0.200000003]
+      Diffuse: [0.899999976, 0.899999976, 0.899999976]
+      Specular: [0.5, 0.5, 0.5]
+      Intensity: 1
