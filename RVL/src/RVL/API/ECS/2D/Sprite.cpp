@@ -33,7 +33,7 @@ namespace Rvl
     {
         Texture = NewRef<GLTexture>(path);
 
-        UseTexture = false;
+        UseTexture = true;
 
         SetSubTexture(0.f, 0.f, Texture->GetWidth(), Texture->GetHeight());
     }

@@ -24,7 +24,7 @@ Entities:
       Color: [0.911504507, 1, 0, 1]
       Texture: assets/textures/container.jpg
       Scale: 1
-      UseColorAsTint: true
+      UseTexture: true 
       UseFixedScale: true
       SubTexture: [-6.19999981, 1.10000002, 451.799988, 250]
     PointLight:
@@ -65,6 +65,6 @@ Entities:
       Color: [1, 1, 1, 1]
       Texture: /Users/Belokan/RVL Engine/RVLEditor/assets/textures/a.jpg
       Scale: 1.20000005
-      UseColorAsTint: false
+      UseTexture: false
       UseFixedScale: true
       SubTexture: [0, 0, 2376, 1776]

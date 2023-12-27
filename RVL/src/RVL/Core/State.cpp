@@ -29,12 +29,12 @@ namespace Rvl
 
     void State::CreateFrameBuffer()
     {
-        _fbo = NewRef<GLFrameBuffer>(RenderCommand::GetViewport());
+        //_fbo = NewRef<GLFrameBuffer>(RenderCommand::GetViewport());
     }
 
     void State::CreateFrameBuffer(const glm::vec2& size)
     {
-        _fbo = NewRef<GLFrameBuffer>(size);
+        //_fbo = NewRef<GLFrameBuffer>(size);
     }
 
     void State::Begin()
@@ -45,8 +45,8 @@ namespace Rvl
 
         if (_fbo) 
         {
-            _fbo->Bind();
-            RenderCommand::Clear();
+            //_fbo->Bind();
+            //R/enderCommand::Clear();
         }
         
         if (_mode & RenderMode_3D)
@@ -61,6 +61,6 @@ namespace Rvl
         if (_mode & RenderMode_2D)
             Renderer::EndContext();
 
-        if (_fbo) _fbo->Unbind();
+        //if (_fbo) _fbo->Unbind();
     }
 }

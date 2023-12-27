@@ -147,6 +147,19 @@ namespace Rvl
         _entitiesData[parent].Children.erase(std::remove(_entitiesData[parent].Children.begin(), _entitiesData[parent].Children.end(), child));
     }
 
+    Entity Scene::GetByName(const std::string& name)
+    {
+        auto it = std::find_if(_entities.begin(), _entities.end(), [name](Entity entity)
+        {
+            return entity.Get<Identifier>().Name == name;
+        });
+
+        if (it != _entities.end())
+            return *it;
+        
+        return Entity();
+    }
+
     std::size_t EntityHasher::operator()(const Entity& k) const
     {
         return (std::hash<uint32>()(k.GetIdInt()));

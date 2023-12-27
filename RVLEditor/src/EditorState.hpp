@@ -14,6 +14,7 @@ public:
     void Start() override;
     void Update() override;
     void Render() override;
+    void PostRender() override;
 
 private:
     void RenderImGui();
@@ -26,6 +27,10 @@ private:
 
     Ref<HierarchyWindow> _hierarchy;
     Ref<InspectorWindow> _inspector;
+    Ref<PostProcess> _pp;
+
+    Ref<GLFrameBuffer> _first;
+    Ref<GLFrameBuffer> _second;
 
     bool _lock = false;
 

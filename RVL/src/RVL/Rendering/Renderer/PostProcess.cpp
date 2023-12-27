@@ -38,6 +38,34 @@ namespace Rvl
         _screenShader->Bind();
     }
 
+    PostProcess::PostProcess(const Ref<GLFrameBuffer>& fbo, const Ref<GLShaderProgram>& shader) : _fbo(fbo)
+    {
+        _screenVao = NewRef<GLVertexArray>();
+
+        std::vector<ScreenVertex>(screenVertices) = 
+        {
+            {{-1.f, -1.f}, {0.0f, 0.0f}},
+            {{1.f, -1.f}, {1.0f, 0.0f}},
+            {{1.f, 1.f}, {1.f, 1.f}},
+            {{-1.f, 1.f}, {0.f, 1.f}}
+        };
+
+        _screenVbo = NewRef<GLVertexBuffer>(screenVertices);
+        _screenVbo->SetLayout({
+            { ElementType::Vec2, 0, sizeof(ScreenVertex), false },
+            { ElementType::Vec2, offsetof(ScreenVertex, TexCoord), sizeof(ScreenVertex), false }
+        });
+
+        std::vector<uint32> screenIndicies = { 0, 1, 2, 2, 3, 0 };
+        Ref<GLIndexBuffer> ibo = NewRef<GLIndexBuffer>(screenIndicies);    
+
+        _screenVao->SetSingleVertexBuffer(_screenVbo);
+        _screenVao->AddIndexBuffer(ibo);
+
+        _screenShader = shader;
+        _screenShader->Bind();
+    }
+
     PostProcess::~PostProcess() {}
 
     void PostProcess::Begin()

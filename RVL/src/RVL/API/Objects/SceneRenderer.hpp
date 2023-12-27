@@ -12,7 +12,7 @@ namespace Rvl
 
         static void DrawSprite(Entity entity);
         static void DrawTileMap(Entity entity);
-        static void DrawModel(Entity entity);
+        static void DrawModel(Entity entity, const glm::vec3& cameraPos);
     };
 }
 

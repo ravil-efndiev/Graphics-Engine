@@ -18,7 +18,8 @@ EditorState::~EditorState() {}
 
 void EditorState::Start()
 {
-    CreateFrameBuffer({1000, 600});
+    _first = NewRef<GLFrameBuffer>(FrameBufferSpecification{500, 600, 4});
+    _second = NewRef<GLFrameBuffer>(FrameBufferSpecification{500, 600, 1});
 
     _camera = UserPerspectiveCamera::New({0.f, 0.f, 0.f}, 45.f);
 
@@ -50,11 +51,20 @@ void EditorState::Update()
 
 void EditorState::Render()
 {
-    DockspaceAndMenu();
-    RenderImGui();
+    _first->Bind();
+    RenderCommand::Clear();
+
     SceneRenderer::Render(_currentScene, _camera);
 }
 
+void EditorState::PostRender()
+{
+    _first->Bind2(_second);
+    _first->Unbind();
+    
+    DockspaceAndMenu();
+    RenderImGui();
+}
 void EditorState::RenderImGui()
 {
     auto stats = Renderer::GetStats();
@@ -81,11 +91,12 @@ void EditorState::RenderImGui()
         if (UIData.FBOViewport != ImToGlmVec2(viewportSize))
         {
             UIData.FBOViewport = {viewportSize.x, viewportSize.y};
-            _fbo->Resize(viewportSize.x, viewportSize.y);
+            _first->Resize(viewportSize.x, viewportSize.y);
+            _second->Resize(viewportSize.x, viewportSize.y);
         }
 
         ImGui::Image(
-            reinterpret_cast<ImTextureID>(_fbo->GetColorAttachment()), 
+            reinterpret_cast<ImTextureID>(_second->GetColorAttachment()), 
             ImGui::GetContentRegionAvail(), 
             ImVec2(0, 1), 
             ImVec2(1, 0)

@@ -9,7 +9,7 @@ namespace Rvl
 {
     struct InspectorUIData
     {
-        bool UseSubTexture = false;
+        bool UseSubTexture = true;
 
         glm::vec2 SubtexturePos {0.f};
         glm::vec2 SubtextureSize {0.f};
@@ -160,8 +160,6 @@ namespace Rvl
             auto sp = OpenFileDialogButton("Select##tls", "rtls", "./assets");
             if (!sp.empty()) UIData.TlsPath = sp;
 
-            DragInt("Tile scale", &tlm.Scale);
-
             if (ImGui::Button("Load##tlmload"))
             {
                 if (UIData.TlmPath.empty() || UIData.TlsPath.empty())
@@ -171,7 +169,6 @@ namespace Rvl
                 UIData.TlmLoadFlag = true;
             }
         });
-
 
         DrawComponent<Model>("Model", _selected, [](auto& model) 
         {

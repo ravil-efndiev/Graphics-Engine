@@ -15,7 +15,7 @@ namespace Rvl
         void ResetRotation();
 
         void SetPosition(const glm::vec3& pos);
-        glm::vec3 GetPosition() const;
+        glm::vec3 GetPosition() const override;
 
         glm::mat4 GetProjectionMatrix(float viewportWidth, float viewportHeight) const override;
         glm::mat4 GetViewMatrix() const override;

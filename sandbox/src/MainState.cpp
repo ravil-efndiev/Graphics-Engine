@@ -11,16 +11,16 @@ void MainState::Start()
 {
     _camera = UserPerspectiveCamera::New({0.f, 0.f, 0.f}, 45.f);
 
-    _directionalLight = _currentScene.NewEntity();
+    _directionalLight = _currentScene->NewEntity();
     _directionalLight.Add<DirectionalLight>(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.5f, 0.5f, 0.5f));
     _dlTf = &_directionalLight.Get<Transform>();
 
-    _model = _currentScene.NewEntity();
-    _model.Add<Model>("./assets/textures/backpack.obj");
+    _model = _currentScene->NewEntity();
+    _model.Add<Model>().Meshes = StandartMeshes::Get("Cube");
     _mat = &_model.Add<Material>(glm::vec3(0.9f, 0.8f, 0.5f), 0.5f);
 
-    _sprite = _currentScene.NewEntity();
-    (_sTf = &_sprite.Get<Transform>())->Position->x = 5.f;
+    _sprite = _currentScene->NewEntity(glm::vec3{5.f, 0.f, 5.f});
+    (_sTf = &_sprite.Get<Transform>());
     _sprite.Add<Sprite>("assets/textures/container.jpg", 1.f);
     _sprite.Add<PointLight>(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.5f, 0.5f, 0.5f), 0.09f, 0.032f);
 }
@@ -46,9 +46,7 @@ void MainState::Update()
 void MainState::Render()
 {
     RenderImGui();
-    
-    _currentScene.DrawModel(_model);
-    _currentScene.DrawSprite(_sprite);
+    SceneRenderer::Render(_currentScene, _camera);    
 }
 
 void MainState::PostRender()

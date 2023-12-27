@@ -14,7 +14,7 @@ Entities:
         TileMap:
           TileSetPath: assets/maps/test.rtls
           TileMapPath: assets/maps/test.rtlm
-          Scale: 6
+          Scale: 1
           ZIndex: 0
       - ID: 2
         Children:

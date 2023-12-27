@@ -13,8 +13,7 @@ namespace Rvl
     class GLFrameBuffer
     {
     public:
-        GLFrameBuffer(float width, float height);
-        GLFrameBuffer(const glm::vec2& size);
+        GLFrameBuffer(FrameBufferSpecification spec);
         ~GLFrameBuffer();
 
         GLuint GetColorAttachment();
@@ -22,6 +21,7 @@ namespace Rvl
         void Resize(float width, float height);
         void Resize(const glm::vec2& size);
         void Bind() const;
+        void Bind2(const Ref<GLFrameBuffer>& other) const;
         void Unbind() const;
 
         float GetWidth() const;
@@ -33,6 +33,8 @@ namespace Rvl
         GLuint _rboId;
 
         float _width, _height;
+
+        int _samples;
     };
 }
 

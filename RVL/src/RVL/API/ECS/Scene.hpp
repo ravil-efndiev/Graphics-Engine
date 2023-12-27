@@ -35,7 +35,6 @@ namespace Rvl
 
         void Start();
         void Update();
-
         void OnEvent(Event* event);
 
         std::vector<Entity> GetEntities() const;
@@ -43,6 +42,8 @@ namespace Rvl
         void AddChild(Entity parent, Entity child);
         void RemoveChild(Entity parent, Entity child);
         EntityData& GetEntityData(Entity entity);
+
+        Entity GetByName(const std::string& name);
 
         friend class Entity;
         friend class HierarchyWindow;

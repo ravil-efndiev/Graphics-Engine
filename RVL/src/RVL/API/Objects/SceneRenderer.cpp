@@ -11,19 +11,29 @@
 
 namespace Rvl
 {
+    static std::vector<Entity> prevEntities;
 
     void SceneRenderer::Render(const Ref<Scene>& scene, const Ref<UserCamera>& camera)
     {
-        for (Entity entity : scene->GetEntities())
+        auto entities = scene->GetEntities();
+        if (entities != prevEntities)
+        {
+            std::sort(entities.begin(), entities.end(), [&](Entity entity1, Entity entity2)
+            {   
+                return entity1.Get<Transform>().Position.z < entity2.Get<Transform>().Position.z;
+            });
+        }
+
+        for (Entity entity : entities)
         {
             if (entity.Has<Model>())
-                DrawModel(entity);   
-            
+                DrawModel(entity, camera->GetCamera()->GetPosition());   
+
             if (entity.Has<Sprite>())
                 DrawSprite(entity);   
-
+            
             if (entity.Has<TileMap>())
-                DrawTileMap(entity);   
+                DrawTileMap(entity);  
         }
     }
 
@@ -54,15 +64,17 @@ namespace Rvl
         }
     }
 
-    void SceneRenderer::DrawModel(Entity entity)
+    void SceneRenderer::DrawModel(Entity entity, const glm::vec3& cameraPos)
     {
         RVL_ASSERT((entity.Has<Model>()), "entity passed into DrawModel function doesn't have Model Component");
         RVL_ASSERT((entity.Has<Transform>()), "entity passed into DrawModel function doesn't have Transform Component");
         RVL_ASSERT((entity.Has<Material>()), "entity passed into DrawModel function doesn't have Material Component");
 
-        auto meshes = entity.Get<Model>().Meshes;
-        auto transform = entity.Get<Transform>();
-        auto material = entity.Get<Material>();
+        auto  meshes = entity.Get<Model>().Meshes;
+        auto  transform = entity.Get<Transform>();
+        auto& material = entity.Get<Material>();
+
+        material.SetUniform("u_ViewPos", cameraPos);
 
         for (auto& mesh : meshes)
         {

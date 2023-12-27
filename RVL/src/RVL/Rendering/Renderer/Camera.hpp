@@ -9,6 +9,7 @@ namespace Rvl
     public:
         virtual glm::mat4 GetProjectionMatrix(float, float) const = 0;
         virtual glm::mat4 GetViewMatrix() const = 0;
+        virtual glm::vec3 GetPosition() const = 0;
     };
 }
 

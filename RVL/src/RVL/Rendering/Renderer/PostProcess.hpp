@@ -20,6 +20,7 @@ namespace Rvl
     {
     public:
         PostProcess(const Ref<GLFrameBuffer>& fbo, const std::string& shader);
+        PostProcess(const Ref<GLFrameBuffer>& fbo, const Ref<GLShaderProgram>& shader);
         ~PostProcess();
 
         void Begin();

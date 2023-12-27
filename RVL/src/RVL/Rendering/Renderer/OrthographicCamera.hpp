@@ -12,7 +12,7 @@ namespace Rvl
         ~OrthographicCamera();
 
         void SetPosition(const glm::vec3& position);
-        glm::vec3 GetPosition() const;
+        glm::vec3 GetPosition() const override;
 
         void SetRotationZ(float rotationZ);
         float GetRotationZ() const;
