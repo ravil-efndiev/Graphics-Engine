@@ -2,6 +2,7 @@
 
 #include "HierarchyWindow.hpp"
 #include "InspectorWindow.hpp"
+#include "2D/ParticleEmitter.hpp"
 
 using namespace Rvl;
 
@@ -35,5 +36,7 @@ private:
     bool _lock = false;
 
     std::string _scenePath;
+
+    ParticleEmitter* emitter;
 };
 

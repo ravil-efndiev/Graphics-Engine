@@ -10,6 +10,9 @@ namespace Rvl
     struct InspectorUIData
     {
         bool UseSubTexture = true;
+        bool PSPreview = true;
+
+        int32 EmitTimes = 1;
 
         glm::vec2 SubtexturePos {0.f};
         glm::vec2 SubtextureSize {0.f};
@@ -294,6 +297,27 @@ namespace Rvl
                 material.Textures[1] = {GLTexture::TextureFromFile(path2), RVL_TEXTURE_SPECULAR, Utils::SplitStr(path2, '/').back(), path2};
         });
 
+        DrawComponent<ParticleEmitter>("Particle Emitter", _selected, [](auto& emitter) 
+        {   
+            ImGui::Checkbox("Preview", &UIData.PSPreview);
+            ImGui::ColorEdit4("Start Color", glm::value_ptr(emitter.Properties.ColorStart));
+            ImGui::ColorEdit4("End Color", glm::value_ptr(emitter.Properties.ColorEnd));
+            DragVec3("Position", &emitter.Properties.Position);
+            DragFloat("Start Size", &emitter.Properties.SizeStart);
+            DragFloat("End Size", &emitter.Properties.SizeEnd);
+            DragFloat("Size Variation", &emitter.Properties.SizeVariation);
+            DragFloat("RotationRate", &emitter.Properties.RotationRate);
+            DragVec3("Velocity", &emitter.Properties.Velocity);
+            DragVec3("Velocity Variation", &emitter.Properties.VelocityVariation);
+            DragFloat("Life Time", &emitter.Properties.LifeTime);
+            
+            if (UIData.PSPreview)
+            {
+                DragInt("Emit times: ", &UIData.EmitTimes);
+                emitter.Emit(UIData.EmitTimes);
+            }
+        });
+
         AddComponentMenu();
 
         ImGui::End();
@@ -321,6 +345,13 @@ namespace Rvl
             {
                 if (!_selected.Has<TileMap>())
                     _selected.Add<TileMap>();
+                ImGui::CloseCurrentPopup();
+            }
+
+            if (ImGui::Button("Particle Emitter##peadd"))
+            {
+                if (!_selected.Has<ParticleEmitter>())
+                    _selected.Add<ParticleEmitter>(1000);
                 ImGui::CloseCurrentPopup();
             }
 

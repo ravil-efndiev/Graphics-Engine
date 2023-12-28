@@ -41,6 +41,7 @@
 #include "RVL/API/ECS/2D/Animator2D.hpp"
 #include "RVL/API/ECS/2D/Movement2D.hpp"
 #include "RVL/API/ECS/2D/TileMap.hpp"
+#include "RVL/API/ECS/2D/ParticleEmitter.hpp"
 #include "RVL/API/ECS/2D/Sprite.hpp"
 #include "RVL/API/ECS/3D/Model.hpp"
 #include "RVL/API/ECS/3D/Material.hpp"

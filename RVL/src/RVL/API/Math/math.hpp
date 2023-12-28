@@ -25,9 +25,12 @@ namespace Rvl
     class Math
     {
     public:
+        static constexpr double PI = 3.14159265358979323846264338;
+
         static float Lerp(float current, float target, float t);
         static float Lerp(float current, float target, float t, float deadZone);
         static glm::vec3 Lerp(const glm::vec3& current, const glm::vec3& target, float t);
+        static glm::vec4 Lerp(const glm::vec4& current, const glm::vec4& target, float t);
     };
 }
 

@@ -25,6 +25,7 @@ namespace Rvl
         AddSystem(MaterialSystem);
         AddSystem(LightSystem);
         AddSystem(ModelLoaderSystem);
+        AddSystem(ParticleSystem);
     }
 
     Scene::~Scene() {}

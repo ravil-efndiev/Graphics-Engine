@@ -1,0 +1,51 @@
+Scene: Name
+Entities:
+  - ID: 0
+    Children:
+      []
+    Identifier:
+      Name: Directional light
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, -0.800000012, -0.400000006]
+      Scale: [1, 1, 1]
+    DirectionalLight:
+      Color: [0.899999976, 0.899999976, 0.899999976]
+      Ambient: [0.200000003, 0.200000003, 0.200000003]
+      Diffuse: [0.899999976, 0.899999976, 0.899999976]
+      Specular: [0.5, 0.5, 0.5]
+      Intensity: 1
+  - ID: 1048577
+    Children:
+      - ID: 2
+        Children:
+          []
+        Identifier:
+          Name: Entity4
+        Transform:
+          Position: [0, 0, 3.70000005]
+          Rotation: [0, 0, 0]
+          Scale: [2, 2, 2]
+        Material:
+          Ambient: [1, 1, 1]
+          Diffuse: [0.800000012, 0.800000012, 0.800000012]
+          Specular: [0.5, 0.5, 0.5]
+          Shininess: 120.900002
+          UseTextures: true
+          ProcessLightSources: true
+          TexturePath: /Users/Belokan/RVL Engine/RVLEditor/assets/textures/diffuse.jpg
+          SpecularMapPath: /Users/Belokan/RVL Engine/RVLEditor/assets/textures/specular.jpg
+        Model:
+          Path: /Users/Belokan/RVL Engine/RVLEditor/assets/textures/backpack.obj
+          MeshType: Custom
+    Identifier:
+      Name: Entity3
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    TileMap:
+      TileSetPath: /Users/Belokan/RVL Engine/RVLEditor/assets/maps/test.rtls
+      TileMapPath: /Users/Belokan/RVL Engine/RVLEditor/assets/maps/test.rtlm
+      Scale: 1
+      ZIndex: 0

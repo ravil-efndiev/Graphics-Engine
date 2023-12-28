@@ -17,4 +17,6 @@ namespace Rvl
     void LightSystem(const std::vector<Entity>& entities);
 
     void ModelLoaderSystem(const std::vector<Entity>& entities);
+
+    void ParticleSystem(const std::vector<Entity>& entities);
 }

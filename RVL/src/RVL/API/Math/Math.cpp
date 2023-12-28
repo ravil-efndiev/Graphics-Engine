@@ -18,4 +18,9 @@ namespace Rvl
     {
         return current * (1.f - t) + target * t;
     }
+
+    glm::vec4 Math::Lerp(const glm::vec4& current, const glm::vec4& target, float t)
+    {
+        return current * (1.f - t) + target * t;
+    }
 }

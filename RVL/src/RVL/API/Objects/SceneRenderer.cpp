@@ -3,11 +3,13 @@
 #include <API/ECS/Entity.hpp>
 #include <API/ECS/2D/Sprite.hpp>
 #include <API/ECS/2D/TileMap.hpp>
+#include <API/ECS/2D/ParticleEmitter.hpp>
 #include <API/ECS/3D/Model.hpp>
 #include <Rendering/OpenGL/GLTexture.hpp>
 #include <Rendering/Renderer/Renderer.hpp>
 #include <Rendering/Renderer/Renderer3D.hpp>
 #include <Rendering/Renderer/RenderCommand.hpp>
+#include "Math/Math.hpp"
 
 namespace Rvl
 {
@@ -26,20 +28,24 @@ namespace Rvl
 
         for (Entity entity : entities)
         {
-            if (entity.Has<Model>())
-                DrawModel(entity, camera->GetCamera()->GetPosition());   
 
             if (entity.Has<Sprite>())
                 DrawSprite(entity);   
             
             if (entity.Has<TileMap>())
                 DrawTileMap(entity);  
+
+            if (entity.Has<Model>())
+                DrawModel(entity, camera->GetCamera()->GetPosition());   
+
+            if (entity.Has<ParticleEmitter>())
+                DrawParticles(entity);  
         }
     }
 
     void SceneRenderer::DrawSprite(Entity entity)
     {
-        RVL_ASSERT((entity.Has<Sprite>() && entity.Has<Transform>()), "entity passed into DrawSprite function doesn't have Sprite Component");
+        RVL_ASSERT((entity.Has<Sprite>() && entity.Has<Transform>()), "SceneRenderer: entity passed into DrawSprite function doesn't have Sprite or Transform Component");
 
         auto sprite = entity.Get<Sprite>();
         auto transformCompoent = entity.Get<Transform>();
@@ -53,7 +59,7 @@ namespace Rvl
     
     void SceneRenderer::DrawTileMap(Entity entity)
     {
-        RVL_ASSERT((entity.Has<TileMap>() && entity.Has<Transform>()), "entity passed into DrawTileMap function doesn't have TileMap Component");
+        RVL_ASSERT((entity.Has<TileMap>() && entity.Has<Transform>()), "SceneRenderer: entity passed into DrawTileMap function doesn't have TileMap or Transform Component");
 
         auto tilemap = entity.Get<TileMap>();
         auto transform = entity.Get<Transform>();
@@ -66,9 +72,9 @@ namespace Rvl
 
     void SceneRenderer::DrawModel(Entity entity, const glm::vec3& cameraPos)
     {
-        RVL_ASSERT((entity.Has<Model>()), "entity passed into DrawModel function doesn't have Model Component");
-        RVL_ASSERT((entity.Has<Transform>()), "entity passed into DrawModel function doesn't have Transform Component");
-        RVL_ASSERT((entity.Has<Material>()), "entity passed into DrawModel function doesn't have Material Component");
+        RVL_ASSERT((entity.Has<Model>()), "SceneRenderer: entity passed into DrawModel function doesn't have Model Component");
+        RVL_ASSERT((entity.Has<Transform>()), "SceneRenderer: entity passed into DrawModel function doesn't have Transform Component");
+        RVL_ASSERT((entity.Has<Material>()), "SceneRenderer: entity passed into DrawModel function doesn't have Material Component");
 
         auto  meshes = entity.Get<Model>().Meshes;
         auto  transform = entity.Get<Transform>();
@@ -82,4 +88,26 @@ namespace Rvl
         }
     }
 
+    void SceneRenderer::DrawParticles(Entity entity)
+    {        
+        RVL_ASSERT((entity.Has<Transform>()), "SceneRenderer: entity passed into DrawParticles function doesn't have Transform Component");
+        RVL_ASSERT((entity.Has<ParticleEmitter>()), "SceneRenderer: entity passed into DrawParticles function doesn't have ParticleEmitter Component");
+
+        auto& emitter = entity.Get<ParticleEmitter>();
+        glm::vec3 pos = entity.Get<Transform>().Position;
+
+        for (auto& particle : emitter.Particles)
+        {
+            if (!particle.Active)
+                continue;
+
+            float life = particle.LifeRemaining / particle.LifeTime;
+            glm::vec4 color = Math::Lerp(particle.ColorEnd, particle.ColorStart, life);
+            color.a *= life;
+
+            float size = Math::Lerp(particle.SizeEnd, particle.SizeStart, life);
+
+            Renderer::DrawRect({particle.Position + pos, {0.f, 0.f, particle.Rotation}, {size, size, 0.f}}, color);
+        }
+    }
 }

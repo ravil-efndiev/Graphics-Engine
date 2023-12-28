@@ -55,6 +55,7 @@ add_library(RVL STATIC
     src/RVL/API/ECS/2D/TileMap.cpp
     src/RVL/API/ECS/2D/Movement2D.cpp
     src/RVL/API/ECS/2D/Animator2D.cpp
+    src/RVL/API/ECS/2D/ParticleEmitter.cpp
     src/RVL/API/ECS/3D/Model.cpp
     src/RVL/API/ECS/3D/DirectionalLight.cpp
     src/RVL/API/ECS/3D/PointLight.cpp

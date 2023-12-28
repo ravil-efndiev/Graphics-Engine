@@ -8,6 +8,7 @@
 struct EditorUIData 
 {
     ImGuiWindowFlags GlobalWinFlags;
+    ImVec2 SceneWindowPosition, MainWindowPosition;
     glm::vec2 FBOViewport;
 };
 
@@ -27,8 +28,7 @@ void EditorState::Start()
     _directionalLight.Add<DirectionalLight>(glm::vec3(0.9f, 0.9f, 0.9f));
 
     _tlm = _currentScene->NewEntity("tilemap");
-    auto tls = NewRef<TileSet>("assets/maps/test.rtls");
-    _tlmc = &_tlm.Add<TileMap>(tls, "assets/maps/test.rtlm", 1.f, 0.f);
+    emitter = &_tlm.Add<ParticleEmitter>(1000);
 
     _directionalLight.AddChild(_tlm);
 
@@ -68,6 +68,7 @@ void EditorState::PostRender()
 void EditorState::RenderImGui()
 {
     auto stats = Renderer::GetStats();
+    UIData.MainWindowPosition = ImGui::GetMainViewport()->Pos;
 
     ImGui::Begin("Statistics", nullptr, UIData.GlobalWinFlags);
         ImGui::Text("Application average %.1f FPS (%.3f ms/frame)", ImGui::GetIO().Framerate, 1000.0f / ImGui::GetIO().Framerate);
@@ -94,6 +95,8 @@ void EditorState::RenderImGui()
             _first->Resize(viewportSize.x, viewportSize.y);
             _second->Resize(viewportSize.x, viewportSize.y);
         }
+
+        UIData.SceneWindowPosition = ImGui::GetWindowPos();
 
         ImGui::Image(
             reinterpret_cast<ImTextureID>(_second->GetColorAttachment()), 

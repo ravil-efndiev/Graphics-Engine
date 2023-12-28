@@ -136,6 +136,18 @@ namespace Rvl
                 
                 ImGui::CloseCurrentPopup();
             }
+
+            if (ImGui::Button("Particle Emitter")) 
+            {
+                Entity entity = _scene->NewEntity();
+                entity.Add<ParticleEmitter>(1000);
+
+                if (parent.GetId() != entt::null)
+                    parent.AddChild(entity);
+                
+                ImGui::CloseCurrentPopup();
+            }
+            
             
             ImGui::Separator();
             ImGui::Text("3D Meshes");

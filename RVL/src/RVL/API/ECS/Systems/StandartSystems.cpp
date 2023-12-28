@@ -3,6 +3,7 @@
 #include "2D/Sprite.hpp"
 #include "2D/Movement2D.hpp"
 #include "2D/Animator2D.hpp"
+#include "2D/ParticleEmitter.hpp"
 #include "2D/TileMap.hpp"
 #include "3D/Material.hpp"
 #include "3D/DirectionalLight.hpp"
@@ -199,4 +200,32 @@ namespace Rvl
             }
         }
     }
+
+    void ParticleSystem(const std::vector<Entity>& entities)
+    {
+        for (auto entity : entities)
+        {
+            if (!entity.Has<ParticleEmitter>())
+                continue;
+
+            auto& emitter = entity.Get<ParticleEmitter>();
+
+            for (auto& particle : emitter.Particles)
+            {
+                if (!particle.Active)
+                    continue;
+                
+                if (particle.LifeRemaining <= 0.f)
+                {
+                    particle.Active = false;
+                    continue;
+                }
+
+                particle.LifeRemaining -= Time::DeltaTime();
+                particle.Position += particle.Velocity * (float)Time::DeltaTime();
+                particle.Rotation += particle.RotationRate * Time::DeltaTime();
+            }
+        }
+    }
+
 }

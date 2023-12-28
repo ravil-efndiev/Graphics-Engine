@@ -107,7 +107,7 @@ namespace Rvl
 
         ImGui::Text(" ");
 		ImGui::SameLine();
-		ImGui::DragInt("##int", value, 0.1f, 0.f, 0.f, "%.2f");
+		ImGui::DragInt("##int", value);
 		ImGui::PopItemWidth();
 
 		ImGui::Columns(1);
