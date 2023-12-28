@@ -1,16 +1,16 @@
 Scene: Name
 Entities:
-  - ID: 1048576
+  - ID: 0
     Children:
-      - ID: 1048577
+      - ID: 1
         Children:
           []
         Identifier:
           Name: Entity4
         Transform:
-          Position: [1.10000002, 0, 0]
+          Position: [1.10000002, 0, -0.200000003]
           Rotation: [0, 0, 0]
-          Scale: [2, 2, 2]
+          Scale: [3, 3, 3]
         ParticleEmitter:
           Position: [0, 0, 0]
           Velocity: [0, 0.600000024, 0]
@@ -24,7 +24,7 @@ Entities:
           UseTexture: true
           Texture: /Users/Belokan/RVL Engine/RVLEditor/assets/smoke-17.png
           Count: 1000
-          AdditiveBlend: true
+          AdditiveBlend: false
     Identifier:
       Name: Entity3
     Transform:

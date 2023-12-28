@@ -26,18 +26,9 @@ namespace Rvl
             });
         }
 
-        // drawing particle emitters in a separate draw call to change blend and depth values
-        glDepthFunc(GL_LEQUAL);
-        glDepthMask(GL_FALSE);
-        for (Entity entity : entities)
-        {
-            if (entity.Has<ParticleEmitter>())
-                DrawParticles(entity);  
-        }
-        Renderer::FlushAndReset();
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glDepthFunc(GL_LESS);
-        glDepthMask(GL_TRUE);
+        // drawing particle emitters in separate draw calls to change blend and depth values
+        // emitters that use additive blending are drawn in another separate draw call
+        DrawParticleEmitters(entities);
 
         for (Entity entity : entities)
         {
@@ -50,12 +41,11 @@ namespace Rvl
             if (entity.Has<Model>())
                 DrawModel(entity, camera->GetCamera()->GetPosition());   
         }
-
     }
 
     void SceneRenderer::DrawSprite(Entity entity)
     {
-        RVL_ASSERT((entity.Has<Sprite>() && entity.Has<Transform>()), "SceneRenderer: entity passed into DrawSprite function doesn't have Sprite or Transform Component");
+        RVL_ASSERT((entity.Has<Transform>()), "SceneRenderer: entity passed into DrawSprite function doesn't have Sprite or Transform Component");
 
         auto sprite = entity.Get<Sprite>();
         auto transformCompoent = entity.Get<Transform>();
@@ -69,7 +59,7 @@ namespace Rvl
     
     void SceneRenderer::DrawTileMap(Entity entity)
     {
-        RVL_ASSERT((entity.Has<TileMap>() && entity.Has<Transform>()), "SceneRenderer: entity passed into DrawTileMap function doesn't have TileMap or Transform Component");
+        RVL_ASSERT((entity.Has<Transform>()), "SceneRenderer: entity passed into DrawTileMap function doesn't have Transform Component");
 
         auto tilemap = entity.Get<TileMap>();
         auto transform = entity.Get<Transform>();
@@ -82,7 +72,6 @@ namespace Rvl
 
     void SceneRenderer::DrawModel(Entity entity, const glm::vec3& cameraPos)
     {
-        RVL_ASSERT((entity.Has<Model>()), "SceneRenderer: entity passed into DrawModel function doesn't have Model Component");
         RVL_ASSERT((entity.Has<Transform>()), "SceneRenderer: entity passed into DrawModel function doesn't have Transform Component");
         RVL_ASSERT((entity.Has<Material>()), "SceneRenderer: entity passed into DrawModel function doesn't have Material Component");
 
@@ -98,19 +87,53 @@ namespace Rvl
         }
     }
 
-    void SceneRenderer::DrawParticles(Entity entity)
+    void SceneRenderer::DrawParticleEmitters(const std::vector<Entity>& entities)
+    {
+        glDepthFunc(GL_LEQUAL);
+        glDepthMask(GL_FALSE);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+        for (Entity entity : entities)
+        {
+            if (entity.Has<ParticleEmitter>())
+            {
+                RVL_ASSERT((entity.Has<Transform>()), "SceneRenderer: entity passed into DrawParticles function doesn't have Transform Component");
+        
+                auto& emitter = entity.Get<ParticleEmitter>();
+                glm::vec3 pos = entity.Get<Transform>().Position;
+
+                if (!emitter.AdditiveBlend)
+                    continue;
+
+                DrawParticles(emitter, pos);
+            }
+        }
+
+        Renderer::FlushAndReset();
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        
+        for (Entity entity : entities)
+        {
+            if (entity.Has<ParticleEmitter>())
+            {
+                RVL_ASSERT((entity.Has<Transform>()), "SceneRenderer: entity passed into DrawParticles function doesn't have Transform Component");
+        
+                auto& emitter = entity.Get<ParticleEmitter>();
+                glm::vec3 pos = entity.Get<Transform>().Position;
+
+                if (emitter.AdditiveBlend)
+                    continue;
+
+                DrawParticles(emitter, pos);
+            }
+        }
+
+        Renderer::FlushAndReset();
+        glDepthFunc(GL_LESS);
+        glDepthMask(GL_TRUE);
+    }
+
+    void SceneRenderer::DrawParticles(ParticleEmitter& emitter, const glm::vec3& tfPos)
     {        
-        RVL_ASSERT((entity.Has<Transform>()), "SceneRenderer: entity passed into DrawParticles function doesn't have Transform Component");
-        RVL_ASSERT((entity.Has<ParticleEmitter>()), "SceneRenderer: entity passed into DrawParticles function doesn't have ParticleEmitter Component");
-
-        auto& emitter = entity.Get<ParticleEmitter>();
-        glm::vec3 pos = entity.Get<Transform>().Position;
-
-        if (emitter.AdditiveBlend)
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-        else
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
         for (auto& particle : emitter.Particles)
         {
             if (!particle.Active)
@@ -123,10 +146,9 @@ namespace Rvl
             float size = Math::Lerp(particle.SizeEnd, particle.SizeStart, life);
 
             if (particle.Texture && particle.UseTexture)
-                Renderer::DrawRect({particle.Position + pos, {0.f, 0.f, particle.Rotation}, {size, size, 0.f}}, particle.Texture, color);
+                Renderer::DrawRect({particle.Position + tfPos, {0.f, 0.f, particle.Rotation}, {size, size, 0.f}}, particle.Texture, color);
             else
-                Renderer::DrawRect({particle.Position + pos, {0.f, 0.f, particle.Rotation}, {size, size, 0.f}}, color);
-
+                Renderer::DrawRect({particle.Position + tfPos, {0.f, 0.f, particle.Rotation}, {size, size, 0.f}}, color);
         }
     }
 }
