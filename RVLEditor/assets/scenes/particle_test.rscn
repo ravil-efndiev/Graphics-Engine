@@ -1,0 +1,54 @@
+Scene: Name
+Entities:
+  - ID: 1048576
+    Children:
+      - ID: 1048577
+        Children:
+          []
+        Identifier:
+          Name: Entity4
+        Transform:
+          Position: [1.10000002, 0, 0]
+          Rotation: [0, 0, 0]
+          Scale: [2, 2, 2]
+        ParticleEmitter:
+          Position: [0, 0, 0]
+          Velocity: [0, 0.600000024, 0]
+          VelocityVariation: [0, 0, 0]
+          ColorStart: [1, 1, 1, 1]
+          ColorEnd: [0, 0, 0, 0]
+          SizeStart: 1
+          SizeEnd: 0.699999988
+          SizeVariation: 0
+          LifeTime: 3.29999995
+          UseTexture: true
+          Texture: /Users/Belokan/RVL Engine/RVLEditor/assets/smoke-17.png
+          Count: 1000
+          AdditiveBlend: true
+    Identifier:
+      Name: Entity3
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite:
+      Color: [1, 1, 1, 1]
+      Texture: ""
+      Scale: 1
+      UseTexture: false
+      UseFixedScale: false
+      SubTexture: [0, 0, 0, 0]
+    ParticleEmitter:
+      Position: [1.10000002, 0, 0]
+      Velocity: [0, 1.10000002, 0]
+      VelocityVariation: [0.300000012, 0.300000012, 0]
+      ColorStart: [1, 0.477876127, 0, 1]
+      ColorEnd: [0.349019617, 0.11678803, 0.032848902, 1]
+      SizeStart: 6.69999981
+      SizeEnd: 0.200000003
+      SizeVariation: 0.100000001
+      LifeTime: 1
+      UseTexture: false
+      Texture: ""
+      Count: 1000
+      AdditiveBlend: true

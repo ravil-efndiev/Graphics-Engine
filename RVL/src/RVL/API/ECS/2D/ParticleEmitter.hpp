@@ -45,6 +45,7 @@ namespace Rvl
         std::vector<Particle> Particles;
         ParticleProperties Properties;     
         bool AdditiveBlend = false;   
+        uint32 Count;
 
     private:
         uint32 _index = 0;

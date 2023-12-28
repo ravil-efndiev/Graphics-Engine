@@ -3,6 +3,7 @@
 
 #include "2D/Sprite.hpp"
 #include "2D/TileMap.hpp"
+#include "2D/ParticleEmitter.hpp"
 #include "3D/DirectionalLight.hpp"
 #include "3D/PointLight.hpp"
 #include "3D/Model.hpp"
@@ -202,6 +203,28 @@ namespace Rvl
             emitter << YAML::Key << "MeshType" << YAML::Value << type;
             emitter << YAML::EndMap;
         }
+
+        if (entity.Has<ParticleEmitter>())
+        {
+            auto& em = entity.Get<ParticleEmitter>();
+
+            emitter << YAML::Key << "ParticleEmitter" << YAML::Value;
+            emitter << YAML::BeginMap;
+            emitter << YAML::Key << "Position" << YAML::Value << em.Properties.Position;
+            emitter << YAML::Key << "Velocity" << YAML::Value << em.Properties.Velocity;
+            emitter << YAML::Key << "VelocityVariation" << YAML::Value << em.Properties.VelocityVariation;
+            emitter << YAML::Key << "ColorStart" << YAML::Value << em.Properties.ColorStart;
+            emitter << YAML::Key << "ColorEnd" << YAML::Value << em.Properties.ColorEnd;
+            emitter << YAML::Key << "SizeStart" << YAML::Value << em.Properties.SizeStart;
+            emitter << YAML::Key << "SizeEnd" << YAML::Value << em.Properties.SizeEnd;
+            emitter << YAML::Key << "SizeVariation" << YAML::Value << em.Properties.SizeVariation;
+            emitter << YAML::Key << "LifeTime" << YAML::Value << em.Properties.LifeTime;
+            emitter << YAML::Key << "UseTexture" << YAML::Value << em.Properties.UseTexture;
+            emitter << YAML::Key << "Texture" << YAML::Value << (em.Properties.Texture ? em.Properties.Texture->GetPath() : "");
+            emitter << YAML::Key << "Count" << YAML::Value << em.Count;
+            emitter << YAML::Key << "AdditiveBlend" << YAML::Value << em.AdditiveBlend;
+            emitter << YAML::EndMap;
+        }
         
         emitter << YAML::EndMap;
 
@@ -371,6 +394,34 @@ namespace Rvl
                 loadEntity.Add<Model>(path).Type = mtype;
             else
                 loadEntity.Add<Model>().Type = mtype;
+        }
+
+        auto pemitter = entity["ParticleEmitter"];
+        if (pemitter)
+        {
+            ParticleProperties props;
+            auto pos = pemitter["Position"];
+            auto vel = pemitter["Velocity"];
+            auto vv  = pemitter["VelocityVariation"];
+            auto cs  = pemitter["ColorStart"];
+            auto ce  = pemitter["ColorEnd"];
+            props.SizeStart     = pemitter["SizeStart"].as<float>();
+            props.SizeEnd       = pemitter["SizeEnd"].as<float>();
+            props.SizeVariation = pemitter["SizeVariation"].as<float>();
+            props.LifeTime      = pemitter["LifeTime"].as<float>();
+            props.UseTexture    = pemitter["UseTexture"].as<bool>();
+
+            props.Position = {pos[0].as<float>(), pos[1].as<float>(), pos[2].as<float>()};
+            props.Velocity = {vel[0].as<float>(), vel[1].as<float>(), vel[2].as<float>()};
+            props.VelocityVariation = {vv[0].as<float>(), vv[1].as<float>(), vv[2].as<float>()};
+            props.ColorStart = {cs[0].as<float>(), cs[1].as<float>(), cs[2].as<float>(), cs[3].as<float>()};
+            props.ColorEnd = {ce[0].as<float>(), ce[1].as<float>(), ce[2].as<float>(), ce[3].as<float>()};
+            
+            auto tex = pemitter["Texture"].as<std::string>();
+            if (!tex.empty())
+                props.Texture = NewRef<GLTexture>(tex);
+
+            loadEntity.Add<ParticleEmitter>(pemitter["Count"].as<uint32>(), props).AdditiveBlend = pemitter["AdditiveBlend"].as<bool>();
         }
 
         auto children = entity["Children"];

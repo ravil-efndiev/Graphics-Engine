@@ -14,7 +14,8 @@ namespace Rvl
 
     void ParticleEmitter::SetCount(uint32 count)
     {
-        Particles.resize(count);
+        Count = count;
+        Particles.resize(Count);
     }
 
     void ParticleEmitter::Emit(int32 times)
@@ -28,7 +29,7 @@ namespace Rvl
         {
             if (_index >= Particles.size())
                 _index = 0;
-                
+
             Particle& particle = Particles[_index];
             particle.Active = true;
             particle.Position = props.Position;
