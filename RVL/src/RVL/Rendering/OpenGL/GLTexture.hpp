@@ -36,7 +36,7 @@ namespace Rvl
 
     private:
         GLuint _textureId;
-        GLenum _dataFormat;
+        GLenum _dataFormat, _internalFormat;
         
         int _width, _height, _channels;        
 

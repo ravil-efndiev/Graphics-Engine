@@ -223,7 +223,7 @@ namespace Rvl
 
                 particle.LifeRemaining -= Time::DeltaTime();
                 particle.Position += particle.Velocity * (float)Time::DeltaTime();
-                particle.Rotation += particle.RotationRate * Time::DeltaTime();
+                particle.Rotation += 0.01f * Time::DeltaTime();
             }
         }
     }

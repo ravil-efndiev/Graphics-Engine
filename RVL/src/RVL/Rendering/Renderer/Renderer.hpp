@@ -40,9 +40,9 @@ namespace Rvl
         static Statistics GetStats();
         static void ResetStats();
 
+        static void FlushAndReset();
     private:
         static void BeginBatch();
-        static void FlushAndReset();
 
     private:
         static glm::mat4 _projview;

@@ -6,41 +6,50 @@
 
 namespace Rvl
 {
-    ParticleEmitter::ParticleEmitter(uint32 count)
+    ParticleEmitter::ParticleEmitter(uint32 count, const ParticleProperties& props)
     {
+        Properties = props;
         SetCount(count);
     }
 
     void ParticleEmitter::SetCount(uint32 count)
     {
-        _index = count - 1;
         Particles.resize(count);
     }
 
     void ParticleEmitter::Emit(int32 times)
     {
-        for (int i = 0; i < times; i++)
-        {
-            Particle& particle = Particles[_index];
-            particle.Active = true;
-            particle.Position = Properties.Position;
-            particle.Rotation = Random::NextFloat() * 2.f * Math::PI;
-            particle.RotationRate = Properties.RotationRate;
-            
-            particle.Velocity = Properties.Velocity;
-            particle.Velocity.x += Properties.VelocityVariation.x * Random::FloatRange(-0.5f, 0.5f);
-            particle.Velocity.y += Properties.VelocityVariation.y * Random::FloatRange(-0.5f, 0.5f);
-            
-            particle.ColorStart = Properties.ColorStart;
-            particle.ColorEnd = Properties.ColorEnd;
-
-            particle.LifeTime = Properties.LifeTime;
-            particle.LifeRemaining = Properties.LifeTime;
-            particle.SizeStart = Properties.SizeStart * Properties.SizeVariation * Random::FloatRange(-0.5f, 0.5f);
-            particle.SizeEnd = Properties.SizeEnd;
-
-            _index = --_index % Particles.size();
-        }
+        Emit(times, Properties);   
     }
 
+    void ParticleEmitter::Emit(int32 times, const ParticleProperties& props)
+    {
+        for (int i = 0; i < times; i++)
+        {
+            if (_index >= Particles.size())
+                _index = 0;
+                
+            Particle& particle = Particles[_index];
+            particle.Active = true;
+            particle.Position = props.Position;
+            particle.Rotation = Random::NextFloat() * 2.f * Math::PI;
+            
+            particle.Velocity = props.Velocity;
+            particle.Velocity.x += props.VelocityVariation.x * Random::FloatRange(-0.5f, 0.5f);
+            particle.Velocity.y += props.VelocityVariation.y * Random::FloatRange(-0.5f, 0.5f);
+            particle.Velocity.z += props.VelocityVariation.z * Random::FloatRange(-0.5f, 0.5f);
+            
+            particle.ColorStart = props.ColorStart;
+            particle.ColorEnd = props.ColorEnd;
+            particle.Texture = props.Texture;
+            particle.UseTexture = props.UseTexture;
+
+            particle.LifeTime = props.LifeTime;
+            particle.LifeRemaining = props.LifeTime;
+            particle.SizeStart = props.SizeStart * props.SizeVariation * Random::FloatRange(-0.5f, 0.5f);
+            particle.SizeEnd = props.SizeEnd;
+
+            _index++;
+        }
+    }
 }

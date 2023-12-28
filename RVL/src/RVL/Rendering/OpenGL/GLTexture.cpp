@@ -17,16 +17,17 @@ namespace Rvl
         byte* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 
         if (!data) 
-            throw Error("Failed to load texture", RVL_INTERNAL_ERROR);
+            throw Error("GLTexture: Failed to load texture", RVL_INTERNAL_ERROR);
 
         GLenum format = channels == 3 ? GL_RGB : GL_RGBA;
+        GLenum intFormat = channels == 3 ? GL_RGB8 : GL_RGBA8;
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, intFormat, width, height, 0, format, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
 
         glBindTexture(GL_TEXTURE_2D, 0);
@@ -68,7 +69,8 @@ namespace Rvl
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-        _dataFormat = GL_RGB;
+        _dataFormat = GL_RGB8;
+        _internalFormat = GL_RGB8;
 
         glTexImage2D(GL_TEXTURE_2D, 0, _dataFormat, _width, _height, 0, _dataFormat, GL_UNSIGNED_BYTE, nullptr);
         glGenerateMipmap(GL_TEXTURE_2D);
@@ -94,20 +96,26 @@ namespace Rvl
         _textureData = stbi_load(path.c_str(), &_width, &_height, &_channels, 0);
         if (!_textureData)
         {
-            throw Error("Failed to load texture", RVL_RUNTIME_ERROR);
+            throw Error("GLTexture: Failed to load texture", RVL_RUNTIME_ERROR);
         }
 
         glGenTextures(1, &_textureId);
         glBindTexture(GL_TEXTURE_2D, _textureId);
 
-        _dataFormat = _channels == 4 ? GL_RGBA : GL_RGB;
+        if (_channels < 3 || _channels > 4)
+            throw Error("GLTexture: Unsupported texture format", RVL_RUNTIME_ERROR);
+
+        _dataFormat = _channels == 3 ? GL_RGB : GL_RGBA;
+        _internalFormat = _channels == 3 ? GL_RGB8 : GL_RGBA8;
+
+        RVL_LOG(_channels);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, _dataFormat, _width, _height, 0, _dataFormat, GL_UNSIGNED_BYTE, _textureData);
+        glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, _width, _height, 0, _dataFormat, GL_UNSIGNED_BYTE, _textureData);
         glGenerateMipmap(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -116,7 +124,7 @@ namespace Rvl
 
     void GLTexture::SetData(byte* data, int channels)
     {
-        RVL_ASSERT((channels == 4 || channels == 3), "number of channels in texture can be only 4 or 3");
+        RVL_ASSERT((channels == 4 || channels == 3), "GLTexture: number of channels in texture can be only 4 or 3");
 
         _channels = channels;
         _dataFormat = _channels == 4 ? GL_RGBA : GL_RGB;

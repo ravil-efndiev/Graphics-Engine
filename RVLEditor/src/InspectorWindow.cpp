@@ -142,6 +142,9 @@ namespace Rvl
                             sprite.Subtexture->_width == sprite.Texture->GetWidth() && sprite.Subtexture->_height == sprite.Texture->GetHeight()))
                     sprite.ResetSubTexture();
             }
+
+            if (sprite.UseTexture && sprite.Texture)
+                ImGui::Image(reinterpret_cast<ImTextureID>(sprite.Texture->GetId()), ImVec2(60, 60), ImVec2(0, 0), ImVec2(1, 1), ImVec4(sprite.Color.r, sprite.Color.g, sprite.Color.b, sprite.Color.a));
         });
 
         DrawComponent<TileMap>("Tile Map", _selected, [](auto& tlm) 
@@ -306,7 +309,6 @@ namespace Rvl
             DragFloat("Start Size", &emitter.Properties.SizeStart);
             DragFloat("End Size", &emitter.Properties.SizeEnd);
             DragFloat("Size Variation", &emitter.Properties.SizeVariation);
-            DragFloat("RotationRate", &emitter.Properties.RotationRate);
             DragVec3("Velocity", &emitter.Properties.Velocity);
             DragVec3("Velocity Variation", &emitter.Properties.VelocityVariation);
             DragFloat("Life Time", &emitter.Properties.LifeTime);
@@ -316,6 +318,17 @@ namespace Rvl
                 DragInt("Emit times: ", &UIData.EmitTimes);
                 emitter.Emit(UIData.EmitTimes);
             }
+
+            ImGui::Checkbox("Additive Blending", &emitter.AdditiveBlend);
+            ImGui::Checkbox("Use Texture", &emitter.Properties.UseTexture);
+            ImGui::Text("Texture: %s", emitter.Properties.Texture ? Utils::SplitStr(emitter.Properties.Texture->GetPath(), '/').back().c_str() : "none");
+            ImGui::SameLine();
+            auto path = OpenFileDialogButton("Select##petex", "png,jpg");
+            if (!path.empty())
+                emitter.Properties.Texture = NewRef<GLTexture>(path);
+
+            if (emitter.Properties.Texture && emitter.Properties.UseTexture)
+                ImGui::Image(reinterpret_cast<ImTextureID>(emitter.Properties.Texture->GetId()), ImVec2(60, 60), ImVec2(0, 0), ImVec2(1, 1), ImVec4(emitter.Properties.ColorStart.r, emitter.Properties.ColorStart.g, emitter.Properties.ColorStart.b, emitter.Properties.ColorStart.a));
         });
 
         AddComponentMenu();

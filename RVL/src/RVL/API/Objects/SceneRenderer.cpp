@@ -26,9 +26,21 @@ namespace Rvl
             });
         }
 
+        // drawing particle emitters in a separate draw call to change blend and depth values
+        glDepthFunc(GL_LEQUAL);
+        glDepthMask(GL_FALSE);
         for (Entity entity : entities)
         {
+            if (entity.Has<ParticleEmitter>())
+                DrawParticles(entity);  
+        }
+        Renderer::FlushAndReset();
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDepthFunc(GL_LESS);
+        glDepthMask(GL_TRUE);
 
+        for (Entity entity : entities)
+        {
             if (entity.Has<Sprite>())
                 DrawSprite(entity);   
             
@@ -37,10 +49,8 @@ namespace Rvl
 
             if (entity.Has<Model>())
                 DrawModel(entity, camera->GetCamera()->GetPosition());   
-
-            if (entity.Has<ParticleEmitter>())
-                DrawParticles(entity);  
         }
+
     }
 
     void SceneRenderer::DrawSprite(Entity entity)
@@ -96,6 +106,11 @@ namespace Rvl
         auto& emitter = entity.Get<ParticleEmitter>();
         glm::vec3 pos = entity.Get<Transform>().Position;
 
+        if (emitter.AdditiveBlend)
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+        else
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
         for (auto& particle : emitter.Particles)
         {
             if (!particle.Active)
@@ -107,7 +122,11 @@ namespace Rvl
 
             float size = Math::Lerp(particle.SizeEnd, particle.SizeStart, life);
 
-            Renderer::DrawRect({particle.Position + pos, {0.f, 0.f, particle.Rotation}, {size, size, 0.f}}, color);
+            if (particle.Texture && particle.UseTexture)
+                Renderer::DrawRect({particle.Position + pos, {0.f, 0.f, particle.Rotation}, {size, size, 0.f}}, particle.Texture, color);
+            else
+                Renderer::DrawRect({particle.Position + pos, {0.f, 0.f, particle.Rotation}, {size, size, 0.f}}, color);
+
         }
     }
 }
