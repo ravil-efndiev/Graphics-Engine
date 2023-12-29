@@ -278,7 +278,7 @@ namespace Rvl
 
     void MapEditorState::Render()
     {
-        RenderCommand::SetClearColor(UIData.BackgroundColor);
+        RenderApi::SetClearColor(UIData.BackgroundColor);
 
         SceneRenderer::DrawTileMap(_tlmEntity);
 

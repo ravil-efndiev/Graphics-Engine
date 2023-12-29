@@ -1,12 +1,9 @@
 #include "EditorApp.hpp"
 #include "MapEditorState.hpp"
 
-#include <RVL/Core/EntryPoint.hpp>
 #include <RVL/Core/Utils/Files.hpp>
 
 #include <nfd.h>
-
-RVL_IMPL_INIT(Rvl::EditorApp);
 
 namespace Rvl
 { 

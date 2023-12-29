@@ -6,7 +6,7 @@
 #define RVL_BEHAVIOUR(Type) Type(Entity& self) : Behaviour(self) {} \
                            ~Type() {}
 
-#define RVL_ADD_BEHAVIOUR(scene, entity, type) scene.AddBehaviour(&entity.AddComponent<type>(entity));
+#define RVL_ADD_BEHAVIOUR(scene, entity, type) scene->AddBehaviour(&entity.Add<type>(entity));
 
 namespace Rvl
 {

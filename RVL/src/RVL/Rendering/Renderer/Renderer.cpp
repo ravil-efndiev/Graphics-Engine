@@ -117,7 +117,7 @@ namespace Rvl
             }
 
             GLTexture::ActivateTexture(0);
-            RenderCommand::DrawIndicies(_rectVao, _rectIndiciesCount);
+            RenderApi::DrawIndicies(_rectVao, _rectIndiciesCount);
 
             _textureShader->Unbind();
 
@@ -271,7 +271,7 @@ namespace Rvl
 
     glm::vec2 Renderer::ConvertToWorldCoords(double x, double y)
     {
-        glm::vec2 viewport = RenderCommand::GetViewport();
+        glm::vec2 viewport = RenderApi::GetViewport();
 
         glm::vec4 vec4viewport (0, 0, viewport.x, viewport.y);
         glm::vec3 pos (x, viewport.y - y, 0);
@@ -282,7 +282,7 @@ namespace Rvl
     
     glm::vec2 Renderer::ConvertToWorldCoords(double x, double y, const glm::vec2& pos)
     {
-        glm::vec2 viewport = RenderCommand::GetViewport();
+        glm::vec2 viewport = RenderApi::GetViewport();
 
         glm::vec4 vec4viewport (pos.x, pos.y, viewport.x, viewport.y);
         glm::vec3 posi (x, viewport.y - y, 0);

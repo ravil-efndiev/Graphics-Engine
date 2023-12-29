@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.1)
 
 project(editor)
 
-add_executable(editor src/Editor.cpp src/EditorState.cpp src/HierarchyWindow.cpp src/InspectorWindow.cpp src/GuiElements.cpp)
+add_executable(editor src/Main.cpp src/Editor.cpp src/EditorState.cpp)
 
 set_property(TARGET editor PROPERTY CXX_STANDARD 20)
 
-target_link_libraries(editor ${CMAKE_CURRENT_SOURCE_DIR}/vendor/libRVL.a ${CMAKE_CURRENT_SOURCE_DIR}/../RVL/vendor/assimp/bin/libassimp.5.2.5.dylib ${CMAKE_CURRENT_SOURCE_DIR}/../RVL/vendor/lib/libglfw3.a ${CMAKE_CURRENT_SOURCE_DIR}/vendor/nativefiledialog/build/lib/Release/x64/libnfd.a)
+target_link_libraries(editor ${CMAKE_CURRENT_SOURCE_DIR}/vendor/libRVL.a ${CMAKE_CURRENT_SOURCE_DIR}/../RVL/vendor/assimp/bin/libassimp.5.2.5.dylib ${CMAKE_CURRENT_SOURCE_DIR}/../RVL/vendor/lib/libglfw3.a ${CMAKE_CURRENT_SOURCE_DIR}/../RVL/vendor/nativefiledialog/build/lib/Release/x64/libnfd.a)
 
 set(CMAKE_BUILD_TYPE Release)
 
@@ -22,7 +22,7 @@ target_include_directories(editor PRIVATE ../RVL/vendor/include/glm)
 target_include_directories(editor PRIVATE ../RVL/vendor/imgui/)
 target_include_directories(editor PRIVATE ../RVL/src)
 target_include_directories(editor PRIVATE ../RVL/)
-target_include_directories(editor PRIVATE ./vendor/nativefiledialog/src/include)
+target_include_directories(editor PRIVATE ../RVL/vendor/nativefiledialog/src/include)
 
 include(GNUInstallDirs)
 

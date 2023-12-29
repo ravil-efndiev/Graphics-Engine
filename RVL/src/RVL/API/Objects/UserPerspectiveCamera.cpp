@@ -1,7 +1,7 @@
 #include "UserPerspectiveCamera.hpp"
 #include <API/Time.hpp>
 #include <API/Input.hpp>
-#include <Rendering/Renderer/RenderCommand.hpp>
+#include <Rendering/Renderer/RenderApi.hpp>
 
 namespace Rvl
 {
@@ -111,7 +111,7 @@ namespace Rvl
 
     void UserPerspectiveCamera::UpdateCursorRotation(float speed)
     {
-        glm::vec2 viewport = RenderCommand::GetViewport();
+        glm::vec2 viewport = RenderApi::GetViewport();
 
         _rotation += Input::GetCursorDelta() / (float)viewport.y * speed;
         

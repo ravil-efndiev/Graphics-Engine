@@ -36,12 +36,7 @@ namespace Rvl
 
     protected:
         Ref<UserCamera> _camera;
-        Ref<GLFrameBuffer> _fbo;
-
         Ref<Scene> _currentScene;
-
-        void CreateFrameBuffer();
-        void CreateFrameBuffer(const glm::vec2& size);
 
     private:
         RenderMode _mode;

@@ -27,9 +27,9 @@ namespace Rvl
         emitter << YAML::Key << "Scene" << YAML::Value << "Name";
         emitter << YAML::Key << "Entities" <<  YAML::Value << YAML::BeginSeq;
 
-        for (Entity entity : _scene->_entities)
+        for (Entity entity : _scene->GetEntities())
         {
-            for (auto entity2 : _scene->_entities)
+            for (auto entity2 : _scene->GetEntities())
             {
                 auto children = entity2.GetData().Children;
                 if (std::find(children.begin(), children.end(), entity) != children.end())

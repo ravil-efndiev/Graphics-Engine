@@ -52,7 +52,7 @@ void EditorState::Update()
 void EditorState::Render()
 {
     _first->Bind();
-    RenderCommand::Clear();
+    RenderApi::Clear();
 
     SceneRenderer::Render(_currentScene, _camera);
 }
@@ -83,7 +83,7 @@ void EditorState::RenderImGui()
     _hierarchy->ImGuiRender();
 
     _inspector->SetSelected(_hierarchy->GetSelected());
-    _inspector->ImGuiRedner();
+    _inspector->ImGuiRender();
 
     ImGui::Begin("Scene", nullptr, UIData.GlobalWinFlags);
         ImGui::BeginChild("Render");
@@ -109,7 +109,6 @@ void EditorState::RenderImGui()
 
     Renderer::ResetStats();
 }
-
 
 void EditorState::DockspaceAndMenu()
 {

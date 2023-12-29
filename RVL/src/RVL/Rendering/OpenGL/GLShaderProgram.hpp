@@ -26,7 +26,6 @@ namespace Rvl
         void SetUniformInt(const std::string &name, int uniform);
         void SetUniformIntArr(const std::string &name, int* arr, size_t count);
 
-
         void Bind();
         void Unbind();
 

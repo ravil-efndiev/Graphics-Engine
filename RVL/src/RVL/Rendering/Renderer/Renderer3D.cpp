@@ -23,7 +23,7 @@ namespace Rvl
     {
         shader.Bind();
         shader.SetUniformMat4("u_Projview", _projview);
-        RenderCommand::DrawIndicies(vertexArray);
+        RenderApi::DrawIndicies(vertexArray);
         shader.Unbind();
     }
 
@@ -31,7 +31,7 @@ namespace Rvl
     {
         shader->Bind();
         shader->SetUniformMat4("u_Projview", _projview);
-        RenderCommand::DrawIndicies(vertexArray);
+        RenderApi::DrawIndicies(vertexArray);
         shader->Unbind();
     }   
 
@@ -69,7 +69,7 @@ namespace Rvl
             GLTexture::BindTextureUnit(textures[i].Id, i);
         }
 
-        RenderCommand::DrawIndicies(mesh.GetVao());
+        RenderApi::DrawIndicies(mesh.GetVao());
         GLTexture::BindTextureUnit(0, 0);
         shader->Unbind();
     }

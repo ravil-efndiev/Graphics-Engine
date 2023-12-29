@@ -3,24 +3,19 @@
 #include "App.hpp"
 #include "Core.hpp"
 
-int main(int argc, char** argv)
+namespace Rvl
 {
-
-    Rvl::Ref<Rvl::App> currentApp = Rvl::OnInit();
-
-    if (!currentApp)
+    template<class T, class... Args>
+    Rvl::status_t InitializeApp(Args&& ...args)
     {
-        Rvl::Error::PrintErrorS("CurrentApp is not defined");
-        return RVL_RUNTIME_ERROR;
+        Rvl::Ref<Rvl::App> currentApp = App::New<T>(args...);
+
+        if (!currentApp)
+        {
+            Rvl::Error::PrintErrorS("CurrentApp is not defined");
+            return RVL_RUNTIME_ERROR;
+        }
+        Rvl::status_t exitStatus = currentApp->Run();
+        return exitStatus;
     }
-    Rvl::status_t exitStatus = currentApp->Run();
-
-#ifdef RVL_END_IMPL
-
-    rvl::OnEnd();
-
-#endif
-
-    return exitStatus;
 }
-

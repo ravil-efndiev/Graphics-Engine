@@ -15,6 +15,9 @@ add_library(RVL STATIC
     src/RVL/Core/Window.cpp
     src/RVL/Core/ImGuiController.cpp
     src/RVL/Core/Utils/Files.cpp
+    src/RVL/Core/UI/InspectorWindow.cpp
+    src/RVL/Core/UI/HierarchyWindow.cpp
+    src/RVL/Core/UI/GuiElements.cpp
     src/RVL/Events/EventListener.cpp
     src/RVL/Events/KeyEvents.cpp
     src/RVL/Events/WindowEvents.cpp
@@ -26,7 +29,7 @@ add_library(RVL STATIC
     src/RVL/Rendering/OpenGL/GLVertexArray.cpp
     src/RVL/Rendering/OpenGL/GLShaderProgram.cpp
     src/RVL/Rendering/OpenGL/GLFrameBuffer.cpp
-    src/RVL/Rendering/Renderer/RenderCommand.cpp
+    src/RVL/Rendering/Renderer/RenderApi.cpp
     src/RVL/Rendering/Renderer/Renderer.cpp
     src/RVL/Rendering/Renderer/Renderer3D.cpp
     src/RVL/Rendering/Renderer/Mesh.cpp
@@ -92,6 +95,7 @@ target_include_directories(RVL PUBLIC vendor/imgui)
 target_include_directories(RVL PUBLIC vendor/yaml/include/)
 target_include_directories(RVL PRIVATE vendor/include)
 target_include_directories(RVL PRIVATE vendor/include/glm)
+target_include_directories(RVL PRIVATE vendor/nativefiledialog/src/include)
 
 include(GNUInstallDirs)
 

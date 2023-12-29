@@ -46,9 +46,6 @@ namespace Rvl
         Entity GetByName(const std::string& name);
 
         friend class Entity;
-        friend class HierarchyWindow;
-        friend class SceneSerializer;
-
     private:
         entt::registry _registry;
         

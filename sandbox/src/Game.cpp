@@ -1,11 +1,8 @@
 #include "Game.hpp"
-#include <RVL/Core/EntryPoint.hpp>
 
 using namespace Rvl;
 
-RVL_IMPL_INIT(Game);
-
-Game::Game() : App(1000, 700, "rvl game") {}
+Game::Game(uint32 winWidth, uint32 winHeight, const std::string& name) : App(winWidth, winHeight, name) {}
 Game::~Game() {}
 
 void Game::Start()

@@ -27,27 +27,11 @@ namespace Rvl
         _currentScene->Update();
     }
 
-    void State::CreateFrameBuffer()
-    {
-        //_fbo = NewRef<GLFrameBuffer>(RenderCommand::GetViewport());
-    }
-
-    void State::CreateFrameBuffer(const glm::vec2& size)
-    {
-        //_fbo = NewRef<GLFrameBuffer>(size);
-    }
-
     void State::Begin()
     {
         if (!_camera) throw Error("camera was not initialized during scene creation", RVL_RUNTIME_ERROR);
 
-        glm::vec2 viewport = RenderCommand::GetViewport();
-
-        if (_fbo) 
-        {
-            //_fbo->Bind();
-            //R/enderCommand::Clear();
-        }
+        glm::vec2 viewport = RenderApi::GetViewport();
         
         if (_mode & RenderMode_3D)
             Renderer3D::BeginContext(_camera->GetCamera(), viewport.x, viewport.y);
@@ -60,7 +44,5 @@ namespace Rvl
     {
         if (_mode & RenderMode_2D)
             Renderer::EndContext();
-
-        //if (_fbo) _fbo->Unbind();
     }
 }

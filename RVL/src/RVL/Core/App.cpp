@@ -41,7 +41,7 @@ namespace Rvl
 
             while (!_window->Closes())
             {
-                RenderCommand::Clear();
+                RenderApi::Clear();
                 Time::Update();
                 ImGuiController::Update();
 
@@ -99,7 +99,7 @@ namespace Rvl
 
     void App::SetClearColor(const glm::vec3& color)
     {
-        RenderCommand::SetClearColor(color);
+        RenderApi::SetClearColor(color);
     }
 
     void App::Close()

@@ -4,8 +4,8 @@
 [submodule "RVL/vendor/include/glm"]
 	path = RVL/vendor/include/glm
 	url = https://github.com/g-truc/glm.git
-[submodule "RVLMapEditor/vendor/nativefiledialog"]
-	path = RVLEditor/vendor/nativefiledialog
+[submodule "RVL/vendor/nativefiledialog"]
+	path = RVL/vendor/nativefiledialog
 	url = https://github.com/mlabbe/nativefiledialog.git
 	
 [submodule "RVL/vendor/assimp"]

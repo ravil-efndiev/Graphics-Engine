@@ -1,7 +1,7 @@
 #pragma once
 
-#include "HierarchyWindow.hpp"
-#include "InspectorWindow.hpp"
+#include "Core/UI/HierarchyWindow.hpp"
+#include "Core/UI/InspectorWindow.hpp"
 #include "2D/ParticleEmitter.hpp"
 
 using namespace Rvl;

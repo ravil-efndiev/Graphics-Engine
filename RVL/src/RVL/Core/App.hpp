@@ -21,12 +21,12 @@ namespace Rvl
         void SetCursorLocked(bool flag);
         RenderMode GetStateRenderMode() const;
 
-        template <class T>
-        static Ref<App> New()
+        template <class T, class... Args>
+        static Ref<App> New(Args&& ...args)
         {
             RVL_ASSERT((_instance == nullptr), "instance of App already exists");
 
-            auto instance = NewRef<T>();
+            auto instance = NewRef<T>(args...);
             RVL_ASSERT((Utils::InstanceOf<App>(instance)), "specified type is not derieved from App");
 
             _instance = instance;
@@ -54,21 +54,4 @@ namespace Rvl
         static Ref<App> _instance;
     };
 
-    /*
-     * Entry function that must be defined in any RVL Application
-     * Mainly it should set rvl::CurrentApp to new instance of RvlApp inherited class 
-     * (app you are currently using)
-     * it can contain any functionallity but in any case it must initialize CurrentApp
-    */
-    extern Ref<App> OnInit() RVL_ENTRY_FUNCTION;
-
-    /*
-     * Entry function that can be defined in RVL Application
-     * To apply defenition in your app define RVL_END_IMPL macro before including header file
-     * If RVL_END_IMPL is defined the function will be called when the program ends
-    */
-    extern void OnEnd() RVL_ENTRY_FUNCTION;
 }
-
-#define RVL_IMPL_INIT(AppType) Rvl::Ref<Rvl::App> Rvl::OnInit() { return Rvl::App::New<AppType>(); }
-

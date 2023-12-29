@@ -70,9 +70,9 @@ namespace Rvl
 
     void PostProcess::Begin()
     {
-        _fbo->Resize(RenderCommand::GetViewport());
+        _fbo->Resize(RenderApi::GetViewport());
         _fbo->Bind();
-        RenderCommand::Clear();
+        RenderApi::Clear();
     }
 
     void PostProcess::End()

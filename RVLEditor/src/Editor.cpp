@@ -3,8 +3,6 @@
 
 using namespace Rvl;
 
-RVL_IMPL_INIT(Editor);
-
 Editor::Editor() : App(1000, 700, "RVL Editor") {}
 Editor::~Editor() {}
 

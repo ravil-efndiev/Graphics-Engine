@@ -8,7 +8,7 @@
 #include <Rendering/OpenGL/GLTexture.hpp>
 #include <Rendering/Renderer/Renderer.hpp>
 #include <Rendering/Renderer/Renderer3D.hpp>
-#include <Rendering/Renderer/RenderCommand.hpp>
+#include <Rendering/Renderer/RenderApi.hpp>
 #include "Math/Math.hpp"
 
 namespace Rvl
