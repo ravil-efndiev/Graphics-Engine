@@ -16,45 +16,47 @@ namespace Rvl
         glDeleteVertexArrays(1, &_vertexArrayId);
     }
 
-    void GLVertexArray::SetSingleVertexBuffer(const Ref<GLVertexBuffer>& vertexBuffer)
+    void GLVertexArray::AddVertexBuffer(const Ref<GLVertexBuffer>& vertexBuffer, bool perInstance)
     {
-        RVL_ASSERT(vertexBuffer->IsLayoutUsed(), "Vertex buffer doesn't have a proper layout");
-
         Bind();
         vertexBuffer->Bind();
 
-        auto layout = vertexBuffer->GetLayout();
-
-        for (int i = 0; i < layout.size(); i++)
+        if (vertexBuffer->IsLayoutUsed())
         {
-            glEnableVertexAttribArray(i);
+            auto layout = vertexBuffer->GetLayout();
 
-            glVertexAttribPointer(i,
-                    static_cast<int>(layout[i].Type),
+            for (int i = _currentAttribIndex; i < layout.size(); i++)
+            {
+                _currentAttribIndex++;
+                glEnableVertexAttribArray(i);
+
+                glVertexAttribPointer(i,
+                        static_cast<int>(layout[i].Type),
+                        GL_FLOAT, 
+                        layout[i].Normalized,
+                        layout[i].Size, (void*)layout[i].Offset);
+
+                if (perInstance)
+                    glVertexAttribDivisor(i, 1);
+            }   
+        }
+        else
+        {
+            glVertexAttribPointer(_currentAttribIndex,
+                    vertexBuffer->GetVerticiesCount(),
                     GL_FLOAT, 
-                    layout[i].Normalized,
-                    layout[i].Size, (void*)layout[i].Offset);
-        }   
+                    vertexBuffer->GetNormalized(),
+                    vertexBuffer->GetVerticiesCount() * sizeof(float), nullptr);
 
+            glEnableVertexAttribArray(_currentAttribIndex);
+
+            if (perInstance)
+                glVertexAttribDivisor(_currentAttribIndex, 1);
+
+            _currentAttribIndex++;
+        }
         vertexBuffer->Unbind();
-
-    }
-
-    void GLVertexArray::AddVertexBuffer(const Ref<GLVertexBuffer>& vertexBuffer)
-    {
-        Bind();
-        vertexBuffer->Bind();
-
-        glVertexAttribPointer(_currentAttribIndex,
-                vertexBuffer->GetVerticiesCount(),
-                GL_FLOAT, 
-                vertexBuffer->GetNormalized(),
-                vertexBuffer->GetVerticiesCount() * sizeof(float), nullptr);
-
-        glEnableVertexAttribArray(_currentAttribIndex);
-
         _vertexBuffers.push_back(vertexBuffer);
-        _currentAttribIndex++;
     }
 
     void GLVertexArray::AddIndexBuffer(const Ref<GLIndexBuffer>& indexBuffer)

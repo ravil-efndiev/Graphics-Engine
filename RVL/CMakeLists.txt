@@ -24,7 +24,8 @@ add_library(RVL STATIC
     src/RVL/Events/CursorEvents.cpp
     src/RVL/Events/MouseEvents.cpp
     src/RVL/Rendering/OpenGL/GLContext.cpp
-    src/RVL/Rendering/OpenGL/GLBuffer.cpp
+    src/RVL/Rendering/OpenGL/GLVertexBuffer.cpp
+    src/RVL/Rendering/OpenGL/GLIndexBuffer.cpp
     src/RVL/Rendering/OpenGL/GLTexture.cpp
     src/RVL/Rendering/OpenGL/GLVertexArray.cpp
     src/RVL/Rendering/OpenGL/GLShaderProgram.cpp

@@ -2,7 +2,6 @@
 
 #include <Rendering/OpenGL/GLFrameBuffer.hpp>
 #include <Rendering/OpenGL/GLVertexArray.hpp>
-#include <Rendering/OpenGL/GLBuffer.hpp>
 #include <Rendering/OpenGL/GLTexture.hpp>
 #include <Rendering/OpenGL/GLShaderProgram.hpp>
 
@@ -31,7 +30,7 @@ namespace Rvl
         std::vector<uint32> screenIndicies = { 0, 1, 2, 2, 3, 0 };
         Ref<GLIndexBuffer> ibo = NewRef<GLIndexBuffer>(screenIndicies);    
 
-        _screenVao->SetSingleVertexBuffer(_screenVbo);
+        _screenVao->AddVertexBuffer(_screenVbo);
         _screenVao->AddIndexBuffer(ibo);
 
         _screenShader = NewRef<GLShaderProgram>(shader + ".vert", shader + ".frag");
@@ -59,7 +58,7 @@ namespace Rvl
         std::vector<uint32> screenIndicies = { 0, 1, 2, 2, 3, 0 };
         Ref<GLIndexBuffer> ibo = NewRef<GLIndexBuffer>(screenIndicies);    
 
-        _screenVao->SetSingleVertexBuffer(_screenVbo);
+        _screenVao->AddVertexBuffer(_screenVbo);
         _screenVao->AddIndexBuffer(ibo);
 
         _screenShader = shader;

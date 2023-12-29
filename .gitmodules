@@ -11,9 +11,6 @@
 [submodule "RVL/vendor/yaml"]
 	path = RVL/vendor/yaml
 	url = https://github.com/jbeder/yaml-cpp.git
-[submodule "RVL/vendor/nativefiledialog/RVL/vendor/nativefiledialog"]
-	path = RVL/vendor/nativefiledialog/RVL/vendor/nativefiledialog
-	url = https://github.com/mlabbe/nativefiledialog.git
-[submodule "RVL/vendor/nativefiledialog/nativefiledialog"]
-	path = RVL/vendor/nativefiledialog/nativefiledialog
+[submodule "RVL/vendor/nativefiledialog"]
+	path = RVL/vendor/nativefiledialog
 	url = https://github.com/mlabbe/nativefiledialog.git

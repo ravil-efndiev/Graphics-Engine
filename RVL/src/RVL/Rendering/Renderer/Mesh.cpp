@@ -29,7 +29,7 @@ namespace Rvl
 
         _ibo = NewRef<GLIndexBuffer>(_indicies);
 
-        _vao->SetSingleVertexBuffer(_vbo);
+        _vao->AddVertexBuffer(_vbo);
         _vao->AddIndexBuffer(_ibo);
     }
 

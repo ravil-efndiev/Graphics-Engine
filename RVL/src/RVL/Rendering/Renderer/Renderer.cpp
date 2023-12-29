@@ -52,8 +52,7 @@ namespace Rvl
             { ElementType::Float, offsetof(RectVertex, TexIndex), sizeof(RectVertex), false },
         });
 
-
-        _rectVao->SetSingleVertexBuffer(_rectVbo);
+        _rectVao->AddVertexBuffer(_rectVbo);
 
 		std::vector<uint32_t> rectIndexData = std::vector<uint32_t>(_indiciesPerCall, 0);
 

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "GLBuffer.hpp"
+#include "GLVertexBuffer.hpp"
+#include "GLIndexBuffer.hpp"
 
 #define RVL_POSITION_LOCATION 0
 #define RVL_COLOR_LOCATION 1
@@ -14,9 +15,7 @@ namespace Rvl
         GLVertexArray();
         ~GLVertexArray();
 
-        void SetSingleVertexBuffer(const Ref<GLVertexBuffer>& vertexBuffer);
-
-        void AddVertexBuffer(const Ref<GLVertexBuffer>& vertexBuffer);
+        void AddVertexBuffer(const Ref<GLVertexBuffer>& vertexBuffer, bool perInstance = false);
         void AddIndexBuffer(const Ref<GLIndexBuffer>& indexBuffer);
 
         void Bind();

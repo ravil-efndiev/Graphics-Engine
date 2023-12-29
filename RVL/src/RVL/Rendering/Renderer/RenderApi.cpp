@@ -37,7 +37,7 @@ namespace Rvl
         int count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetIndiciesCount();
         vertexArray->Bind();
         vertexArray->BindIndexBuffer();
-        glDrawElementsInstanced(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr, 3);
+        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
         vertexArray->UnbindIndexBuffer();
         vertexArray->Unbind();
     }
@@ -50,6 +50,16 @@ namespace Rvl
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
         vertexArray.UnbindIndexBuffer();
         vertexArray.Unbind();
+    }
+
+    void RenderApi::DrawIndiciesInstanced(const Ref<GLVertexArray>& vertexArray, int instances, int indexCount)
+    {
+        int count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetIndiciesCount();
+        vertexArray->Bind();
+        vertexArray->BindIndexBuffer();
+        glDrawElementsInstanced(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr, instances);
+        vertexArray->UnbindIndexBuffer();
+        vertexArray->Unbind();
     }
     
     void RenderApi::DrawLines(const Ref<GLVertexArray>& vertexArray, int vertexCount)
