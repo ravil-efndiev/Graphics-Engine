@@ -37,7 +37,7 @@ namespace Rvl
         int count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetIndiciesCount();
         vertexArray->Bind();
         vertexArray->BindIndexBuffer();
-        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+        glDrawElementsInstanced(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr, 3);
         vertexArray->UnbindIndexBuffer();
         vertexArray->Unbind();
     }
