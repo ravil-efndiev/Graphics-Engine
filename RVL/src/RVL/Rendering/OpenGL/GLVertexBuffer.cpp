@@ -83,7 +83,6 @@ namespace Rvl
         glBindBuffer(GL_ARRAY_BUFFER, _bufferId);
         glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-        RVL_LOG((std::to_string(size) + " " + std::to_string(_bufferId)));
     }
 
     void GLVertexBuffer::ReallocData(void* data, size_t size)

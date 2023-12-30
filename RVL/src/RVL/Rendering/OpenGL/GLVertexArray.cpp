@@ -48,9 +48,10 @@ namespace Rvl
                 }
                 else
                 {
-                    glEnableVertexAttribArray(_currentAttribIndex);
+                    _currentAttribIndex++;
+                    glEnableVertexAttribArray(i);
 
-                    glVertexAttribPointer(_currentAttribIndex,
+                    glVertexAttribPointer(i,
                         static_cast<int>(layout[i].Type),
                         GL_FLOAT, 
                         layout[i].Normalized,
@@ -59,7 +60,6 @@ namespace Rvl
                     if (perInstance)
                         glVertexAttribDivisor(_currentAttribIndex, 1);
 
-                    _currentAttribIndex++;
                 }
             }   
         }
