@@ -11,6 +11,7 @@ namespace Rvl
         Vec2  = 2,
         Vec3  = 3,
         Vec4  = 4,
+        Mat4  = 4,
     };
     
     struct LayoutElement
@@ -26,6 +27,7 @@ namespace Rvl
     class GLVertexBuffer
     {
     public:
+        GLVertexBuffer();
         GLVertexBuffer(size_t size, int components, bool normalized = GL_FALSE);
 
         template <class T>
@@ -36,11 +38,11 @@ namespace Rvl
             glBufferData(GL_ARRAY_BUFFER, verticies.size() * sizeof(T), verticies.data(), GL_STATIC_DRAW);   
         }
 
-  
         GLVertexBuffer(const std::vector<float>& verticies, bool normalized = GL_FALSE);
         GLVertexBuffer(const std::vector<glm::vec2>& verticies, bool normalized = GL_FALSE);
         GLVertexBuffer(const std::vector<glm::vec3>& verticies, bool normalized = GL_FALSE);
         GLVertexBuffer(const std::vector<glm::vec4>& verticies, bool normalized = GL_FALSE);
+        GLVertexBuffer(const std::vector<glm::mat4>& matricies, bool normalized = GL_FALSE);
 
         ~GLVertexBuffer();
 
@@ -48,6 +50,7 @@ namespace Rvl
         void Unbind();
 
         void SetData(void* data, size_t size);
+        void ReallocData(void* data, size_t size);
 
         int GetVerticiesCount() const;
         bool GetNormalized() const;

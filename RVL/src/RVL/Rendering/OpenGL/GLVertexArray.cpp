@@ -25,28 +25,51 @@ namespace Rvl
         {
             auto layout = vertexBuffer->GetLayout();
 
-            for (int i = _currentAttribIndex; i < layout.size(); i++)
+            for (int i = 0; i < layout.size(); i++)
             {
-                _currentAttribIndex++;
-                glEnableVertexAttribArray(i);
+                if (layout[i].Type == ElementType::Mat4)
+                {
+                    uint16 count = static_cast<uint16>(layout[i].Type);
+					for (uint16 j = 0; j < count; j++)
+					{
+						glEnableVertexAttribArray(_currentAttribIndex);
+						glVertexAttribPointer(_currentAttribIndex,
+							count,
+							GL_FLOAT,
+							layout[i].Normalized,
+							layout[i].Size,
+							(void*)(layout[i].Offset + sizeof(float) * count * j));
 
-                glVertexAttribPointer(i,
+                        if (perInstance)
+						    glVertexAttribDivisor(_currentAttribIndex, 1);
+                            
+						_currentAttribIndex++;
+					}
+                }
+                else
+                {
+                    glEnableVertexAttribArray(_currentAttribIndex);
+
+                    glVertexAttribPointer(_currentAttribIndex,
                         static_cast<int>(layout[i].Type),
                         GL_FLOAT, 
                         layout[i].Normalized,
                         layout[i].Size, (void*)layout[i].Offset);
 
-                if (perInstance)
-                    glVertexAttribDivisor(i, 1);
+                    if (perInstance)
+                        glVertexAttribDivisor(_currentAttribIndex, 1);
+
+                    _currentAttribIndex++;
+                }
             }   
         }
         else
         {
             glVertexAttribPointer(_currentAttribIndex,
-                    vertexBuffer->GetVerticiesCount(),
-                    GL_FLOAT, 
-                    vertexBuffer->GetNormalized(),
-                    vertexBuffer->GetVerticiesCount() * sizeof(float), nullptr);
+                vertexBuffer->GetVerticiesCount(),
+                GL_FLOAT, 
+                vertexBuffer->GetNormalized(),
+                vertexBuffer->GetVerticiesCount() * sizeof(float), nullptr);
 
             glEnableVertexAttribArray(_currentAttribIndex);
 
@@ -80,6 +103,11 @@ namespace Rvl
     Ref<GLIndexBuffer> GLVertexArray::GetIndexBuffer()
     {
         return _indexBuffer;
+    }
+
+    std::vector<Ref<GLVertexBuffer>> GLVertexArray::GetVertexBuffers()
+    {
+        return _vertexBuffers;
     }
 
     void GLVertexArray::BindIndexBuffer()

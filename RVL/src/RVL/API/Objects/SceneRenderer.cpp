@@ -32,6 +32,10 @@ namespace Rvl
 
         for (Entity entity : entities)
         {
+            EntityData& data = entity.GetData();
+            if (data.IsInstance)
+                continue;
+
             if (entity.Has<Sprite>())
                 DrawSprite(entity);   
             
@@ -39,7 +43,7 @@ namespace Rvl
                 DrawTileMap(entity);  
 
             if (entity.Has<Model>())
-                DrawModel(entity, camera->GetCamera()->GetPosition());   
+                DrawModel(entity, camera->GetCamera()->GetPosition(), data);   
         }
     }
 
@@ -70,21 +74,27 @@ namespace Rvl
         }
     }
 
-    void SceneRenderer::DrawModel(Entity entity, const glm::vec3& cameraPos)
+    void SceneRenderer::DrawModel(Entity entity, const glm::vec3& cameraPos, EntityData& data)
     {
         RVL_ASSERT((entity.Has<Transform>()), "SceneRenderer: entity passed into DrawModel function doesn't have Transform Component");
         RVL_ASSERT((entity.Has<Material>()), "SceneRenderer: entity passed into DrawModel function doesn't have Material Component");
 
-        auto  meshes = entity.Get<Model>().Meshes;
-        auto  transform = entity.Get<Transform>();
+        auto& meshes = entity.Get<Model>().Meshes;
         auto& material = entity.Get<Material>();
+        auto  transform = entity.Get<Transform>();
 
         material.SetUniform("u_ViewPos", cameraPos);
 
+        std::vector<glm::mat4> transforms {transform.GetMatrix()};
+        for (auto instance : data.Instances)
+        {
+            transforms.push_back(instance->GetMatrix());
+        }
         for (auto& mesh : meshes)
         {
-            Renderer3D::SubmitMesh(mesh, material, (Transform)transform);
+            Renderer3D::SubmitMeshInstanced(mesh, material, transforms, transforms.size() > data.LastTransformsSize);
         }
+        data.LastTransformsSize = transforms.size();
     }
 
     void SceneRenderer::DrawParticleEmitters(const std::vector<Entity>& entities)

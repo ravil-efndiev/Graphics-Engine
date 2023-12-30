@@ -33,6 +33,11 @@ namespace Rvl
         _scene->RemoveChild(*this, child);
     }
 
+    Entity Entity::Instantiate()
+    {
+        return _scene->Instantiate(*this);
+    }
+
     EntityData& Entity::GetData()
     {
         return _scene->GetEntityData(*this);

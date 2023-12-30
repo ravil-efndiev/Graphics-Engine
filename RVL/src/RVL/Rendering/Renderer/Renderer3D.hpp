@@ -24,9 +24,20 @@ namespace Rvl
 
         static void SubmitMesh(const Mesh& mesh, const Material& material, const Transform& transform);
 
+        static void SubmitMeshInstanced(Mesh& mesh, const Material& material, std::vector<glm::mat4>& transform, bool reallocBuffer);
+
+        struct Statistics
+        {
+            int DrawCalls = 0;
+        };
+
+        static Statistics GetStats();
+        static void ResetStats();
+
     private:
         static glm::mat4 _projview;
 
+        static Statistics _stats;
     };
 }
 

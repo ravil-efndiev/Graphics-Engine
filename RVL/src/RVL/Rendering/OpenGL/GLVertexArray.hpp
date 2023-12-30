@@ -22,6 +22,7 @@ namespace Rvl
         void Unbind();
 
         Ref<GLIndexBuffer> GetIndexBuffer();
+        std::vector<Ref<GLVertexBuffer>> GetVertexBuffers();
 
         void BindIndexBuffer();
         void UnbindIndexBuffer();

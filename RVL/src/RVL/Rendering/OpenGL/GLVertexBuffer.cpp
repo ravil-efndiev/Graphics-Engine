@@ -2,6 +2,11 @@
 
 namespace Rvl
 {
+    GLVertexBuffer::GLVertexBuffer()
+    {
+        glGenBuffers(1, &_bufferId);
+    }
+
     GLVertexBuffer::GLVertexBuffer(size_t size, int components, bool normalized) : _normalized(normalized)
     {
         _verticiesCount = components;
@@ -30,6 +35,15 @@ namespace Rvl
         : _normalized(normalized)
     {
         CreateBuffer(verticies, 4);
+    }
+
+    GLVertexBuffer::GLVertexBuffer(const std::vector<glm::mat4>& matricies, bool normalized)
+    {
+        _verticiesCount = 16;
+
+        glGenBuffers(1, &_bufferId);
+        glBindBuffer(GL_ARRAY_BUFFER, _bufferId);
+        glBufferData(GL_ARRAY_BUFFER, matricies.size() * sizeof(glm::mat4), matricies.data(), GL_DYNAMIC_DRAW);
     }
 
     GLVertexBuffer::~GLVertexBuffer()
@@ -68,6 +82,15 @@ namespace Rvl
     {
         glBindBuffer(GL_ARRAY_BUFFER, _bufferId);
         glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        RVL_LOG((std::to_string(size) + " " + std::to_string(_bufferId)));
+    }
+
+    void GLVertexBuffer::ReallocData(void* data, size_t size)
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, _bufferId);
+        glBufferData(GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
     int GLVertexBuffer::GetVerticiesCount() const

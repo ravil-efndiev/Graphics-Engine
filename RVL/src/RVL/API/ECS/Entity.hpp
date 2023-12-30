@@ -8,6 +8,9 @@ namespace Rvl
     {
         std::vector<Entity> Children;
         Transform LastTransformValue;
+        std::vector<Transform*> Instances;
+        size_t LastTransformsSize = 0;
+        bool IsInstance = false;
     };
 
     class Entity
@@ -50,6 +53,8 @@ namespace Rvl
 
         void AddChild(Entity child);
         void RemoveChild(Entity child);
+        Entity Instantiate();
+
         EntityData& GetData();
 
     private:

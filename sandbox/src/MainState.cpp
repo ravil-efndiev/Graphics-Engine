@@ -16,8 +16,12 @@ void MainState::Start()
     _dlTf = &_directionalLight.Get<Transform>();
 
     _model = _currentScene->NewEntity();
-    _model.Add<Model>("assets/textures/backpack.obj");
+    _model.Add<Model>().Meshes = StandartMeshes::Get("Cube");
     _mat = &_model.Add<Material>(glm::vec3(0.9f, 0.8f, 0.5f), 0.5f);
+    for (int i = 0; i < 1000; i++)
+    {
+        _model.Instantiate();
+    }
 
     _sprite = _currentScene->NewEntity(glm::vec3{5.f, 0.f, 5.f});
     (_sTf = &_sprite.Get<Transform>());

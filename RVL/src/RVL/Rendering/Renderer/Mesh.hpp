@@ -24,6 +24,8 @@ namespace Rvl
 
         Ref<GLVertexArray> GetVao() const;
 
+        friend class Renderer3D;
+
     private:
         void Generate();
 
@@ -33,6 +35,8 @@ namespace Rvl
         Ref<GLVertexArray> _vao;
         Ref<GLVertexBuffer> _vbo;
         Ref<GLIndexBuffer> _ibo;
+
+        bool _instanceVboLoaded = false;
     };
 }
 

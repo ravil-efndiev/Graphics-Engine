@@ -35,7 +35,7 @@ namespace Rvl
     void StandartShaderLib::Init()
     {
         _lib = NewRef<ShaderLibrary>();
-        _lib->Load("Light", "standart_assets/shaders/light");
+        _lib->Load("Light", "standart_assets/shaders/mesh");
         _lib->Load("Screen", "standart_assets/shaders/screen");
         //_lib->Load("Particle", "standart_assets/shaders/particle");
     }

@@ -22,7 +22,7 @@ namespace Rvl
     {
         for (auto entity : entities)
         {
-            if (!entity.Has<Transform>())
+            if (!entity.Has<Transform>() || entity.GetData().IsInstance)
                 continue;
             
             EntityData& data = entity.GetData();
@@ -50,7 +50,7 @@ namespace Rvl
     {
         for (auto entity : entities)
         {
-            if (!entity.Has<Sprite>() || entity.Has<Model>())
+            if (!entity.Has<Sprite>() || entity.Has<Model>() || entity.GetData().IsInstance)
                 continue;
 
             RVL_ASSERT(entity.Has<Transform>(), "entity with sprite component doesn't have transform component");
@@ -69,7 +69,7 @@ namespace Rvl
     {
         for (auto entity : entities)
         {
-            if (!entity.Has<Movement2D>())
+            if (!entity.Has<Movement2D>() || entity.GetData().IsInstance)
                 continue;
 
             RVL_ASSERT(entity.Has<Transform>(), "entity with movement component doesn't have transform component");
@@ -84,7 +84,7 @@ namespace Rvl
     {
         for (auto entity : entities)
         {
-            if (!entity.Has<Animator2D>())
+            if (!entity.Has<Animator2D>() || entity.GetData().IsInstance)
                 continue;
 
             RVL_ASSERT(entity.Has<Sprite>(), "entity with animation component doesn't have a sprite component");
@@ -98,7 +98,7 @@ namespace Rvl
     {
         for (auto entity : entities)
         {
-            if (!entity.Has<Material>())
+            if (!entity.Has<Material>() || entity.GetData().IsInstance)
                 continue;
 
             auto& material = entity.Get<Material>();
@@ -152,6 +152,7 @@ namespace Rvl
     {
         for (auto entity : entities)
         {
+            if (entity.GetData().IsInstance) continue;
             if (entity.Has<DirectionalLight>())
             {
                 auto& dl = entity.Get<DirectionalLight>();
@@ -173,7 +174,7 @@ namespace Rvl
     {
         for (auto entity : entities)
         {
-            if (!entity.Has<Model>())
+            if (!entity.Has<Model>() || entity.GetData().IsInstance)
                 continue;
             
             auto& model = entity.Get<Model>();
@@ -205,7 +206,7 @@ namespace Rvl
     {
         for (auto entity : entities)
         {
-            if (!entity.Has<ParticleEmitter>())
+            if (!entity.Has<ParticleEmitter>() || entity.GetData().IsInstance)
                 continue;
 
             auto& emitter = entity.Get<ParticleEmitter>();

@@ -148,6 +148,29 @@ namespace Rvl
         _entitiesData[parent].Children.erase(std::remove(_entitiesData[parent].Children.begin(), _entitiesData[parent].Children.end(), child));
     }
 
+    Entity Scene::Instantiate(Entity entity)
+    {
+        entt::entity cloneId = _registry.create();
+        for(auto [id, storage]: _registry.storage()) 
+        {
+            if(storage.contains(entity.GetId())) 
+            {
+                storage.emplace(cloneId, storage.get(entity.GetId()));
+            }
+        }
+        
+        Entity clone (this, cloneId);
+        entityNum++;
+        clone.Get<Identifier>().Name = clone.Get<Identifier>().Name + std::to_string(entityNum);
+        clone.Get<Transform>().Position.x = 5;
+        _entities.push_back(clone);
+        EntityData data;
+        data.IsInstance = true;
+        _entitiesData.emplace(clone, data);
+        _entitiesData[entity].Instances.push_back(&clone.Get<Transform>());
+        return clone;
+    }
+
     Entity Scene::GetByName(const std::string& name)
     {
         auto it = std::find_if(_entities.begin(), _entities.end(), [name](Entity entity)

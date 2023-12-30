@@ -332,6 +332,8 @@ namespace Rvl
         });
 
         AddComponentMenu();
+        if (ImGui::Button("Clone"))
+            _selected.Instantiate();
 
         ImGui::End();
     }

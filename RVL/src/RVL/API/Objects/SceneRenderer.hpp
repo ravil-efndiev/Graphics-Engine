@@ -5,6 +5,7 @@
 namespace Rvl
 {
     class ParticleEmitter;
+    struct EntityData;
 
     class SceneRenderer
     {
@@ -13,7 +14,7 @@ namespace Rvl
 
         static void DrawSprite(Entity entity);
         static void DrawTileMap(Entity entity);
-        static void DrawModel(Entity entity, const glm::vec3& cameraPos);
+        static void DrawModel(Entity entity, const glm::vec3& cameraPos, EntityData& data);
 
     private:
         static void DrawParticleEmitters(const std::vector<Entity>& entities);

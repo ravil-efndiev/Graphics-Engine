@@ -31,6 +31,7 @@ void EditorState::Start()
     emitter = &_tlm.Add<ParticleEmitter>(1000);
 
     _directionalLight.AddChild(_tlm);
+    _currentScene->Instantiate(_directionalLight);
 
     _hierarchy = NewRef<HierarchyWindow>(_currentScene);
     _inspector = NewRef<InspectorWindow>();
@@ -68,16 +69,23 @@ void EditorState::PostRender()
 void EditorState::RenderImGui()
 {
     auto stats = Renderer::GetStats();
+    auto stats2 = Renderer3D::GetStats();
     UIData.MainWindowPosition = ImGui::GetMainViewport()->Pos;
 
     ImGui::Begin("Statistics", nullptr, UIData.GlobalWinFlags);
         ImGui::Text("Application average %.1f FPS (%.3f ms/frame)", ImGui::GetIO().Framerate, 1000.0f / ImGui::GetIO().Framerate);
         ImGui::Text("Application immidieate %.1f FPS (%.3f ms/frame)", 1.f / Time::DeltaTime(), 1000.f / (1.f / Time::DeltaTime()));
         ImGui::Separator();
+
+        ImGui::Text("Batch Renderer stats");
         ImGui::Text("Draw calls: %d", stats.DrawCalls);
         ImGui::Text("Total verticies: %d", stats.VerticiesCount);
         ImGui::Text("Total indicies: %d", stats.IndiciesCount);
         ImGui::Text("Total Rectangles: %d", stats.RectCount);
+        ImGui::Separator();
+
+        ImGui::Text("3D Renderer stats");
+        ImGui::Text("Draw calls: %d", stats2.DrawCalls);
     ImGui::End();
 
     _hierarchy->ImGuiRender();
@@ -108,6 +116,7 @@ void EditorState::RenderImGui()
     ImGui::End();
 
     Renderer::ResetStats();
+    Renderer3D::ResetStats();
 }
 
 void EditorState::DockspaceAndMenu()
