@@ -103,10 +103,15 @@ namespace Rvl
         glBindFramebuffer(GL_FRAMEBUFFER, _fboId);
     }
 
-    void GLFrameBuffer::Bind2(const Ref<GLFrameBuffer>& other) const
+    void GLFrameBuffer::Blit(const Ref<GLFrameBuffer>& other) const
+    {
+        Blit(other->_fboId);
+    }
+
+    void GLFrameBuffer::Blit(GLuint other) const
     {
         glBindFramebuffer(GL_READ_FRAMEBUFFER, _fboId);
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, other->_fboId);
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, other);
         glBlitFramebuffer(0, 0, _width, _height, 0, 0, _width, _height, GL_COLOR_BUFFER_BIT, GL_NEAREST); 
     }
 
@@ -124,4 +129,10 @@ namespace Rvl
     {
         return _height;
     }
+
+    GLuint GLFrameBuffer::GetId()
+    {
+        return _fboId;
+    }
+
 }

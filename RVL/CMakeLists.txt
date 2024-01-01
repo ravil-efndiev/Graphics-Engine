@@ -31,6 +31,7 @@ add_library(RVL STATIC
     src/RVL/Rendering/OpenGL/GLShaderProgram.cpp
     src/RVL/Rendering/OpenGL/GLFrameBuffer.cpp
     src/RVL/Rendering/Renderer/RenderApi.cpp
+    src/RVL/Rendering/Renderer/RenderEntity.cpp
     src/RVL/Rendering/Renderer/Renderer.cpp
     src/RVL/Rendering/Renderer/Renderer3D.cpp
     src/RVL/Rendering/Renderer/Mesh.cpp

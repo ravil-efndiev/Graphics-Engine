@@ -21,22 +21,18 @@ private:
     void RenderImGui();
     void DockspaceAndMenu();
 
-    Entity _directionalLight, _tlm;
-    TileMap* _tlmc;
+    Entity _directionalLight;
 
     glm::vec2 _camRotation {0.f};
 
-    Ref<HierarchyWindow> _hierarchy;
-    Ref<InspectorWindow> _inspector;
-    Ref<PostProcess> _pp;
+    Ptr<HierarchyWindow> _hierarchy;
+    Ptr<InspectorWindow> _inspector;
 
-    Ref<GLFrameBuffer> _first;
-    Ref<GLFrameBuffer> _second;
+    Ptr<GLFrameBuffer> _first;
+    Ptr<GLFrameBuffer> _second;
 
     bool _lock = false;
 
     std::string _scenePath;
-
-    ParticleEmitter* emitter;
 };
 

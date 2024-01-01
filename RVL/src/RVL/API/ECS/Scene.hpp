@@ -41,11 +41,11 @@ namespace Rvl
 
         void AddChild(Entity parent, Entity child);
         void RemoveChild(Entity parent, Entity child);
+        Entity Instantiate(Entity entity, const glm::vec3& position);
         Entity Instantiate(Entity entity);
         EntityData& GetEntityData(Entity entity);
 
         Entity GetByName(const std::string& name);
-
 
         friend class Entity;
     private:

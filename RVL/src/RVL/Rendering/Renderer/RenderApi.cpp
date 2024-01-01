@@ -32,9 +32,13 @@ namespace Rvl
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    void RenderApi::DrawIndicies(const Ref<GLVertexArray>& vertexArray, int indexCount)
+    void RenderApi::DrawIndicies(const Ref<GLVertexArray>& vertexArray, RenderType type, int indexCount)
     {
+        if (type == RenderType::Wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
         int count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetIndiciesCount();
+
         vertexArray->Bind();
         vertexArray->BindIndexBuffer();
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
@@ -42,9 +46,13 @@ namespace Rvl
         vertexArray->Unbind();
     }
 
-    void RenderApi::DrawIndicies(GLVertexArray& vertexArray, int indexCount)
+    void RenderApi::DrawIndicies(GLVertexArray& vertexArray, RenderType type, int indexCount)
     {
+        if (type == RenderType::Wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
         int count = indexCount ? indexCount : vertexArray.GetIndexBuffer()->GetIndiciesCount();
+
         vertexArray.Bind();
         vertexArray.BindIndexBuffer();
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
@@ -52,9 +60,13 @@ namespace Rvl
         vertexArray.Unbind();
     }
 
-    void RenderApi::DrawIndiciesInstanced(const Ref<GLVertexArray>& vertexArray, int instances, int indexCount)
+    void RenderApi::DrawIndiciesInstanced(const Ref<GLVertexArray>& vertexArray, RenderType type, int instances, int indexCount)
     {
+        if (type == RenderType::Wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
         int count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetIndiciesCount();
+
         vertexArray->Bind();
         vertexArray->BindIndexBuffer();
         glDrawElementsInstanced(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr, instances);

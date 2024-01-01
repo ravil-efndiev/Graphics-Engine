@@ -22,7 +22,7 @@ namespace Rvl
     {
         for (auto entity : entities)
         {
-            if (!entity.Has<Transform>() || entity.GetData().IsInstance)
+            if (!entity.Has<Transform>())
                 continue;
             
             EntityData& data = entity.GetData();

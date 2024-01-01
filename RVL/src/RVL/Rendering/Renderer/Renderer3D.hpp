@@ -3,6 +3,7 @@
 #include "Camera.hpp"
 #include "Mesh.hpp"
 #include "RenderApi.hpp"
+#include "RenderEntity.hpp"
 #include "API/ECS/General/Transform.hpp"
 #include "API/ECS/3D/Material.hpp"
 
@@ -23,8 +24,10 @@ namespace Rvl
         static void SubmitVa(const Ref<GLVertexArray>& vertexArray, const Ref<GLShaderProgram>& shader);
 
         static void SubmitMesh(const Mesh& mesh, const Material& material, const Transform& transform);
-
         static void SubmitMeshInstanced(Mesh& mesh, const Material& material, std::vector<glm::mat4>& transform, bool reallocBuffer);
+
+        static void SubmitEntity(RenderEntity& entity, const Material& material, const Transform& trnasform);
+        static void SubmitEntityInstanced(RenderEntity& entity, const Material& material, std::vector<glm::mat4>& transform, bool reallocBuffer);
 
         struct Statistics
         {
@@ -33,6 +36,9 @@ namespace Rvl
 
         static Statistics GetStats();
         static void ResetStats();
+
+    private:
+        static void SetMaterialParams(const Material& material, const std::optional<Transform>& trnasform);
 
     private:
         static glm::mat4 _projview;

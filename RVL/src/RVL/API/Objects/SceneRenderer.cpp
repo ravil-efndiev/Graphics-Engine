@@ -8,12 +8,13 @@
 #include <Rendering/OpenGL/GLTexture.hpp>
 #include <Rendering/Renderer/Renderer.hpp>
 #include <Rendering/Renderer/Renderer3D.hpp>
-#include <Rendering/Renderer/RenderApi.hpp>
+#include <Rendering/Renderer/RenderEntity.hpp>
 #include "Math/Math.hpp"
 
 namespace Rvl
 {
     static std::vector<Entity> prevEntities;
+    RenderType SceneRenderer::_renderType = RenderType::Normal;    
 
     void SceneRenderer::Render(const Ref<Scene>& scene, const Ref<UserCamera>& camera)
     {
@@ -81,7 +82,7 @@ namespace Rvl
 
         auto& meshes = entity.Get<Model>().Meshes;
         auto& material = entity.Get<Material>();
-        auto  transform = entity.Get<Transform>();
+        auto& transform = entity.Get<Transform>();
 
         material.SetUniform("u_ViewPos", cameraPos);
 
@@ -90,10 +91,9 @@ namespace Rvl
         {
             transforms.push_back(instance->GetMatrix());
         }
-        for (auto& mesh : meshes)
-        {
-            Renderer3D::SubmitMeshInstanced(mesh, material, transforms, transforms.size() > data.LastTransformsSize);
-        }
+        
+        RenderEntity re (meshes.data(), meshes.size(), _renderType);
+        Renderer3D::SubmitEntityInstanced(re, material, transforms, transforms.size() > data.LastTransformsSize);
         data.LastTransformsSize = transforms.size();
     }
 
@@ -161,4 +161,11 @@ namespace Rvl
                 Renderer::DrawRect({particle.Position + tfPos, {0.f, 0.f, particle.Rotation}, {size, size, 0.f}}, color);
         }
     }
+
+    void SceneRenderer::SetRenderType(RenderType type)
+    {
+        _renderType = type;
+        Renderer::SetRenderType(_renderType);
+    }
+
 }

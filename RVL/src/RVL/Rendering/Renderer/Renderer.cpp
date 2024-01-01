@@ -27,6 +27,7 @@ namespace Rvl
 
     std::array<Ref<GLTexture>, 16> Renderer::_textureSlots;
     int Renderer::_textureSlotIndex = 1;
+    RenderType Renderer::_renderType;
 
     static std::vector<RectVertex> _rectVBOData;
 
@@ -116,7 +117,7 @@ namespace Rvl
             }
 
             GLTexture::ActivateTexture(0);
-            RenderApi::DrawIndicies(_rectVao, _rectIndiciesCount);
+            RenderApi::DrawIndicies(_rectVao, _renderType, _rectIndiciesCount);
 
             _textureShader->Unbind();
 
@@ -266,6 +267,11 @@ namespace Rvl
     {
         EndContext();
         BeginBatch();
+    }
+
+    void Renderer::SetRenderType(RenderType type)
+    {
+        _renderType = type;
     }
 
     glm::vec2 Renderer::ConvertToWorldCoords(double x, double y)

@@ -17,11 +17,13 @@ namespace Rvl
         ~GLFrameBuffer();
 
         GLuint GetColorAttachment();
+        GLuint GetId();
         
         void Resize(float width, float height);
         void Resize(const glm::vec2& size);
         void Bind() const;
-        void Bind2(const Ref<GLFrameBuffer>& other) const;
+        void Blit(const Ref<GLFrameBuffer>& other) const;
+        void Blit(GLuint other) const;
         void Unbind() const;
 
         float GetWidth() const;

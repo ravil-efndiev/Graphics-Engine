@@ -1,6 +1,7 @@
 #pragma once
 #include "UserCamera.hpp"
 #include <API/ECS/Scene.hpp>
+#include <Rendering/Renderer/RenderApi.hpp>
 
 namespace Rvl
 {
@@ -16,9 +17,13 @@ namespace Rvl
         static void DrawTileMap(Entity entity);
         static void DrawModel(Entity entity, const glm::vec3& cameraPos, EntityData& data);
 
+        static void SetRenderType(RenderType type);
+
     private:
         static void DrawParticleEmitters(const std::vector<Entity>& entities);
         static void DrawParticles(ParticleEmitter& emitter, const glm::vec3& tfPos);
+
+        static RenderType _renderType;
     };
 }
 

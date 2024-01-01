@@ -28,21 +28,15 @@ namespace Rvl
     {
     public:
         GLVertexBuffer();
-        GLVertexBuffer(size_t size, int components, bool normalized = GL_FALSE);
+        GLVertexBuffer(size_t size, int components = 0, bool normalized = GL_FALSE);
 
         template <class T>
-        GLVertexBuffer(const std::vector<T>& verticies)
+        GLVertexBuffer(const std::vector<T>& verticies, bool dynamic = false)
         {
             glGenBuffers(1, &_bufferId);
             glBindBuffer(GL_ARRAY_BUFFER, _bufferId);
-            glBufferData(GL_ARRAY_BUFFER, verticies.size() * sizeof(T), verticies.data(), GL_STATIC_DRAW);   
+            glBufferData(GL_ARRAY_BUFFER, verticies.size() * sizeof(T), verticies.data(), dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);   
         }
-
-        GLVertexBuffer(const std::vector<float>& verticies, bool normalized = GL_FALSE);
-        GLVertexBuffer(const std::vector<glm::vec2>& verticies, bool normalized = GL_FALSE);
-        GLVertexBuffer(const std::vector<glm::vec3>& verticies, bool normalized = GL_FALSE);
-        GLVertexBuffer(const std::vector<glm::vec4>& verticies, bool normalized = GL_FALSE);
-        GLVertexBuffer(const std::vector<glm::mat4>& matricies, bool normalized = GL_FALSE);
 
         ~GLVertexBuffer();
 

@@ -13,39 +13,6 @@ namespace Rvl
         CreateBuffer(size);
     }
 
-    GLVertexBuffer::GLVertexBuffer(const std::vector<float>& verticies, bool normalized)
-        : _normalized(normalized)
-    {
-        CreateBuffer(verticies, 1);
-    }
-
-    GLVertexBuffer::GLVertexBuffer(const std::vector<glm::vec2>& verticies, bool normalized)
-        : _normalized(normalized)
-    {
-        CreateBuffer(verticies, 2);
-    }
-
-    GLVertexBuffer::GLVertexBuffer(const std::vector<glm::vec3>& verticies, bool normalized)
-        : _normalized(normalized)
-    {
-        CreateBuffer(verticies, 3);
-    }
-
-    GLVertexBuffer::GLVertexBuffer(const std::vector<glm::vec4>& verticies, bool normalized)
-        : _normalized(normalized)
-    {
-        CreateBuffer(verticies, 4);
-    }
-
-    GLVertexBuffer::GLVertexBuffer(const std::vector<glm::mat4>& matricies, bool normalized)
-    {
-        _verticiesCount = 16;
-
-        glGenBuffers(1, &_bufferId);
-        glBindBuffer(GL_ARRAY_BUFFER, _bufferId);
-        glBufferData(GL_ARRAY_BUFFER, matricies.size() * sizeof(glm::mat4), matricies.data(), GL_DYNAMIC_DRAW);
-    }
-
     GLVertexBuffer::~GLVertexBuffer()
     {
         glDeleteBuffers(1, &_bufferId);
@@ -56,16 +23,6 @@ namespace Rvl
         glGenBuffers(1, &_bufferId);
         glBindBuffer(GL_ARRAY_BUFFER, _bufferId);
         glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW );
-    }
-
-    template <class T>
-    inline void GLVertexBuffer::CreateBuffer(const std::vector<T> &verticies, int verticiesCount)
-    {
-        _verticiesCount = verticiesCount;
-
-        glGenBuffers(1, &_bufferId);
-        glBindBuffer(GL_ARRAY_BUFFER, _bufferId);
-        glBufferData(GL_ARRAY_BUFFER, verticies.size() * sizeof(T), verticies.data(), GL_STATIC_DRAW);
     }
 
     void GLVertexBuffer::Bind()

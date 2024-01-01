@@ -19,22 +19,18 @@ EditorState::~EditorState() {}
 
 void EditorState::Start()
 {
-    _first = NewRef<GLFrameBuffer>(FrameBufferSpecification{500, 600, 4});
-    _second = NewRef<GLFrameBuffer>(FrameBufferSpecification{500, 600, 1});
+    _first = NewPtr<GLFrameBuffer>(FrameBufferSpecification{500, 600, 4});
+    _second = NewPtr<GLFrameBuffer>(FrameBufferSpecification{500, 600, 1});
 
     _camera = UserPerspectiveCamera::New({0.f, 0.f, 0.f}, 45.f);
 
     _directionalLight = _currentScene->NewEntity("Directional light");
     _directionalLight.Add<DirectionalLight>(glm::vec3(0.9f, 0.9f, 0.9f));
 
-    _tlm = _currentScene->NewEntity("tilemap");
-    emitter = &_tlm.Add<ParticleEmitter>(1000);
+    _hierarchy = NewPtr<HierarchyWindow>(_currentScene);
+    _inspector = NewPtr<InspectorWindow>();
 
-    _directionalLight.AddChild(_tlm);
-    _currentScene->Instantiate(_directionalLight);
-
-    _hierarchy = NewRef<HierarchyWindow>(_currentScene);
-    _inspector = NewRef<InspectorWindow>();
+    SceneRenderer::SetRenderType(RenderType::Wireframe);
 }
 
 void EditorState::Update()
@@ -60,7 +56,7 @@ void EditorState::Render()
 
 void EditorState::PostRender()
 {
-    _first->Bind2(_second);
+    _first->Blit(_second->GetId());
     _first->Unbind();
     
     DockspaceAndMenu();

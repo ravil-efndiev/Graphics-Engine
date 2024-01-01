@@ -29,6 +29,8 @@ namespace Rvl
         static glm::vec2 ConvertToWorldCoords(double x, double y);
         static glm::vec2 ConvertToWorldCoords(double x, double y, const glm::vec2& pos);
 
+        static void SetRenderType(RenderType type);
+
         struct Statistics
         {
             int DrawCalls;
@@ -63,6 +65,8 @@ namespace Rvl
         static int _textureSlotIndex;
 
         static const glm::vec4 _rectVertexPositions[4];
+
+        static RenderType _renderType;
     };
 }
 

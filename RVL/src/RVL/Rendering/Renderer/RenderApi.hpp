@@ -5,6 +5,11 @@
 
 namespace Rvl
 {
+    enum class RenderType
+    {
+        Normal, Wireframe
+    };
+
     class GLVertexArray;
 
     class RenderApi
@@ -16,10 +21,10 @@ namespace Rvl
         static glm::vec2 GetViewport();
         static void SetViewport(const glm::vec2& viewport);
 
-        static void DrawIndicies(const Ref<GLVertexArray>& vertexArray, int indexCount = 0);
-        static void DrawIndicies(GLVertexArray& vertexArray, int indexCount = 0);
+        static void DrawIndicies(const Ref<GLVertexArray>& vertexArray, RenderType type, int indexCount = 0);
+        static void DrawIndicies(GLVertexArray& vertexArray, RenderType type, int indexCount = 0);
 
-        static void DrawIndiciesInstanced(const Ref<GLVertexArray>& vertexArray, int instances, int indexCount = 0);
+        static void DrawIndiciesInstanced(const Ref<GLVertexArray>& vertexArray, RenderType type, int instances, int indexCount = 0);
 
         static void DrawLines(const Ref<GLVertexArray>& vertexArray, int vertexCount);
         static void DrawLines(GLVertexArray& vertexArray, int vertexCount);

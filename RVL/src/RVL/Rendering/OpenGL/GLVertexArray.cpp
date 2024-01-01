@@ -13,6 +13,8 @@ namespace Rvl
 
     GLVertexArray::~GLVertexArray()
     {   
+        for (int i = 0; i < _currentAttribIndex; i++)
+            glDisableVertexAttribArray(i);
         glDeleteVertexArrays(1, &_vertexArrayId);
     }
 

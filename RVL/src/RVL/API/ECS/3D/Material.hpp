@@ -16,6 +16,13 @@ namespace Rvl
         std::string Path;
     };
 
+    enum class PassShaderType
+    {
+        Geometry = 0,
+        Lighting = 1,
+        PostProcess = 2
+    };
+
     class GLShaderProgram;
     struct Material
     {
@@ -33,6 +40,7 @@ namespace Rvl
         glm::vec3 Ambient;
         glm::vec3 Specular;
         Ref<GLShaderProgram> Shader;
+        std::vector<Ref<GLShaderProgram>> PassShaders;
         std::vector<MaterialTexture> Textures;
 
         template <class T> 
