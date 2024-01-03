@@ -30,7 +30,7 @@ void EditorState::Start()
     _hierarchy = NewPtr<HierarchyWindow>(_currentScene);
     _inspector = NewPtr<InspectorWindow>();
 
-    SceneRenderer::SetRenderType(RenderType::Wireframe);
+    //SceneRenderer::SetRenderType(RenderType::Wireframe);
 }
 
 void EditorState::Update()
@@ -44,6 +44,7 @@ void EditorState::Update()
     UserCamera::ToPerspective(_camera)->UpdateControls(ControllerType::InPlane, 5.f);
 
     if (_lock) UserCamera::ToPerspective(_camera)->UpdateCursorRotation(2.f);
+
 }
 
 void EditorState::Render()

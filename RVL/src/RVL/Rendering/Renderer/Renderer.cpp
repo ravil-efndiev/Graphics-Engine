@@ -50,7 +50,7 @@ namespace Rvl
             { ElementType::Vec3, 0, sizeof(RectVertex), false },
             { ElementType::Vec4, offsetof(RectVertex, Color), sizeof(RectVertex), false },
             { ElementType::Vec2, offsetof(RectVertex, TexCoord), sizeof(RectVertex), false },
-            { ElementType::Float, offsetof(RectVertex, TexIndex), sizeof(RectVertex), false },
+            { ElementType::Float, offsetof(RectVertex, TexIndex), sizeof(RectVertex), false }
         });
 
         _rectVao->AddVertexBuffer(_rectVbo);

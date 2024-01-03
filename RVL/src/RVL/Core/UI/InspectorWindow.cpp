@@ -238,6 +238,8 @@ namespace Rvl
             auto path = OpenFileDialogButton("Select ...##modelpath_select", "obj");
             if (!path.empty() && path != model.Path)
                 model.LoadModel(path);
+
+            ImGui::Checkbox("Repeat UV", &model.RepeatUV);
         });
 
         DrawComponent<PointLight>("Point Light", _selected, [](auto& pl) 
@@ -248,9 +250,7 @@ namespace Rvl
             ImGui::Dummy({0.f, 5.f});
             ImGui::Text("Advanced settings");
             ImGui::Separator();
-            ImGui::ColorEdit3("Ambient##pl_ambient", glm::value_ptr(pl.Ambient));
             ImGui::ColorEdit3("Specular##pl_specular", glm::value_ptr(pl.Specular));
-
             DragFloat("Linear##pl_linear", &pl.Linear);
             DragFloat("Quadratic##pl_quadratic", &pl.Quadratic);
         });
@@ -375,7 +375,7 @@ namespace Rvl
             if (ImGui::Button("Point Light##pladd"))
             {
                 if (!_selected.Has<PointLight>())
-                    _selected.Add<PointLight>(glm::vec3(0.5f, 0.5f, 0.5f), 0.09f, 0.032f);
+                    _selected.Add<PointLight>(glm::vec3(0.5f, 0.5f, 0.5f));
                 ImGui::CloseCurrentPopup();
             }
 

@@ -23,7 +23,6 @@ namespace Rvl
         AddSystem(Movement2DSystem);
         AddSystem(Animation2DSystem);
         AddSystem(MaterialSystem);
-        AddSystem(LightSystem);
         AddSystem(ModelLoaderSystem);
         AddSystem(ParticleSystem);
     }

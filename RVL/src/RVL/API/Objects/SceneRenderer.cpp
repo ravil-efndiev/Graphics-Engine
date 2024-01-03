@@ -80,20 +80,21 @@ namespace Rvl
         RVL_ASSERT((entity.Has<Transform>()), "SceneRenderer: entity passed into DrawModel function doesn't have Transform Component");
         RVL_ASSERT((entity.Has<Material>()), "SceneRenderer: entity passed into DrawModel function doesn't have Material Component");
 
-        auto& meshes = entity.Get<Model>().Meshes;
-        auto& material = entity.Get<Material>();
+        auto& model     = entity.Get<Model>();
+        auto& material  = entity.Get<Material>();
         auto& transform = entity.Get<Transform>();
 
         material.SetUniform("u_ViewPos", cameraPos);
 
-        std::vector<glm::mat4> transforms {transform.GetMatrix()};
-        for (auto instance : data.Instances)
-        {
-            transforms.push_back(instance->GetMatrix());
+        std::vector<Transform> transforms;
+        transforms.push_back(transform);
+        for (auto& instance : data.Instances)
+        {  
+            transforms.push_back(*instance);
         }
-        
-        RenderEntity re (meshes.data(), meshes.size(), _renderType);
-        Renderer3D::SubmitEntityInstanced(re, material, transforms, transforms.size() > data.LastTransformsSize);
+
+        RenderEntity re (model.Meshes.data(), model.Meshes.size(), _renderType);
+        Renderer3D::SubmitEntityInstanced(re, material, transforms, transforms.size() > data.LastTransformsSize, model.RepeatUV);
         data.LastTransformsSize = transforms.size();
     }
 

@@ -11,7 +11,7 @@ namespace Rvl
         Vec2  = 2,
         Vec3  = 3,
         Vec4  = 4,
-        Mat4  = 4,
+        Mat4  = 16,
     };
     
     struct LayoutElement

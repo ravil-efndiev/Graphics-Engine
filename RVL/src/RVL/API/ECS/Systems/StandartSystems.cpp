@@ -119,7 +119,7 @@ namespace Rvl
                         auto lightTf = entity2.Get<Transform>();
 
                         material.SetUniform("u_DirectionalLight.ambient",  light.Ambient);
-                        material.SetUniform("u_DirectionalLight.diffuse",  light.Diffuse); 
+                        material.SetUniform("u_DirectionalLight.diffuse",  light.Color * light.Intensity); 
                         material.SetUniform("u_DirectionalLight.specular", light.Specular); 
                         material.SetUniform("u_DirectionalLight.direction", lightTf.Rotation); 
                     }
@@ -131,8 +131,7 @@ namespace Rvl
                         auto light = entity2.Get<PointLight>();
                         auto lightTf = entity2.Get<Transform>();
 
-                        material.SetUniform("u_PointLight[" + std::to_string(index) + "].ambient",   light.Ambient);
-                        material.SetUniform("u_PointLight[" + std::to_string(index) + "].diffuse",   light.Diffuse); 
+                        material.SetUniform("u_PointLight[" + std::to_string(index) + "].diffuse",   light.Color * light.Intensity); 
                         material.SetUniform("u_PointLight[" + std::to_string(index) + "].specular",  light.Specular); 
                         material.SetUniform("u_PointLight[" + std::to_string(index) + "].position",  lightTf.Position); 
                         material.SetUniform("u_PointLight[" + std::to_string(index) + "].constant",  light.Constant);
@@ -145,28 +144,6 @@ namespace Rvl
                 material.SetUniform("u_LightsCount", index);
             }
         
-        }
-    }
-
-    void LightSystem(const std::vector<Entity>& entities)
-    {
-        for (auto entity : entities)
-        {
-            if (entity.GetData().IsInstance) continue;
-            if (entity.Has<DirectionalLight>())
-            {
-                auto& dl = entity.Get<DirectionalLight>();
-
-                dl.Diffuse = dl.Color * dl.Intensity;
-            }
-
-            if (entity.Has<PointLight>())
-            {
-                auto& pl = entity.Get<PointLight>();
-
-                pl.Diffuse = pl.Color * pl.Intensity;
-            }
-
         }
     }
 

@@ -144,7 +144,6 @@ namespace Rvl
             emitter << YAML::BeginMap;
             emitter << YAML::Key << "Color" << YAML::Value << dl.Color;
             emitter << YAML::Key << "Ambient" << YAML::Value << dl.Ambient;
-            emitter << YAML::Key << "Diffuse" << YAML::Value << dl.Diffuse;
             emitter << YAML::Key << "Specular" << YAML::Value << dl.Specular;
             emitter << YAML::Key << "Intensity" << YAML::Value << dl.Intensity;
             emitter << YAML::EndMap;
@@ -157,15 +156,12 @@ namespace Rvl
             emitter << YAML::Key << "PointLight" << YAML::Value;
             emitter << YAML::BeginMap;
             emitter << YAML::Key << "Color" << YAML::Value << pl.Color;
-            emitter << YAML::Key << "Ambient" << YAML::Value << pl.Ambient;
-            emitter << YAML::Key << "Diffuse" << YAML::Value << pl.Diffuse;
             emitter << YAML::Key << "Specular" << YAML::Value << pl.Specular;
             emitter << YAML::Key << "Intensity" << YAML::Value << pl.Intensity;
             emitter << YAML::Key << "Linear" << YAML::Value << pl.Linear;
             emitter << YAML::Key << "Quadratic" << YAML::Value << pl.Quadratic;
             emitter << YAML::EndMap;
         }
-
 
         if (entity.Has<Material>())
         {
@@ -201,6 +197,7 @@ namespace Rvl
             emitter << YAML::BeginMap;
             emitter << YAML::Key << "Path" << YAML::Value << model.Path;
             emitter << YAML::Key << "MeshType" << YAML::Value << type;
+            emitter << YAML::Key << "RepeatUV" << YAML::Value << model.RepeatUV;
             emitter << YAML::EndMap;
         }
 
@@ -324,15 +321,11 @@ namespace Rvl
             auto spec = pl["Specular"];
             glm::vec3 vecSpec = {spec[0].as<float>(), spec[1].as<float>(), spec[2].as<float>()};
 
-            auto ambient = pl["Ambient"];
-            glm::vec3 vecAmbient = {ambient[0].as<float>(), ambient[1].as<float>(), ambient[2].as<float>()};
-
             float intensity = pl["Intensity"].as<float>();
             float linear = pl["Linear"].as<float>();
             float quad = pl["Quadratic"].as<float>();
 
-            auto& plc = loadEntity.Add<PointLight>(vecCol, linear, quad, intensity);
-            plc.Ambient = vecAmbient;
+            auto& plc = loadEntity.Add<PointLight>(vecCol, intensity, linear, quad);
             plc.Specular = vecSpec;
         }
 
@@ -383,6 +376,7 @@ namespace Rvl
         {
             auto path = model["Path"].as<std::string>();
             auto type = model["MeshType"].as<std::string>();
+            bool ruv  = model["RepeatUV"].as<bool>();
 
             MeshType mtype;
             if (type == "Cube") mtype = MeshType::Cube;
@@ -391,9 +385,17 @@ namespace Rvl
             if (type == "Custom") mtype = MeshType::Custom;
 
             if (!path.empty())
-                loadEntity.Add<Model>(path).Type = mtype;
+            {
+                auto& mdl = loadEntity.Add<Model>(path);
+                mdl.Type = mtype;
+                mdl.RepeatUV = ruv;
+            }
             else
-                loadEntity.Add<Model>().Type = mtype;
+            {
+                auto& mdl = loadEntity.Add<Model>();
+                mdl.Type = mtype;
+                mdl.RepeatUV = ruv;
+            }
         }
 
         auto pemitter = entity["ParticleEmitter"];

@@ -201,7 +201,7 @@ namespace Rvl
             if (ImGui::Button("Point light")) 
             {
                 Entity entity = _scene->NewEntity();
-                entity.Add<PointLight>(glm::vec3(1.f, 1.f, 1.f), 0.9f, 0.32f);
+                entity.Add<PointLight>(glm::vec3(1.f, 1.f, 1.f));
 
                 if (parent.GetId() != entt::null)
                     parent.AddChild(entity);
@@ -222,7 +222,6 @@ namespace Rvl
             ImGui::EndPopup();
         }   
     }
-
 
     void HierarchyWindow::SetScene(const Ref<Scene>& scene)
     {

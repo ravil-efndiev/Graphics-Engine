@@ -13,6 +13,12 @@ namespace Rvl
 
     static bool lol = true;
 
+    struct MeshInstanceVertex
+    {
+        glm::vec3 Scale;
+        glm::mat4 Transform;
+    };
+
     void Renderer3D::BeginContext(const Ref<Camera>& camera, float viewportWidth, float viewportHeight)
     {
         _projview = camera->GetProjectionMatrix(viewportWidth, viewportHeight) * camera->GetViewMatrix();
@@ -45,26 +51,12 @@ namespace Rvl
         GLTexture::BindTextureUnit(0, 0);
     }
 
-    void Renderer3D::SubmitMeshInstanced(Mesh& mesh, const Material& material, std::vector<glm::mat4>& transform, bool reallocBuffer)
+    void Renderer3D::SubmitMeshInstanced(Mesh& mesh, const Material& material, std::vector<Transform>& transform, bool reallocBuffer, bool repeatUV)
     {
-        auto vao = mesh.GetVao();
-        if (!mesh._instanceVboLoaded)
-        {
-            Ref<GLVertexBuffer> instanceVbo = NewRef<GLVertexBuffer>(transform);
-            instanceVbo->SetLayout({
-                LayoutElement{ElementType::Mat4, 0, 4 * sizeof(glm::vec4), false}
-            });
-            vao->AddVertexBuffer(instanceVbo, true);
-            mesh._instanceVboLoaded = true;
-        }
-
-        if (reallocBuffer)
-            vao->GetVertexBuffers().back()->ReallocData(transform.data(), transform.size() * sizeof(glm::mat4));
-        else
-            vao->GetVertexBuffers().back()->SetData(transform.data(), transform.size() * sizeof(glm::mat4));
+        SetInstanceVbos(mesh, transform, reallocBuffer, repeatUV);
 
         SetMaterialParams(material, std::nullopt);
-        RenderApi::DrawIndiciesInstanced(vao, RenderType::Normal, transform.size());
+        RenderApi::DrawIndiciesInstanced(mesh.GetVao(), RenderType::Normal, transform.size());
         GLTexture::BindTextureUnit(0, 0);
         _stats.DrawCalls++;
     }
@@ -82,30 +74,16 @@ namespace Rvl
         GLTexture::BindTextureUnit(0, 0);
     }
 
-    void Renderer3D::SubmitEntityInstanced(RenderEntity& entity, const Material& material, std::vector<glm::mat4>& transform, bool reallocBuffer)
+    void Renderer3D::SubmitEntityInstanced(RenderEntity& entity, const Material& material, std::vector<Transform>& transform, bool reallocBuffer, bool repeatUV)
     {
         SetMaterialParams(material, std::nullopt);
 
         Mesh* mesh = entity.GetMesh();
         for (int i = 0; i < entity.GetMeshSize(); i++)
         {
-            auto vao = mesh[i].GetVao();
-            if (!mesh[i]._instanceVboLoaded)
-            {
-                Ref<GLVertexBuffer> instanceVbo = NewRef<GLVertexBuffer>(transform);
-                instanceVbo->SetLayout({
-                    LayoutElement{ElementType::Mat4, 0, 4 * sizeof(glm::vec4), false}
-                });
-                vao->AddVertexBuffer(instanceVbo, true);
-                mesh[i]._instanceVboLoaded = true;
-            }
+            SetInstanceVbos(mesh[i], transform, reallocBuffer, repeatUV);
 
-            if (reallocBuffer)
-                vao->GetVertexBuffers().back()->ReallocData(transform.data(), transform.size() * sizeof(glm::mat4));
-            else
-                vao->GetVertexBuffers().back()->SetData(transform.data(), transform.size() * sizeof(glm::mat4));
-
-            RenderApi::DrawIndicies(vao, entity.GetType());
+            RenderApi::DrawIndiciesInstanced(mesh[i].GetVao(), entity.GetType(), transform.size());
         }
 
         GLTexture::BindTextureUnit(0, 0);
@@ -145,6 +123,36 @@ namespace Rvl
             
             GLTexture::BindTextureUnit(textures[i].Id, i);
         }
+    }
+
+    void Renderer3D::SetInstanceVbos(Mesh& mesh, std::vector<Transform>& transform, bool reallocBuffer, bool repeatUV)
+    {
+        auto vao = mesh.GetVao();
+        if (!mesh._instanceVboLoaded)
+        {
+            Ref<GLVertexBuffer> instanceVbo = NewRef<GLVertexBuffer>();
+            instanceVbo->SetLayout({
+                LayoutElement{ElementType::Vec3, 0, sizeof(MeshInstanceVertex), false},
+                LayoutElement{ElementType::Mat4, offsetof(MeshInstanceVertex, Transform), sizeof(MeshInstanceVertex), false}
+            });
+            vao->AddVertexBuffer(instanceVbo, true);
+            mesh._instanceVboLoaded = true;
+        }
+
+        std::vector<MeshInstanceVertex> iv (transform.size());
+        for (int i = 0; i < iv.size(); i++)
+        {
+            iv[i].Transform = transform[i].GetMatrix();
+            if (repeatUV)
+                iv[i].Scale = transform[i].Scale;
+            else
+                iv[i].Scale = {1.f, 1.f, 1.f};
+        }
+
+        if (reallocBuffer)
+            vao->GetVertexBuffers().back()->ReallocData(iv.data(), iv.size() * sizeof(MeshInstanceVertex));
+        else
+            vao->GetVertexBuffers().back()->SetData(iv.data(), iv.size() * sizeof(MeshInstanceVertex));
     }
 
     Renderer3D::Statistics Renderer3D::GetStats()

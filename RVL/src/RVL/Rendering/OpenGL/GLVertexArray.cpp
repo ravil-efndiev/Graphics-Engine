@@ -27,20 +27,20 @@ namespace Rvl
         {
             auto layout = vertexBuffer->GetLayout();
 
-            for (int i = 0; i < layout.size(); i++)
+            for (auto& element : layout)
             {
-                if (layout[i].Type == ElementType::Mat4)
+                if (element.Type == ElementType::Mat4)
                 {
-                    uint16 count = static_cast<uint16>(layout[i].Type);
+                    uint16 count = static_cast<uint16>(element.Type) / 4;
 					for (uint16 j = 0; j < count; j++)
 					{
 						glEnableVertexAttribArray(_currentAttribIndex);
 						glVertexAttribPointer(_currentAttribIndex,
 							count,
 							GL_FLOAT,
-							layout[i].Normalized,
-							layout[i].Size,
-							(void*)(layout[i].Offset + sizeof(float) * count * j));
+							element.Normalized,
+							element.Size,
+							(void*)(element.Offset + sizeof(float) * count * j));
 
                         if (perInstance)
 						    glVertexAttribDivisor(_currentAttribIndex, 1);
@@ -50,18 +50,18 @@ namespace Rvl
                 }
                 else
                 {
-                    _currentAttribIndex++;
-                    glEnableVertexAttribArray(i);
+                    glEnableVertexAttribArray(_currentAttribIndex);
 
-                    glVertexAttribPointer(i,
-                        static_cast<int>(layout[i].Type),
+                    glVertexAttribPointer(_currentAttribIndex,
+                        static_cast<int>(element.Type),
                         GL_FLOAT, 
-                        layout[i].Normalized,
-                        layout[i].Size, (void*)layout[i].Offset);
+                        element.Normalized,
+                        element.Size, (void*)element.Offset);
 
                     if (perInstance)
                         glVertexAttribDivisor(_currentAttribIndex, 1);
 
+                    _currentAttribIndex++;
                 }
             }   
         }

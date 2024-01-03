@@ -7,14 +7,12 @@ namespace Rvl
     struct PointLight
     {
         PointLight() = default;
-        PointLight(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, float linear, float quadratic, float intensity = 1);
-        PointLight(const glm::vec3& color, float linear, float quadratic, float intensity = 1);
+        PointLight(const glm::vec3& color, const glm::vec3& specular, float intensity = 1, float linear = 0.9f, float quadratic = 0.32f);
+        PointLight(const glm::vec3& color, float intensity = 1, float linear = 0.9f, float quadratic = 0.32f);
 
         const float Constant = 1.f;
 
         glm::vec3 Color;
-        glm::vec3 Ambient;
-        glm::vec3 Diffuse;
         glm::vec3 Specular;
 
         float Intensity;

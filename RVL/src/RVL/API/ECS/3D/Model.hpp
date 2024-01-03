@@ -28,6 +28,8 @@ namespace Rvl
         std::string Path;
         MeshType Type = MeshType::Cube;
 
+        bool RepeatUV = false;
+
         friend void ModelLoaderSystem(const std::vector<Entity>&);
         friend class HierarchyWindow;
 

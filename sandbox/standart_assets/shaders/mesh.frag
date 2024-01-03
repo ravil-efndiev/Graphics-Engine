@@ -29,13 +29,13 @@ struct DirectionalLight {
 struct PointLight {
     vec3 position;  
   
-    vec3 ambient;
     vec3 diffuse;
     vec3 specular;
 	
     float constant;
     float linear;
     float quadratic;
+    float radius;
 }; 
 
 uniform Material u_Material;
@@ -77,26 +77,26 @@ vec3 CalcPointLight(PointLight light, Material mat, vec3 normal, vec3 fragPos, v
     vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), mat.shininess);
 
-    float distance    = length(light.position - fragPos);
-    float attenuation = 1.0 / (light.constant + light.linear * distance + 
-  			     light.quadratic * (distance * distance));    
+    float dist        = length(light.position - fragPos);
+    float attenuation = 1.0 / (light.constant + light.linear * dist + 
+  			     light.quadratic * (dist * dist));    
 
     vec3 ambient, diffuse, specular;
 
     if (u_HasTexture == 0)
     {
-        ambient  = light.ambient  * mat.ambient;
         diffuse  = light.diffuse  * (mat.diffuse  * diff);
         specular = light.specular * (mat.specular * spec);
     }
     else
     {
-        ambient  = light.ambient  * mat.ambient * vec3(texture(texture_diffuse1, TexCoords));
         diffuse  = light.diffuse  * (mat.diffuse  * diff) * vec3(texture(texture_diffuse1, TexCoords));
         specular = light.specular * (mat.specular * spec) * vec3(texture(texture_specular1, TexCoords));
     }
 
-    ambient  *= attenuation;
+    float radiusAttenuation = smoothstep(0.0, light.radius, distance);
+    attenuation *= radiusAttenuation;
+
     diffuse  *= attenuation;
     specular *= attenuation;
 
