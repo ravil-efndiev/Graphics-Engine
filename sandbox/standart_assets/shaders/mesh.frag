@@ -35,7 +35,6 @@ struct PointLight {
     float constant;
     float linear;
     float quadratic;
-    float radius;
 }; 
 
 uniform Material u_Material;
@@ -81,26 +80,20 @@ vec3 CalcPointLight(PointLight light, Material mat, vec3 normal, vec3 fragPos, v
     float attenuation = 1.0 / (light.constant + light.linear * dist + 
   			     light.quadratic * (dist * dist));    
 
-    vec3 ambient, diffuse, specular;
+    vec3 diffuse, specular;
 
     if (u_HasTexture == 0)
     {
-        diffuse  = light.diffuse  * (mat.diffuse  * diff);
-        specular = light.specular * (mat.specular * spec);
+        diffuse  = attenuation * light.diffuse  * (mat.diffuse  * diff);
+        specular = attenuation * light.specular * (mat.specular * spec);
     }
     else
     {
-        diffuse  = light.diffuse  * (mat.diffuse  * diff) * vec3(texture(texture_diffuse1, TexCoords));
-        specular = light.specular * (mat.specular * spec) * vec3(texture(texture_specular1, TexCoords));
+        diffuse  = attenuation * light.diffuse  * (mat.diffuse  * diff) * vec3(texture(texture_diffuse1, TexCoords));
+        specular = attenuation * light.specular * (mat.specular * spec) * vec3(texture(texture_specular1, TexCoords));
     }
 
-    float radiusAttenuation = smoothstep(0.0, light.radius, distance);
-    attenuation *= radiusAttenuation;
-
-    diffuse  *= attenuation;
-    specular *= attenuation;
-
-    return (ambient + diffuse + specular);
+    return (diffuse + specular);
 } 
 
 void main()

@@ -16,5 +16,7 @@ void main()
 	v_Color = a_Color;
 	v_TexCoords = a_TexCoords;
 	v_TexIndex = a_TexIndex;
-	gl_Position = u_Projview * vec4(a_Position, 1.0);
+	vec3 pos = a_Position;
+	pos.x += gl_InstanceID;
+	gl_Position = u_Projview * vec4(pos, 1.0);
 }

@@ -74,14 +74,14 @@ namespace Rvl
         GLTexture::BindTextureUnit(0, 0);
     }
 
-    void Renderer3D::SubmitEntityInstanced(RenderEntity& entity, const Material& material, std::vector<Transform>& transform, bool reallocBuffer, bool repeatUV)
+    void Renderer3D::SubmitEntityInstanced(RenderEntity& entity, const Material& material, std::vector<Transform>& transform, bool reallocBuffer)
     {
         SetMaterialParams(material, std::nullopt);
 
         Mesh* mesh = entity.GetMesh();
         for (int i = 0; i < entity.GetMeshSize(); i++)
         {
-            SetInstanceVbos(mesh[i], transform, reallocBuffer, repeatUV);
+            SetInstanceVbos(mesh[i], transform, reallocBuffer, entity.RepeatUV());
 
             RenderApi::DrawIndiciesInstanced(mesh[i].GetVao(), entity.GetType(), transform.size());
         }
@@ -130,7 +130,7 @@ namespace Rvl
         auto vao = mesh.GetVao();
         if (!mesh._instanceVboLoaded)
         {
-            Ref<GLVertexBuffer> instanceVbo = NewRef<GLVertexBuffer>();
+            Ref<GLVertexBuffer> instanceVbo = NewRef<GLVertexBuffer>(std::vector<MeshInstanceVertex>{MeshInstanceVertex{transform[0].Scale, transform[0].GetMatrix()}}, true);
             instanceVbo->SetLayout({
                 LayoutElement{ElementType::Vec3, 0, sizeof(MeshInstanceVertex), false},
                 LayoutElement{ElementType::Mat4, offsetof(MeshInstanceVertex, Transform), sizeof(MeshInstanceVertex), false}

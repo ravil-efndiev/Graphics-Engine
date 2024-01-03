@@ -146,6 +146,7 @@ namespace Rvl
             emitter << YAML::Key << "Ambient" << YAML::Value << dl.Ambient;
             emitter << YAML::Key << "Specular" << YAML::Value << dl.Specular;
             emitter << YAML::Key << "Intensity" << YAML::Value << dl.Intensity;
+            emitter << YAML::Key << "Direction" << YAML::Value << dl.Direction;
             emitter << YAML::EndMap;
         }
 
@@ -295,16 +296,17 @@ namespace Rvl
         if (dl)
         {
             auto col = dl["Color"];
-            glm::vec3 vecCol = {col[0].as<float>(), col[1].as<float>(), col[2].as<float>()};
-
-            auto spec = dl["Specular"];
-            glm::vec3 vecSpec = {spec[0].as<float>(), spec[1].as<float>(), spec[2].as<float>()};
-
             auto ambient = dl["Ambient"];
+            auto spec = dl["Specular"];
+            auto direction = dl["Direction"];
+
+            glm::vec3 vecCol = {col[0].as<float>(), col[1].as<float>(), col[2].as<float>()};
+            glm::vec3 vecSpec = {spec[0].as<float>(), spec[1].as<float>(), spec[2].as<float>()};
             glm::vec3 vecAmbient = {ambient[0].as<float>(), ambient[1].as<float>(), ambient[2].as<float>()};
+            glm::vec3 dir = {direction[0].as<float>(), direction[1].as<float>(), direction[2].as<float>()};
 
             float intensity = dl["Intensity"].as<float>();
-            auto& dlc = loadEntity.Add<DirectionalLight>(vecCol, intensity);
+            auto& dlc = loadEntity.Add<DirectionalLight>(dir, vecCol, intensity);
             dlc.Specular = vecSpec;
             dlc.Ambient = vecAmbient;
         }

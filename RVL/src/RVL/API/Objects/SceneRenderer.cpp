@@ -93,8 +93,8 @@ namespace Rvl
             transforms.push_back(*instance);
         }
 
-        RenderEntity re (model.Meshes.data(), model.Meshes.size(), _renderType);
-        Renderer3D::SubmitEntityInstanced(re, material, transforms, transforms.size() > data.LastTransformsSize, model.RepeatUV);
+        RenderEntity re (model.Meshes.data(), model.Meshes.size(), model.RepeatUV, _renderType);
+        Renderer3D::SubmitEntityInstanced(re, material, transforms, transforms.size() > data.LastTransformsSize);
         data.LastTransformsSize = transforms.size();
     }
 

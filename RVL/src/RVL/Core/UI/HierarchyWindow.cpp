@@ -212,7 +212,7 @@ namespace Rvl
             if (ImGui::Button("Directional light")) 
             {
                 Entity entity = _scene->NewEntity();
-                entity.Add<DirectionalLight>(glm::vec3(1.f, 1.f, 1.f));
+                entity.Add<DirectionalLight>(glm::vec3(0.f, -1.f, -1.f), glm::vec3(1.f, 1.f, 1.f));
 
                 if (parent.GetId() != entt::null)
                     parent.AddChild(entity);

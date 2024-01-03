@@ -16,7 +16,7 @@ namespace Rvl
     typedef unsigned short uint16;
     typedef unsigned char  uint8;
 
-    typedef uint8   byte;
+    typedef uint8 byte;
 
     typedef float  float32;
     typedef double float64;
@@ -29,4 +29,3 @@ namespace Rvl
     YAML::Emitter& operator<< (YAML::Emitter&, const glm::vec2&);
     YAML::Emitter& operator<< (YAML::Emitter&, const glm::ivec2&);
 }
-

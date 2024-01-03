@@ -259,6 +259,7 @@ namespace Rvl
         {
             ImGui::ColorEdit3("Color##dl_diffuse", glm::value_ptr(dl.Color));
             DragFloat("Intensity##dl_intensity", &dl.Intensity);
+            DragVec3("Direction##dl_direction", &dl.Direction);
 
             ImGui::Dummy({0.f, 5.f});
             ImGui::Text("Advanced settings");
@@ -382,7 +383,7 @@ namespace Rvl
             if (ImGui::Button("Directional Light##dladd"))
             {
                 if (!_selected.Has<DirectionalLight>())
-                    _selected.Add<DirectionalLight>(glm::vec3(0.5f, 0.5f, 0.5f));
+                    _selected.Add<DirectionalLight>(glm::vec3(0, -1, -1), glm::vec3(0.5f, 0.5f, 0.5f));
                 ImGui::CloseCurrentPopup();
             }
 

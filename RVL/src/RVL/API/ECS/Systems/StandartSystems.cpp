@@ -113,15 +113,12 @@ namespace Rvl
 
                     if (entity2.Has<DirectionalLight>())
                     {
-                        RVL_ASSERT(entity2.Has<Transform>(), "Directional light doesn't have transform component");
-                        
                         auto light = entity2.Get<DirectionalLight>();
-                        auto lightTf = entity2.Get<Transform>();
 
-                        material.SetUniform("u_DirectionalLight.ambient",  light.Ambient);
-                        material.SetUniform("u_DirectionalLight.diffuse",  light.Color * light.Intensity); 
-                        material.SetUniform("u_DirectionalLight.specular", light.Specular); 
-                        material.SetUniform("u_DirectionalLight.direction", lightTf.Rotation); 
+                        material.SetUniform("u_DirectionalLight.ambient",   light.Ambient);
+                        material.SetUniform("u_DirectionalLight.diffuse",   light.Color * light.Intensity); 
+                        material.SetUniform("u_DirectionalLight.specular",  light.Specular); 
+                        material.SetUniform("u_DirectionalLight.direction", light.Direction); 
                     }
 
                     if (entity2.Has<PointLight>())

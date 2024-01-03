@@ -25,7 +25,7 @@ void EditorState::Start()
     _camera = UserPerspectiveCamera::New({0.f, 0.f, 0.f}, 45.f);
 
     _directionalLight = _currentScene->NewEntity("Directional light");
-    _directionalLight.Add<DirectionalLight>(glm::vec3(0.9f, 0.9f, 0.9f));
+    _directionalLight.Add<DirectionalLight>(glm::vec3(0.f, -1.f, -1.f), glm::vec3(0.9f, 0.9f, 0.9f));
 
     _hierarchy = NewPtr<HierarchyWindow>(_currentScene);
     _inspector = NewPtr<InspectorWindow>();

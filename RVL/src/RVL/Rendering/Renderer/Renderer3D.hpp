@@ -24,10 +24,10 @@ namespace Rvl
         static void SubmitVa(const Ref<GLVertexArray>& vertexArray, const Ref<GLShaderProgram>& shader);
 
         static void SubmitMesh(const Mesh& mesh, const Material& material, const Transform& transform);
-        static void SubmitMeshInstanced(Mesh& mesh, const Material& material, std::vector<Transform>& transform, bool reallocBuffer, bool repeatUV = false);
+        static void SubmitMeshInstanced(Mesh& mesh, const Material& material, std::vector<Transform>& transform, bool reallocBuffer, bool repeatUV);
 
         static void SubmitEntity(RenderEntity& entity, const Material& material, const Transform& trnasform);
-        static void SubmitEntityInstanced(RenderEntity& entity, const Material& material, std::vector<Transform>& transform, bool reallocBuffer, bool repeatUV = false);
+        static void SubmitEntityInstanced(RenderEntity& entity, const Material& material, std::vector<Transform>& transform, bool reallocBuffer);
 
         struct Statistics
         {
