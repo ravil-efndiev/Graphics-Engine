@@ -31,6 +31,15 @@ namespace Rvl
         }
 
         template <class T>
+        T& AddBehaviour(Args&&... args)
+        {
+            RVL_ASSERT(!Has<T>(), "Entity already has the component you were trying to add");
+            T& cmp = Add<T>(*this);
+            _scene->AddBehaviour(&cmp);
+            return cmp;
+        }
+
+        template <class T>
         T& Get()
         {
             RVL_ASSERT(Has<T>(), "Entity doesn't have the component you were trying to get");
