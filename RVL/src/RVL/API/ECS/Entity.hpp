@@ -31,7 +31,7 @@ namespace Rvl
         }
 
         template <class T>
-        T& AddBehaviour(Args&&... args)
+        T& AddBehaviour()
         {
             RVL_ASSERT(!Has<T>(), "Entity already has the component you were trying to add");
             T& cmp = Add<T>(*this);
