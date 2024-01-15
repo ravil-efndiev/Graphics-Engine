@@ -86,11 +86,11 @@ namespace Rvl
 
         material.SetUniform("u_ViewPos", cameraPos);
 
-        std::vector<Transform> transforms;
-        transforms.push_back(transform);
-        for (auto& instance : data.Instances)
+        std::vector<Transform> transforms (data.Instances.size() + 1);
+        transforms[0] = transform;
+        for (int i = 1; i < transforms.size())
         {  
-            transforms.push_back(*instance);
+            transforms[i] = *data.Instances[i - 1];
         }
 
         RenderEntity re (model.Meshes.data(), model.Meshes.size(), model.RepeatUV, _renderType);
