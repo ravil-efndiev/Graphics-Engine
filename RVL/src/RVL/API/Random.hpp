@@ -2,8 +2,11 @@
 
 #include <Core/Core.hpp>
 
+#define RVL_PCT(percent) (float)percent / 100.f
+
 namespace Rvl
 {
+
     class Random
     {
     public:
@@ -25,6 +28,8 @@ namespace Rvl
         static uint32_t UintRange(uint32_t min, uint32_t max);
         static double DoubleRange(double min, double max);
         static float FloatRange(float min, float max);
+
+        static bool PercentChance(float chance);
 
     private:
         static std::mt19937 _generator;

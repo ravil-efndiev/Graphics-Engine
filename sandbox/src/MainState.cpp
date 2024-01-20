@@ -12,7 +12,7 @@ void MainState::Start()
     _camera = UserPerspectiveCamera::New({0.f, 0.f, 0.f}, 45.f);
 
     _directionalLight = _currentScene->NewEntity();
-    _directionalLight.Add<DirectionalLight>(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.5f, 0.5f, 0.5f));
+    _directionalLight.Add<DirectionalLight>(glm::vec3(-1, -1, -1), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.5f, 0.5f, 0.5f));
     _dlTf = &_directionalLight.Get<Transform>();
 
     _model = _currentScene->NewEntity();
@@ -26,7 +26,8 @@ void MainState::Start()
     _sprite = _currentScene->NewEntity(glm::vec3{5.f, 0.f, 5.f});
     (_sTf = &_sprite.Get<Transform>());
     _sprite.Add<Sprite>("assets/textures/container.jpg", 1.f);
-    _sprite.Add<PointLight>(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(0.5f, 0.5f, 0.5f), 0.09f, 0.032f);
+    _sprite.Add<PointLight>(glm::vec3(0.9f, 0.9f, 0.9f), 2.f);
+    _sprite.AddBehaviour<TestScript>();
 }
 
 void MainState::Update()
@@ -42,19 +43,16 @@ void MainState::Update()
     if (_lock)
         UserCamera::ToPerspective(_camera)->UpdateCursorRotation(2.f);
 
-    _mat->SetUniform("u_ViewPos", UserCamera::ToPerspective(_camera)->Position());
     _dlTf->Rotation = _light;
     _sTf->Position = _lightPosition;
+
+    RVL_LOG(Random::PercentChance(RVL_PCT(50)));
 }
 
 void MainState::Render()
 {
     RenderImGui();
     SceneRenderer::Render(_currentScene, _camera);    
-}
-
-void MainState::PostRender()
-{
 }
 
 void MainState::RenderImGui()

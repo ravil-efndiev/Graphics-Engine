@@ -14,13 +14,13 @@ public:
 
     void Update() override
     {
-        /*if (Input::IsMouseButtonPressed(Mouse::Left))
-            _transform.Position->x += 10 * Time::DeltaTime();*/
+        if (Input::IsMouseButtonPressed(Mouse::Left))
+            _transform.Position.x += 10 * Time::DeltaTime();
     }
 
     void OnEvent(Event* event) override
     {
-        //if (event->GetType() == EventType::MOUSE_BUTTON_PRESSED)
-        //    _transform.Rotation->y = 20;
+        if (event->GetType() == EventType::MOUSE_BUTTON_PRESSED)
+            _transform.Rotation.y = 20;
     }
 };

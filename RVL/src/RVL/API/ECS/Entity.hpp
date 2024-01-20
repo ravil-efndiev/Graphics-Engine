@@ -4,10 +4,6 @@
 
 namespace Rvl
 {
-    /**
-     * EntityData is struct used to store entity-specific data
-     * Stored inside Scene class and not Entity class but asociated directly with Entity
-    */
     struct EntityData
     {
         std::vector<Entity> Children;

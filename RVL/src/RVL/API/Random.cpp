@@ -74,4 +74,9 @@ namespace Rvl
         std::uniform_real_distribution<> distr (min, max);
         return static_cast<float>(distr(_generator));
     }
+
+    bool Random::PercentChance(float chance)
+    {
+        return FloatRange(0.f, 1.f) <= chance;
+    }
 }

@@ -88,7 +88,7 @@ namespace Rvl
 
         std::vector<Transform> transforms (data.Instances.size() + 1);
         transforms[0] = transform;
-        for (int i = 1; i < transforms.size())
+        for (int i = 1; i < transforms.size(); i++)
         {  
             transforms[i] = *data.Instances[i - 1];
         }
