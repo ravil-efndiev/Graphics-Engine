@@ -24,6 +24,7 @@ namespace Rvl
         glm::vec3 Pivot;
 
         friend void TransformSystem(const std::vector<Entity>&);
+        friend class SceneRenderer;
     private:
         glm::mat4 _parentMatrix {1.f};
     };

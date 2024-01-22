@@ -21,7 +21,7 @@ namespace Rvl
 
     private:
         static void DrawParticleEmitters(const std::vector<Entity>& entities);
-        static void DrawParticles(ParticleEmitter& emitter, const glm::vec3& tfPos);
+        static void DrawParticles(ParticleEmitter& emitter, const Transform& tf);
 
         static RenderType _renderType;
     };

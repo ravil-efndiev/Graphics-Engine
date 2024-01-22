@@ -115,7 +115,7 @@ namespace Rvl
                 if (!emitter.AdditiveBlend)
                     continue;
 
-                DrawParticles(emitter, pos);
+                DrawParticles(emitter, entity.Get<Transform>());
             }
         }
 
@@ -129,12 +129,11 @@ namespace Rvl
                 RVL_ASSERT((entity.Has<Transform>()), "SceneRenderer: entity passed into DrawParticles function doesn't have Transform Component");
         
                 auto& emitter = entity.Get<ParticleEmitter>();
-                glm::vec3 pos = entity.Get<Transform>().Position;
 
                 if (emitter.AdditiveBlend)
                     continue;
 
-                DrawParticles(emitter, pos);
+                DrawParticles(emitter, entity.Get<Transform>());
             }
         }
 
@@ -143,7 +142,7 @@ namespace Rvl
         glDepthMask(GL_TRUE);
     }
 
-    void SceneRenderer::DrawParticles(ParticleEmitter& emitter, const glm::vec3& tfPos)
+    void SceneRenderer::DrawParticles(ParticleEmitter& emitter, const Transform& tf)
     {        
         for (auto& particle : emitter.Particles)
         {
@@ -156,10 +155,13 @@ namespace Rvl
 
             float size = Math::Lerp(particle.SizeEnd, particle.SizeStart, life);
 
+            Transform ptf (particle.Position, {0.f, 0.f, particle.Rotation}, {size, size, 0.f});
+            ptf._parentMatrix = tf.GetMatrix();
+
             if (particle.Texture && particle.UseTexture)
-                Renderer::DrawRect({particle.Position + tfPos, {0.f, 0.f, particle.Rotation}, {size, size, 0.f}}, particle.Texture, color);
+                Renderer::DrawRect(ptf, particle.Texture, color);
             else
-                Renderer::DrawRect({particle.Position + tfPos, {0.f, 0.f, particle.Rotation}, {size, size, 0.f}}, color);
+                Renderer::DrawRect(ptf, color);
         }
     }
 
