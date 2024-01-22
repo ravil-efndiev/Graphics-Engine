@@ -7,9 +7,9 @@ namespace Rvl
     struct EntityData
     {
         std::vector<Entity> Children;
-        Transform LastTransformValue;
+        glm::mat4 LastTransform {1.f};
         std::vector<Transform*> Instances;
-        size_t LastTransformsSize = 0;
+        size_t LastInstancesSize = 0;
         bool IsInstance = false;
     };
 
@@ -71,4 +71,3 @@ namespace Rvl
         Scene* _scene;
     };
 }
-

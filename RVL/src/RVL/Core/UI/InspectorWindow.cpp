@@ -97,6 +97,7 @@ namespace Rvl
             DragVec3("Position##transform_position", &transform.Position);
             DragVec3("Rotation##transform_rotation", &transform.Rotation);
             DragVec3("Scale##transform_scale", &transform.Scale);
+            DragVec3("Pivot##transform_pivot", &transform.Pivot);
         });
 
         DrawComponent<Sprite>("Sprite", _selected, [](auto& sprite) 

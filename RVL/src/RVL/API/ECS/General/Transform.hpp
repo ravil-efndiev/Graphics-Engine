@@ -1,9 +1,10 @@
 #pragma once
 
-#include <glm/glm.hpp>
+#include <Core/Core.hpp>
 
 namespace Rvl
 {
+    class Entity;
     class Transform
     {
     public:
@@ -11,7 +12,8 @@ namespace Rvl
         Transform(const glm::vec3& position, const glm::vec3& rotationDeg, const glm::vec3& scale);
         ~Transform();
 
-        bool operator== (const Transform& other);
+        bool operator== (const Transform& other) const;
+        bool operator!= (const Transform& other) const;
 
         glm::mat4 GetMatrix() const;
 
@@ -20,6 +22,9 @@ namespace Rvl
         glm::vec3 Scale;
 
         glm::vec3 Pivot;
+
+        friend void TransformSystem(const std::vector<Entity>&);
+    private:
+        glm::mat4 _parentMatrix {1.f};
     };
 }
-

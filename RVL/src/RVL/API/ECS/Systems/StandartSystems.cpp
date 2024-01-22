@@ -29,19 +29,16 @@ namespace Rvl
             
             if (data.Children.size() > 0)
             {
-                auto tf = entity.Get<Transform>();
+                auto& tf = entity.Get<Transform>();
+                glm::mat4 mat = tf.GetMatrix();
 
-                if (!(tf == data.LastTransformValue))
+                if (mat != data.LastTransform)
                 {
                     for (auto child : data.Children)
-                    {
-                        child.Get<Transform>().Position += (tf.Position - data.LastTransformValue.Position);
-                        child.Get<Transform>().Rotation += (tf.Rotation - data.LastTransformValue.Rotation);
-                        child.Get<Transform>().Scale    += (tf.Scale - data.LastTransformValue.Scale);
-                    }
-                }
+                        child.Get<Transform>()._parentMatrix = mat;
 
-                data.LastTransformValue = tf;
+                    data.LastTransform = mat;
+                }
             }
         }   
     }

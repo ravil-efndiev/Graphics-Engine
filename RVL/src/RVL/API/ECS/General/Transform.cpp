@@ -24,7 +24,7 @@ namespace Rvl
 
     glm::mat4 Transform::GetMatrix() const
     {
-        glm::mat4 matrix (1.f);
+        glm::mat4 matrix = _parentMatrix;
 
         matrix = glm::translate(matrix, Position);
         matrix = glm::rotate(matrix, glm::radians(Rotation.x), glm::vec3(1, 0, 0));
@@ -35,8 +35,13 @@ namespace Rvl
         return matrix;
     }
 
-    bool Transform::operator== (const Transform& other)
+    bool Transform::operator== (const Transform& other) const
     {
         return (other.Position == Position && Rotation == other.Rotation && Scale == other.Scale);
+    }
+
+    bool Transform::operator!= (const Transform& other) const
+    {
+        return !(*this == other);
     }
 }
