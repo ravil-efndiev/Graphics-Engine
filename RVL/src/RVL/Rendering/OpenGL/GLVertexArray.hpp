@@ -27,17 +27,17 @@ namespace Rvl
         void BindIndexBuffer();
         void UnbindIndexBuffer();
 
-        void ResetVertexBuffer(int index, GLVertexBuffer& vertexBuffer);
+        void ResetVertexBuffer(u32 index, GLVertexBuffer& vertexBuffer);
 
     private:
         GLuint _vertexArrayId;
 
-        int _currentAttribIndex = 0;
+        u32 _currentAttribIndex = 0;
 
         std::vector<Ref<GLVertexBuffer>> _vertexBuffers;
         Ref<GLIndexBuffer> _indexBuffer;
 
-        void SetAttribPtr(int index, const GLVertexBuffer& vertexBuffer);
+        void SetAttribPtr(u32 index, const GLVertexBuffer& vertexBuffer);
     };
 }
 

@@ -38,7 +38,7 @@ void EditorState::Update()
     if (Input::IsKeyPressedOnce(Keys::Key_Escape))
     {
         _lock = !_lock;
-        App::GetInstance()->SetCursorLocked(_lock);
+        App::Get()->SetCursorLocked(_lock);
     }
 
     UserCamera::ToPerspective(_camera)->UpdateControls(ControllerType::InPlane, 5.f);

@@ -6,24 +6,24 @@
 
 namespace Rvl
 {
-    ParticleEmitter::ParticleEmitter(uint32 count, const ParticleProperties& props)
+    ParticleEmitter::ParticleEmitter(u32 count, const ParticleProperties& props)
     {
         Properties = props;
         SetCount(count);
     }
 
-    void ParticleEmitter::SetCount(uint32 count)
+    void ParticleEmitter::SetCount(u32 count)
     {
         Count = count;
         Particles.resize(Count);
     }
 
-    void ParticleEmitter::Emit(int32 times)
+    void ParticleEmitter::Emit(i32 times)
     {
         Emit(times, Properties);   
     }
 
-    void ParticleEmitter::Emit(int32 times, const ParticleProperties& props)
+    void ParticleEmitter::Emit(i32 times, const ParticleProperties& props)
     {
         for (int i = 0; i < times; i++)
         {

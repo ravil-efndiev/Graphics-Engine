@@ -2,11 +2,11 @@
 
 namespace Rvl
 {
-    GLIndexBuffer::GLIndexBuffer(const std::vector<uint32_t>& indicies)
+    GLIndexBuffer::GLIndexBuffer(const std::vector<u32>& indicies)
     {
         glGenBuffers(1, &_bufferId);
         glBindBuffer(GL_ARRAY_BUFFER, _bufferId);
-        glBufferData(GL_ARRAY_BUFFER, indicies.size() * sizeof(uint32_t), indicies.data(), GL_STATIC_DRAW);   
+        glBufferData(GL_ARRAY_BUFFER, indicies.size() * sizeof(u32), indicies.data(), GL_STATIC_DRAW);   
         _indiciesCount = indicies.size();
     }
 
@@ -25,7 +25,7 @@ namespace Rvl
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 
-    int GLIndexBuffer::GetIndiciesCount()
+    u32 GLIndexBuffer::GetIndiciesCount()
     {
         return _indiciesCount;
     }

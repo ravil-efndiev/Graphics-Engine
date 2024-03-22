@@ -17,7 +17,7 @@ namespace Rvl
         Ref<SubTexture> operator[](const std::string& name);
         const std::unordered_map<std::string, Ref<SubTexture>>& GetTiles() const;
 
-        void AddTile(const std::string& name, float texX, float texY, float texWidth, float texHeight);
+        void AddTile(const std::string& name, f32 texX, f32 texY, f32 texWidth, f32 texHeight);
         void RemoveTile(const std::string& name);
         void Clear();
 

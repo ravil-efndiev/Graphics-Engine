@@ -31,8 +31,8 @@ namespace Rvl
             {
                 if (element.Type == ElementType::Mat4)
                 {
-                    uint16 count = static_cast<uint16>(element.Type) / 4;
-					for (uint16 j = 0; j < count; j++)
+                    u16 count = static_cast<u16>(element.Type) / 4;
+					for (u16 j = 0; j < count; j++)
 					{
 						glEnableVertexAttribArray(_currentAttribIndex);
 						glVertexAttribPointer(_currentAttribIndex,
@@ -122,7 +122,7 @@ namespace Rvl
         _indexBuffer->Unbind();
     }
 
-    void GLVertexArray::ResetVertexBuffer(int index, GLVertexBuffer& vertexBuffer)
+    void GLVertexArray::ResetVertexBuffer(u32 index, GLVertexBuffer& vertexBuffer)
     {
         Bind();
         vertexBuffer.Bind();
@@ -133,7 +133,7 @@ namespace Rvl
         Unbind();
     }
 
-    void GLVertexArray::SetAttribPtr(int index, const GLVertexBuffer& vertexBuffer)
+    void GLVertexArray::SetAttribPtr(u32 index, const GLVertexBuffer& vertexBuffer)
     {
         glVertexAttribPointer(index,
             vertexBuffer.GetVerticiesCount(),

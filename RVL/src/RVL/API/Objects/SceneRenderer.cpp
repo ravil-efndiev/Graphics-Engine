@@ -85,6 +85,7 @@ namespace Rvl
         auto& transform = entity.Get<Transform>();
 
         material.SetUniform("u_ViewPos", cameraPos);
+        RenderEntity re (model.Meshes.data(), model.Meshes.size(), model.RepeatUV, _renderType);
 
         std::vector<Transform> transforms (data.Instances.size() + 1);
         transforms[0] = transform;
@@ -93,7 +94,6 @@ namespace Rvl
             transforms[i] = *data.Instances[i - 1];
         }
 
-        RenderEntity re (model.Meshes.data(), model.Meshes.size(), model.RepeatUV, _renderType);
         Renderer3D::SubmitEntityInstanced(re, material, transforms, transforms.size() > data.LastInstancesSize);
         data.LastInstancesSize = transforms.size();
     }
@@ -155,8 +155,7 @@ namespace Rvl
 
             float size = Math::Lerp(particle.SizeEnd, particle.SizeStart, life);
 
-            Transform ptf (particle.Position, {0.f, 0.f, particle.Rotation}, {size, size, 0.f});
-            ptf._parentMatrix = tf.GetMatrix();
+            Transform ptf (Math::Lerp(tf.Position, particle.Position, 0.5f), {0.f, 0.f, particle.Rotation}, {size, size, 0.f});
 
             if (particle.Texture && particle.UseTexture)
                 Renderer::DrawRect(ptf, particle.Texture, color);

@@ -27,7 +27,7 @@ namespace Rvl
             { ElementType::Vec2, offsetof(ScreenVertex, TexCoord), sizeof(ScreenVertex), false }
         });
 
-        std::vector<uint32> screenIndicies = { 0, 1, 2, 2, 3, 0 };
+        std::vector<u32> screenIndicies = { 0, 1, 2, 2, 3, 0 };
         Ref<GLIndexBuffer> ibo = NewRef<GLIndexBuffer>(screenIndicies);    
 
         _screenVao->AddVertexBuffer(_screenVbo);
@@ -55,7 +55,7 @@ namespace Rvl
             { ElementType::Vec2, offsetof(ScreenVertex, TexCoord), sizeof(ScreenVertex), false }
         });
 
-        std::vector<uint32> screenIndicies = { 0, 1, 2, 2, 3, 0 };
+        std::vector<u32> screenIndicies = { 0, 1, 2, 2, 3, 0 };
         Ref<GLIndexBuffer> ibo = NewRef<GLIndexBuffer>(screenIndicies);    
 
         _screenVao->AddVertexBuffer(_screenVbo);

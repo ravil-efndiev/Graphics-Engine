@@ -4,14 +4,23 @@
 
 namespace Rvl
 {
-    void Rvl::Error::Print()
+    void Error::Print()
     {
-        if (Status == RVL_RUNTIME_ERROR)
+        switch (Status) 
+        {
+        case RVL_RUNTIME_ERROR:
             std::cerr << RVL_LOG_COLOR_RED << "RUNTIME ERROR => " << Text << RVL_LOG_COLOR_NONE << std::endl;
-        else if (Status == RVL_INTERNAL_ERROR)
+            break;
+        case RVL_INTERNAL_ERROR:
             std::cerr << RVL_LOG_COLOR_RED << "INTERNAL ERROR => " << Text << RVL_LOG_COLOR_NONE << std::endl;
-        else if (Status == RVL_CLIENT_ERROR)
+            break;
+        case RVL_CLIENT_ERROR:
             std::cerr << RVL_LOG_COLOR_RED << "ERROR THROWN BY CLIENT => " << Text << RVL_LOG_COLOR_NONE << std::endl;
+            break;
+        default:
+            std::cerr << RVL_LOG_COLOR_RED << "unknown error type => " << Text << RVL_LOG_COLOR_NONE << std::endl;
+            break;
+        }
     }
 
     void Error::PrintErrorS(const std::string &text)

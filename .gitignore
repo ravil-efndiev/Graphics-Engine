@@ -6,10 +6,12 @@ cmake_install.cmake
 # Makefile, fuck you
 Makefile
 
-# .vscode directory
 .vscode
 
 TODO.txt
 
 topDownGame
 Rvm.app
+
+# even though cmake ignores are not needed anymore I'm still gonna leave them because they look fucking pretty
+build

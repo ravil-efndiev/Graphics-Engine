@@ -1,19 +1,20 @@
 #pragma once
+#include "Core/Core.hpp"
 
 namespace Rvl
 {
     struct TimeStep
     {
         public:
-            TimeStep(float time = 0.f) : _time(time) {}
+            TimeStep(f32 time = 0.f) : _time(time) {}
 
-            operator float () const { return _time; }
+            operator f32 () const { return _time; }
             TimeStep operator+=(TimeStep ts) { _time += ts; return *this; }
 
-            float AsMiliseconds() const { return _time * 1000.f; }
+            f32 AsMiliseconds() const { return _time * 1000.f; }
 
         private:
-            float _time;
+            f32 _time;
     };
 
     class Time

@@ -18,10 +18,6 @@ void MainState::Start()
     _model = _currentScene->NewEntity();
     _model.Add<Model>().Meshes = StandartMeshes::Get("Cube");
     _mat = &_model.Add<Material>(glm::vec3(0.9f, 0.8f, 0.5f), 0.5f);
-    for (int i = 0; i < 1000; i++)
-    {
-        _currentScene->Instantiate(_model, {i + 1, 0, 0});
-    }
 
     _sprite = _currentScene->NewEntity(glm::vec3{5.f, 0.f, 5.f});
     (_sTf = &_sprite.Get<Transform>());
@@ -37,7 +33,7 @@ void MainState::Update()
     if (Input::IsKeyPressedOnce(Keys::Key_Escape))
     {
         _lock = !_lock;
-        App::GetInstance()->SetCursorLocked(_lock);
+        App::Get()->SetCursorLocked(_lock);
     }
 
     if (_lock)

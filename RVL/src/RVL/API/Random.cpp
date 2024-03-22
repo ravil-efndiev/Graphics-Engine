@@ -10,73 +10,73 @@ namespace Rvl
         _generator = std::mt19937(rd());
     }
 
-    int Random::NextInt()
+    i32 Random::NextInt()
     {
         std::uniform_int_distribution<> distr;
         return distr(_generator);
     }
 
-    int Random::NextInt(int max)
+    i32 Random::NextInt(i32 max)
     {
         return IntRange(0, max);
     }
 
-    uint32_t Random::NextUint()
+    u32 Random::NextUint()
     {
-        return IntRange(0, std::numeric_limits<uint32_t>::max());
+        return IntRange(0, std::numeric_limits<u32>::max());
     }
 
-    uint32_t Random::NextUint(uint32_t max)
+    u32 Random::NextUint(u32 max)
     {
         return IntRange(0, max);
     }
 
-    double Random::NextDouble()
+    f64 Random::NextDouble()
     {
-        return DoubleRange(std::numeric_limits<double>::min(), std::numeric_limits<double>::max());
+        return DoubleRange(std::numeric_limits<f64>::min(), std::numeric_limits<f64>::max());
     }
 
-    double Random::NextDouble(double max)
+    f64 Random::NextDouble(f64 max)
     {
         return DoubleRange(0, max);
     }
 
-    float Random::NextFloat()
+    f32 Random::NextFloat()
     {
-        return FloatRange(std::numeric_limits<float>::min(), std::numeric_limits<float>::max());
+        return FloatRange(std::numeric_limits<f32>::min(), std::numeric_limits<f32>::max());
     }
 
-    float Random::NextFloat(float max)
+    f32 Random::NextFloat(f32 max)
     {
         return FloatRange(0, max);
     }
 
-    int Random::IntRange(int min, int max)
+    i32 Random::IntRange(i32 min, i32 max)
     {
         std::uniform_int_distribution<> distr (min, max);
         return distr(_generator);
     }
 
-    uint32_t Random::UintRange(uint32_t min, uint32_t max)
+    u32 Random::UintRange(u32 min, u32 max)
     {
         std::uniform_int_distribution<> distr (min, max);
-        return static_cast<uint32_t>(distr(_generator));
+        return static_cast<u32>(distr(_generator));
     }
 
-    double Random::DoubleRange(double min, double max)
+    f64 Random::DoubleRange(f64 min, f64 max)
     {
         std::uniform_real_distribution<> distr (min, max);
         return distr(_generator);
     }
 
-    float Random::FloatRange(float min, float max)
+    f32 Random::FloatRange(f32 min, f32 max)
     {
         std::uniform_real_distribution<> distr (min, max);
-        return static_cast<float>(distr(_generator));
+        return static_cast<f32>(distr(_generator));
     }
 
-    bool Random::PercentChance(float chance)
+    bool Random::PercentChance(f64 chance)
     {
-        return FloatRange(0.f, 1.f) <= chance;
+        return DoubleRange(0.f, 1.f) <= chance;
     }
 }

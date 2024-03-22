@@ -5,14 +5,11 @@
 
 namespace Rvl
 {
-    Window::Window(int width, int height, const std::string &name)
+    Window::Window(i32 width, i32 height, const std::string &name)
+        : _name(name)
     {
-        _width = width;
-        _height = height;
-        _name = name;
-
         InitGlfw();
-        CreateWindow();
+        CreateWindow(width, height);
         SetCallbacks();
     }
 
@@ -33,9 +30,9 @@ namespace Rvl
         glfwWindowHint(GLFW_SAMPLES, 4);
     }
 
-    void Window::CreateWindow()
+    void Window::CreateWindow(i32 width, i32 height)
     {
-        _window = glfwCreateWindow(_width, _height, _name.c_str(), nullptr, nullptr);
+        _window = glfwCreateWindow(width, height, _name.c_str(), nullptr, nullptr);
         RVL_ASSERT(_window, "failed to create GLFW window")
 
         _context = NewPtr<GLContext>(_window);
@@ -117,16 +114,6 @@ namespace Rvl
     void Window::SetEventsCallback(void (*eventCallback)(Event *))
     {
         _eventCallback.EventCallback = eventCallback;
-    }
-
-    int Window::GetWidth() const
-    {
-        return _width;
-    }
-
-    int Window::GetHeight() const
-    {
-        return _height;
     }
 
     GLFWwindow* Window::GetWindowPtr()

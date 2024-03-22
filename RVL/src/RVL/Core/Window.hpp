@@ -11,7 +11,7 @@ namespace Rvl
     class Window
     {
     public:
-        Window(int width, int height, const std::string& name);
+        Window(i32 width, i32 height, const std::string& name);
         ~Window();
 
         bool Closes() const;
@@ -21,9 +21,6 @@ namespace Rvl
         void PollEvents();
 
         void SetEventsCallback(void (*eventCallback)(Event*));
-
-        int GetWidth() const;
-        int GetHeight() const;
 
         GLFWwindow* GetWindowPtr();
 
@@ -37,15 +34,12 @@ namespace Rvl
 
         EventCallbackStruct _eventCallback;
 
-        int _width, _height;
         std::string _name;
-
         GLFWwindow* _window;
-
         Ptr<GLContext> _context;
 
         void InitGlfw();
-        void CreateWindow();
+        void CreateWindow(i32 width, i32 height);
         void SetCallbacks();
 
     };

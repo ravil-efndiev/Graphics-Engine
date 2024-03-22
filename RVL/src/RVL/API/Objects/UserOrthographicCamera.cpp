@@ -7,24 +7,24 @@
 
 namespace Rvl
 {
-    Ref<UserOrthographicCamera> UserOrthographicCamera::New(const glm::vec2& position, float zoom)
+    Ref<UserOrthographicCamera> UserOrthographicCamera::New(const glm::vec2& position, f32 zoom)
     {
         return NewRef<UserOrthographicCamera>(position, zoom);
     }
 
-    UserOrthographicCamera::UserOrthographicCamera(const glm::vec2& position, float zoom)
+    UserOrthographicCamera::UserOrthographicCamera(const glm::vec2& position, f32 zoom)
     {
         _camera = NewRef<OrthographicCamera>(glm::vec3(position, 0.f), zoom);
     }
 
     UserOrthographicCamera::~UserOrthographicCamera() {}
 
-    float UserOrthographicCamera::GetZoom() const
+    f32 UserOrthographicCamera::GetZoom() const
     {
         return _camera->GetZoom();
     }
 
-    void UserOrthographicCamera::SetZoom(float zoom)
+    void UserOrthographicCamera::SetZoom(f32 zoom)
     {
         _camera->SetZoom(zoom);
     }
@@ -39,19 +39,19 @@ namespace Rvl
         return glm::vec2(_camera->GetPosition().x, _camera->GetPosition().y);
     }
 
-    void UserOrthographicCamera::SetRotationZ(float rotation)
+    void UserOrthographicCamera::SetRotationZ(f32 rotation)
     {
         _camera->SetRotationZ(rotation);
     }
 
-    float UserOrthographicCamera::GetRotationZ() const
+    f32 UserOrthographicCamera::GetRotationZ() const
     {
         return _camera->GetRotationZ();
     }
 
-    void UserOrthographicCamera::Follow(Transform* transform, Axis axis, bool smooth, float smoothSpeed, float deadZone, TimeStep deltaTime)
+    void UserOrthographicCamera::Follow(Transform* transform, Axis axis, bool smooth, f32 smoothSpeed, f32 deadZone, TimeStep deltaTime)
     {
-        float x = _camera->GetPosition().x, y = _camera->GetPosition().y;
+        f32 x = _camera->GetPosition().x, y = _camera->GetPosition().y;
 
         if (static_cast<bool>(axis & Axis::Horizontal))
             x = smooth ? Math::Lerp(_camera->GetPosition().x, transform->Position.x, smoothSpeed * deltaTime, deadZone) : transform->Position.x;

@@ -85,23 +85,28 @@ set(CMAKE_BUILD_TYPE Release)
 
 set_property(TARGET RVL PROPERTY CXX_STANDARD 20)
 
-target_include_directories(RVL PUBLIC .)
-target_include_directories(RVL PUBLIC src)
-target_include_directories(RVL PUBLIC src/RVL)
-target_include_directories(RVL PUBLIC src/RVL/Core)
-target_include_directories(RVL PUBLIC src/RVL/API/ECS)
-target_include_directories(RVL PUBLIC src/RVL/API/)
-target_include_directories(RVL PUBLIC vendor/)
-target_include_directories(RVL PUBLIC vendor/assimp/include/)
-target_include_directories(RVL PUBLIC vendor/imgui)
-target_include_directories(RVL PUBLIC vendor/yaml/include/)
-target_include_directories(RVL PRIVATE vendor/include)
-target_include_directories(RVL PRIVATE vendor/include/glm)
-target_include_directories(RVL PRIVATE vendor/nativefiledialog/src/include)
+target_include_directories(RVL PUBLIC 
+    .
+    src
+    src/RVL
+    src/RVL/Core
+    src/RVL/API/ECS
+    src/RVL/API/
+    vendor/
+    vendor/assimp/include/
+    vendor/imgui
+    vendor/yaml/include/
+    vendor/include
+    vendor/include/glm
+    vendor/nativefiledialog/src/include
+)
 
 include(GNUInstallDirs)
 
-target_link_libraries(RVL ${CMAKE_CURRENT_SOURCE_DIR}/vendor/lib/libglfw3.a ${CMAKE_CURRENT_SOURCE_DIR}/vendor/assimp/lib/libassimp.a)
+target_link_libraries(RVL 
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/lib/libglfw3.a
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/assimp/lib/libassimp.a
+)
 
 set(CMAKE_CXX_FLAGS "-Wall -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -framework CoreFoundation -Wno-deprecated -Wno-unused-command-line-argument")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")

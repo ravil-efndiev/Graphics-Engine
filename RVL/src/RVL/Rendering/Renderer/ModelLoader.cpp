@@ -26,6 +26,11 @@ namespace Rvl
         return _material;
     }
 
+    RenderEntity ModelLoader::GetAsEntity() const
+    {
+        return RenderEntity(_meshes.data(), _meshes.size(), false);
+    }
+
     void ModelLoader::LoadModel(const std::string& path)
     {
         _path = path;
@@ -74,7 +79,7 @@ namespace Rvl
     std::pair<Mesh, Material> ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene)
     {
         std::vector<MeshVertex> vertices;
-        std::vector<uint32> indices;
+        std::vector<u32> indices;
         std::vector<MaterialTexture> textures;
 
         for (int i = 0; i < mesh->mNumVertices; i++)
@@ -139,7 +144,7 @@ namespace Rvl
             std::vector<MaterialTexture> diffuseMaps = LoadMaterialTextures(mat, aiTextureType_DIFFUSE, RVL_TEXTURE_DIFFUSE);
             textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
-            std::vector<MaterialTexture> specularMaps = LoadMaterialTextures(mat, aiTextureType_SPECULAR, RVL_TEXTURE_DIFFUSE);
+            std::vector<MaterialTexture> specularMaps = LoadMaterialTextures(mat, aiTextureType_SPECULAR, RVL_TEXTURE_SPECULAR);
             textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 
             material.Textures = textures;

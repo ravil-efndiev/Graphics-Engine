@@ -5,12 +5,12 @@
 
 namespace Rvl
 {
-    Ref<UserPerspectiveCamera> UserPerspectiveCamera::New(const glm::vec3& position, float fov)
+    Ref<UserPerspectiveCamera> UserPerspectiveCamera::New(const glm::vec3& position, f32 fov)
     {
         return NewRef<UserPerspectiveCamera>(position, fov);
     }
 
-    UserPerspectiveCamera::UserPerspectiveCamera(const glm::vec3& position, float fov)
+    UserPerspectiveCamera::UserPerspectiveCamera(const glm::vec3& position, f32 fov)
     {
         _camera = NewRef<PerspectiveCamera>(position, fov);
 
@@ -29,37 +29,37 @@ namespace Rvl
         return _camera;
     }
 
-    void UserPerspectiveCamera::Move(Direction direction, float speed, TimeStep dt)
+    void UserPerspectiveCamera::Move(Direction direction, f32 speed, TimeStep dt)
     {
         switch (direction)
         {
             case Direction::Forward:
-                _camera->_position += _camera->_forward * speed * (float)dt;
+                _camera->_position += _camera->_forward * speed * (f32)dt;
                 break;
 
             case Direction::Back:
-                _camera->_position -= _camera->_forward * speed * (float)dt;
+                _camera->_position -= _camera->_forward * speed * (f32)dt;
                 break;
 
             case Direction::Left:
-                _camera->_position += _camera->_right * speed * (float)dt;
+                _camera->_position += _camera->_right * speed * (f32)dt;
                 break;   
 
             case Direction::Right:
-                _camera->_position -= _camera->_right * speed * (float)dt;
+                _camera->_position -= _camera->_right * speed * (f32)dt;
                 break;
 
             case Direction::ForwardHorizontal:
-                _camera->_position += glm::vec3(_camera->_forward.x, 0.f, _camera->_forward.z) * speed * (float)dt;
+                _camera->_position += glm::vec3(_camera->_forward.x, 0.f, _camera->_forward.z) * speed * (f32)dt;
                 break;
 
             case Direction::BackHorizontal:
-                _camera->_position -= glm::vec3(_camera->_forward.x, 0.f, _camera->_forward.z) * speed * (float)dt;
+                _camera->_position -= glm::vec3(_camera->_forward.x, 0.f, _camera->_forward.z) * speed * (f32)dt;
                 break;
         }
     }
 
-    void UserPerspectiveCamera::Rotate(float x, float y, float z)
+    void UserPerspectiveCamera::Rotate(f32 x, f32 y, f32 z)
     {
         _camera->Rotate(x, y, z);
         _camera->ResetRotation();
@@ -70,7 +70,7 @@ namespace Rvl
         return _camera->_vecRotation;
     }
 
-    void UserPerspectiveCamera::UpdateControls(ControllerType type, float speed, TimeStep dt)
+    void UserPerspectiveCamera::UpdateControls(ControllerType type, f32 speed, TimeStep dt)
     {
         if (type == ControllerType::Free) 
         {
@@ -109,11 +109,11 @@ namespace Rvl
         } 
     }
 
-    void UserPerspectiveCamera::UpdateCursorRotation(float speed)
+    void UserPerspectiveCamera::UpdateCursorRotation(f32 speed)
     {
         glm::vec2 viewport = RenderApi::GetViewport();
 
-        _rotation += Input::GetCursorDelta() / (float)viewport.y * speed;
+        _rotation += Input::GetCursorDelta() / (f32)viewport.y * speed;
         
         if (_rotation.y > glm::radians(89.f))
             _rotation.y = glm::radians(89.f);

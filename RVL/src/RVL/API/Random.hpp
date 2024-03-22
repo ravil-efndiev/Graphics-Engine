@@ -2,34 +2,33 @@
 
 #include <Core/Core.hpp>
 
-#define RVL_PCT(percent) (float)percent / 100.f
+#define RVL_PCT(percent) (f64)percent / 100.0
 
 namespace Rvl
 {
-
     class Random
     {
     public:
         static void Init();
 
-        static int NextInt();
-        static int NextInt(int max);
+        static i32 NextInt();
+        static i32 NextInt(i32 max);
 
-        static uint32_t NextUint();
-        static uint32_t NextUint(uint32_t max);
+        static u32 NextUint();
+        static u32 NextUint(u32 max);
 
-        static double NextDouble();
-        static double NextDouble(double max);
+        static f64 NextDouble();
+        static f64 NextDouble(f64 max);
 
-        static float NextFloat();
-        static float NextFloat(float max);
+        static f32 NextFloat();
+        static f32 NextFloat(f32 max);
 
-        static int IntRange(int min, int max);
-        static uint32_t UintRange(uint32_t min, uint32_t max);
-        static double DoubleRange(double min, double max);
-        static float FloatRange(float min, float max);
+        static i32 IntRange(i32 min, i32 max);
+        static u32 UintRange(u32 min, u32 max);
+        static f64 DoubleRange(f64 min, f64 max);
+        static f32 FloatRange(f32 min, f32 max);
 
-        static bool PercentChance(float chance);
+        static bool PercentChance(f64 chance);
 
     private:
         static std::mt19937 _generator;

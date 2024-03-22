@@ -18,8 +18,8 @@ namespace Rvl
     {
         ElementType Type = ElementType::Float;
         
-        uint64 Offset = 0;
-        uint32 Size = (int32)Type * sizeof(float);
+        u64 Offset = 0;
+        u32 Size = (i32)Type * sizeof(f32);
 
         bool Normalized = false;
     };
@@ -28,7 +28,7 @@ namespace Rvl
     {
     public:
         GLVertexBuffer();
-        GLVertexBuffer(size_t size, int components = 0, bool normalized = GL_FALSE);
+        GLVertexBuffer(size_t size, i32 components = 0, bool normalized = GL_FALSE);
 
         template <class T>
         GLVertexBuffer(const std::vector<T>& verticies, bool dynamic = false)
@@ -46,7 +46,7 @@ namespace Rvl
         void SetData(void* data, size_t size);
         void ReallocData(void* data, size_t size);
 
-        int GetVerticiesCount() const;
+        i32 GetVerticiesCount() const;
         bool GetNormalized() const;
 
         GLuint GetId() const;
@@ -58,12 +58,12 @@ namespace Rvl
 
     private:
         template<class T>
-        void CreateBuffer(const std::vector<T>& verticies, int verticiesCount);
+        void CreateBuffer(const std::vector<T>& verticies, i32 verticiesCount);
         void CreateBuffer(size_t size);
 
         GLuint _bufferId;
 
-        int _verticiesCount;
+        i32 _verticiesCount;
         bool _normalized;
 
         std::vector<LayoutElement> _layout;

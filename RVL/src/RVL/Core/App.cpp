@@ -13,16 +13,16 @@
 
 namespace Rvl
 {
-    Ref<App> App::_instance = nullptr;
+    Ptr<App> App::_instance;
     
-    App::App(int windowWidth, int windowHeight, const std::string& windowName)
+    App::App(i32 windowWidth, i32 windowHeight, const std::string& windowName)
     {
         CreateWindow(windowWidth, windowHeight, windowName);
     }
 
-    App::~App() { }
+    App::~App() {}
 
-    status_t App::Run()
+    status App::Run()
     {
         try
         {
@@ -37,7 +37,7 @@ namespace Rvl
 
             ImGuiController::Init(_window->GetWindowPtr());
 
-            float timer = Time::LastTime();
+            f32 timer = Time::LastTime();
 
             while (!_window->Closes())
             {
@@ -107,14 +107,14 @@ namespace Rvl
         _window->SetClose(true);
     }
 
-    void App::CreateWindow(int windowWidth, int windowHeight, const std::string &windowName)
+    void App::CreateWindow(i32 windowWidth, i32 windowHeight, const std::string &windowName)
     {
         _window = NewPtr<Window>(windowWidth, windowHeight, windowName);
 
         _window->SetEventsCallback([](Event* event)
         {
             EventListener::Listen(event);
-            App::GetInstance()->ProcessEvent(event);
+            App::Get()->ProcessEvent(event);
         });
     }
 

@@ -4,7 +4,7 @@
 class Game : public Rvl::App
 {
 public:
-    Game(uint32 winWidth, uint32 winHeight, const std::string& winName) : App(winWidth, winHeight, winName) {}
+    Game(u32 winWidth, u32 winHeight, const std::string& winName) : App(winWidth, winHeight, winName) {}
     ~Game() {}
 
 private:
@@ -28,6 +28,6 @@ private:
 
 int main()
 {
-    Rvl::status_t status = Rvl::InitializeApp<Game>(1200, 800, "Sandbox");
+    Rvl::status status = Rvl::InitializeApp<Game>(1200, 800, "Sandbox");
     return status;   
 }

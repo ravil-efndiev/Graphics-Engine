@@ -27,7 +27,7 @@
      * used only for error checking in debug mode for errors that can be caused by engine itself
      * \note for errors that caused by user or any other errors that can be caused in release mode use rvl::Error struct
     */
-    #define RVL_ASSERT(cond, text) if(!cond) { \
+    #define RVL_ASSERT(cond, text) if(!(cond)) { \
                                 RVL_LOG_ERROR(text); \
                                 RVL_DEBUG_BREAK; } 
 #else

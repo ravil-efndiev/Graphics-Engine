@@ -58,7 +58,7 @@ namespace Rvl
 
     private:
         std::string _path, _data;
-        uint32 _tokenPosition = 0, _parserPosition = 0;
+        u32 _tokenPosition = 0, _parserPosition = 0;
 
         std::vector<Token> _tokens;
 

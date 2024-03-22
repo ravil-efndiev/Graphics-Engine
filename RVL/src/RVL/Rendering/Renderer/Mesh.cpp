@@ -4,9 +4,10 @@
 #include "Rendering/OpenGL/GLShaderProgram.hpp"
 #include "Rendering/OpenGL/GLTexture.hpp"
 
+#include <stdio.h>
 namespace Rvl
 {
-    Mesh::Mesh(const std::vector<MeshVertex>& verticies, const std::vector<uint32>& indicies)
+    Mesh::Mesh(const std::vector<MeshVertex>& verticies, const std::vector<u32>& indicies)
     {
         _verticies = verticies;
         _indicies = indicies;

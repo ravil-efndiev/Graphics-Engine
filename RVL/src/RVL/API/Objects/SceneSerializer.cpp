@@ -74,7 +74,7 @@ namespace Rvl
     void SceneSerializer::SerializeEntity(YAML::Emitter& emitter, Entity entity)
     {
         emitter << YAML::BeginMap;
-        emitter << YAML::Key << "ID" << YAML::Value << std::to_string((uint32)entity.GetId());
+        emitter << YAML::Key << "ID" << YAML::Value << std::to_string((u32)entity.GetId());
         emitter << YAML::Key << "Children" << YAML::Value << YAML::BeginSeq;
         auto children = entity.GetData().Children;
         for (auto child : children)
@@ -230,7 +230,7 @@ namespace Rvl
     
     void SceneSerializer::DeserializeEntity(YAML::Node entity, Entity parent)
     {
-        uint32 id = entity["ID"].as<uint32>();
+        u32 id = entity["ID"].as<u32>();
         std::string name;
         auto identifier = entity["Identifier"];
         if (identifier)
@@ -425,7 +425,7 @@ namespace Rvl
             if (!tex.empty())
                 props.Texture = NewRef<GLTexture>(tex);
 
-            loadEntity.Add<ParticleEmitter>(pemitter["Count"].as<uint32>(), props).AdditiveBlend = pemitter["AdditiveBlend"].as<bool>();
+            loadEntity.Add<ParticleEmitter>(pemitter["Count"].as<u32>(), props).AdditiveBlend = pemitter["AdditiveBlend"].as<bool>();
         }
 
         auto children = entity["Children"];

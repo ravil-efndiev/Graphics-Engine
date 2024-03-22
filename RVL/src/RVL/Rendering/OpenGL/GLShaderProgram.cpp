@@ -130,19 +130,19 @@ namespace Rvl
         glUniform2f(position, uniform.x, uniform.y);
     }
 
-    void GLShaderProgram::SetUniformFloat(const std::string& name, float uniform)
+    void GLShaderProgram::SetUniformFloat(const std::string& name, f32 uniform)
     {
         GLint position = glGetUniformLocation(_programId, name.c_str());
         glUniform1f(position, uniform);
     }
 
-    void GLShaderProgram::SetUniformInt(const std::string &name, int uniform)
+    void GLShaderProgram::SetUniformInt(const std::string &name, i32 uniform)
     {
         GLint position = glGetUniformLocation(_programId, name.c_str());
         glUniform1i(position, uniform);
     }
 
-    void GLShaderProgram::SetUniformIntArr(const std::string& name, int* arr, size_t count)
+    void GLShaderProgram::SetUniformIntArr(const std::string& name, i32* arr, size_t count)
     {
         GLint position = glGetUniformLocation(_programId, name.c_str());
         glUniform1iv(position, count, arr);

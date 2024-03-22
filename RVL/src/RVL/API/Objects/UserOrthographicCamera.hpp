@@ -13,21 +13,21 @@ namespace Rvl
     class UserOrthographicCamera : public UserCamera
     {
     public:
-        static Ref<UserOrthographicCamera> New(const glm::vec2& position = {0.f, 0.f}, float zoom = 1.f);
+        static Ref<UserOrthographicCamera> New(const glm::vec2& position = {0.f, 0.f}, f32 zoom = 1.f);
 
-        UserOrthographicCamera(const glm::vec2& position, float zoom);
+        UserOrthographicCamera(const glm::vec2& position, f32 zoom);
         ~UserOrthographicCamera();
 
-        float GetZoom() const;
-        void SetZoom(float zoom);
+        f32 GetZoom() const;
+        void SetZoom(f32 zoom);
 
         void SetPosition(const glm::vec2& position);
         glm::vec2 GetPosition() const;
 
-        void SetRotationZ(float rotation);
-        float GetRotationZ() const;
+        void SetRotationZ(f32 rotation);
+        f32 GetRotationZ() const;
 
-        void Follow(Transform* transform, Axis axis = Axis::Horizontal | Axis::Vertical, bool smooth = true, float smoothSpeed = 10.f, float deadZone = 0.05f, TimeStep deltaTime = Time::DeltaTime());
+        void Follow(Transform* transform, Axis axis = Axis::Horizontal | Axis::Vertical, bool smooth = true, f32 smoothSpeed = 10.f, f32 deadZone = 0.05f, TimeStep deltaTime = Time::DeltaTime());
 
         Ref<Camera> GetCamera() const override;
 

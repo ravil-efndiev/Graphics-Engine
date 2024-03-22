@@ -14,8 +14,6 @@ namespace Rvl
         _time = glfwGetTime();
         _deltaTime = _time - _lastTime;
         _lastTime = _time;
-    
-        //RVL_LOG("delta time: " << _deltaTime);
     }
 
     TimeStep Time::Current()

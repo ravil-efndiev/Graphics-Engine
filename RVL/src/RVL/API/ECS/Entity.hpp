@@ -58,7 +58,7 @@ namespace Rvl
         bool operator==(const Entity& entity) const;
 
         entt::entity GetId() const;
-        uint32 GetIdInt() const;
+        u32 GetIdInt() const;
 
         void AddChild(Entity child);
         void RemoveChild(Entity child);

@@ -36,19 +36,19 @@ namespace Rvl
         };
 
         ParticleEmitter() = default;
-        ParticleEmitter(uint32 count, const ParticleProperties& props = {});
+        ParticleEmitter(u32 count, const ParticleProperties& props = {});
 
-        void Emit(int32 times);
-        void Emit(int32 times, const ParticleProperties& props);
-        void SetCount(uint32 count);
+        void Emit(i32 times);
+        void Emit(i32 times, const ParticleProperties& props);
+        void SetCount(u32 count);
 
         std::vector<Particle> Particles;
         ParticleProperties Properties;     
         bool AdditiveBlend = false;   
-        uint32 Count;
+        u32 Count;
 
     private:
-        uint32 _index = 0;
+        u32 _index = 0;
     };
 }
 

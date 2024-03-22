@@ -18,9 +18,9 @@ namespace Rvl
         return _id;
     }
     
-    uint32 Entity::GetIdInt() const
+    u32 Entity::GetIdInt() const
     {
-        return (uint32)_id;
+        return (u32)_id;
     }
 
     void Entity::AddChild(Entity child)

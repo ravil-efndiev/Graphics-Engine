@@ -34,10 +34,10 @@ namespace Rvl
             {
                 _tiles.emplace(ytile.first.as<std::string>(),
                     SubTexture::New(_mapTexture,
-                        ytile.second[0].as<float>(), 
-                        ytile.second[1].as<float>(), 
-                        ytile.second[2].as<float>(), 
-                        ytile.second[3].as<float>()
+                        ytile.second[0].as<f32>(), 
+                        ytile.second[1].as<f32>(), 
+                        ytile.second[2].as<f32>(), 
+                        ytile.second[3].as<f32>()
                 ));
             }
         }
@@ -60,7 +60,7 @@ namespace Rvl
         return _tiles;
     }
 
-    void TileSet::AddTile(const std::string& name, float texX, float texY, float texWidth, float texHeight)
+    void TileSet::AddTile(const std::string& name, f32 texX, f32 texY, f32 texWidth, f32 texHeight)
     {
         if (_tiles.find(name) != _tiles.end())
             throw Error("tile names in tileSet must be unique", RVL_RUNTIME_ERROR);
@@ -90,10 +90,10 @@ namespace Rvl
         for (const auto& tile : _tiles)
         {
             emitter << YAML::Key << tile.first << YAML::Value << glm::vec4(
-                (int)tile.second->GetX(),
-                (int)tile.second->GetY(),
-                (int)tile.second->GetWidth(),
-                (int)tile.second->GetHeight()
+                (i32)tile.second->GetX(),
+                (i32)tile.second->GetY(),
+                (i32)tile.second->GetWidth(),
+                (i32)tile.second->GetHeight()
             );
         }   
 

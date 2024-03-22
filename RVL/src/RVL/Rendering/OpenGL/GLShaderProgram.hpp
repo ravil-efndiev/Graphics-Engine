@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Core/Core.hpp"
 #include <Rvlpch.hpp>
 #include <Rvlglpch.hpp>
 
@@ -22,9 +23,9 @@ namespace Rvl
         void SetUniformVec4(const std::string &name, const glm::vec4& uniform);
         void SetUniformVec3(const std::string &name, const glm::vec3& uniform);
         void SetUniformVec2(const std::string &name, const glm::vec2& uniform);
-        void SetUniformFloat(const std::string &name, float uniform);
-        void SetUniformInt(const std::string &name, int uniform);
-        void SetUniformIntArr(const std::string &name, int* arr, size_t count);
+        void SetUniformFloat(const std::string &name, f32 uniform);
+        void SetUniformInt(const std::string &name, i32 uniform);
+        void SetUniformIntArr(const std::string &name, i32* arr, size_t count);
 
         void Bind();
         void Unbind();
@@ -36,7 +37,7 @@ namespace Rvl
         GLuint _programId;
         GLuint _vertexShaderId, _fragmentShaderId;
 
-        int _success;
+        i32 _success;
         char _log[512];
 
         void CreateShaders();

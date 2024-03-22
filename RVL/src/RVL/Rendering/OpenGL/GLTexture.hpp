@@ -9,19 +9,19 @@ namespace Rvl
     {
     public:
         GLTexture();
-        GLTexture(uint32_t width, uint32_t height);
+        GLTexture(u32 width, u32 height);
         GLTexture(const std::string& path);
         GLTexture(const GLTexture& tex) = delete;
         ~GLTexture();
 
         void LoadTexture(const std::string& path);
-        void SetData(byte* data, int channels);
+        void SetData(byte* data, i32 channels);
 
-        void Bind(int unit) const;
-        void Unbind(int unit) const;
+        void Bind(i32 unit) const;
+        void Unbind(i32 unit) const;
 
-        int GetWidth() const;
-        int GetHeight() const;
+        i32 GetWidth() const;
+        i32 GetHeight() const;
 
         GLuint GetId() const;
         std::string GetPath() const;
@@ -30,17 +30,15 @@ namespace Rvl
 
     public:
         static GLuint TextureFromFile(const std::string& path, bool gamma = false);
-        static void BindTextureUnit(GLuint texture, GLuint sampler, int unit);
-        static void BindTextureUnit(GLuint texture, int unit);
-        static void ActivateTexture(int unit);
+        static void BindTextureUnit(GLuint texture, GLuint sampler, i32 unit);
+        static void BindTextureUnit(GLuint texture, i32 unit);
+        static void ActivateTexture(i32 unit);
 
     private:
         GLuint _textureId;
         GLenum _dataFormat, _internalFormat;
         
-        int _width, _height, _channels;        
-
-        byte* _textureData;
+        i32 _width, _height, _channels;        
 
         std::string _path = "";
     };

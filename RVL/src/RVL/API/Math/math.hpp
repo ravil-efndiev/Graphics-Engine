@@ -25,12 +25,11 @@ namespace Rvl
     class Math
     {
     public:
-        static constexpr double PI = 3.14159265358979323846264338;
+        static constexpr f64 PI = 3.14159265358979323846264338;
 
-        static float Lerp(float current, float target, float t);
-        static float Lerp(float current, float target, float t, float deadZone);
-        static glm::vec3 Lerp(const glm::vec3& current, const glm::vec3& target, float t);
-        static glm::vec4 Lerp(const glm::vec4& current, const glm::vec4& target, float t);
+        static f32 Lerp(f32 current, f32 target, f32 t);
+        static f32 Lerp(f32 current, f32 target, f32 t, f32 deadZone);
+        static glm::vec3 Lerp(const glm::vec3& current, const glm::vec3& target, f32 t);
+        static glm::vec4 Lerp(const glm::vec4& current, const glm::vec4& target, f32 t);
     };
 }
-

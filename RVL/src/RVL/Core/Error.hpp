@@ -13,20 +13,13 @@
 namespace Rvl
 {
 
-    typedef unsigned short  status_t;
+    typedef unsigned short  status;
 
-    /**
-     * structure to process errors that can be caused by user
-     * example: usage of incorrect value in api function
-     * it has text variable and Print function to print error
-     * 
-     * also it provides static function to print error text given
-    */
     struct Error
     {   
         std::string Text;
-        status_t Status;
-        Error(const std::string& text, status_t status) : Text(text), Status(status) {}
+        status Status;
+        Error(const std::string& text, status status_) : Text(text), Status(status_) {}
 
         void Print();
 

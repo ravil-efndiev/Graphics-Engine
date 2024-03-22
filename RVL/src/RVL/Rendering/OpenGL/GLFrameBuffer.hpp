@@ -6,7 +6,7 @@ namespace Rvl
 {
     struct FrameBufferSpecification
     {
-        uint32 Width, Height;
+        u32 Width, Height;
         int Samples = 1;
     };
 

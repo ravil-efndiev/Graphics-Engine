@@ -190,7 +190,7 @@ namespace Rvl
 
     std::size_t EntityHasher::operator()(const Entity& k) const
     {
-        return (std::hash<uint32>()(k.GetIdInt()));
+        return (std::hash<u32>()(k.GetIdInt()));
     }
 
 }

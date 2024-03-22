@@ -1,6 +1,7 @@
 #pragma once
 #include "Mesh.hpp"
 #include "3D/Material.hpp"
+#include "RenderEntity.hpp"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -18,9 +19,10 @@ namespace Rvl
         
         std::vector<Mesh> GetMeshes() const;
         Material GetMaterial() const;
+        RenderEntity GetAsEntity() const;
 
     private:
-        std::vector<Mesh> _meshes;
+        mutable std::vector<Mesh> _meshes;
         Material _material;
 
         std::string _path;
@@ -30,7 +32,7 @@ namespace Rvl
     private:
         std::pair<std::vector<Mesh>, Material> ProcessNode(aiNode*, const aiScene*);
         std::pair<Mesh, Material> ProcessMesh(aiMesh*, const aiScene*);
-        Material LoadMaterial(aiMaterial* mat);
+        Material LoadMaterial(aiMaterial*);
         std::vector<MaterialTexture> LoadMaterialTextures(aiMaterial*, aiTextureType, const std::string&);
     };
 }

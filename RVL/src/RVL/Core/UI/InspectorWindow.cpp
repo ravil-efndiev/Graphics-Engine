@@ -12,7 +12,7 @@ namespace Rvl
         bool UseSubTexture = true;
         bool PSPreview = true;
 
-        int32 EmitTimes = 1;
+        i32 EmitTimes = 1;
 
         glm::vec2 SubtexturePos {0.f};
         glm::vec2 SubtextureSize {0.f};
@@ -89,7 +89,7 @@ namespace Rvl
             if (id.Name.empty())
                 id.Name = "Entity";
 
-            ImGui::Text("Entity id: %d", (uint32)_selected.GetId());
+            ImGui::Text("Entity id: %d", (u32)_selected.GetId());
         }, false);
 
         DrawComponent<Transform>("Transform", _selected, [](auto& transform) 

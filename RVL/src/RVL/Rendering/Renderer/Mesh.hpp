@@ -19,7 +19,7 @@ namespace Rvl
     class Mesh
     {
     public:
-        Mesh(const std::vector<MeshVertex>& verticies, const std::vector<uint32>& indicies);
+        Mesh(const std::vector<MeshVertex>& verticies, const std::vector<u32>& indicies);
         ~Mesh();
 
         Ref<GLVertexArray> GetVao() const;
@@ -30,7 +30,7 @@ namespace Rvl
         void Generate();
 
         std::vector<MeshVertex> _verticies;
-        std::vector<uint32> _indicies;
+        std::vector<u32> _indicies;
 
         Ref<GLVertexArray> _vao;
         Ref<GLVertexBuffer> _vbo;
