@@ -35,6 +35,7 @@ namespace Rvl
         void SetCursorLocked(bool flag);
         RenderMode GetStateRenderMode() const;
 
+        bool GetWindowClose() const;
 
     protected:
         Ptr<State> _currentState;

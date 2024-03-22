@@ -127,4 +127,9 @@ namespace Rvl
     {
         return _currentState->_mode;
     }
+
+    bool App::GetWindowClose() const 
+    {
+        return _window->Closes();
+    }
 }
